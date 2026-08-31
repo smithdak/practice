@@ -1,18 +1,23 @@
 # Foundry
 
-Private construction command center for Practice.
+Private construction command center for Practice. Use it to keep the build coordinated and make the next owner decision clear.
 
-## Source of truth
+## Belongs here
 
-Git owns durable artifacts and task state. Buzz owns coordination and current context.
+- Task status, decisions, blockers, handoffs, and review requests.
+- Links or paths to durable work in Git.
+- Evidence needed for a maintainer or owner decision.
 
-## Construction rules
+## Keep out
 
-- One task, branch, and worktree per agent.
-- Post only status, decisions, blockers, and review summaries here.
-- Never paste private keys, provider credentials, or client-confidential content.
-- The owner performs irreversible or identity-sensitive actions.
+- Private keys, provider credentials, or client-confidential content.
+- Durable specifications that belong in Git.
+- Unapproved public announcements or irreversible identity changes.
 
-## Status format
+The owner performs irreversible or identity-sensitive actions. Agents may report and recommend; they do not take those actions silently.
+
+## First action
+
+Post one concise update in this format:
 
 `TASK_ID · ACTIVE|BLOCKED|REVIEW|DONE · one-sentence update · branch`
