@@ -104,24 +104,32 @@ disagree, show each position and route the choice to a human maintainer.
 
 ## Versioning recommendation
 
-Versioning is a recommendation, not an edit. Use semantic-like guide versions
-unless the repository defines a stricter scheme:
+The canonical contract is [`docs/schemas/GUIDE_SCHEMA.md`](../../docs/schemas/GUIDE_SCHEMA.md),
+especially its **Status and versioning** section. Follow that schema's exact
+`MAJOR.MINOR.PATCH` format and controlled status values. Versioning is a
+recommendation, not an autonomous edit:
 
 ```text
-Current version: <x.y.z or unknown>
-Recommended version: <x.y.z or “owner decision needed”>
-Change class: <patch | minor | major | no version change>
+Current version: <MAJOR.MINOR.PATCH or unknown>
+Recommended version: <MAJOR.MINOR.PATCH or “owner decision needed”>
+Change class: <PATCH | MINOR | MAJOR | no version change>
 Rationale: <reader-visible effect>
 Migration note: <required action, or none known>
 Evidence: <finding IDs and source records>
 ```
 
-Use `patch` for wording, link, or clarification with no changed learning
-path; `minor` for additive or reordered material that preserves the contract;
-`major` for changed prerequisites, outcomes, sequence, or compatibility.
-Recommend `major` only when the evidence supports a materially changed guide.
-An explicit deprecation may require a major version and migration note;
-staleness alone does not.
+Use **PATCH** only for wording, formatting, or link corrections that do not
+change the path, Practices, outcome, evaluation, or scope. Use **MINOR** for
+backward-compatible additions such as an optional module, Practice reference,
+variation, or clarification that leaves the completion outcome and existing
+path usable. Use **MAJOR** for changes to audience, prerequisites, order or
+required content, Practice versions or boundaries, capstone, evaluation
+criteria, or completion outcome that require a Practitioner to relearn or redo
+the path. A material change to a published Guide returns its `status` to
+`draft` until its path and evaluation are reviewed; update `last_verified` only
+when it is published again. Deprecation follows the schema's required status,
+dates, reason, notice, and optional successor fields; staleness alone does not
+establish deprecation.
 
 ## Human review packet
 
