@@ -41,9 +41,10 @@ do not present it as current.
 
 ## Maintenance workflow
 
-1. **Inventory.** Identify the guide version, last-reviewed date if present,
-   capability labels, linked Practices, prerequisites, outputs, evaluation,
-   and unresolved warnings. Confirm every referenced path exists.
+1. **Inventory.** Identify the guide version, its `updated` date, and
+   `last_verified` when the Guide is published; also inspect capability labels,
+   linked Practices, prerequisites, outputs, evaluation, and unresolved
+   warnings. Confirm every referenced path exists.
 2. **Detect changes.** Compare the guide with its referenced artifacts and
    supplied sources. Record exact locations, observed difference, evidence
    link or path, and likely reader impact. A changed source is not by itself a
@@ -72,7 +73,9 @@ Use one record per finding:
 ```text
 Finding ID: <stable identifier>
 Guide: <repository path>
-Guide version/date: <version and last-reviewed date, or unknown>
+Guide version: <MAJOR.MINOR.PATCH or unknown>
+Guide updated: <YYYY-MM-DD or unknown>
+Guide last_verified: <YYYY-MM-DD when published; otherwise not applicable>
 Category: <coherence | staleness | deprecation | broken-reference | evidence-gap | taxonomy-risk>
 Status: <observed | verified | unverified | unknown>
 Location: <heading, anchor, or line context>
@@ -116,6 +119,8 @@ Change class: <PATCH | MINOR | MAJOR | no version change>
 Rationale: <reader-visible effect>
 Migration note: <required action, or none known>
 Evidence: <finding IDs and source records>
+Required `updated` field: <YYYY-MM-DD for the proposed version>
+Required dated `Changelog` entry: <YYYY-MM-DD — concise change description>
 ```
 
 Use **PATCH** only for wording, formatting, or link corrections that do not
@@ -125,11 +130,13 @@ variation, or clarification that leaves the completion outcome and existing
 path usable. Use **MAJOR** for changes to audience, prerequisites, order or
 required content, Practice versions or boundaries, capstone, evaluation
 criteria, or completion outcome that require a Practitioner to relearn or redo
-the path. A material change to a published Guide returns its `status` to
-`draft` until its path and evaluation are reviewed; update `last_verified` only
-when it is published again. Deprecation follows the schema's required status,
-dates, reason, notice, and optional successor fields; staleness alone does not
-establish deprecation.
+the path. Every version recommendation and proposed versioned patch must
+update the Guide's `updated` field and add a dated entry to its `Changelog`.
+A material change to a published Guide returns its `status` to `draft` until
+its path and evaluation are reviewed; update `last_verified` only when that
+Guide is republished after review. Deprecation follows the schema's required
+status, dates, reason, notice, and optional successor fields; staleness alone
+does not establish deprecation.
 
 ## Human review packet
 
@@ -145,6 +152,8 @@ Findings: <change-detection records, or “None found”>
 Verification: <source-verification records, or “Not applicable”>
 Version recommendation: <versioning record, or “No change recommended”>
 Proposed patch: <file/section-level edits; draft only>
+Required metadata/changelog edits: <`updated` date and dated `Changelog` entry; state “none” only when no version or patch is proposed>
+Published status fields: <set `status: draft` for a material published change; set `last_verified` only on republish after review, or “not applicable”>
 Taxonomy check: <unchanged | owner decision required; explain>
 Risks and open questions: <specific unresolved items>
 Owner decisions: <smallest decisions required>
