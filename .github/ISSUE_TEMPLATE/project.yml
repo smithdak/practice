@@ -1,0 +1,51 @@
+name: Propose a Project
+description: Propose open-source software or infrastructure for a community need.
+title: "project: "
+labels: ["project", "proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Review the [contribution model](../../community/CONTRIBUTION_MODEL.md) before proposing a Project. A maintainer must accept ongoing stewardship before it becomes maintained.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Practitioner problem and intended users
+      description: What concrete problem exists, who experiences it, and in what context?
+    validations:
+      required: true
+  - type: textarea
+    id: smallest_release
+    attributes:
+      label: Smallest useful release
+      description: What is the narrowest usable first release, and what is explicitly out of scope?
+    validations:
+      required: true
+  - type: textarea
+    id: approach
+    attributes:
+      label: Proposed approach and boundaries
+      description: Describe inputs, outputs, interfaces, dependencies, and why an existing tool or artifact is not enough.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and success check
+      description: Link a prototype, Lab, reproduction, or observation. State what evidence would show the release is useful; label hypotheses.
+    validations:
+      required: true
+  - type: textarea
+    id: stewardship
+    attributes:
+      label: Maintainer and operating plan
+      description: Name the proposed maintainer (if known), repository location, license, contribution/review process, releases, and safety or security handling.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safe
+    attributes:
+      label: Proposal checks
+      options:
+        - label: I will not include secrets, private keys, credentials, personal data, confidential material, or unlicensed content.
+          required: true

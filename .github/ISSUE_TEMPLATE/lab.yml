@@ -1,0 +1,44 @@
+name: Propose a Lab
+description: Propose a reproducible experiment or evaluation.
+title: "lab: "
+labels: ["lab", "proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use the [Lab template](../../templates/LAB.md) for the durable artifact. Label synthetic fixtures, hypotheses, and unverified observations.
+  - type: textarea
+    id: question
+    attributes:
+      label: Question and hypothesis
+      description: What bounded question will this Lab answer, and what falsifiable expectation will it test?
+    validations:
+      required: true
+  - type: textarea
+    id: task_set
+    attributes:
+      label: Task set and fixed conditions
+      description: Describe the complete tasks or fixtures, required outputs, tools, environment, parameters, and trial count.
+    validations:
+      required: true
+  - type: textarea
+    id: procedure
+    attributes:
+      label: Procedure and evaluation
+      description: Give the run steps, measures, rubric, pass conditions, evaluator, and decision rule.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Existing evidence or reproduction
+      description: Link related artifacts or sources, or state clearly that this is a proposed, not-yet-run Lab.
+    validations:
+      required: true
+  - type: textarea
+    id: limits
+    attributes:
+      label: Limitations, risks, and safe-sharing notes
+      description: Note confounders, coverage gaps, sensitive data exclusions, and conditions that could invalidate comparison.
+    validations:
+      required: true
