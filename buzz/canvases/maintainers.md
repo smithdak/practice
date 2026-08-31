@@ -1,13 +1,21 @@
 # Maintainers
 
-This channel is for governance, releases, moderation escalations, and decisions that change Practice itself.
+Private channel for governance, releases, moderation escalations, and decisions that change Practice.
 
-## Human-owned decisions
+## Belongs here
 
-- access removal and moderation enforcement;
-- licensing or governance changes;
-- public releases;
-- agent permission expansion;
-- exceptions to the contribution process.
+- Proposed governance, licensing, access, and permission changes.
+- Release readiness, contribution-process exceptions, and moderation escalations.
+- Evidence, options, and a named human decision owner.
 
-Agents may summarize evidence and recommend actions. They do not silently enforce them.
+## Keep out
+
+- Routine construction updates (use Foundry).
+- Secrets, private keys, or confidential member or client information.
+- Silent enforcement by an agent.
+
+Access removal, moderation enforcement, licensing, governance, public releases, agent permission expansion, and exceptions remain human-owned decisions. Agents can summarize evidence and recommend an action.
+
+## First action
+
+Open a decision note with the question, context, options, recommendation, risks, and human owner.
