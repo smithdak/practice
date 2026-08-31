@@ -1,4 +1,8 @@
 <!-- practice-seed:build-v1 -->
 # Build thread
 
-Share an agent or AI-native system with its goal, architecture, tools, evaluation method, known failure modes, and repository or reproducible artifact.
+Share a working system or a reproducible experiment with:
+
+`Goal · users/context · architecture · tools/interfaces · evaluation · known failure modes · observability · code or reproduction steps`
+
+Separate what is implemented from what is proposed. Include the smallest artifact another Practitioner can run, inspect, or critique. Do not treat a demo as evidence of reliability; state what the evaluation does and does not establish.
