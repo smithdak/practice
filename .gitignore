@@ -1,0 +1,8 @@
+.env
+.swarm/
+.worktrees/
+TASK_PROMPT.md
+__pycache__/
+*.pyc
+.DS_Store
+buzz/bootstrap-report.json

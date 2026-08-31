@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "community": "Practice",
+  "channels": [
+    {
+      "name": "foundry",
+      "visibility": "private",
+      "topic": "Practice construction command center",
+      "purpose": "Private coordination for Dakota, maintainers, and construction agents.",
+      "canvas": "buzz/canvases/foundry.md",
+      "seed": "buzz/seeds/foundry.md",
+      "type": "stream"
+    },
+    {
+      "name": "maintainers",
+      "visibility": "private",
+      "topic": "Governance, review, releases, and escalations",
+      "purpose": "Private maintainer operations and human-owned decisions.",
+      "canvas": "buzz/canvases/maintainers.md",
+      "seed": "buzz/seeds/maintainers.md",
+      "type": "stream"
+    },
+    {
+      "name": "start-here",
+      "visibility": "open",
+      "topic": "Begin your Practice path",
+      "purpose": "Orientation, community principles, introductions, and the first useful action.",
+      "canvas": "buzz/canvases/start-here.md",
+      "seed": "buzz/seeds/start-here.md",
+      "type": "stream"
+    },
+    {
+      "name": "announcements",
+      "visibility": "open",
+      "topic": "Canonical Practice updates",
+      "purpose": "Low-volume updates, releases, sessions, and major decisions.",
+      "canvas": "buzz/canvases/announcements.md",
+      "seed": "buzz/seeds/announcements.md",
+      "type": "stream"
+    },
+    {
+      "name": "ask-practice",
+      "visibility": "open",
+      "topic": "Bring a real problem",
+      "purpose": "High-signal questions that can become reusable community knowledge.",
+      "canvas": "buzz/canvases/ask-practice.md",
+      "seed": "buzz/seeds/ask-practice.md",
+      "type": "stream"
+    },
+    {
+      "name": "learn",
+      "visibility": "open",
+      "topic": "Understand the foundations",
+      "purpose": "Models, context, tools, limitations, security, evaluation, and learning paths.",
+      "canvas": "buzz/canvases/learn.md",
+      "seed": "buzz/seeds/learn.md",
+      "type": "stream"
+    },
+    {
+      "name": "use",
+      "visibility": "open",
+      "topic": "Improve real daily work",
+      "purpose": "Research, analysis, writing, planning, development, and role-specific workflows.",
+      "canvas": "buzz/canvases/use.md",
+      "seed": "buzz/seeds/use.md",
+      "type": "stream"
+    },
+    {
+      "name": "automate",
+      "visibility": "open",
+      "topic": "Turn repetition into reliable workflows",
+      "purpose": "Workflow decomposition, integrations, human approval, triggers, and automation.",
+      "canvas": "buzz/canvases/automate.md",
+      "seed": "buzz/seeds/automate.md",
+      "type": "stream"
+    },
+    {
+      "name": "build",
+      "visibility": "open",
+      "topic": "Engineer AI-native systems",
+      "purpose": "Agents, context engineering, tool use, evaluation, observability, and architecture.",
+      "canvas": "buzz/canvases/build.md",
+      "seed": "buzz/seeds/build.md",
+      "type": "stream"
+    },
+    {
+      "name": "transform",
+      "visibility": "open",
+      "topic": "Change how teams and organizations operate",
+      "purpose": "Adoption, opportunity mapping, governance, operating models, and measurement.",
+      "canvas": "buzz/canvases/transform.md",
+      "seed": "buzz/seeds/transform.md",
+      "type": "stream"
+    },
+    {
+      "name": "projects",
+      "visibility": "open",
+      "topic": "Build open-source Practice projects",
+      "purpose": "Project proposals, contributors, implementation decisions, and releases.",
+      "canvas": "buzz/canvases/projects.md",
+      "seed": "buzz/seeds/projects.md",
+      "type": "stream"
+    },
+    {
+      "name": "showcase",
+      "visibility": "open",
+      "topic": "Show the work and the evidence",
+      "purpose": "Working implementations, Practice Stories, lessons, failures, and measured outcomes.",
+      "canvas": "buzz/canvases/showcase.md",
+      "seed": "buzz/seeds/showcase.md",
+      "type": "stream"
+    }
+  ]
+}

@@ -1,0 +1,1816 @@
+{
+  "schema_version": 1,
+  "project": "Practice",
+  "max_parallel_workers": 10,
+  "model_policy": {
+    "cheap": "Fast low-cost model with strong instruction following for bounded prose tasks.",
+    "balanced": "Mid-tier model for synthesis, governance, curricula, and operational design.",
+    "strong": "Highest-capability model reserved for thesis-critical synthesis, adversarial review, and integration.",
+    "code": "Low-cost coding-capable model for deterministic scripts and repository checks."
+  },
+  "tasks": [
+    {
+      "id": "F001",
+      "title": "Define the Practice voice and lexicon",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "brand/VOICE.md",
+        "brand/LEXICON.md"
+      ],
+      "handoff": "handoffs/F001.md",
+      "objective": "Create a precise language system that keeps every artifact recognizably Practice without sounding like generic AI marketing.",
+      "requirements": [
+        "Define voice attributes with positive and negative examples.",
+        "Define canonical terms: Practitioner, Practice, Guide, Lab, Story, Note, Project, capability ladder.",
+        "Create banned or discouraged language and replacement guidance.",
+        "Include headline, description, and call-to-action patterns."
+      ],
+      "acceptance": [
+        "Both files distinguish product language from marketing hype.",
+        "Examples cover beginner, technical, organizational, and community contexts.",
+        "No new tagline replaces the locked positioning."
+      ],
+      "spec": "tasks/specs/F001.md",
+      "status": "todo"
+    },
+    {
+      "id": "F002",
+      "title": "Write the founding manifesto",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "strong",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md",
+        "docs/founding/FOUNDING_BRIEF.md"
+      ],
+      "outputs": [
+        "docs/founding/MANIFESTO.md"
+      ],
+      "handoff": "handoffs/F002.md",
+      "objective": "Produce the canonical public manifesto that explains why Practice exists and calls Practitioners to action.",
+      "requirements": [
+        "Use the Founding Brief as source material without merely restating it.",
+        "Lead with the implementation gap, not model hype.",
+        "Explain openness, practice, evidence, contribution, and the human-agent community model.",
+        "End with a concrete invitation."
+      ],
+      "acceptance": [
+        "Readable as a standalone public artifact.",
+        "No fabricated market statistics or external claims.",
+        "Between 900 and 1,800 words."
+      ],
+      "spec": "tasks/specs/F002.md",
+      "status": "todo"
+    },
+    {
+      "id": "F003",
+      "title": "Finalize capability ladder and knowledge taxonomy",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "docs/framework/CAPABILITY_LADDER.md",
+        "docs/framework/TAXONOMY.md"
+      ],
+      "handoff": "handoffs/F003.md",
+      "objective": "Turn the founding concepts into a usable classification system for members, content, channels, and contributions.",
+      "requirements": [
+        "Define outcomes, entry evidence, exit evidence, and anti-patterns for Learn, Use, Automate, Build, Transform.",
+        "Define the artifact taxonomy and when to choose each artifact type.",
+        "Explain cross-role and cross-capability tagging.",
+        "Include concrete classification examples."
+      ],
+      "acceptance": [
+        "A contributor can classify a new artifact without guessing.",
+        "Capability levels describe skills rather than status.",
+        "Taxonomy resolves Note vs Practice vs Lab vs Story vs Project."
+      ],
+      "spec": "tasks/specs/F003.md",
+      "status": "todo"
+    },
+    {
+      "id": "F004",
+      "title": "Define governance",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "community/GOVERNANCE.md"
+      ],
+      "handoff": "handoffs/F004.md",
+      "objective": "Create lightweight, credible governance for an initially founder-led open-source community that can broaden over time.",
+      "requirements": [
+        "Define founder, maintainer, contributor, and Practitioner responsibilities.",
+        "Define decision categories and approval paths.",
+        "Define how governance evolves based on demonstrated contribution.",
+        "Include conflict-of-interest, removal, and succession mechanisms without bureaucracy."
+      ],
+      "acceptance": [
+        "Founder authority is explicit at launch.",
+        "Contribution can earn responsibility through transparent criteria.",
+        "Irreversible and policy decisions remain human-owned."
+      ],
+      "spec": "tasks/specs/F004.md",
+      "status": "todo"
+    },
+    {
+      "id": "F005",
+      "title": "Define contribution system",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "CONTRIBUTING.md",
+        "community/CONTRIBUTION_MODEL.md"
+      ],
+      "handoff": "handoffs/F005.md",
+      "objective": "Make contributing easier than creating a polished artifact from scratch while maintaining quality.",
+      "requirements": [
+        "Define contribution paths from correction through maintained Project.",
+        "Describe issue, branch, review, evidence, attribution, and release flow.",
+        "Define recognition based on usefulness rather than volume.",
+        "Include a first-contribution path for non-engineers."
+      ],
+      "acceptance": [
+        "A newcomer can select and complete a contribution path.",
+        "The process supports Buzz discussion and Git review without duplicating source of truth.",
+        "Acceptance and rejection criteria are explicit."
+      ],
+      "spec": "tasks/specs/F005.md",
+      "status": "todo"
+    },
+    {
+      "id": "F006",
+      "title": "Define code of conduct and moderation model",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "CODE_OF_CONDUCT.md",
+        "community/MODERATION.md"
+      ],
+      "handoff": "handoffs/F006.md",
+      "objective": "Create conduct and moderation rules optimized for high-signal practical collaboration and human accountability.",
+      "requirements": [
+        "Define expected and unacceptable behavior.",
+        "Define reporting, triage, evidence preservation, appeal, and enforcement roles.",
+        "Separate low-signal quality issues from conduct violations.",
+        "Define what agents may flag and what humans must decide."
+      ],
+      "acceptance": [
+        "No autonomous banning or silent content removal.",
+        "Rules are enforceable rather than aspirational.",
+        "Private reporting and conflict handling are addressed."
+      ],
+      "spec": "tasks/specs/F006.md",
+      "status": "todo"
+    },
+    {
+      "id": "F007",
+      "title": "Finalize licensing and attribution policy",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md",
+        "LICENSE-CODE",
+        "LICENSE-CONTENT.md",
+        "LICENSES.md"
+      ],
+      "outputs": [
+        "community/ATTRIBUTION.md",
+        "NOTICE"
+      ],
+      "handoff": "handoffs/F007.md",
+      "objective": "Operationalize the dual-license model and make reuse, commercial use, attribution, and third-party contributions unambiguous.",
+      "requirements": [
+        "Use Apache-2.0 for code and CC BY 4.0 for content unless a file says otherwise.",
+        "Define attribution format for reused and adapted Practice content.",
+        "Define contributor certification or sign-off approach without adding unnecessary CLA friction.",
+        "Define third-party source handling and generated-content review."
+      ],
+      "acceptance": [
+        "Consistent with LICENSE-CODE, LICENSE-CONTENT.md, and LICENSES.md.",
+        "Commercial reuse is permitted with attribution.",
+        "No legal claims beyond what the licenses support."
+      ],
+      "spec": "tasks/specs/F007.md",
+      "status": "todo"
+    },
+    {
+      "id": "F008",
+      "title": "Define community health and outcome metrics",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/METRICS.md"
+      ],
+      "handoff": "handoffs/F008.md",
+      "objective": "Measure whether Practice creates capability and reusable knowledge rather than vanity activity.",
+      "requirements": [
+        "Define activation, contribution, artifact reuse, implementation, evidence, response quality, retention, and maintainer health metrics.",
+        "Distinguish leading and lagging indicators.",
+        "Define data that should not be collected.",
+        "Provide a minimal manual measurement method for launch."
+      ],
+      "acceptance": [
+        "Metrics connect to the north star.",
+        "No invented benchmarks or targets.",
+        "The initial system can be operated without custom analytics software."
+      ],
+      "spec": "tasks/specs/F008.md",
+      "status": "todo"
+    },
+    {
+      "id": "F009",
+      "title": "Polish contributor repository experience",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "F005",
+        "F006",
+        "F007"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "community/CONTRIBUTOR_QUICKSTART.md",
+        ".github/ISSUE_TEMPLATE/lab.yml",
+        ".github/ISSUE_TEMPLATE/project.yml"
+      ],
+      "handoff": "handoffs/F009.md",
+      "objective": "Make the public repository understandable and actionable from the first screen.",
+      "requirements": [
+        "Create a concise contributor quickstart.",
+        "Add structured Lab and Project proposal issue forms.",
+        "Reference existing templates and contribution rules.",
+        "Avoid duplicating full policies."
+      ],
+      "acceptance": [
+        "Issue forms collect enough information for triage.",
+        "Quickstart includes both Git-native and Buzz-first paths.",
+        "All relative links resolve."
+      ],
+      "spec": "tasks/specs/F009.md",
+      "status": "todo"
+    },
+    {
+      "id": "B001",
+      "title": "Audit and finalize Buzz channel information architecture",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "F003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md",
+        "buzz/community.json",
+        "research/BUZZ_PLATFORM_SNAPSHOT.md"
+      ],
+      "outputs": [
+        "buzz/INFORMATION_ARCHITECTURE.md",
+        "buzz/community.json"
+      ],
+      "handoff": "handoffs/B001.md",
+      "objective": "Validate the launch channel set against the capability ladder and keep the community deliberately small and outcome-oriented.",
+      "requirements": [
+        "Review every baseline channel for purpose, overlap, and launch necessity.",
+        "Keep construction and maintainer work private.",
+        "Use stream channels only.",
+        "Document rules for creating, renaming, archiving, or splitting channels later."
+      ],
+      "acceptance": [
+        "No public channel lacks a distinct outcome.",
+        "Channel count is justified and not expanded casually.",
+        "community.json remains valid and every referenced file exists."
+      ],
+      "spec": "tasks/specs/B001.md",
+      "status": "todo"
+    },
+    {
+      "id": "B002",
+      "title": "Design end-to-end member onboarding",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "F003",
+        "F005"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md",
+        "research/BUZZ_PLATFORM_SNAPSHOT.md"
+      ],
+      "outputs": [
+        "community/ONBOARDING.md",
+        "community/CAPABILITY_SELF_ASSESSMENT.md"
+      ],
+      "handoff": "handoffs/B002.md",
+      "objective": "Move a new member from invitation through first useful contribution without requiring prior AI expertise.",
+      "requirements": [
+        "Account for Buzz being invite-only.",
+        "Define invitation, identity setup, orientation, capability self-assessment, first action, and follow-up.",
+        "Create a self-assessment that routes to Learn, Use, Automate, Build, or Transform.",
+        "Include agent-assisted and human-assisted paths."
+      ],
+      "acceptance": [
+        "A new member has one clear first action.",
+        "Onboarding does not depend on unavailable automation.",
+        "No private key handling is delegated to agents."
+      ],
+      "spec": "tasks/specs/B002.md",
+      "status": "todo"
+    },
+    {
+      "id": "B003",
+      "title": "Polish all Buzz channel canvases",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "B001",
+        "B002",
+        "F001"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/canvases/foundry.md",
+        "buzz/canvases/maintainers.md",
+        "buzz/canvases/start-here.md",
+        "buzz/canvases/announcements.md",
+        "buzz/canvases/ask-practice.md",
+        "buzz/canvases/learn.md",
+        "buzz/canvases/use.md",
+        "buzz/canvases/automate.md",
+        "buzz/canvases/build.md",
+        "buzz/canvases/transform.md",
+        "buzz/canvases/projects.md",
+        "buzz/canvases/showcase.md"
+      ],
+      "handoff": "handoffs/B003.md",
+      "objective": "Turn every channel canvas into a concise operating guide that prevents ambiguity and empty-channel syndrome.",
+      "requirements": [
+        "Preserve the purpose of each channel.",
+        "Add what belongs, what does not, and a first action where useful.",
+        "Keep private-channel instructions operational.",
+        "Cross-link only when a real path exists."
+      ],
+      "acceptance": [
+        "Every canvas is publishable and non-empty.",
+        "No canvas repeats the entire manifesto.",
+        "Tone follows brand/VOICE.md."
+      ],
+      "spec": "tasks/specs/B003.md",
+      "status": "todo"
+    },
+    {
+      "id": "B004",
+      "title": "Polish Buzz seed messages",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "B001",
+        "B002",
+        "F001"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/seeds/foundry.md",
+        "buzz/seeds/maintainers.md",
+        "buzz/seeds/start-here.md",
+        "buzz/seeds/announcements.md",
+        "buzz/seeds/ask-practice.md",
+        "buzz/seeds/learn.md",
+        "buzz/seeds/use.md",
+        "buzz/seeds/automate.md",
+        "buzz/seeds/build.md",
+        "buzz/seeds/transform.md",
+        "buzz/seeds/projects.md",
+        "buzz/seeds/showcase.md"
+      ],
+      "handoff": "handoffs/B004.md",
+      "objective": "Create one high-signal seed message per launch channel that demonstrates expected behavior and prompts useful participation.",
+      "requirements": [
+        "Preserve each unique idempotency marker.",
+        "Use concrete prompts rather than generic welcomes.",
+        "Do not imply members, results, or activity that do not exist.",
+        "Keep announcement volume low."
+      ],
+      "acceptance": [
+        "Every seed contains exactly one practice-seed marker.",
+        "Prompts can produce a reusable artifact or clear next action.",
+        "No message exceeds 350 words."
+      ],
+      "spec": "tasks/specs/B004.md",
+      "status": "todo"
+    },
+    {
+      "id": "B005",
+      "title": "Harden the Buzz bootstrapper",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [
+        "B001"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md",
+        "research/BUZZ_PLATFORM_SNAPSHOT.md",
+        "buzz/community.json"
+      ],
+      "outputs": [
+        "scripts/buzz_bootstrap.py",
+        "buzz/BOOTSTRAP_RUNBOOK.md"
+      ],
+      "handoff": "handoffs/B005.md",
+      "objective": "Make Buzz setup idempotent, dry-run-first, inspectable, and safe against current platform limitations.",
+      "requirements": [
+        "Use only the launch-safe CLI surface in the platform snapshot.",
+        "Create missing stream channels, set topic/purpose/canvas, and seed messages once.",
+        "Never delete or archive.",
+        "Redact secrets from errors and reports.",
+        "Handle common JSON response shapes and actionable failures."
+      ],
+      "acceptance": [
+        "Dry run requires no Buzz installation or credentials.",
+        "Apply requires explicit --apply and environment variables.",
+        "Re-running apply does not duplicate seed messages when recent history contains the marker.",
+        "Runbook includes rollback-by-manual-review, not destructive automation."
+      ],
+      "spec": "tasks/specs/B005.md",
+      "status": "todo"
+    },
+    {
+      "id": "B006",
+      "title": "Create Buzz access and security runbook",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "F006",
+        "B001"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md",
+        "research/BUZZ_PLATFORM_SNAPSHOT.md"
+      ],
+      "outputs": [
+        "ops/BUZZ_SECURITY.md"
+      ],
+      "handoff": "handoffs/B006.md",
+      "objective": "Define identity, key, channel, agent, data, backup, and incident practices for hosted Buzz operation.",
+      "requirements": [
+        "Document owner identity backup and recovery responsibilities.",
+        "Define per-agent identity and least-membership matrix.",
+        "Classify content safe for hosted Buzz.",
+        "Define offboarding and suspected-compromise steps.",
+        "Separate hosted MVP from self-host revisit triggers."
+      ],
+      "acceptance": [
+        "Consistent with official support constraints.",
+        "No secret is ever requested in a channel.",
+        "Human actions are explicit."
+      ],
+      "spec": "tasks/specs/B006.md",
+      "status": "todo"
+    },
+    {
+      "id": "B007",
+      "title": "Finalize Practice Steward agent profile",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "B001",
+        "F005"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/agents/STEWARD.md"
+      ],
+      "handoff": "handoffs/B007.md",
+      "objective": "Create a deployable, bounded profile for the member-routing and onboarding agent.",
+      "requirements": [
+        "Define mission, inputs, output formats, tools, channel access, escalation, prohibited behavior, and evaluation cases.",
+        "Optimize for routing to useful action, not long answers.",
+        "Include prompt-injection and unknown-policy handling."
+      ],
+      "acceptance": [
+        "Profile can be copied into a Buzz agent setup.",
+        "No owner privileges required.",
+        "At least five evaluation scenarios."
+      ],
+      "spec": "tasks/specs/B007.md",
+      "status": "todo"
+    },
+    {
+      "id": "B008",
+      "title": "Finalize Practice Librarian agent profile",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "B001",
+        "F005"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/agents/LIBRARIAN.md"
+      ],
+      "handoff": "handoffs/B008.md",
+      "objective": "Create a deployable profile for distilling valuable community work into candidate artifacts.",
+      "requirements": [
+        "Define artifact classification rules and attribution requirements.",
+        "Require links back to source threads.",
+        "Draft only; never merge or publish without review.",
+        "Include privacy boundaries and disagreement preservation."
+      ],
+      "acceptance": [
+        "At least five evaluation scenarios.",
+        "Output contract maps cleanly to Practice artifact templates.",
+        "No private-channel material may be published by default."
+      ],
+      "spec": "tasks/specs/B008.md",
+      "status": "todo"
+    },
+    {
+      "id": "B009",
+      "title": "Finalize Guide Maintainer agent profile",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "B001",
+        "F005"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/agents/GUIDE_MAINTAINER.md"
+      ],
+      "handoff": "handoffs/B009.md",
+      "objective": "Create a deployable profile for guide coherence, staleness detection, and maintenance proposals.",
+      "requirements": [
+        "Define change-detection, source verification, versioning recommendation, and review packet formats.",
+        "Require primary sources for changing technical claims.",
+        "Never merge its own work."
+      ],
+      "acceptance": [
+        "At least five evaluation scenarios.",
+        "Staleness and deprecation are distinct.",
+        "Agent cannot silently change capability taxonomy."
+      ],
+      "spec": "tasks/specs/B009.md",
+      "status": "todo"
+    },
+    {
+      "id": "B010",
+      "title": "Finalize Research Auditor agent profile",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "B001",
+        "F005"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/agents/RESEARCH_AUDITOR.md"
+      ],
+      "handoff": "handoffs/B010.md",
+      "objective": "Create a deployable profile for current-fact verification and citation integrity.",
+      "requirements": [
+        "Define primary-source hierarchy, as-of dates, claim-source mapping, uncertainty, and contradiction handling.",
+        "Define a compact audit report.",
+        "Disallow invented citations and unsupported extrapolation."
+      ],
+      "acceptance": [
+        "At least five evaluation scenarios.",
+        "Reports identify exact claims and dispositions.",
+        "The agent does not rewrite strategy."
+      ],
+      "spec": "tasks/specs/B010.md",
+      "status": "todo"
+    },
+    {
+      "id": "B011",
+      "title": "Finalize Release Editor agent profile",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "B001",
+        "F005"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/agents/RELEASE_EDITOR.md"
+      ],
+      "handoff": "handoffs/B011.md",
+      "objective": "Create a deployable profile for turning merged work into announcements and weekly releases without hype.",
+      "requirements": [
+        "Define required inputs, artifact links, status checks, output formats, and prohibited claims.",
+        "Require merged or released source material.",
+        "Preserve evidence quality and uncertainty."
+      ],
+      "acceptance": [
+        "At least five evaluation scenarios.",
+        "No unmerged work can be announced as complete.",
+        "Every summary links to canonical artifacts."
+      ],
+      "spec": "tasks/specs/B011.md",
+      "status": "todo"
+    },
+    {
+      "id": "K001",
+      "title": "Finalize the Open Practice schema",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "F003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "templates/PRACTICE.md",
+        "docs/schemas/PRACTICE_SCHEMA.md"
+      ],
+      "handoff": "handoffs/K001.md",
+      "objective": "Create the canonical schema and authoring rules for reusable Practices.",
+      "requirements": [
+        "Define required and optional metadata.",
+        "Define maturity states from proposed through verified and deprecated.",
+        "Define evidence-quality levels.",
+        "Include a worked classification example.",
+        "Keep author burden proportional to maturity."
+      ],
+      "acceptance": [
+        "Template and schema agree.",
+        "A validator could be built from the rules.",
+        "Failure modes and evaluation are required for mature Practices."
+      ],
+      "spec": "tasks/specs/K001.md",
+      "status": "todo"
+    },
+    {
+      "id": "K002",
+      "title": "Finalize the Practice Guide schema",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "F003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "templates/GUIDE.md",
+        "docs/schemas/GUIDE_SCHEMA.md"
+      ],
+      "handoff": "handoffs/K002.md",
+      "objective": "Create the canonical structure and maintenance rules for opinionated Guides.",
+      "requirements": [
+        "Define audience, outcomes, prerequisites, modules, Practices, capstone, evaluation, and versioning.",
+        "Explain when a collection becomes a Guide.",
+        "Define update and deprecation rules."
+      ],
+      "acceptance": [
+        "Template and schema agree.",
+        "Guides reference Practices rather than duplicating them unnecessarily.",
+        "A Guide has a clear completion outcome."
+      ],
+      "spec": "tasks/specs/K002.md",
+      "status": "todo"
+    },
+    {
+      "id": "K003",
+      "title": "Design the AI-Native Practitioner flagship guide",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "strong",
+      "mode": "build",
+      "dependencies": [
+        "F002",
+        "F003",
+        "K001",
+        "K002"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "guides/ai-native-practitioner/README.md",
+        "guides/ai-native-practitioner/CURRICULUM.md"
+      ],
+      "handoff": "handoffs/K003.md",
+      "objective": "Create the coherent end-to-end map for Practice's flagship Guide.",
+      "requirements": [
+        "Cover foundations, effective use, context engineering, automation, agents, agentic engineering, organizational AI, and frontier work.",
+        "Define module outcomes, prerequisites, capstones, and evidence.",
+        "Provide multiple paths for nontechnical, technical, and organizational Practitioners without fragmenting the core.",
+        "Avoid a vendor-specific course outline."
+      ],
+      "acceptance": [
+        "Every module advances a capability.",
+        "The guide is usable before all modules are complete.",
+        "Frontier material is clearly separated from established Practice."
+      ],
+      "spec": "tasks/specs/K003.md",
+      "status": "todo"
+    },
+    {
+      "id": "K004",
+      "title": "Write the Foundations module",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "K003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "guides/ai-native-practitioner/01-foundations.md"
+      ],
+      "handoff": "handoffs/K004.md",
+      "objective": "Write a practical foundations module covering models, context, tools, limitations, structured output, privacy, security, and evaluation.",
+      "requirements": [
+        "Use exercises and checkable outcomes.",
+        "Prefer enduring concepts over volatile product details.",
+        "Explain probabilistic behavior and verification without oversimplification.",
+        "Include a capstone."
+      ],
+      "acceptance": [
+        "A beginner can complete it without coding.",
+        "No unsupported current product claims.",
+        "Exercises produce artifacts or evidence."
+      ],
+      "spec": "tasks/specs/K004.md",
+      "status": "todo"
+    },
+    {
+      "id": "K005",
+      "title": "Write the Effective Use module",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "K003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "guides/ai-native-practitioner/02-effective-use.md"
+      ],
+      "handoff": "handoffs/K005.md",
+      "objective": "Teach deliberate use across research, analysis, writing, planning, learning, and professional work.",
+      "requirements": [
+        "Teach task framing, context, iteration, critique, and output verification.",
+        "Include role-neutral patterns and role examples.",
+        "Distinguish assistance from delegated execution.",
+        "Include a capstone based on a real workflow."
+      ],
+      "acceptance": [
+        "Not a prompt collection.",
+        "Includes decision rules for when not to use AI.",
+        "Produces measurable before/after evidence."
+      ],
+      "spec": "tasks/specs/K005.md",
+      "status": "todo"
+    },
+    {
+      "id": "K006",
+      "title": "Write the Context Engineering module",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "K003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "guides/ai-native-practitioner/03-context-engineering.md"
+      ],
+      "handoff": "handoffs/K006.md",
+      "objective": "Teach instruction, context architecture, skills, memory, retrieval, tool definitions, and progressive disclosure.",
+      "requirements": [
+        "Explain context as a designed system rather than a long prompt.",
+        "Cover source hierarchy, freshness, conflicts, and boundaries.",
+        "Include a reusable context-pack exercise.",
+        "Address privacy and token/cost constraints conceptually."
+      ],
+      "acceptance": [
+        "Connects to the first Context Pack Practice.",
+        "Includes failure diagnosis.",
+        "Avoids vendor-specific context-window claims."
+      ],
+      "spec": "tasks/specs/K006.md",
+      "status": "todo"
+    },
+    {
+      "id": "K007",
+      "title": "Write the Automation and Agents module",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "K003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "guides/ai-native-practitioner/04-automation-agents.md"
+      ],
+      "handoff": "handoffs/K007.md",
+      "objective": "Move Practitioners from workflow decomposition through reliable tool-using agents.",
+      "requirements": [
+        "Begin with deterministic automation and human approval.",
+        "Define agent loop, tools, state, permissions, error paths, observability, and evaluation.",
+        "Explain when an agent is unnecessary.",
+        "Include a bounded automation capstone."
+      ],
+      "acceptance": [
+        "Reliability and rollback are first-class.",
+        "Autonomy is treated as a design variable, not a goal.",
+        "No framework is required."
+      ],
+      "spec": "tasks/specs/K007.md",
+      "status": "todo"
+    },
+    {
+      "id": "K008",
+      "title": "Write the Agentic Engineering module",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "K003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "guides/ai-native-practitioner/05-agentic-engineering.md"
+      ],
+      "handoff": "handoffs/K008.md",
+      "objective": "Teach repository context, specifications, planning, implementation, tests, verification, parallel agents, and delivery controls.",
+      "requirements": [
+        "Define task decomposition and file ownership.",
+        "Cover worktrees, acceptance criteria, independent review, and CI.",
+        "Explain handoffs and context recovery.",
+        "Use Practice's own swarm as a worked example without claiming results not yet measured."
+      ],
+      "acceptance": [
+        "Useful to experienced engineers.",
+        "Includes anti-patterns for uncontrolled parallelism.",
+        "Connects to the Verification Gate Practice."
+      ],
+      "spec": "tasks/specs/K008.md",
+      "status": "todo"
+    },
+    {
+      "id": "K009",
+      "title": "Write the Organizational AI module",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "K003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "guides/ai-native-practitioner/06-organizational-ai.md"
+      ],
+      "handoff": "handoffs/K009.md",
+      "objective": "Teach workflow discovery, opportunity assessment, knowledge architecture, enablement, governance, measurement, and operating models.",
+      "requirements": [
+        "Start from work and business outcomes.",
+        "Define an opportunity map without invented ROI.",
+        "Address role-specific enablement and change.",
+        "Include governance proportional to risk.",
+        "Include an organizational capstone."
+      ],
+      "acceptance": [
+        "Not a generic digital-transformation essay.",
+        "Connects interventions to measurable operating changes.",
+        "Distinguishes adoption from capability."
+      ],
+      "spec": "tasks/specs/K009.md",
+      "status": "todo"
+    },
+    {
+      "id": "K010",
+      "title": "Create Practice 001: Reusable Context Pack",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "K001",
+        "F003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "practices/001-context-pack.md"
+      ],
+      "handoff": "handoffs/K010.md",
+      "objective": "Create the first reusable Practice for packaging stable instructions, sources, constraints, examples, and verification into recurring AI work.",
+      "requirements": [
+        "Use the canonical Practice schema.",
+        "Include a minimal and advanced implementation.",
+        "Include maintenance and freshness checks.",
+        "Include evaluation and failure modes."
+      ],
+      "acceptance": [
+        "Immediately reusable by a nontechnical Practitioner.",
+        "No vendor dependency.",
+        "Evidence section honestly labels the initial maturity."
+      ],
+      "spec": "tasks/specs/K010.md",
+      "status": "todo"
+    },
+    {
+      "id": "K011",
+      "title": "Create Practice 002: Workflow Redesign",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "K001",
+        "F003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "practices/002-workflow-redesign.md"
+      ],
+      "handoff": "handoffs/K011.md",
+      "objective": "Create a method for decomposing a recurring workflow and selecting deterministic, AI-assisted, agentic, and human-owned steps.",
+      "requirements": [
+        "Include inventory, classification, risk, data access, approval, rollback, and measurement.",
+        "Provide a worked hypothetical example labeled as such.",
+        "Define a smallest safe experiment."
+      ],
+      "acceptance": [
+        "Produces a concrete workflow map.",
+        "Does not assume automation is always beneficial.",
+        "Includes evaluation before expanding autonomy."
+      ],
+      "spec": "tasks/specs/K011.md",
+      "status": "todo"
+    },
+    {
+      "id": "K012",
+      "title": "Create Practice 003: Agent Verification Gate",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "K001",
+        "F003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "practices/003-verification-gate.md"
+      ],
+      "handoff": "handoffs/K012.md",
+      "objective": "Create a reusable acceptance gate for agent-produced research, content, code, configuration, or operations work.",
+      "requirements": [
+        "Define artifact-specific checks and universal checks.",
+        "Include evidence, tests, diff review, source validation, and rollback.",
+        "Define when human approval is mandatory.",
+        "Include a compact checklist and machine-readable example."
+      ],
+      "acceptance": [
+        "Applicable beyond software.",
+        "Rejects unsupported completion claims.",
+        "Connects acceptance criteria to actual evidence."
+      ],
+      "spec": "tasks/specs/K012.md",
+      "status": "todo"
+    },
+    {
+      "id": "K013",
+      "title": "Create the Lab system and first experiment",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "K001"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "templates/LAB.md",
+        "docs/schemas/LAB_SCHEMA.md",
+        "labs/001-cheap-model-bounded-task.md"
+      ],
+      "handoff": "handoffs/K013.md",
+      "objective": "Define reproducible Labs and design the first experiment around low-cost models completing bounded artifact tasks.",
+      "requirements": [
+        "Define hypothesis, fixed conditions, task set, rubric, cost capture, result format, limitations, and reproduction.",
+        "Do not invent results; leave the results section ready for execution.",
+        "Compare task completion quality, not general model intelligence."
+      ],
+      "acceptance": [
+        "Template and schema agree.",
+        "Experiment can be run by another Practitioner.",
+        "No model is endorsed before results exist."
+      ],
+      "spec": "tasks/specs/K013.md",
+      "status": "todo"
+    },
+    {
+      "id": "K014",
+      "title": "Create the Story system and an explicitly hypothetical sample",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "K001"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "templates/STORY.md",
+        "docs/schemas/STORY_SCHEMA.md",
+        "stories/SAMPLE_HYPOTHETICAL.md"
+      ],
+      "handoff": "handoffs/K014.md",
+      "objective": "Define evidence-grounded Practice Stories and demonstrate the format without fabricating a real case study.",
+      "requirements": [
+        "Define evidence-quality levels and anonymization rules.",
+        "Require before, intervention, after, result, lessons, and artifacts.",
+        "Mark the sample prominently as hypothetical."
+      ],
+      "acceptance": [
+        "No invented customer or metric.",
+        "Template and schema agree.",
+        "A real contributor can replace the sample with evidence."
+      ],
+      "spec": "tasks/specs/K014.md",
+      "status": "todo"
+    },
+    {
+      "id": "L001",
+      "title": "Create the launch narrative",
+      "wave": 4,
+      "lane": "launch",
+      "model_tier": "strong",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "F002"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "content/launch/FOUNDING_STORY.md",
+        "content/launch/LAUNCH_VIDEO.md"
+      ],
+      "handoff": "handoffs/L001.md",
+      "objective": "Translate the manifesto into a compelling written launch story and flagship video brief that demonstrates the Practice thesis.",
+      "requirements": [
+        "Explain the implementation gap and why open practice matters.",
+        "Use Dakota's builder/practitioner perspective without inventing biography.",
+        "Design the video around showing work, not a talking-head announcement alone.",
+        "End with one clear invitation."
+      ],
+      "acceptance": [
+        "Written story and video brief share a thesis without duplicating wording.",
+        "No market statistics are required.",
+        "The call to action points to Buzz and canonical open artifacts."
+      ],
+      "spec": "tasks/specs/L001.md",
+      "status": "todo"
+    },
+    {
+      "id": "L002",
+      "title": "Create the first ten flagship content briefs",
+      "wave": 4,
+      "lane": "launch",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "F002",
+        "F003",
+        "K003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "content/launch/FIRST_10.md"
+      ],
+      "handoff": "handoffs/L002.md",
+      "objective": "Create ten production-ready content briefs that generate useful open-source artifacts and community participation.",
+      "requirements": [
+        "Each brief states hook, Practitioner outcome, demonstration, artifact produced, community prompt, and repurposing.",
+        "Mix individual, engineering, founder, and organizational use cases.",
+        "Include Making Companies AI-Native, Workflow Clinic, Build With Me, Practice Tested, and community showcase formats."
+      ],
+      "acceptance": [
+        "Every episode produces or improves a canonical artifact.",
+        "No episode depends on a fabricated participant or company.",
+        "Sequence builds the Practice thesis progressively."
+      ],
+      "spec": "tasks/specs/L002.md",
+      "status": "todo"
+    },
+    {
+      "id": "L003",
+      "title": "Create the social launch kit",
+      "wave": 4,
+      "lane": "launch",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "L001"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "content/launch/SOCIAL_KIT.md"
+      ],
+      "handoff": "handoffs/L003.md",
+      "objective": "Create channel-appropriate launch copy and profile language without reducing Practice to AI tips.",
+      "requirements": [
+        "Include pinned profile descriptions, launch posts, short-form scripts, founder bio, and response templates.",
+        "Preserve the same claim set across channels.",
+        "Use placeholders for URLs and handles."
+      ],
+      "acceptance": [
+        "No invented traction or urgency.",
+        "Calls to action are specific.",
+        "Copy follows the voice system."
+      ],
+      "spec": "tasks/specs/L003.md",
+      "status": "todo"
+    },
+    {
+      "id": "L004",
+      "title": "Design the first Practice Session",
+      "wave": 4,
+      "lane": "operations",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "B002",
+        "K001"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/FIRST_PRACTICE_SESSION.md"
+      ],
+      "handoff": "handoffs/L004.md",
+      "objective": "Create a repeatable live Workflow Clinic that produces a reusable Practice artifact.",
+      "requirements": [
+        "Define participant intake, selection, preparation, facilitation, artifact capture, consent, follow-up, and publication review.",
+        "Include roles for host, Steward, Librarian, and Research Auditor.",
+        "Include contingency paths when the workflow is sensitive or unsuitable."
+      ],
+      "acceptance": [
+        "Session produces a concrete draft artifact.",
+        "No private data is exposed by default.",
+        "Participants can decline publication."
+      ],
+      "spec": "tasks/specs/L004.md",
+      "status": "todo"
+    },
+    {
+      "id": "L005",
+      "title": "Create the maintainer operating runbook",
+      "wave": 4,
+      "lane": "operations",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "F004",
+        "F005",
+        "B006"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/MAINTAINER_RUNBOOK.md"
+      ],
+      "handoff": "handoffs/L005.md",
+      "objective": "Define the recurring human and agent work required to keep Practice useful, current, and safe.",
+      "requirements": [
+        "Cover inbox triage, questions, artifact review, agent review, releases, moderation, stale content, backups, and owner gates.",
+        "Define responsibilities and escalation.",
+        "Prefer queues and checklists over meetings."
+      ],
+      "acceptance": [
+        "A maintainer can operate Practice without founder-only tribal knowledge.",
+        "Agent assistance is bounded and reviewable.",
+        "Includes failure and recovery procedures."
+      ],
+      "spec": "tasks/specs/L005.md",
+      "status": "todo"
+    },
+    {
+      "id": "L006",
+      "title": "Design the public invitation funnel",
+      "wave": 4,
+      "lane": "operations",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "B001",
+        "B002",
+        "F005"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/INVITE_FUNNEL.md"
+      ],
+      "handoff": "handoffs/L006.md",
+      "objective": "Bridge public discovery into an invite-only Buzz community without creating a fragmented community stack.",
+      "requirements": [
+        "Define social/Git discovery, request or invite link, qualification if any, onboarding, and follow-up.",
+        "Keep public artifacts accessible without membership.",
+        "Include abuse prevention and revoked-invite handling.",
+        "Use Buzz as the hub after entry."
+      ],
+      "acceptance": [
+        "Does not require a custom application.",
+        "Open-source access is never gated behind membership.",
+        "Metrics connect to ops/METRICS.md."
+      ],
+      "spec": "tasks/specs/L006.md",
+      "status": "todo"
+    },
+    {
+      "id": "L007",
+      "title": "Define the weekly operating cadence",
+      "wave": 4,
+      "lane": "operations",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "L005"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/WEEKLY_CADENCE.md"
+      ],
+      "handoff": "handoffs/L007.md",
+      "objective": "Create a sustainable founder-plus-agents cadence that compounds artifacts rather than producing constant channel activity.",
+      "requirements": [
+        "Define intake, build, review, release, Session, and maintenance cycles.",
+        "Separate continuous queues from scheduled review.",
+        "Show which agent prepares each packet and which human approves."
+      ],
+      "acceptance": [
+        "No ceremony without an output.",
+        "Cadence can operate with a small community.",
+        "Includes a low-activity fallback."
+      ],
+      "spec": "tasks/specs/L007.md",
+      "status": "todo"
+    },
+    {
+      "id": "L008",
+      "title": "Create launch checklist and owner review packet",
+      "wave": 4,
+      "lane": "release",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "F009",
+        "B003",
+        "B004",
+        "B005",
+        "B006",
+        "K004",
+        "K005",
+        "K006",
+        "K007",
+        "K008",
+        "K009",
+        "K010",
+        "K011",
+        "K012",
+        "K013",
+        "K014",
+        "L002",
+        "L003",
+        "L004",
+        "L005",
+        "L006",
+        "L007"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "release/LAUNCH_CHECKLIST.md",
+        "release/OWNER_REVIEW.md"
+      ],
+      "handoff": "handoffs/L008.md",
+      "objective": "Assemble a concrete release gate and a compact packet Dakota can review without rereading the entire repository.",
+      "requirements": [
+        "List automated checks, manual Buzz steps, public repository checks, content checks, agent permission checks, and rollback.",
+        "Summarize locked decisions, remaining gates, known Buzz constraints, and deferred work.",
+        "Do not mark an unchecked item complete."
+      ],
+      "acceptance": [
+        "Every required artifact is linked.",
+        "Owner decisions are limited to OWNER_GATES.md or newly evidenced blockers.",
+        "Checklist distinguishes dry run, private beta, and public launch."
+      ],
+      "spec": "tasks/specs/L008.md",
+      "status": "todo"
+    },
+    {
+      "id": "Q001",
+      "title": "Audit current platform and license facts",
+      "wave": 5,
+      "lane": "review",
+      "model_tier": "balanced",
+      "mode": "review",
+      "dependencies": [
+        "F007",
+        "B005",
+        "B006"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md",
+        "research/BUZZ_PLATFORM_SNAPSHOT.md"
+      ],
+      "outputs": [
+        "reviews/PLATFORM_FACT_AUDIT.md"
+      ],
+      "handoff": "handoffs/Q001.md",
+      "objective": "Independently verify every current claim about Buzz and licensing that appears in launch-critical artifacts.",
+      "requirements": [
+        "Map claim to primary source, as-of date, disposition, and required correction.",
+        "Check that excluded Buzz capabilities remain excluded.",
+        "Check license descriptions against canonical sources.",
+        "Do not edit source artifacts."
+      ],
+      "acceptance": [
+        "Every audited claim has a disposition.",
+        "Contradictions are explicit.",
+        "Report separates blocking and non-blocking findings."
+      ],
+      "spec": "tasks/specs/Q001.md",
+      "status": "todo"
+    },
+    {
+      "id": "Q002",
+      "title": "Run adversarial editorial and coherence review",
+      "wave": 5,
+      "lane": "review",
+      "model_tier": "strong",
+      "mode": "review",
+      "dependencies": [
+        "F002",
+        "K004",
+        "K005",
+        "K006",
+        "K007",
+        "K008",
+        "K009",
+        "K010",
+        "K011",
+        "K012",
+        "L001",
+        "L002"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md",
+        "brand/VOICE.md",
+        "brand/LEXICON.md"
+      ],
+      "outputs": [
+        "reviews/EDITORIAL_REVIEW.md"
+      ],
+      "handoff": "handoffs/Q002.md",
+      "objective": "Find contradictions, repetition, generic AI language, audience confusion, and weak operational guidance across the core corpus.",
+      "requirements": [
+        "Review as a skeptical expert and a capable beginner.",
+        "Identify exact files and passages.",
+        "Test consistency with the voice and locked decisions.",
+        "Recommend deletions before additions.",
+        "Do not edit source artifacts."
+      ],
+      "acceptance": [
+        "Findings are ranked by severity.",
+        "Each recommendation is actionable.",
+        "No strategy is invented beyond the founding brief."
+      ],
+      "spec": "tasks/specs/Q002.md",
+      "status": "todo"
+    },
+    {
+      "id": "Q003",
+      "title": "Run a complete onboarding dry run",
+      "wave": 5,
+      "lane": "review",
+      "model_tier": "balanced",
+      "mode": "review",
+      "dependencies": [
+        "B002",
+        "B003",
+        "B004",
+        "B007",
+        "B008",
+        "B009",
+        "B010",
+        "B011",
+        "L006"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "reviews/ONBOARDING_DRY_RUN.md"
+      ],
+      "handoff": "handoffs/Q003.md",
+      "objective": "Simulate a new nontechnical member, a technical builder, and an internal AI lead entering the community and taking a first action.",
+      "requirements": [
+        "Trace public discovery through invitation, Buzz setup, start-here, channel selection, asking, contribution, and follow-up.",
+        "Record ambiguity, dead ends, empty-state problems, and agent escalation failures.",
+        "Do not edit source artifacts."
+      ],
+      "acceptance": [
+        "All three personas complete or fail at explicit steps.",
+        "Every defect includes severity and proposed owner file.",
+        "No imagined Buzz capability is used."
+      ],
+      "spec": "tasks/specs/Q003.md",
+      "status": "todo"
+    },
+    {
+      "id": "Q004",
+      "title": "Run repository integrity and release validation review",
+      "wave": 5,
+      "lane": "review",
+      "model_tier": "code",
+      "mode": "review",
+      "dependencies": [
+        "F009",
+        "L008"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "reviews/REPOSITORY_INTEGRITY.md"
+      ],
+      "handoff": "handoffs/Q004.md",
+      "objective": "Independently check structure, links, schemas, licenses, task state, generated files, and release validation behavior.",
+      "requirements": [
+        "Run normal and release validation.",
+        "Inspect all relative links and referenced files.",
+        "Check for TODOs, placeholders, secrets, duplicate seed markers, and stale task status.",
+        "Do not edit source artifacts."
+      ],
+      "acceptance": [
+        "Include exact commands and outputs.",
+        "Separate script defects from content defects.",
+        "No passing claim without evidence."
+      ],
+      "spec": "tasks/specs/Q004.md",
+      "status": "todo"
+    },
+    {
+      "id": "Q005",
+      "title": "Integrate review findings and prepare final release",
+      "wave": 5,
+      "lane": "integration",
+      "model_tier": "strong",
+      "mode": "integration",
+      "dependencies": [
+        "Q001",
+        "Q002",
+        "Q003",
+        "Q004",
+        "L008"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "release/FINAL_INTEGRATION_REPORT.md"
+      ],
+      "handoff": "handoffs/Q005.md",
+      "objective": "Apply blocking review findings across the repository, reconcile conflicts, run release validation, and create the final integration report.",
+      "requirements": [
+        "May edit any project artifact except locked decisions unless an owner gate is opened.",
+        "Resolve blocking findings and disposition non-blocking findings.",
+        "Run `python3 scripts/validate.py --release`.",
+        "Update release/OWNER_REVIEW.md with final manual actions."
+      ],
+      "acceptance": [
+        "Release validation passes or the report says BLOCKED with exact evidence.",
+        "All review findings have a disposition.",
+        "No owner-only action is falsely marked complete."
+      ],
+      "spec": "tasks/specs/Q005.md",
+      "status": "todo"
+    }
+  ]
+}

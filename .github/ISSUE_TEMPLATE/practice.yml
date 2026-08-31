@@ -1,0 +1,25 @@
+name: Propose a Practice
+description: Propose a reusable, testable method for putting AI to work.
+title: "practice: "
+labels: ["practice", "proposal"]
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: What should a Practitioner be able to accomplish?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context and constraints
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Existing implementation or evidence
+      description: Links, artifacts, observations, or a clearly labeled hypothesis.
+    validations:
+      required: true

@@ -1,0 +1,23 @@
+name: Submit a Practice Story
+description: Document a real implementation and its evidence.
+title: "story: "
+labels: ["story"]
+body:
+  - type: textarea
+    id: before
+    attributes:
+      label: Before
+    validations:
+      required: true
+  - type: textarea
+    id: intervention
+    attributes:
+      label: Intervention
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Result and evidence quality
+    validations:
+      required: true
