@@ -6,7 +6,7 @@ status: draft
 capability: automate
 secondary_capabilities: [learn, use, build, transform]
 audience: [individual-practitioner, engineer, builder, operator, internal-ai-champion, transformation-lead, consultant, executive]
-version: 0.1.0
+version: 0.2.0
 license: CC-BY-4.0
 created: 2026-08-31
 updated: 2026-08-31
@@ -74,85 +74,91 @@ These modules build from Learn through Use, Automate, Build, and Transform. Ever
 - **Technical route:** add a runnable or inspectable implementation, task-level tests, and delivery controls.
 - **Organizational route:** add a bounded pilot, role and decision-right changes, proportional governance, and an operating measurement plan.
 
-Modules 1–4 form a usable **starter path** while the full module set is being authored. A Practitioner can use the worksheets in the curriculum map to produce a checked workflow trial. That is interim evidence, not full Guide completion and not a claim that the workflow is mature.
+Modules 1–4 form a usable **starter path**. All six modules are available, but a
+Practitioner can stop after the starter path with a checked workflow trial.
+That is interim evidence, not full Guide completion and not a claim that the
+workflow is mature.
 
 **Frontier work is separate.** After the core path, an optional Frontier Studio teaches how to frame and test an unsettled technique as a Lab. Frontier material is not a prerequisite, a production recommendation, or established Practice merely because it is included here.
 
 ## Modules
 
-The detailed curriculum contracts—including prerequisites, module capstones, and evidence—are in the [curriculum map](CURRICULUM.md). Planned module and Practice filenames below are intentionally shown as code until those downstream artifacts exist and can be reviewed.
+The detailed curriculum contracts—including prerequisites, module capstones,
+and evidence—are in the [curriculum map](CURRICULUM.md). Each module and
+proposed method is linked below. File availability does not imply tested
+evidence; follow each artifact's maturity label.
 
 ### Module 1 — Foundations
 
 **Purpose:** Advance **Learn** capability by explaining the relevant behavior and limits of an AI-assisted task, then choosing a safe bounded test.
 
-**Practices:** Use the [Practice index](../../practices/README.md) to check for current canonical methods. This module introduces the evaluation and verification concepts later formalized by the planned Verification Gate Practice, `practices/003-verification-gate.md`.
+**Methods:** Use the proposed [Verification Gate](../../practices/003-verification-gate.md) for the acceptance record; it remains `maturity: proposed`.
 
 **Output:** A task-and-risk brief, structured-output specification, and evaluation plan for the chosen task.
 
 **Completion check:** The Practitioner can explain what the system receives, what it may produce, where uncertainty enters, what must remain human-owned, and how an output will be accepted or rejected.
 
-**Planned module:** `01-foundations.md`
+**Module:** [Foundations](01-foundations.md)
 
 ### Module 2 — Effective Use
 
 **Purpose:** Advance **Use** capability by completing and checking one discrete real-work task with deliberate framing, iteration, critique, and source-aware verification.
 
-**Practices:** Use the [Practice index](../../practices/README.md) for current methods. This module applies the planned Verification Gate Practice, `practices/003-verification-gate.md`, once available.
+**Methods:** Apply the proposed [Verification Gate](../../practices/003-verification-gate.md) and preserve its current evidence limits.
 
 **Output:** A baseline record, assisted work artifact, revision history, verification record, and decision about whether AI should remain in the task.
 
 **Completion check:** The Practitioner compares baseline and assisted work using the same criteria, records corrections or rejection, and makes no improvement claim beyond the evidence collected.
 
-**Planned module:** `02-effective-use.md`
+**Module:** [Effective Use](02-effective-use.md)
 
 ### Module 3 — Context Engineering
 
 **Purpose:** Advance **Use** capability by designing context as a maintained system of instructions, approved sources, examples, boundaries, and checks rather than as one long prompt.
 
-**Practices:** Use the [Practice index](../../practices/README.md) until the planned Reusable Context Pack Practice, `practices/001-context-pack.md`, is published and reviewed.
+**Methods:** Apply the proposed [Reusable Context Pack](../../practices/001-context-pack.md); its publication as a candidate does not make it tested.
 
 **Output:** A context pack with source authority, freshness, conflict, privacy, disclosure, and maintenance rules.
 
 **Completion check:** Another reviewer can identify which source controls, detect stale or conflicting material, see what must not be included, and use the pack to reproduce the intended task setup.
 
-**Planned module:** `03-context-engineering.md`
+**Module:** [Context Engineering](03-context-engineering.md)
 
 ### Module 4 — Automation and Agents
 
 **Purpose:** Advance **Automate** capability by turning the recurring task into a reviewable workflow with the smallest justified amount of autonomy.
 
-**Practices:** Use the [Practice index](../../practices/README.md) until the planned Workflow Redesign Practice, `practices/002-workflow-redesign.md`, and Verification Gate Practice, `practices/003-verification-gate.md`, are published and reviewed.
+**Methods:** Apply the proposed [Workflow Redesign](../../practices/002-workflow-redesign.md) and [Verification Gate](../../practices/003-verification-gate.md), retaining their evidence labels.
 
 **Output:** A workflow map, step classification, permissions table, test set, approval rules, failure paths, rollback, and run record.
 
 **Completion check:** The workflow has an owner, observable state, representative tests, a human approval point where consequences require it, and a recovery path. The Practitioner can explain why an agent is or is not necessary.
 
-**Planned module:** `04-automation-agents.md`
+**Module:** [Automation and Agents](04-automation-agents.md)
 
 ### Module 5 — Agentic Engineering
 
 **Purpose:** Advance **Build** capability by turning a bounded system change into an inspectable specification, implementation or implementation brief, test record, independent review, and controlled handoff.
 
-**Practices:** Use the [Practice index](../../practices/README.md) for current methods. The planned Verification Gate Practice, `practices/003-verification-gate.md`, is the acceptance boundary for the module.
+**Methods:** The proposed [Verification Gate](../../practices/003-verification-gate.md) is the acceptance boundary for the module.
 
 **Output:** Everyone produces a system boundary, acceptance criteria, test plan, file or component ownership, and handoff. Technical-route Practitioners also produce a runnable or inspectable change with test and delivery evidence.
 
 **Completion check:** A reviewer can trace each completion claim to a diff, test, inspection, source, or explicit limitation; no unverified output is accepted because an agent reported success.
 
-**Planned module:** `05-agentic-engineering.md`
+**Module:** [Agentic Engineering](05-agentic-engineering.md)
 
 ### Module 6 — Organizational AI
 
 **Purpose:** Advance **Transform** capability by connecting the workflow to an operating outcome, roles, decision rights, knowledge, governance, enablement, and measurement.
 
-**Practices:** Use the [Practice index](../../practices/README.md) for current methods. Apply the planned Workflow Redesign and Verification Gate Practices when available; do not treat tool deployment or activity as transformation evidence.
+**Methods:** Apply the proposed [Workflow Redesign](../../practices/002-workflow-redesign.md) and [Verification Gate](../../practices/003-verification-gate.md); do not treat tool deployment or activity as transformation evidence.
 
 **Output:** An opportunity map and change brief. Organizational-route Practitioners add a bounded pilot operating model with owners, controls, enablement, measures, review cadence, and stop or rollback conditions.
 
 **Completion check:** The Practitioner distinguishes baseline, observed operating change, adoption signal, capability evidence, and hypothesis. Any claim about quality, time, cost, risk, or business outcome is supported by a stated local measure or omitted.
 
-**Planned module:** `06-organizational-ai.md`
+**Module:** [Organizational AI](06-organizational-ai.md)
 
 ### Optional studio — Frontier Work
 
@@ -210,4 +216,5 @@ Review this Guide when a referenced Practice changes materially, a module change
 
 ## Changelog
 
+- **2026-08-31 — 0.2.0 (draft):** Linked all available modules and proposed methods directly, removed stale construction-state language, and kept evidence maturity distinct from file availability.
 - **2026-08-31 — 0.1.0 (draft):** Established the shared six-module spine, applied/technical/organizational route overlays, starter path, evidence gate, route-specific capstones, and separately bounded Frontier Studio.

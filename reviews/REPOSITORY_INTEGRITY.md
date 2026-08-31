@@ -85,7 +85,8 @@ needs clarification, `tasks/specs/Q005.md`/release documentation.
 passes from the primary repository root.
 
 **Evidence:** all four output-template examples use
-`[canonical artifact](<link>)`. A source-commit scan checked 245 tracked files,
+a canonical-artifact Markdown link whose target is the literal token `<link>`.
+A source-commit scan checked 245 tracked files,
 283 inline Markdown-link matches, 13 external targets, and 270 relative target
 occurrences across tracked Markdown and YAML; exactly these four relative
 occurrences were missing. The release-public Markdown subset, which omits the
@@ -138,10 +139,12 @@ values from ordinary explanatory prose.
 **Evidence:** the two reported "Release placeholder" failures match the word
 `placeholder` in valid instructions: replace bracketed values before publishing,
 and use a category or placeholder to protect a participant's real details.
-They are false positives, not unfinished content. Conversely, a targeted scan
-found 25 actual bracketed publication-token occurrences in
+They are false positives, not unfinished content. A Q005 correction reran the
+scan with optional `@`/`#` prefixes and found 26 actual bracketed
+publication-token occurrences in
 `content/launch/SOCIAL_KIT.md`, including repository, Buzz, channel, handle,
-issue, and contribution destinations; the release regex does not detect them.
+issue, and contribution destinations; the release regex reviewed by Q004 did
+not detect them.
 Q003 already records these tokens as a public-promotion blocker, and the launch
 packet keeps the relevant owner gates open.
 
@@ -245,7 +248,7 @@ does not undermine clean-checkout reproducibility. Owner paths:
 | `Q004, Q005` incomplete in primary state | Expected pre-integration state | Do not mark them done early. The Q005 circular ordering still requires RI-01 correction. |
 | `release/FINAL_INTEGRATION_REPORT.md` missing | Expected Q005-owned final artifact | Q005 must create it, then validate the exact integrated version. |
 | Four `RELEASE_EDITOR.md -> <link>` errors | Actual candidate content defect | Correct under RI-02; normal CI cannot pass otherwise. |
-| `SOCIAL_KIT.md` placeholder match | Validator false positive on prose; 25 real publication tokens remain | Correct RI-04 and keep public promotion blocked until human substitution/click testing. |
+| `SOCIAL_KIT.md` placeholder match | Validator false positive on prose; corrected grammar finds 26 real publication tokens | Correct RI-04 and keep public promotion blocked until human substitution/click testing. |
 | `FIRST_PRACTICE_SESSION.md` placeholder match | Validator false positive on privacy-preserving prose | Correct the check, not the safe instruction. |
 
 ## Exact normal and release validation evidence
@@ -350,7 +353,7 @@ Validation failed:
 | Licenses and attribution | Dual-license policy is present and internally consistent | `LICENSE-CODE` contains the Apache License 2.0 text; `LICENSE-CONTENT.md`, `LICENSES.md`, `NOTICE`, `community/ATTRIBUTION.md`, and all six artifact metadata records consistently assign Apache-2.0 to code and CC BY 4.0 to content. Q001 separately traced these terms to canonical sources as of 2026-08-31. | **PASS** for repository consistency and presence. Final license confirmation remains an open human owner gate. |
 | Configured/generated files | Tracked configs parse; scripts have basic syntax integrity | 2 JSON files and 11 YAML files parsed; 4 Python files parsed as syntax trees; `bash -n scripts/init.sh scripts/doctor.sh` produced no output. Tracked modes make the two shell entrypoints executable. | **PASS** for parsing, syntax, and modes. No hosted Buzz apply or GitHub Actions execution was performed. |
 | Buzz config and seed identity | Twelve streams, all referenced artifacts, one unique marker per seed | Normal validator and dry run accepted 12 configured stream channels. Direct scan: 12 seed files, 12 markers, no file with other than one marker, no duplicate marker values. Dry run emitted 60 ensure/set/seed-if-missing actions and no delete/archive/membership/workflow action. | **PASS** for repository configuration only; no hosted state is claimed. |
-| TODO/TBD/placeholders | No unfinished public scaffold is misclassified | No `TODO`, `TBD`, or `LOREM IPSUM` token in public Markdown. Two prose `placeholder` matches are false positives. Social kit contains 25 actual publication tokens; template-style examples also occur in agent profiles and templates. | **FAIL** for release-validator accuracy; **HOLD** for publishing social copy; no generic repository-template failure. |
+| TODO/TBD/placeholders | No unfinished public scaffold is misclassified | No `TODO`, `TBD`, or `LOREM IPSUM` token in public Markdown. Two prose `placeholder` matches are false positives. The corrected optional-prefix grammar finds 26 actual publication tokens in the social kit; template-style examples also occur in agent profiles and templates. | **FAIL** for release-validator accuracy; **HOLD** for publishing social copy; no generic repository-template failure. |
 | Secret/credential patterns | No committed credential or private key | Known-format scan found no AWS/GitHub/OpenAI/Slack token or PEM private-key header. Assignment heuristic found only documented `BUZZ_PRIVATE_KEY='local-identity-key'` in `buzz/BOOTSTRAP_RUNBOOK.md`; it is an explicit example value. `.env.example` leaves secret fields empty, and `.env` is ignored. | **PASS** for the bounded current-tree pattern scan. This is not proof against every possible secret format or Git history. |
 | Committed-candidate whitespace | No whitespace errors in the integrated range or candidate commit | `git diff --check b02c696e020796b890ecb9ae691893b66dae4291..0ec7ad9e6ad1b152a68e2b7f53fa12dbcecf7ccf` and `git show --check --oneline 0ec7ad9e6ad1b152a68e2b7f53fa12dbcecf7ccf` produced no output. | **PASS** for that exact pre-review candidate. Final Q004 and Q005 commits require their own checks. |
 | Existing independent review gates | Blocking findings remain visible | `reviews/EDITORIAL_REVIEW.md` says not ready for publication; `reviews/ONBOARDING_DRY_RUN.md` says revision needed before public invitation promotion; L008 keeps every owner gate and three operating holds open. | **FAIL/HOLD** for public launch. Q004 does not re-adjudicate or silently clear those owners' findings. |
@@ -841,7 +844,7 @@ Publication-token command:
         "docs/", "community/", "guides/", "practices/", "labs/",
         "stories/", "content/", "ops/", "release/", "brand/"
     )
-    token_re = re.compile(r"\[[#A-Z][#A-Z0-9_ -]*\](?!\()")
+    token_re = re.compile(r"\[[@#]?[A-Z][A-Z0-9_ -]*\](?!\()")
     tokens = collections.Counter()
     for path in files:
         if not path.endswith(".md") or not path.startswith(roots):
@@ -858,10 +861,11 @@ Publication-token command:
 
 Output:
 
-    publication_token_occurrences=26 files={'content/launch/SOCIAL_KIT.md': 25, 'practices/001-context-pack.md': 1}
+    publication_token_occurrences=27 files={'content/launch/SOCIAL_KIT.md': 26, 'practices/001-context-pack.md': 1}
 
-The social publication hold covers its 25 occurrences. The other occurrence is
-the date token in the context-pack record template, not a social destination.
+The social publication hold covers its 26 occurrences. The other raw occurrence
+is the fenced date example in the context-pack record template; corrected
+release validation strips code examples before applying the token rule.
 
 Known-format secret command:
 

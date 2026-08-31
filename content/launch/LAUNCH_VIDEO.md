@@ -57,9 +57,9 @@ Do not stage a fabricated failure, result, metric, comment, or community interac
 | 0:34–0:48 | Show a simple workflow map: draft → deterministic check → human review → accept/revise. Mark the approval point before publication. | “Then I design the path around the consequence. The system can draft. Checks can catch defined failures. A person still owns the decision to publish.” | `Workflow + owner` |
 | 0:48–1:05 | Split view: agent completion statement on one side, repository diff on the other. Inspect changed lines and follow one claim to its source. | “A completion message is a claim. The diff, the source, and the test record are evidence.” Keyboard and mouse sounds come forward. | `Claim → evidence` |
 | 1:05–1:18 | Run the real validator. Then show the human checklist and make or record one genuine correction or limitation if present. | “Passing a check matters. It also does not answer every question. Review has to match the risk, and uncertainty stays in the record.” | `Verify` |
-| 1:18–1:33 | Pull back from the single file to the open Guide and the three canonical Practices in Git. Show visible version history or diff view. | “Practice makes these methods open: context you can reuse, workflows you can examine, and verification another Practitioner can challenge and improve.” | `Open artifacts in Git` |
+| 1:18–1:33 | Pull back from the single file to the open Guide and three proposed methods in Git. Show their visible evidence labels and version history or diff view. | “Practice makes these proposed methods open: context you can inspect, workflows you can examine, and verification another Practitioner can challenge and improve.” | `Proposed methods in Git` |
 | 1:33–1:45 | Show Buzz `start-here`, then a prepared introduction that names a role, one non-sensitive task, a capability outcome, and a first small action. Do not imply the post came from another member. | “Buzz is where humans and agents coordinate around the work. Git is where the durable result remains available to inspect and fork.” | `Coordinate in Buzz` / `Preserve in Git` |
-| 1:45–1:55 | Dakota selects one canonical Practice in Git, then moves to the prepared `start-here` post. End card carries the fixed positioning. | “Choose one real task. Inspect one open method. Bring back what happened.” | `Practice`<br>`The open community for AI practitioners.` |
+| 1:45–1:55 | Dakota selects one proposed method in Git, then moves to the prepared `start-here` post. End card carries the fixed positioning. | “Choose one real task. Inspect one open method. Bring back what happened.” | `Practice`<br>`The open community for AI practitioners.` |
 
 ## Capture plan
 
@@ -74,9 +74,9 @@ Do not stage a fabricated failure, result, metric, comment, or community interac
   - the real validation command and result;
   - a human review note, correction, or limitation;
   - [The AI-Native Practitioner Guide](../../guides/ai-native-practitioner/README.md);
-  - [Practice 001: Reusable Context Pack](../../practices/001-context-pack.md);
-  - [Practice 002: Workflow Redesign](../../practices/002-workflow-redesign.md);
-  - [Practice 003: Agent Verification Gate](../../practices/003-verification-gate.md); and
+  - [Method candidate 001: Reusable Context Pack](../../practices/001-context-pack.md);
+  - [Method candidate 002: Workflow Redesign](../../practices/002-workflow-redesign.md);
+  - [Method candidate 003: Agent Verification Gate](../../practices/003-verification-gate.md); and
   - the [`start-here` orientation for Buzz](../../buzz/canvases/start-here.md).
 - Close shots of writing the acceptance criteria, marking the approval boundary, and comparing the output with the source.
 - One wide shot that shows the builder moving between the task, terminal, and notes.
@@ -105,4 +105,4 @@ Keep the card on screen long enough to read and provide a scannable repository l
 
 Do not add secondary buttons, newsletter signup, follower request, or “learn more” prompt.
 
-> **Choose one non-sensitive task, inspect the relevant canonical Practice in Git, and post your first action or result in [`start-here` on Buzz](../../buzz/canvases/start-here.md).**
+> **Choose one non-sensitive task, inspect the relevant proposed method in Git, and post your first action or result in [`start-here` on Buzz](../../buzz/canvases/start-here.md).**

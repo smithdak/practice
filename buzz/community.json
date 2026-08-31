@@ -32,7 +32,7 @@
     {
       "name": "announcements",
       "visibility": "open",
-      "topic": "Canonical Practice updates",
+      "topic": "Method trials and Practice updates",
       "purpose": "Give the community one canonical, low-volume place for releases, Sessions, and major decisions.",
       "canvas": "buzz/canvases/announcements.md",
       "seed": "buzz/seeds/announcements.md",

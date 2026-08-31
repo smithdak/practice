@@ -90,7 +90,7 @@ This loop deliberately avoids scheduled workflows, automated forum posts, and ac
 
 | Situation | Do this | Do not do this |
 |---|---|---|
-| No invitation or a failed invitation | Contact the issuer or another authorized human through the existing public contact path. | Create a second identity or ask an agent to bypass access controls. |
+| No invitation or a failed invitation | Contact the issuer if known. If no issuer or tested human-owned request route is available, Buzz entry is paused; use the public Git contribution path or wait until Practice publishes a verified route. | Invent a contact route, expose access details in public, create a second identity, or ask an agent to bypass access controls. |
 | Unsure which capability applies | Use the assessment; if the outcome is still unclear, post the smallest real question in `start-here` or `ask-practice`. | Choose a route based on seniority, employer, or a preferred tool. |
 | Only confidential work is available | Use a truthful sanitized description or a clearly labeled synthetic example. | Paste source documents, credentials, customer data, or internal details into Buzz. |
 | No prior AI experience | Start with Learn and name one task, constraint, and check. | Assume a technical background is required. |

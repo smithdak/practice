@@ -336,4 +336,4 @@ All routes complete the capstone. Add the extension that improves the evidence n
 
 ## Next module
 
-Continue to the planned Module 3, Context Engineering, only after this record shows a bounded task, a controlled context packet, a reviewable output, and an honest decision about continued use. That module turns the useful parts of this one-off run into a maintained context system; it does not convert a passing run into permission for delegated execution.
+Continue to [Module 3, Context Engineering](03-context-engineering.md), only after this record shows a bounded task, a controlled context packet, a reviewable output, and an honest decision about continued use. That module turns the useful parts of this one-off run into a maintained context system; it does not convert a passing run into permission for delegated execution.

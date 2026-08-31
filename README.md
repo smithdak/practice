@@ -32,7 +32,11 @@ python3 scripts/taskctl.py prompt F001 --output .worktrees/F001/TASK_PROMPT.md
 python3 scripts/taskctl.py integrate F001
 ```
 
-Every task owns a non-overlapping file set, has explicit dependencies, and must produce a committed handoff. The deterministic task controller prevents agents from editing the same files concurrently.
+Every ordinary task owns a non-overlapping file set, has explicit dependencies,
+and must produce a committed handoff. The deterministic task controller rejects
+ordinary task branches that change paths outside that ownership. The final
+integration task has an explicit narrow exception so it can apply reviewed
+corrections across artifacts.
 
 ## Core documents
 
@@ -56,5 +60,14 @@ The first release is complete when Practice has:
 5. Five scoped community-agent profiles, with human-reviewed permissions.
 6. A launch narrative, first ten content briefs, invite funnel, and first Practice Session runbook.
 7. Independent fact, editorial, onboarding, and repository-integrity reviews.
+
+Construction status in `.swarm/state.json` is local, ignored operational state.
+It is useful to the task controller but is not release evidence and is not
+reproducible from a checkout. Release validation derives completion from the
+committed manifest-owned outputs and `COMPLETE` handoffs.
+
+The three current method files are proposed candidates with
+`evidence_quality: none`, so criterion 4 and public-launch completion remain
+unmet until recorded trials and human review support promotion.
 
 No custom SaaS, course platform, certification program, or large marketing site belongs in this build.

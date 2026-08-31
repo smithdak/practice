@@ -214,64 +214,16 @@ For example, a **hypothetical planned trial** may compare a pack containing a cu
 
 **Checkable outcome:** the record identifies one cause to test, one controlled change, and a maintenance decision. It does not treat a better-sounding answer as diagnosis.
 
-## Capstone — reusable context-pack exercise
+## Capstone — apply the proposed context-pack method
 
-Complete this exercise for one authorized recurring task. Until the planned [Reusable Context Pack Practice](../../practices/001-context-pack.md) is published and reviewed, this is a scaffold that implements its intended discipline, not a substitute for that Practice.
-
-```text
-# Context pack
-
-## Purpose and accountability
-Recurring task and intended outcome:
-Accountable owner, final reviewer, and authorized users:
-Human-owned decision, prohibited actions, and stop condition:
-Pack version and last review:
-
-## Stable instructions
-Task method and output contract:
-Required fields, source-support rule, and uncertainty labels:
-Non-goals and prohibited claims:
-
-## Source register and hierarchy
-Source ID, purpose, authority rank, owner, version/date, freshness expectation,
-access boundary, and conflict response for every approved source:
-
-## Definitions, examples, and skill
-Glossary:
-Skill trigger, inputs, steps, output, checks, and human boundary:
-Example ID, origin, lesson, scope, and limits:
-
-## State, memory, and privacy boundary
-What is task input, temporary working state, and retained memory:
-Retention, correction/removal, and discard rules:
-Minimum necessary data and prohibited categories:
-
-## Retrieval and tools
-Progressive-disclosure layers, selection conditions, and excluded material:
-For each tool: purpose, input, output, permissions, errors, and non-inferences:
-
-## Verification and failure handling
-Expected output and verification method:
-Required checks for sources, calculations, analysis, or procedures:
-Known failure cases, conflict/staleness response, and escalation path:
-
-## Maintenance record
-Component, change trigger, owner, review date or event, and decision:
-keep / revise / replace / remove
-```
-
-### Capstone review checklist
-
-- [ ] The task, owner, reviewer, output, non-goals, and human boundary are explicit.
-- [ ] Every component has a job, and stable instructions are separate from current evidence and temporary state.
-- [ ] Every source has authority, freshness, permitted use, and a conflict response.
-- [ ] Definitions, examples, and skills are distinguishable from evidence.
-- [ ] Memory has a justified scope and correction/removal rule; temporary state has a discard rule.
-- [ ] Retrieval follows a progressive-disclosure rule and preserves why each item was selected.
-- [ ] Tools, if any, have minimum inputs, permissions, error handling, and non-inferences.
-- [ ] Privacy, security, and resource boundaries exclude inappropriate material and unnecessary volume.
-- [ ] A failure or reproducible planned trial tests a missing, stale, conflicting, excessive, unclear, unsafe, or weakly checked context condition.
-- [ ] Each unstable component has a keep, revise, replace, or remove decision and a named maintenance owner.
+Complete the proposed [Reusable Context Pack method](../../practices/001-context-pack.md)
+for one authorized recurring task. Use that artifact's implementation record
+and checklist as the single source of truth. For this module, add only the
+context-engineering evidence introduced above: source hierarchy, progressive
+disclosure, state/memory boundary, tool non-inferences, and one diagnosed
+context failure. Record the resulting pack and maintenance decision in the
+shared Guide dossier. This trial does not promote the candidate to a tested
+Practice.
 
 ## Route extensions
 
@@ -283,4 +235,4 @@ All routes complete the capstone. Add the extension that best matches the work:
 
 ## Next module
 
-Continue to the planned Module 4, Automation and Agents, only after the context pack has a bounded task, maintained sources, clear tool and data permissions, a human acceptance point, and a tested failure response. A reusable pack improves repeatability; it does not by itself authorize delegated execution or an external effect.
+Continue to [Module 4, Automation and Agents](04-automation-agents.md), only after the context pack has a bounded task, maintained sources, clear tool and data permissions, a human acceptance point, and a tested failure response. A reusable pack improves repeatability; it does not by itself authorize delegated execution or an external effect.

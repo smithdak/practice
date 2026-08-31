@@ -10,6 +10,14 @@ from pathlib import Path
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
 SEED_RE = re.compile(r"<!--\s*practice-seed:([^\s]+)\s*-->")
+HANDOFF_STATUS_RE = re.compile(r"^## Status\s*\n+\s*(COMPLETE|BLOCKED)\s*$", re.MULTILINE)
+UNFINISHED_RE = re.compile(r"\b(TODO|TBD|LOREM IPSUM)\b", re.IGNORECASE)
+PUBLICATION_TOKEN_RE = re.compile(r"\[[@#]?[A-Z][A-Z0-9_ -]*\](?!\()")
+FENCED_CODE_RE = re.compile(r"```.*?```", re.DOTALL)
+INLINE_CODE_RE = re.compile(r"`[^`\n]*`")
+REUSABLE_PUBLICATION_TEMPLATES = {
+    "content/launch/SOCIAL_KIT.md",
+}
 
 
 def fail(errors: list[str], msg: str) -> None:
@@ -97,7 +105,8 @@ def validate_buzz(root: Path, errors: list[str]) -> None:
 def validate_links(root: Path, errors: list[str]) -> None:
     ignored = {'.worktrees', '.swarm', '.git'}
     for p in root.rglob("*.md"):
-        if any(part in ignored for part in p.parts):
+        relative = p.relative_to(root)
+        if any(part in ignored for part in relative.parts):
             continue
         text = p.read_text(encoding="utf-8", errors="replace")
         for target in LINK_RE.findall(text):
@@ -111,7 +120,7 @@ def validate_links(root: Path, errors: list[str]) -> None:
                 fail(errors, f"Link escapes repository: {p} -> {target}")
                 continue
             if not candidate.exists():
-                fail(errors, f"Broken relative link: {p.relative_to(root)} -> {target}")
+                fail(errors, f"Broken relative link: {relative} -> {target}")
 
 
 def validate_task(root: Path, manifest: dict, task_id: str, errors: list[str]) -> None:
@@ -128,15 +137,38 @@ def validate_task(root: Path, manifest: dict, task_id: str, errors: list[str]) -
             fail(errors, f"Task {task_id} empty output {rel}")
 
 
+def validate_committed_task_evidence(root: Path, manifest: dict, errors: list[str]) -> None:
+    """Validate release completion from files reproducible in a clean checkout."""
+    for task in manifest.get("tasks", []):
+        task_id = task.get("id", "<unknown>")
+        for rel in task.get("outputs", []) + [task.get("handoff")]:
+            if not rel:
+                fail(errors, f"Task {task_id} has an empty release evidence path")
+                continue
+            path = root / rel
+            if not path.is_file():
+                fail(errors, f"Release task {task_id} missing committed evidence: {rel}")
+            elif path.stat().st_size == 0:
+                fail(errors, f"Release task {task_id} has empty committed evidence: {rel}")
+        handoff_path = root / task.get("handoff", "")
+        if handoff_path.is_file():
+            match = HANDOFF_STATUS_RE.search(handoff_path.read_text(encoding="utf-8", errors="replace"))
+            if not match:
+                fail(errors, f"Release task {task_id} handoff has no recognized Status: {task.get('handoff')}")
+            elif match.group(1) != "COMPLETE":
+                fail(errors, f"Release task {task_id} handoff is {match.group(1)}: {task.get('handoff')}")
+
+
+def validate_publication_tokens(relative: str, text: str, errors: list[str]) -> None:
+    visible_prose = INLINE_CODE_RE.sub("", FENCED_CODE_RE.sub("", text))
+    if UNFINISHED_RE.search(visible_prose):
+        fail(errors, f"Release unfinished token found in {relative}")
+    if relative not in REUSABLE_PUBLICATION_TEMPLATES and PUBLICATION_TOKEN_RE.search(visible_prose):
+        fail(errors, f"Release publication token found outside an approved template: {relative}")
+
+
 def validate_release(root: Path, manifest: dict, errors: list[str]) -> None:
-    state_path = root / '.swarm' / 'state.json'
-    if not state_path.exists():
-        fail(errors, 'Release validation requires .swarm/state.json')
-    else:
-        state = load_json(state_path, errors) or {}
-        incomplete = [tid for tid, rec in state.get('tasks', {}).items() if rec.get('status') != 'done']
-        if incomplete:
-            fail(errors, f"Release has incomplete tasks: {', '.join(incomplete)}")
+    validate_committed_task_evidence(root, manifest, errors)
     required = [
         'docs/founding/MANIFESTO.md', 'CONTRIBUTING.md', 'CODE_OF_CONDUCT.md',
         'community/GOVERNANCE.md', 'community/ONBOARDING.md',
@@ -148,7 +180,6 @@ def validate_release(root: Path, manifest: dict, errors: list[str]) -> None:
     for rel in required:
         if not (root / rel).exists():
             fail(errors, f"Release missing required artifact: {rel}")
-    placeholder_re = re.compile(r"\b(TODO|TBD|PLACEHOLDER|LOREM IPSUM)\b", re.I)
     public_roots = ['docs','community','guides','practices','labs','stories','content','ops','release','brand']
     for base in public_roots:
         d = root / base
@@ -158,8 +189,8 @@ def validate_release(root: Path, manifest: dict, errors: list[str]) -> None:
             if p.name.startswith('SAMPLE_'):
                 continue
             text = p.read_text(encoding='utf-8', errors='replace')
-            if placeholder_re.search(text):
-                fail(errors, f"Release placeholder found in {p.relative_to(root)}")
+            relative = p.relative_to(root).as_posix()
+            validate_publication_tokens(relative, text, errors)
 
 
 def main() -> None:

@@ -16,13 +16,14 @@ Our mission is to make practical AI capability open and accessible to everyone. 
 
 Information matters, but knowing about a capability is different from having it. Capability grows when knowledge is applied to real work and the result is examined.
 
-Our progression is simple:
+Our contribution cycle is simple. It describes how work is examined and shared;
+it is distinct from the capability ladder below.
 
 > Learn → Apply → Measure → Share → Improve
 
 Learn enough to act deliberately. Apply what you learned to a real problem. Measure what changed, including what failed. Share the method and evidence. Improve it with what others discover.
 
-This cycle can begin at any level. A Practitioner might learn how context changes an answer, use AI in a daily task, automate a repeatable workflow, build an agent or tool, or transform how a team operates. These stages—Learn, Use, Automate, Build, and Transform—map capabilities, not status. Someone may be advanced in one domain and a beginner in another. That is normal. Practice rewards honest starting points and demonstrated progress.
+This contribution cycle can begin at any capability. A Practitioner might learn how context changes an answer, use AI in a daily task, automate a repeatable workflow, build an agent or tool, or transform how a team operates. The capability stages—Learn, Use, Automate, Build, and Transform—map outcomes, not status. Someone may be advanced in one domain and a beginner in another. That is normal. Practice rewards honest starting points and demonstrated progress.
 
 Our ethos names the commitment:
 

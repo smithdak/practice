@@ -2,7 +2,7 @@
 
 An organization has not transformed work because people opened an AI tool, attended a session, or reported that they liked an output. Change begins with a business or service outcome, makes the affected work and decisions visible, and tests a bounded new way of operating under accountable human ownership.
 
-This is Module 6 of [The AI-Native Practitioner](README.md). It builds on the workflow evidence from [Module 4](04-automation-agents.md) and an available system or implementation brief. It is model-, provider-, and framework-agnostic. Use the [Practice index](../../practices/README.md) for current methods; the curriculum's named workflow and verification Practices may be applied when published, but this module does not assume them.
+This is Module 6 of [The AI-Native Practitioner](README.md). It builds on the workflow evidence from [Module 4](04-automation-agents.md) and an available system or implementation brief. It is model-, provider-, and framework-agnostic. The proposed [Workflow Redesign](../../practices/002-workflow-redesign.md) and [Verification Gate](../../practices/003-verification-gate.md) methods are available for trial; this module preserves their evidence limits.
 
 ## What you will produce
 
@@ -93,7 +93,7 @@ Do not call a role “responsible for AI” when it only receives an output. Nam
 
 ## Treat knowledge as an operating asset
 
-AI-assisted work often exposes knowledge that was implicit: which source controls, how an exception is interpreted, where a definition lives, and who may update it. A **knowledge architecture** is the practical arrangement of those sources, rules, ownership, access boundaries, and maintenance decisions. It is not a large repository by default.
+A human-reviewed workflow that uses model output often exposes knowledge that was implicit: which source controls, how an exception is interpreted, where a definition lives, and who may update it. A **knowledge architecture** is the practical arrangement of those sources, rules, ownership, access boundaries, and maintenance decisions. It is not a large repository by default.
 
 Begin with the knowledge needed for the selected workflow only. Separate authoritative sources from examples, temporary case inputs, generated drafts, and reviewer decisions. More material is not automatically better; irrelevant, stale, conflicting, or unauthorized material makes review harder.
 

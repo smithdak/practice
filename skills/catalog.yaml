@@ -53,7 +53,7 @@ skills:
     sources:
       - kind: practice
         path: practices/003-verification-gate.md
-        version: 0.1.0
+        version: 0.2.0
     maturity: experimental
     supported_environments: [agent-skills-compatible, codex-repository]
     required_tools: []

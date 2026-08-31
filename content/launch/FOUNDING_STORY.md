@@ -64,8 +64,8 @@ The standard for belonging is not a title, a tool choice, or how advanced someon
 
 ## Start with one real task
 
-The first open artifacts are deliberately practical. [The AI-Native Practitioner Guide](../../guides/ai-native-practitioner/README.md) provides a path from a bounded task to a documented, human-reviewed workflow. The first three canonical methods cover the recurring foundations: [building a reusable context pack](../../practices/001-context-pack.md), [redesigning a workflow before automating it](../../practices/002-workflow-redesign.md), and [verifying an agent's output before accepting or shipping it](../../practices/003-verification-gate.md).
+The first open artifacts are deliberately practical. [The AI-Native Practitioner Guide](../../guides/ai-native-practitioner/README.md) provides a path from a bounded task to a documented, human-reviewed workflow. Three proposed method candidates cover recurring foundations: [building a reusable context pack](../../practices/001-context-pack.md), [redesigning a workflow before automating it](../../practices/002-workflow-redesign.md), and [verifying an agent's output before accepting or shipping it](../../practices/003-verification-gate.md). They have not yet earned tested-Practice status; each records `maturity: proposed` and `evidence_quality: none`.
 
-They are starting points, not declarations that the work is finished. Their value will come from use: reproductions, corrections, alternative implementations, and honest failure reports.
+They are starting points for trial, not declarations that the work is tested or finished. Their evidence can grow through reproductions, corrections, alternative implementations, and honest failure reports.
 
 **Choose one non-sensitive task you know, inspect the relevant open artifact in Git, then bring your first action or result to [`start-here` in Buzz](../../buzz/canvases/start-here.md) so the next Practitioner can build on it.**
