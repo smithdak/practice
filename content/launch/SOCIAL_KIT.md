@@ -1,6 +1,6 @@
 # Practice social launch kit
 
-Reusable launch copy for **Practice — the open community for AI practitioners.**
+Reusable launch copy for **Practice — The open community for AI practitioners.**
 This kit keeps one claim set across channels while adapting length, pacing, and
 format. Replace every bracketed placeholder before publishing.
 
@@ -25,7 +25,7 @@ documented.
 
 ### X / Bluesky
 
-**Practice — the open community for AI practitioners.** Open methods for making
+**Practice — The open community for AI practitioners.** Open methods for making
 AI useful in real work: context, workflow design, verification, and human
 review. Artifacts in Git; coordination in Buzz. Start here: [REPOSITORY_URL]
 
@@ -237,7 +237,7 @@ guidance at [CONTRIBUTING_URL].
 - Keep the CTA to one concrete first action.
 - Remove any wording that implies traction, urgency, safety, reliability, or an
   outcome not supported by a linked artifact.
-- Preserve the positioning line exactly: **The open community for AI
+- Preserve the positioning line exactly: **Practice — The open community for AI
   practitioners.**
 
 ## Deferred opportunities
