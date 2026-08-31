@@ -20,8 +20,10 @@ channel, message, or other hosted change. It does not clear an owner gate.
 
 ### Automated and repository checks
 
-- [ ] Record the proposed release commit from a clean checkout and run
-  `git diff --check` against it.
+- [ ] Record the immutable baseline and candidate commit IDs in the release
+  record, then run `git diff --check <baseline>..<candidate>` and
+  `git show --check <candidate>`. Do not use a clean-worktree check as evidence
+  that the committed candidate has no whitespace errors.
 - [ ] After final integration supplies all release artifacts, run
   `python3 scripts/validate.py --release`; retain the complete result. Task
   validation is not a substitute for release validation.
@@ -39,6 +41,8 @@ channel, message, or other hosted change. It does not clear an owner gate.
   [Code of Conduct](../CODE_OF_CONDUCT.md), [governance](../community/GOVERNANCE.md),
   [onboarding](../community/ONBOARDING.md), [license inventory](../LICENSES.md),
   [code license](../LICENSE-CODE), and [content license](../LICENSE-CONTENT.md).
+- [ ] Confirm the durable contribution intake routes resolve: [Lab issue form](../.github/ISSUE_TEMPLATE/lab.yml)
+  and [Project issue form](../.github/ISSUE_TEMPLATE/project.yml).
 
 ### Content and claim checks
 
@@ -49,7 +53,8 @@ channel, message, or other hosted change. It does not clear an owner gate.
   [verification gate](../practices/003-verification-gate.md). Do not imply
   they have measured results or general reliability.
 - [ ] Review the proposed [Lab](../labs/001-cheap-model-bounded-task.md),
-  [Lab template](../templates/LAB.md), [Story template](../templates/STORY.md),
+  [Lab template](../templates/LAB.md), [Lab schema](../docs/schemas/LAB_SCHEMA.md),
+  [Story template](../templates/STORY.md), [Story schema](../docs/schemas/STORY_SCHEMA.md),
   and [hypothetical Story sample](../stories/SAMPLE_HYPOTHETICAL.md) for
   explicit evidence status and safe sharing.
 - [ ] Review [first-ten briefs](../content/launch/FIRST_10.md),
@@ -101,8 +106,9 @@ expectation of automated support.
   participation channels have intended open visibility; canvases and one seed
   message are present.
 - [ ] If a seed may be duplicated, stop repeated applies and inspect recent
-  message history manually. The duplicate check only sees the latest 100
-  messages.
+  message history manually. The duplicate check sees up to 100 messages
+  returned by `buzz messages get`; it does not establish message order or
+  complete history coverage.
 - [ ] Confirm a human can use the private `maintainers` queue for a
   non-sensitive `RELEASE` item under the
   [maintainer runbook](../ops/MAINTAINER_RUNBOOK.md).
@@ -111,6 +117,12 @@ expectation of automated support.
 
 - [ ] Invite a small, known group through the human-owned hosted flow. Do not
   publish or reuse a general invitation link.
+- [ ] Confirm the responsible humans know the authorized inviters, private
+  intake ledger, and escalation owner outside Buzz. Do not publish these
+  operational details or turn them into an agent-managed access workflow.
+- [ ] Verify the current hosted invitation and revocation controls before
+  relying on them, or record the official-support fallback for an unresolved
+  control. Do not infer these controls from an earlier hosted setup.
 - [ ] Test orientation: a member joins, reads
   [onboarding](../community/ONBOARDING.md), posts the bounded `start-here`
   introduction, and finds the appropriate next channel.
@@ -118,6 +130,10 @@ expectation of automated support.
   the canonical Git process. Do not generalize a result from this test.
 - [ ] Test the private reporting route with a harmless operational check; the
   named human confirms receipt without publishing details.
+- [ ] Name the human and private, access-controlled setup that will record
+  evidenced Activation and Response quality. It must use the definitions and
+  sampling rules in [metrics](../ops/METRICS.md), distinguish unknowns, and
+  avoid tracking joins, views, or private behavior.
 - [ ] Test manual access review/offboarding only with a non-production identity
   and only if hosted controls are verified. If unclear, stop and use official
   support; do not improvise a workaround.
@@ -174,8 +190,8 @@ evidence; do not repair a failure by deleting people, content, or history.
 
 | Area | Required review artifacts |
 | --- | --- |
-| Public foundation | [manifesto](../docs/founding/MANIFESTO.md), [README](../README.md), [contributing](../CONTRIBUTING.md), [Code of Conduct](../CODE_OF_CONDUCT.md), [governance](../community/GOVERNANCE.md), [moderation](../community/MODERATION.md), [onboarding](../community/ONBOARDING.md), [quickstart](../community/CONTRIBUTOR_QUICKSTART.md), [licenses](../LICENSES.md) |
-| Learning and methods | [curriculum](../guides/ai-native-practitioner/CURRICULUM.md), [foundations](../guides/ai-native-practitioner/01-foundations.md), [effective use](../guides/ai-native-practitioner/02-effective-use.md), [context engineering](../guides/ai-native-practitioner/03-context-engineering.md), [automation and agents](../guides/ai-native-practitioner/04-automation-agents.md), [agentic engineering](../guides/ai-native-practitioner/05-agentic-engineering.md), [organizational AI](../guides/ai-native-practitioner/06-organizational-ai.md), [Practices](../practices/README.md), [Lab](../labs/001-cheap-model-bounded-task.md), [Story sample](../stories/SAMPLE_HYPOTHETICAL.md) |
+| Public foundation | [manifesto](../docs/founding/MANIFESTO.md), [README](../README.md), [contributing](../CONTRIBUTING.md), [Lab issue form](../.github/ISSUE_TEMPLATE/lab.yml), [Project issue form](../.github/ISSUE_TEMPLATE/project.yml), [Code of Conduct](../CODE_OF_CONDUCT.md), [governance](../community/GOVERNANCE.md), [moderation](../community/MODERATION.md), [onboarding](../community/ONBOARDING.md), [quickstart](../community/CONTRIBUTOR_QUICKSTART.md), [licenses](../LICENSES.md) |
+| Learning and methods | [curriculum](../guides/ai-native-practitioner/CURRICULUM.md), [foundations](../guides/ai-native-practitioner/01-foundations.md), [effective use](../guides/ai-native-practitioner/02-effective-use.md), [context engineering](../guides/ai-native-practitioner/03-context-engineering.md), [automation and agents](../guides/ai-native-practitioner/04-automation-agents.md), [agentic engineering](../guides/ai-native-practitioner/05-agentic-engineering.md), [organizational AI](../guides/ai-native-practitioner/06-organizational-ai.md), [Practices](../practices/README.md), [Lab](../labs/001-cheap-model-bounded-task.md), [Lab schema](../docs/schemas/LAB_SCHEMA.md), [Story sample](../stories/SAMPLE_HYPOTHETICAL.md), [Story schema](../docs/schemas/STORY_SCHEMA.md) |
 | Buzz setup and safety | [architecture](../buzz/INFORMATION_ARCHITECTURE.md), [community map](../buzz/community.json), [canvases](../buzz/canvases/), [seeds](../buzz/seeds/), [bootstrap](../buzz/BOOTSTRAP_RUNBOOK.md), [platform snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md), [security](../ops/BUZZ_SECURITY.md), [agent profiles](../buzz/agents/) |
 | Operations and launch | [maintainer runbook](../ops/MAINTAINER_RUNBOOK.md), [metrics](../ops/METRICS.md), [first Practice Session](../ops/FIRST_PRACTICE_SESSION.md), [invitation funnel](../ops/INVITE_FUNNEL.md), [weekly cadence](../ops/WEEKLY_CADENCE.md), [first ten](../content/launch/FIRST_10.md), [social kit](../content/launch/SOCIAL_KIT.md), [launch video](../content/launch/LAUNCH_VIDEO.md), [Owner Gates](../OWNER_GATES.md) |
 
@@ -185,4 +201,3 @@ evidence; do not repair a failure by deleting people, content, or history.
 - A custom site, paid product, course, certification, or autonomous moderation.
 - Measured outcomes, participant Stories, generalized reliability claims, and
   broader service-level targets until honest evidence and human review exist.
-

@@ -56,8 +56,9 @@ an unchecked checklist as a human owner.
 
 | Hold | Evidence | Minimum clearance evidence | Status |
 | --- | --- | --- | --- |
-| Public invitation promotion | The [invitation funnel](../ops/INVITE_FUNNEL.md) says broad promotion remains paused until a private, human-monitored request route is named and tested. | A human establishes and tests the private route, records its accountable owner and a safe confirmation, then inserts only approved public wording. | **OPEN — blocks public launch** |
+| Public invitation promotion | The [invitation funnel](../ops/INVITE_FUNNEL.md) says broad promotion remains paused until a private, human-monitored request route is named and tested. | A human establishes and tests the route; responsible humans know the authorized inviters, private intake ledger, and escalation owner; the issuer verifies current invitation/revocation controls or records the official-support fallback; then insert only approved public wording. | **OPEN — blocks public launch** |
 | Human operating coverage | The [maintainer runbook](../ops/MAINTAINER_RUNBOOK.md), [moderation model](../community/MODERATION.md), and [weekly cadence](../ops/WEEKLY_CADENCE.md) require named human ownership for release, announcement, moderation/private reporting, and continuity. | Record eligible humans and escalation/recusal route in the appropriate safe private or Git record; confirm a release owner opens the `RELEASE` item. | **OPEN — blocks public launch** |
+| Evidence-ready launch measurement | [Metrics](../ops/METRICS.md) requires evidenced Activation and Response quality, with data minimization. | Name the human and private, access-controlled recording setup; use the stated evidence and sampling rules, retain unknowns, and do not track joins, views, or private behavior. | **OPEN — blocks public launch** |
 
 ## Buzz constraints to accept operationally
 
@@ -84,18 +85,25 @@ decision.
 
 - Automated/repository evidence: [launch checklist](LAUNCH_CHECKLIST.md),
   `python3 scripts/validate.py --release` on final candidate, clean
-  checkout/commit evidence, and `git diff --check`.
+  checkout/commit evidence, `git diff --check <baseline>..<candidate>`, and
+  `git show --check <candidate>` with the exact commit IDs recorded.
 - Content evidence: [curriculum](../guides/ai-native-practitioner/CURRICULUM.md),
   [three Practices](../practices/README.md),
   [first-ten briefs](../content/launch/FIRST_10.md), and
-  [social kit](../content/launch/SOCIAL_KIT.md); proposed or hypothetical
-  material stays labeled and no real result is invented.
+  [social kit](../content/launch/SOCIAL_KIT.md); [Lab schema](../docs/schemas/LAB_SCHEMA.md),
+  [Story schema](../docs/schemas/STORY_SCHEMA.md), [Lab issue form](../.github/ISSUE_TEMPLATE/lab.yml),
+  and [Project issue form](../.github/ISSUE_TEMPLATE/project.yml) resolve;
+  proposed or hypothetical material stays labeled and no real result is invented.
 - Hosted setup evidence: fresh bootstrap dry run, owner-operated apply report,
   and manual inspection of twelve stream channels, their canvases, and their
   one-time seed messages.
 - Permission evidence: per-agent identity, sponsor, exact membership, purpose,
   expiry, and a human-maintained private access inventory; no owner key or
   agent authority beyond the [security runbook](../ops/BUZZ_SECURITY.md).
+- Invitation and measurement evidence: the authorized-inviter, private-ledger,
+  escalation, control-verification/support-fallback, and Activation/Response
+  quality gates in the [launch checklist](LAUNCH_CHECKLIST.md) are evidenced
+  without collecting joins, views, or private behavior.
 - Human release evidence: a private `RELEASE` record naming release owner and
   final-announcement owner; Git release record before any public Buzz or social
   announcement.
@@ -122,4 +130,3 @@ decision.
 - A custom site, paid product, course, certification, or autonomous moderation.
 - Real outcome claims, participant Stories, and broader service-level targets
   until consented evidence and human review exist.
-
