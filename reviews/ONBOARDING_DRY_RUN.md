@@ -79,7 +79,7 @@ sanitized system boundary but not the documents or credentials.
 | `start-here` | PASS (desk); FAIL (live) | His draft names the retrieval-tool boundary, **Build**, and a first action: write one evaluation case using approved/synthetic inputs. |
 | Channel selection | PASS (desk); FAIL (live) | The assessment correctly selects `build` for an AI-enabled system needing a boundary and evaluation; the canvas asks for job, inputs, allowed actions, approval boundary, and pass condition. |
 | Asking | PASS (desk); FAIL (live) | He would ask for critique of the boundary and evaluation case in `build`, without code, credentials, or private documents. |
-| Contribution | PASS (desk); FAIL (live) | He can open a Git Project proposal or Lab issue with problem, users, smallest useful release, maintainer, and contribution boundary. The Librarian is not needed and could only draft from a visible, source-linked thread for human review. |
+| Contribution | PASS (desk); FAIL (live) | He can open a Git Project proposal with the Practitioner problem/users, smallest useful release, approach/boundaries, evidence/success check, and maintainer/operating plan; or a Lab issue with a question/hypothesis, task set/fixed conditions, procedure/evaluation, evidence, and limitations. The Librarian is not needed and could only draft from a visible, source-linked thread for human review. |
 | Follow-up | PASS (desk); FAIL (live) | He would link the resulting Git issue/PR back to the `start-here` thread and report the evaluated boundary or blocker. No Buzz thread exists. |
 
 ### 3. Mei — internal AI lead
