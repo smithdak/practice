@@ -4,6 +4,11 @@ Start with a deterministic sequence and a human approval point. An automation th
 
 This is Module 4 of [The AI-Native Practitioner](README.md). It uses the bounded task, checked output, and maintained context pack from Modules 1–3. It does not require a particular model, provider, framework, scheduler, or unattended execution.
 
+Use the proposed [Workflow Redesign method](../../practices/002-workflow-redesign.md)
+as the controlling before/after method. This module applies it to automation
+and agent boundaries; where fields overlap, update the shared Guide dossier
+rather than creating a second workflow record.
+
 **Automation** is a repeatable sequence with defined inputs, rules, outputs, and effects. **An agent** is a bounded system that can choose among permitted next steps toward a goal, usually by observing state and using tools. The distinction matters because choice creates more possible paths to test, supervise, and recover. Neither term grants authority to act.
 
 ## What you will produce

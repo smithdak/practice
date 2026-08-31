@@ -57,7 +57,11 @@ Practice is not optimized for passive AI spectators, model-release chatter, or p
 
 **The AI-Native Practitioner** should take someone from casual AI use through reliable automation, agentic engineering, and organizational transformation.
 
-## First three Practices
+## First three Practice candidates
+
+These proposed methods are the first candidates for promotion to tested
+Practices. Their files retain `maturity: proposed` and `evidence_quality: none`
+until a recorded trial and human review support promotion.
 
 1. Build a reusable context pack for recurring work.
 2. Redesign a recurring workflow into a human-reviewed AI workflow.

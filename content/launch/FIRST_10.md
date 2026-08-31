@@ -25,16 +25,16 @@ the same across formats.
 
 | # | Format | Primary use case | Capability move | Canonical contribution required before publication |
 | --- | --- | --- | --- | --- |
-| 1 | Workflow Clinic | Individual recurring task | Learn → Use | Task-and-risk Note or Guide worksheet completion |
+| 1 | Workflow Clinic | Individual recurring task | Learn → Use | Safe-to-share task-and-risk Note or Guide correction |
 | 2 | Practitioner walkthrough | Individual recurring task | Use | Context-pack Practice example or correction |
-| 3 | Practice Tested | Individual review task | Use → Automate | Verification-gate trial record or improvement |
+| 3 | Method Trial | Individual review task | Use → Automate | Verification-gate trial record or improvement |
 | 4 | Workflow Clinic | Operator or founder workflow | Automate | Workflow map and proposed redesign record |
 | 5 | Build With Me | Engineering implementation | Build | Reproducible Lab, Project contribution, or implementation Note |
 | 6 | Build With Me | Engineering review boundary | Build | Verification fixture, test, or Practice improvement |
-| 7 | Making Companies AI-Native | Founder opportunity choice | Transform | Opportunity-map Note or Guide worksheet completion |
-| 8 | Making Companies AI-Native | Organizational pilot design | Transform | Pilot operating-model Note or Guide worksheet completion |
-| 9 | Community showcase | Any real, reviewable implementation | Share / applicable capability | Evidence-grounded Story, Lab, Project, or Practice improvement |
-| 10 | Community showcase | Failure, correction, or reproduction | Improve | Corrected canonical artifact and linked evidence record |
+| 7 | Making Companies AI-Native | Founder opportunity choice | Transform | Safe-to-share opportunity-map Note or Guide correction |
+| 8 | Making Companies AI-Native | Organizational pilot design | Transform | Safe-to-share pilot operating-model Note or Guide correction |
+| 9 | Community showcase | Any real, reviewable implementation | Use / Automate / Build / Transform, as evidenced | Evidence-grounded Story, Lab, Project, or Practice improvement |
+| 10 | Community showcase | Failure, correction, or reproduction | Applicable controlled capability | Corrected canonical artifact and linked evidence record |
 
 ## 1. Workflow Clinic — Pick one task worth improving
 
@@ -58,9 +58,11 @@ source boundary or review point. Invite a live Practitioner only if they can
 share a safe, redacted task; otherwise keep the demonstration hypothetical.
 
 **Artifact produced:** A new or improved canonical **Note** containing the
-task-and-risk brief, or a documented completion of the task-and-risk worksheet
-in [`guides/ai-native-practitioner/01-foundations.md`](../../guides/ai-native-practitioner/01-foundations.md).
-Publication gate: link the Git change and label unrun work `proposed`.
+safe-to-share task-and-risk brief, or a correction to
+[`guides/ai-native-practitioner/01-foundations.md`](../../guides/ai-native-practitioner/01-foundations.md).
+Completing a private worksheet is not itself a public contribution. Publication
+gate: link the actual Git change and label unrun work `proposed`; when the work
+cannot be shared safely, keep the session private.
 
 **Community prompt:** “Post one task in this shape: outcome · current input ·
 consequence if wrong · what must stay human-owned. Ask for help narrowing the
@@ -101,7 +103,7 @@ structure, not private contents.”
 checklist post for `use`; cut the conflicting-source moment into a short video;
 link the resulting examples from the Practice's variations or failure modes.
 
-## 3. Practice Tested — Can the verification gate refuse weak work?
+## 3. Method Trial — Can the verification gate refuse weak work?
 
 **Audience and route:** Individual Practitioners, reviewers, and operators in
 `use` and `automate`.

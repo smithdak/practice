@@ -173,6 +173,13 @@ def changed_files(base: str, branch: str) -> set[str]:
     return {line.strip() for line in out.splitlines() if line.strip()}
 
 
+def validate_changed_scope(task: dict, files: set[str]) -> tuple[list[str], list[str]]:
+    expected = set(task["outputs"] + [task["handoff"]])
+    unchanged = sorted(expected - files)
+    unexpected = [] if task.get("mode") == "integration" else sorted(files - expected)
+    return unchanged, unexpected
+
+
 def verify_task(task: dict, rec: dict, root: Path, require_changed: bool) -> None:
     missing = []
     empty = []
@@ -186,10 +193,11 @@ def verify_task(task: dict, rec: dict, root: Path, require_changed: bool) -> Non
         raise SystemExit(f"Task output failure. Missing={missing}; empty={empty}")
     if require_changed:
         files = changed_files(rec["base_commit"], rec["branch"])
-        expected = set(task["outputs"] + [task["handoff"]])
-        unchanged = sorted(expected - files)
+        unchanged, unexpected = validate_changed_scope(task, files)
         if unchanged:
             raise SystemExit(f"Task did not change every owned output: {unchanged}")
+        if unexpected:
+            raise SystemExit(f"Task changed files outside its owned outputs: {unexpected}")
     run([sys.executable, "scripts/validate.py", "--task", task["id"], "--root", str(root)], cwd=root)
 
 

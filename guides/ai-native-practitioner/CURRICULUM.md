@@ -11,7 +11,10 @@ This map is the implementation contract for the flagship Guide. It tells Practit
 5. Keep one capstone dossier and add evidence to it as you progress.
 6. Use the optional Frontier Studio only after the core controls are understood.
 
-If a module file or planned Practice does not yet exist, use the module contract and starter worksheets here. Record that you used the scaffold. Do not represent scaffold completion as completion of unpublished instructional material or as full Guide completion.
+Use each linked module for its exercises and use this map for the cumulative
+contract. The linked methods are proposed candidates, not tested Practices;
+retain their evidence labels when recording a trial. A worksheet alone is not
+full Guide completion or a publishable contribution.
 
 ## Curriculum architecture
 
@@ -193,7 +196,7 @@ Another authorized reviewer can tell what controls, what is current, what is exc
 - **Technical:** implement structured source loading, retrieval, tool schemas, or state boundaries and test conflicts.
 - **Organizational:** define source ownership, approval, update responsibilities, and access boundaries across roles.
 
-**Planned Practice dependency:** Reusable Context Pack, `practices/001-context-pack.md`. Until it exists, the worksheet below is a scaffold, not a mature Practice.
+**Proposed method dependency:** [Reusable Context Pack](../../practices/001-context-pack.md). It is available for trial but is not a tested Practice.
 
 **Downstream artifact contract:** `03-context-engineering.md` must connect to that Practice, include the context-pack exercise and failure diagnosis, and avoid vendor-specific context-window claims.
 
@@ -242,7 +245,7 @@ The workflow is reproducible, human review and accountable ownership are visible
 - **Technical:** implement tools, state, observability, error handling, permission limits, and rollback tests.
 - **Organizational:** align review queues, escalation, service ownership, policy, and affected roles.
 
-**Planned Practice dependencies:** Workflow Redesign, `practices/002-workflow-redesign.md`, and Agent Verification Gate, `practices/003-verification-gate.md`.
+**Proposed method dependencies:** [Workflow Redesign](../../practices/002-workflow-redesign.md) and [Agent Verification Gate](../../practices/003-verification-gate.md). Both remain candidates pending evidence.
 
 **Downstream artifact contract:** `04-automation-agents.md` must begin with deterministic automation and approval, define the agent boundary, explain when no agent is needed, and make reliability and rollback first-class.
 
@@ -293,7 +296,7 @@ A reviewer can determine what changed or is proposed, why it satisfies the task,
 - **Technical:** implement, test, independently review, integrate, and hand off the change.
 - **Organizational:** define commissioning boundaries, decision rights, vendor or internal team evidence requirements, and maintenance ownership.
 
-**Planned Practice dependency:** Agent Verification Gate, `practices/003-verification-gate.md`.
+**Proposed method dependency:** [Agent Verification Gate](../../practices/003-verification-gate.md). It is available for trial but is not a tested Practice.
 
 **Downstream artifact contract:** `05-agentic-engineering.md` must cover repository context, specifications, planning, worktrees or equivalent isolation, ownership, tests, independent review, CI, handoffs, and safe parallelism. Practice's swarm may appear only as an explicitly worked example without invented results.
 
@@ -344,7 +347,7 @@ The proposal or pilot changes how work and decisions operate, not merely which t
 - **Technical:** define service ownership, operational evidence, incidents, changes, and decommissioning.
 - **Organizational:** run or prepare the bounded pilot and evaluate operating change with accountable leaders and affected roles.
 
-**Planned Practice dependencies:** Workflow Redesign, `practices/002-workflow-redesign.md`, and Agent Verification Gate, `practices/003-verification-gate.md`.
+**Proposed method dependencies:** [Workflow Redesign](../../practices/002-workflow-redesign.md) and [Agent Verification Gate](../../practices/003-verification-gate.md). Both remain candidates pending evidence.
 
 **Downstream artifact contract:** `06-organizational-ai.md` must connect interventions to measurable operating changes, distinguish adoption from capability, use proportional governance, and avoid a generic transformation narrative.
 
@@ -448,7 +451,7 @@ Observed result and limitation:
 Retain, revise, pause, or expand decision:
 ```
 
-The starter path is complete when the four records are reviewable and one bounded workflow trial has an explicit accept, reject, revise, or pause decision. It advances Learn, Use, and early Automate evidence. It does not substitute for Modules 5–6, route extensions, downstream canonical Practices, or the full capstone review.
+The starter path is complete when the four records are reviewable and one bounded workflow trial has an explicit accept, reject, revise, or pause decision. It advances Learn, Use, and early Automate evidence. It does not substitute for Modules 5–6, route extensions, promotion of proposed methods to tested Practices, or the full capstone review.
 
 ## Shared capstone dossier
 
@@ -498,7 +501,7 @@ Each downstream module must:
 - preserve its direct capability, prerequisite boundary, universal checkpoint, module capstone, and evidence requirements;
 - teach operational decisions and failure modes rather than provide a topical reading list;
 - keep universal content usable across all three routes and label route extensions clearly;
-- link canonical Practices when they exist and avoid copying their full method;
+- link proposed methods or promoted Practices at their current evidence status and avoid copying their full method;
 - state when evidence is proposed, observed, measured, independently reviewed, or unknown;
 - avoid current product claims when an enduring principle serves the lesson; and
 - report any necessary change to the shared path so Guide maintainers can version and review it.

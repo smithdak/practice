@@ -1,136 +1,16 @@
-# File Index
+# Retired construction file index
 
-- `.env.example`
-- `.github/ISSUE_TEMPLATE/practice.yml`
-- `.github/ISSUE_TEMPLATE/story.yml`
-- `.github/PULL_REQUEST_TEMPLATE.md`
-- `.github/workflows/validate.yml`
-- `.gitignore`
-- `AGENTS.md`
-- `ARCHITECTURE.md`
-- `CONTEXT.md`
-- `DECISIONS.md`
-- `HANDOFF.md`
-- `LICENSE-CODE`
-- `LICENSE-CONTENT.md`
-- `LICENSES.md`
-- `Makefile`
-- `NEW_TERMINAL.md`
-- `NON_GOALS.md`
-- `OWNER_GATES.md`
-- `QUALITY_BAR.md`
-- `README.md`
-- `SWARM_PLAN.md`
-- `brand/.gitkeep`
-- `buzz/BOOTSTRAP_RUNBOOK.md`
-- `buzz/agents/GUIDE_MAINTAINER.md`
-- `buzz/agents/LIBRARIAN.md`
-- `buzz/agents/RELEASE_EDITOR.md`
-- `buzz/agents/RESEARCH_AUDITOR.md`
-- `buzz/agents/STEWARD.md`
-- `buzz/canvases/announcements.md`
-- `buzz/canvases/ask-practice.md`
-- `buzz/canvases/automate.md`
-- `buzz/canvases/build.md`
-- `buzz/canvases/foundry.md`
-- `buzz/canvases/learn.md`
-- `buzz/canvases/maintainers.md`
-- `buzz/canvases/projects.md`
-- `buzz/canvases/showcase.md`
-- `buzz/canvases/start-here.md`
-- `buzz/canvases/transform.md`
-- `buzz/canvases/use.md`
-- `buzz/community.json`
-- `buzz/seeds/announcements.md`
-- `buzz/seeds/ask-practice.md`
-- `buzz/seeds/automate.md`
-- `buzz/seeds/build.md`
-- `buzz/seeds/foundry.md`
-- `buzz/seeds/learn.md`
-- `buzz/seeds/maintainers.md`
-- `buzz/seeds/projects.md`
-- `buzz/seeds/showcase.md`
-- `buzz/seeds/start-here.md`
-- `buzz/seeds/transform.md`
-- `buzz/seeds/use.md`
-- `community/.gitkeep`
-- `content/README.md`
-- `content/launch/.gitkeep`
-- `docs/founding/FOUNDING_BRIEF.md`
-- `docs/framework/.gitkeep`
-- `docs/schemas/.gitkeep`
-- `guides/README.md`
-- `guides/ai-native-practitioner/.gitkeep`
-- `handoffs/.gitkeep`
-- `labs/README.md`
-- `ops/.gitkeep`
-- `practices/README.md`
-- `prompts/BUZZ_PROVISIONER.md`
-- `prompts/INTEGRATOR.md`
-- `prompts/ORCHESTRATOR.md`
-- `prompts/REVIEWER.md`
-- `prompts/WORKER.md`
-- `release/.gitkeep`
-- `research/BUZZ_PLATFORM_SNAPSHOT.md`
-- `reviews/.gitkeep`
-- `scripts/buzz_bootstrap.py`
-- `scripts/doctor.sh`
-- `scripts/init.sh`
-- `scripts/taskctl.py`
-- `scripts/validate.py`
-- `sources/README.md`
-- `stories/README.md`
-- `tasks/manifest.json`
-- `tasks/specs/B001.md`
-- `tasks/specs/B002.md`
-- `tasks/specs/B003.md`
-- `tasks/specs/B004.md`
-- `tasks/specs/B005.md`
-- `tasks/specs/B006.md`
-- `tasks/specs/B007.md`
-- `tasks/specs/B008.md`
-- `tasks/specs/B009.md`
-- `tasks/specs/B010.md`
-- `tasks/specs/B011.md`
-- `tasks/specs/F001.md`
-- `tasks/specs/F002.md`
-- `tasks/specs/F003.md`
-- `tasks/specs/F004.md`
-- `tasks/specs/F005.md`
-- `tasks/specs/F006.md`
-- `tasks/specs/F007.md`
-- `tasks/specs/F008.md`
-- `tasks/specs/F009.md`
-- `tasks/specs/K001.md`
-- `tasks/specs/K002.md`
-- `tasks/specs/K003.md`
-- `tasks/specs/K004.md`
-- `tasks/specs/K005.md`
-- `tasks/specs/K006.md`
-- `tasks/specs/K007.md`
-- `tasks/specs/K008.md`
-- `tasks/specs/K009.md`
-- `tasks/specs/K010.md`
-- `tasks/specs/K011.md`
-- `tasks/specs/K012.md`
-- `tasks/specs/K013.md`
-- `tasks/specs/K014.md`
-- `tasks/specs/L001.md`
-- `tasks/specs/L002.md`
-- `tasks/specs/L003.md`
-- `tasks/specs/L004.md`
-- `tasks/specs/L005.md`
-- `tasks/specs/L006.md`
-- `tasks/specs/L007.md`
-- `tasks/specs/L008.md`
-- `tasks/specs/Q001.md`
-- `tasks/specs/Q002.md`
-- `tasks/specs/Q003.md`
-- `tasks/specs/Q004.md`
-- `tasks/specs/Q005.md`
-- `templates/DECISION.md`
-- `templates/GUIDE.md`
-- `templates/HANDOFF.md`
-- `templates/LAB.md`
-- `templates/PRACTICE.md`
-- `templates/STORY.md`
+This hand-maintained inventory is retired because it became incomplete as the
+repository grew. Do not use it to infer release contents, task completion, or
+artifact status.
+
+Use these reproducible sources instead:
+
+- `git ls-files` for the exact files in a candidate commit;
+- `tasks/manifest.json` for task specifications, dependencies, owned outputs,
+  and handoff paths; and
+- `python3 scripts/validate.py --release` for committed completion evidence.
+
+The `status` fields in `tasks/manifest.json` are construction-era defaults and
+are not authoritative. The task controller uses ignored `.swarm/state.json` as
+ephemeral local orchestration state; release validation deliberately does not.

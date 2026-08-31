@@ -64,13 +64,12 @@ The criterion “the agent implements the requested behavior” is circular. The
 
 ### Connect acceptance to the Verification Gate
 
-This module uses the planned **Agent Verification Gate Practice** as its acceptance boundary. Until that Practice is published and reviewed, use the [Practice index](../../practices/README.md) and apply the gate below as this module’s scaffold. The gate separates a proposal or generated claim from accepted work:
-
-1. **Inspect the contract:** confirm the task, non-goals, authorized scope, and acceptance criteria are current.
-2. **Inspect the artifact:** review the diff, implementation brief, configuration, or output against the contract; do not rely on a summary alone.
-3. **Run or examine checks:** collect the specified test, static, structural, or manual-check evidence, including failures and environment limits.
-4. **Review independently when warranted:** use a reviewer who did not make the change, especially for consequential behavior, security, data, permissions, irreversible effects, or a change too complex for the original implementer to assess alone.
-5. **Decide and record:** accept, reject, revise, pause, or escalate. A release or merge authority makes the consequential delivery decision.
+Use the proposed [Agent Verification Gate](../../practices/003-verification-gate.md)
+as the single acceptance method. This module adds engineering-specific evidence:
+the task contract, complete diff, relevant automated and manual checks, a
+failure or permission-boundary case, and independent review when consequence
+warrants it. Do not copy a second gate into the dossier or treat the proposed
+method as tested evidence.
 
 Independence is a control against an unchallenged assumption, not a ritual. A separate agent’s restatement of the implementer’s report is not independent review. The reviewer needs the task contract, actual artifact, check outputs, and authority to report a failure. For a low-consequence documentation correction, fresh human diff review may be proportional. For an access-control change, independent review and the applicable security process are a minimum starting point, not an optional polish step.
 

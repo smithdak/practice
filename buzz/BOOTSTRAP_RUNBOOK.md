@@ -29,7 +29,7 @@ The apply operation is limited to:
 
 - creating a missing `stream` channel with its configured visibility;
 - setting its topic, purpose, and canonical canvas;
-- reading the most recent 100 messages; and
+- reading up to 100 messages returned by `buzz messages get`; and
 - sending a seed only if its `practice-seed:` marker is absent from that history.
 
 It never deletes, archives, removes members, creates workflows, or automates forum root posts. Re-running apply updates the canonical metadata and canvas, but it will not repeat a seed when its marker is present in recent history. To reconcile metadata and canvases without messages, use `--skip-seeds`.
@@ -48,4 +48,4 @@ The script stops on the first actionable failure and reports the operation that 
 - **Channel ID cannot be resolved:** inspect the existing channel in Buzz; the script will not guess an ID.
 - **Create conflict:** the script re-lists channels once to allow for a concurrent successful bootstrap; if the channel still is not discoverable, inspect permissions or the relay response.
 - **Missing or malformed canonical file:** restore or correct the referenced canvas/seed file and run dry-run again.
-- **Seed unexpectedly repeated:** stop, inspect the channel history and marker, and resolve manually. Marker-based detection is intentionally bounded to the latest 100 messages.
+- **Seed unexpectedly repeated:** stop, inspect the channel history and marker, and resolve manually. Marker-based detection is intentionally bounded to up to 100 messages returned by `buzz messages get`; it does not establish ordering or complete history coverage.

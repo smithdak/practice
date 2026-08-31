@@ -4,8 +4,9 @@
 
 Dakota: use this packet to approve each owner gate with evidence or leave it
 open. An unchecked row is not implied approval. Public launch is on hold until
-all applicable owner gates and the three evidenced operating holds below are
-cleared by a human.
+all applicable owner gates and evidenced operating holds below are cleared by
+a human. A structural release-validation pass is necessary but is not launch
+approval.
 
 The detailed sequence is in the [launch checklist](LAUNCH_CHECKLIST.md). This
 packet neither creates a Buzz community nor authorizes an agent to use, receive,
@@ -59,6 +60,10 @@ an unchecked checklist as a human owner.
 | Public invitation promotion | The [invitation funnel](../ops/INVITE_FUNNEL.md) says broad promotion remains paused until a private, human-monitored request route is named and tested. | A human establishes and tests the route; responsible humans know the authorized inviters, private intake ledger, and escalation owner; the issuer verifies current invitation/revocation controls or records the official-support fallback; then insert only approved public wording. | **OPEN — blocks public launch** |
 | Human operating coverage | The [maintainer runbook](../ops/MAINTAINER_RUNBOOK.md), [moderation model](../community/MODERATION.md), and [weekly cadence](../ops/WEEKLY_CADENCE.md) require named human ownership for release, announcement, moderation/private reporting, and continuity. | Record eligible humans and escalation/recusal route in the appropriate safe private or Git record; confirm a release owner opens the `RELEASE` item. | **OPEN — blocks public launch** |
 | Evidence-ready launch measurement | [Metrics](../ops/METRICS.md) requires evidenced Activation and Response quality, with data minimization. | Name the human and private, access-controlled recording setup; use the stated evidence and sampling rules, retain unknowns, and do not track joins, views, or private behavior. | **OPEN — blocks public launch** |
+| Tested-Practice evidence | The [method index](../practices/README.md) and all three candidate files disclose `maturity: proposed` and `evidence_quality: none`. | Run and retain the method-specific trial evidence, obtain human review, and record an explicit promotion decision before calling a candidate a tested Practice. Until then, public copy must say proposed method or Practice candidate. | **OPEN — blocks public launch under the current release scope** |
+| Hosted member-visible surface | The [onboarding dry run](../reviews/ONBOARDING_DRY_RUN.md) found configuration but no sanitized evidence that the hosted channels, canvases, seeds, membership visibility, or `start-here` path exist. | An authorized human performs the owner-operated apply and manual inspection, retaining only non-secret channel/seed evidence. | **OPEN — blocks public launch** |
+| Steward escalation readiness | The [Steward profile](../buzz/agents/STEWARD.md) now fails closed unless a member-actionable, human-owned escalation reference is configured and tested. | Privately name the sponsor, configure a visible route/label that members can actually use, test human receipt, and enable the Steward only after the prerequisite passes. | **OPEN — blocks enabling the Steward for launch** |
+| Publication destinations | The reusable [social kit](../content/launch/SOCIAL_KIT.md) intentionally retains 26 bracketed destination/handle tokens and is the sole whole-file publication-template exception in release validation. | For each selected post, a human replaces every token with an approved repository/Buzz/channel/issue destination or handle, click-tests it, and retains a non-secret check record. Do not use a reusable invitation link. | **OPEN — blocks public promotion** |
 
 ## Buzz constraints to accept operationally
 
@@ -86,9 +91,10 @@ decision.
 - Automated/repository evidence: [launch checklist](LAUNCH_CHECKLIST.md),
   `python3 scripts/validate.py --release` on final candidate, clean
   checkout/commit evidence, `git diff --check <baseline>..<candidate>`, and
-  `git show --check <candidate>` with the exact commit IDs recorded.
+  `git show --check <candidate>` with the exact commit IDs recorded. Also run
+  the standard-library regression suite and the Practice core-skills validator.
 - Content evidence: [curriculum](../guides/ai-native-practitioner/CURRICULUM.md),
-  [three Practices](../practices/README.md),
+  [three proposed method candidates](../practices/README.md),
   [first-ten briefs](../content/launch/FIRST_10.md), and
   [social kit](../content/launch/SOCIAL_KIT.md); [Lab schema](../docs/schemas/LAB_SCHEMA.md),
   [Story schema](../docs/schemas/STORY_SCHEMA.md), [Lab issue form](../.github/ISSUE_TEMPLATE/lab.yml),
@@ -107,6 +113,11 @@ decision.
 - Human release evidence: a private `RELEASE` record naming release owner and
   final-announcement owner; Git release record before any public Buzz or social
   announcement.
+
+The Practice core-skills files are explicitly included as an experimental
+post-launch Project. Their catalog/evaluation structure is checked in CI and
+release evidence, but they are excluded from initial public-launch promises and
+carry no claim of successful multi-model behavioral evaluation.
 
 ## Approval sequence
 

@@ -5,7 +5,7 @@ summary: "Apply universal and artifact-specific checks, record evidence, obtain 
 maturity: proposed
 capability: use
 roles: [individual-practitioner, operator, engineer]
-version: 0.1.0
+version: 0.2.0
 license: CC-BY-4.0
 created: 2026-08-31
 updated: 2026-08-31
@@ -55,7 +55,7 @@ Never place secrets, private keys, access tokens, or unnecessary personal or con
 4. **Run universal checks.** Apply the checklist below. An automated pass is evidence about that check only, not proof of overall correctness. Attach commands, test identifiers, screenshots, logs, links, or reviewer observations sufficient for another authorized reviewer to reproduce the decision.
 5. **Run artifact-specific checks.** Select the checks for the output type below and add domain controls required by the owner or policy. Test representative cases and at least one boundary, adversarial, or failure case. Record expected versus observed behavior.
 6. **Review the diff and side effects.** A human inspects what changed, what did not change, permissions, dependencies, citations, and any possible effect outside the stated scope. Ask: “Could this pass while still causing the intended harm or an unsupported claim?” Add a check or escalate if yes.
-7. **Decide before effect.** The reviewer records `accept`, `revise`, or `reject`, with each criterion linked to evidence. `accept` is allowed only when required checks pass, unknowns are resolved or explicitly authorized, and rollback is available. A failed or missing mandatory check means `revise` or `reject`.
+7. **Decide before effect.** The reviewer records `accept`, `revise`, or `reject`, with each criterion linked to evidence. `accept` is allowed only when required checks pass, mandatory unknowns are resolved, and rollback is tested or clearly executable. A failed, unknown, or missing mandatory check means `revise` or `reject`. If an external policy permits an exception, record it as a separate human-owned escalation; the gate itself does not pass.
 8. **Obtain mandatory approval and release.** The accountable human signs the record before publication, merge, deployment, external communication, data mutation, access or permission change, spending, or a consequential recommendation. Release the exact reviewed version; record where it went and when.
 9. **Monitor and recover.** For material or consequential work, watch the first relevant outcome and keep the rollback path available for the defined recovery window. If a defect, unexpected side effect, or new contradictory source appears, stop further release, notify the owner, revert or contain using the approved procedure, and append the incident and correction to the record.
 
@@ -170,4 +170,5 @@ Initial maturity is **proposed** and evidence quality is **none**. This reposito
 
 ## Changelog
 
+- **2026-08-31 — 0.2.0:** Made mandatory unknowns release-blocking, separated policy exceptions from a passing gate, and aligned the rollback requirement to a tested or clearly executable recovery path.
 - **2026-08-31 — 0.1.0:** Proposed a cross-artifact verification gate with universal checks, artifact-specific checks, evidence and rollback requirements, mandatory approval rules, and a machine-readable example.

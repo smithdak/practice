@@ -26,7 +26,14 @@ channel, message, or other hosted change. It does not clear an owner gate.
   that the committed candidate has no whitespace errors.
 - [ ] After final integration supplies all release artifacts, run
   `python3 scripts/validate.py --release`; retain the complete result. Task
-  validation is not a substitute for release validation.
+  validation is not a substitute for release validation. A pass proves the
+  committed repository structure and task evidence only; it does not approve
+  hosted setup, public copy, or launch.
+- [ ] Run `python3 -m unittest discover -s tests`; retain the result for the
+  release-validator and task-scope regression boundaries.
+- [ ] Run `python3 skills/evals/validate.py --root .`; retain the result. This
+  checks the experimental post-launch Practice core-skills Project's structure,
+  not its behavioral effectiveness.
 - [ ] Run `python3 scripts/buzz_bootstrap.py --dry-run`; retain only its
   non-secret stdout plan. Confirm this step does not need Buzz installation or
   credentials.
@@ -48,10 +55,11 @@ channel, message, or other hosted change. It does not clear an owner gate.
 
 - [ ] Review the [curriculum](../guides/ai-native-practitioner/CURRICULUM.md)
   and six modules for correct links and proposed-evidence framing.
-- [ ] Review the three proposed Practices: [context pack](../practices/001-context-pack.md),
+- [ ] Review the three proposed method candidates: [context pack](../practices/001-context-pack.md),
   [workflow redesign](../practices/002-workflow-redesign.md), and
-  [verification gate](../practices/003-verification-gate.md). Do not imply
-  they have measured results or general reliability.
+  [verification gate](../practices/003-verification-gate.md). Each remains
+  `maturity: proposed` and `evidence_quality: none`; do not call any of them a
+  tested Practice until the trial, review, and promotion record exists.
 - [ ] Review the proposed [Lab](../labs/001-cheap-model-bounded-task.md),
   [Lab template](../templates/LAB.md), [Lab schema](../docs/schemas/LAB_SCHEMA.md),
   [Story template](../templates/STORY.md), [Story schema](../docs/schemas/STORY_SCHEMA.md),
@@ -62,7 +70,8 @@ channel, message, or other hosted change. It does not clear an owner gate.
   [social kit](../content/launch/SOCIAL_KIT.md), and
   [launch video plan](../content/launch/LAUNCH_VIDEO.md). Do not publish a
   real case, URL, handle, invitation route, or outcome claim until a human has
-  verified it.
+  verified it. The social kit is the sole whole-file publication-token
+  exception and currently retains 26 tokens for human replacement/testing.
 
 ### Agent-permission checks
 
@@ -192,6 +201,7 @@ evidence; do not repair a failure by deleting people, content, or history.
 | --- | --- |
 | Public foundation | [manifesto](../docs/founding/MANIFESTO.md), [README](../README.md), [contributing](../CONTRIBUTING.md), [Lab issue form](../.github/ISSUE_TEMPLATE/lab.yml), [Project issue form](../.github/ISSUE_TEMPLATE/project.yml), [Code of Conduct](../CODE_OF_CONDUCT.md), [governance](../community/GOVERNANCE.md), [moderation](../community/MODERATION.md), [onboarding](../community/ONBOARDING.md), [quickstart](../community/CONTRIBUTOR_QUICKSTART.md), [licenses](../LICENSES.md) |
 | Learning and methods | [curriculum](../guides/ai-native-practitioner/CURRICULUM.md), [foundations](../guides/ai-native-practitioner/01-foundations.md), [effective use](../guides/ai-native-practitioner/02-effective-use.md), [context engineering](../guides/ai-native-practitioner/03-context-engineering.md), [automation and agents](../guides/ai-native-practitioner/04-automation-agents.md), [agentic engineering](../guides/ai-native-practitioner/05-agentic-engineering.md), [organizational AI](../guides/ai-native-practitioner/06-organizational-ai.md), [Practices](../practices/README.md), [Lab](../labs/001-cheap-model-bounded-task.md), [Lab schema](../docs/schemas/LAB_SCHEMA.md), [Story sample](../stories/SAMPLE_HYPOTHETICAL.md), [Story schema](../docs/schemas/STORY_SCHEMA.md) |
+| Experimental post-launch Project | [Practice core skills](../skills/README.md), [catalog](../skills/catalog.yaml), [evaluation specifications](../skills/evals/README.md), and `python3 skills/evals/validate.py --root .`. Inclusion in the repository is explicit; it is not part of public-launch claims and its structural pass is not behavioral validation. |
 | Buzz setup and safety | [architecture](../buzz/INFORMATION_ARCHITECTURE.md), [community map](../buzz/community.json), [canvases](../buzz/canvases/), [seeds](../buzz/seeds/), [bootstrap](../buzz/BOOTSTRAP_RUNBOOK.md), [platform snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md), [security](../ops/BUZZ_SECURITY.md), [agent profiles](../buzz/agents/) |
 | Operations and launch | [maintainer runbook](../ops/MAINTAINER_RUNBOOK.md), [metrics](../ops/METRICS.md), [first Practice Session](../ops/FIRST_PRACTICE_SESSION.md), [invitation funnel](../ops/INVITE_FUNNEL.md), [weekly cadence](../ops/WEEKLY_CADENCE.md), [first ten](../content/launch/FIRST_10.md), [social kit](../content/launch/SOCIAL_KIT.md), [launch video](../content/launch/LAUNCH_VIDEO.md), [Owner Gates](../OWNER_GATES.md) |
 

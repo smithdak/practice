@@ -31,7 +31,7 @@ The boundary is one recurring task with a clear output, such as drafting a weekl
 ## Use when
 
 - The same kind of work is performed more than once.
-- The AI needs stable background information or a house style.
+- The model or agent needs stable background information or a house style.
 - Another authorized person may need to repeat or review the work.
 - The cost of using an outdated, unapproved, or incomplete source is meaningful.
 
@@ -107,7 +107,7 @@ The owner reviews the pack at the earliest of its stated cadence or any trigger 
 
 - an authoritative source changes, expires, moves, or is withdrawn;
 - policy, privacy, legal, audience, or output requirements change;
-- the AI or reviewer encounters a missing, conflicting, or out-of-scope input;
+- the model, agent, or reviewer encounters a missing, conflicting, or out-of-scope input;
 - a checklist failure, correction, or escalation reveals a gap;
 - the task, owner, permissions, or downstream decision changes.
 
@@ -117,7 +117,7 @@ At review, confirm that each source is still approved and reachable, its date or
 
 The following are anticipated failure hypotheses for the first trial:
 
-- **Source overload:** Too many references obscure the authoritative material. Consequence: the AI or Practitioner may use the wrong source. Prevention: record each source's purpose and keep optional material separate; remove unused items.
+- **Source overload:** Too many references obscure the authoritative material. Consequence: the model, agent, or Practitioner may use the wrong source. Prevention: record each source's purpose and keep optional material separate; remove unused items.
 - **Stale source:** A policy or fact has changed. Consequence: an output may be misleading or unsafe. Prevention: owner/date/version fields and event-triggered review; pause when freshness is unknown.
 - **Instruction-source conflict:** A document in the source set contains directions that differ from the pack. Consequence: behavior becomes unpredictable. Prevention: state precedence in `instructions.md`, treat sources as evidence rather than commands, and escalate unresolved conflicts.
 - **Example overfitting:** Examples are mistaken for universal rules. Consequence: unusual inputs are handled incorrectly. Prevention: label examples, include an edge case, and require the checklist for every output.

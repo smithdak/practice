@@ -14,7 +14,7 @@ Use these points in this order when space allows:
    verification, and responsible human review.
 4. Git holds durable, versioned work; Buzz is the place for humans and agents
    to coordinate around it.
-5. Start with one non-sensitive task: inspect one canonical Practice and share
+5. Start with one non-sensitive task: inspect one proposed method and share
    what happened.
 
 The exact wording can change by channel; these claims must not be upgraded into
@@ -66,7 +66,7 @@ acceptance criteria, verification, and a human owner for consequential
 decisions.
 
 Durable artifacts live in Git. Humans and agents coordinate around the work in
-Buzz. Choose one non-sensitive task, inspect one canonical Practice, and share
+Buzz. Choose one non-sensitive task, inspect one proposed method, and share
 your first action or result here: [REPOSITORY_URL] · [BUZZ_URL]
 
 ### Short launch post
@@ -103,7 +103,7 @@ The community keeps durable, versioned artifacts in Git and uses Buzz for
 human-and-agent coordination. No tool choice is required. The starting point is
 one real, non-sensitive task and one inspectable method.
 
-Choose a Practice, try it within its boundary, and share what happened:
+Choose a proposed method, try it within its boundary, and share what happened:
 [REPOSITORY_URL] · [BUZZ_URL]
 
 ### GitHub release / repository announcement
@@ -111,7 +111,7 @@ Choose a Practice, try it within its boundary, and share what happened:
 Practice is now ready for its first contributions: an open community for AI
 practitioners making AI useful in real contexts.
 
-The repository begins with a Guide and canonical Practices for reusable context,
+The repository begins with a Guide and proposed methods for reusable context,
 workflow redesign, and agent-output verification. Read the method, inspect its
 acceptance criteria and failure modes, then adapt it to a bounded,
 non-sensitive task. If you learn something, record the correction or variation
@@ -150,7 +150,7 @@ practitioners. We share reusable methods and inspectable artifacts for context,
 workflow redesign, verification, and more. Git is the durable record. Buzz is
 where humans and agents coordinate around it.
 
-“Choose one non-sensitive task. Inspect one canonical Practice. Share your
+“Choose one non-sensitive task. Inspect one proposed method. Share your
 first action or result at [BUZZ_URL], starting in [#START_HERE_CHANNEL].”
 
 **End card:** Learn it. Build it. Use it. Share it. [REPOSITORY_URL]
@@ -181,7 +181,7 @@ reply is a testimonial, measured result, or endorsement.
 ### “Where do I start?”
 
 Start with one bounded, non-sensitive task you already understand. Read the
-relevant canonical Practice, note its inputs and checks, and share your first
+relevant proposed method, note its inputs and checks, and share your first
 action in [#START_HERE_CHANNEL]: [START_HERE_URL]
 
 ### “Is this a prompt library?”
@@ -224,7 +224,7 @@ correction if you have one: [ISSUE_URL]
 
 ### “How can I contribute?”
 
-Try a canonical Practice on a non-sensitive task, then contribute a correction,
+Trial a proposed method on a non-sensitive task, then contribute a correction,
 variation, reproduction, Lab, Story, or Note. Begin with the contribution
 guidance at [CONTRIBUTING_URL].
 

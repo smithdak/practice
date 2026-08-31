@@ -88,9 +88,10 @@ Status: DRAFT — HUMAN REVIEW REQUIRED
 Audience: <who should care>
 Headline: <plain description of what is merged or released>
 Summary:
-- <change and why it matters, with [canonical artifact](<link>)>
+- <change and why it matters>
+Canonical artifact: <repository path or public URL supplied and verified by a human>
 Evidence and limits: <observed/measured/not measured; explicit limits>
-Try or inspect: <safe next action and [canonical artifact](<link>)>
+Try or inspect: <safe next action using the verified canonical artifact above>
 Attribution: <author/role and permission status, or attribution pending>
 Open questions: <unknowns or disagreements>
 ```
@@ -102,8 +103,8 @@ Status: DRAFT — HUMAN REVIEW REQUIRED
 Period: <date range supplied by maintainer>
 Release gate: <count merged/released | count held, with reasons>
 Highlights:
-1. <merged/released change — [canonical artifact](<link>)>
-2. <merged/released change — [canonical artifact](<link>)>
+1. <merged/released change — verified canonical repository path or public URL>
+2. <merged/released change — verified canonical repository path or public URL>
 Evidence notes: <what is measured, not measured, disputed, or unknown>
 Held or in review: <items and review links; never presented as complete>
 Next actions: <inspection, testing, or maintainer review; no promises>
