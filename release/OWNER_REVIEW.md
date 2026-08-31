@@ -4,7 +4,7 @@
 
 Dakota: use this packet to approve each owner gate with evidence or leave it
 open. An unchecked row is not implied approval. Public launch is on hold until
-all applicable owner gates and the two evidenced operating holds below are
+all applicable owner gates and the three evidenced operating holds below are
 cleared by a human.
 
 The detailed sequence is in the [launch checklist](LAUNCH_CHECKLIST.md). This
