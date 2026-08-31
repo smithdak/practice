@@ -1,19 +1,32 @@
 # Learn
 
-Build a checkable foundation for practical AI work: models, context, tools, structured output, limitations, evaluation, privacy, and security.
+Understand one concept well enough to use it responsibly. Tie the question to
+a real task, then make the learning visible with a small exercise or check.
 
-## Belongs here
+## Start with a capability check
 
-- Explanations tied to a task or decision.
-- Small tests that make a concept observable.
-- Questions about why an approach works, fails, or needs review.
+```text
+Task I care about: …
+Concept I need to understand: …
+Small exercise: …
+What would count as understanding it: …
+Important limitation or safety boundary: …
+```
 
-## Keep out
+Good threads explain a concept in plain language, connect it to a decision, and
+give the next Practitioner something they can repeat. A failed exercise is
+useful when it changes the conclusion.
 
-- Reading lists without a capability to practice or check.
-- Unbounded model news and prompt collecting.
-- Advice that omits limitations, privacy, or security constraints.
+### Example (hypothetical)
 
-## First action
+> I want to understand citation verification for a research brief. I will ask
+> for citations from three short synthetic passages and check whether each
+> citation can be located in its stated source. The exercise passes only when I
+> can explain why a citation is supported or unsupported.
 
-Name one task you already understand, the capability you want to gain, and one check that would show whether you gained it. Share the result, including a failure if it changes the conclusion.
+Move to `use` when you are applying the concept to a real task. Move to
+`build` when the question becomes system architecture or implementation. Use
+`ask-practice` when you cannot yet state what needs to be learned.
+
+Keep examples non-sensitive. Avoid unbounded model news, prompt collecting, or
+reading lists with no capability to practice or check.

@@ -1,8 +1,15 @@
 <!-- practice-seed:projects-v1 -->
-# Project proposal template
+# Shape a Project people can maintain
 
-Propose an open-source project in six fields:
+Start with the smallest credible Project brief:
 
-`Practitioner problem · intended users · smallest useful release · existing alternatives/relationship · maintainer · first contribution boundary`
+- **Practitioner problem and intended users**
+- **Smallest useful release**
+- **Existing alternatives and the material difference**
+- **Proposed maintainer**
+- **First contribution someone else can complete**
+- **How the release will be checked**
 
-Add the first issue a contributor could complete and how someone will tell whether the release works. If there is no clear user problem or contribution boundary yet, frame the idea as a Lab or Note instead of a Project.
+A repository or Buzz Project container does not make the work a maintained
+**Project**. If there is no clear user problem, steward, or contribution
+boundary yet, frame the idea as a Lab or Note instead.

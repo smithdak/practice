@@ -1,19 +1,32 @@
 # Use
 
-Improve a real daily-work task with AI while keeping the right human judgment and approval boundary visible.
+Improve one task you already understand well enough to judge. Make a bounded
+change, inspect the output, and show what a person still had to decide.
 
-## Belongs here
+## Run one small comparison
 
-- The work before AI, the method used, and the resulting change.
-- Inputs, tools, review points, and what still requires judgment.
-- Reproducible examples, limitations, and evidence quality.
+```text
+Task and before state: …
+Approved or synthetic input: …
+AI-assisted change: …
+Acceptance check: …
+Human judgment retained: …
+What happened or remains unknown: …
+```
 
-## Keep out
+State whether the result is measured, observed, or only proposed. Include a
+failure when it changes what another Practitioner should try.
 
-- Generic productivity claims or vendor comparisons without a work context.
-- Automation designs whose triggers and failure paths are not mapped.
-- Sensitive source material or unverified claims of impact.
+### Example (hypothetical)
 
-## First action
+> I prepare meeting briefs from approved notes. I will compare one generated
+> draft with the notes for decisions, owners, dates, and unsupported additions.
+> A person still decides what context is appropriate to share.
 
-Describe one recurring task with its before state, desired after state, inputs, and acceptance check. Try one bounded change and report what a reviewer still had to decide.
+Move to `automate` when the task is repeated and you can map triggers, steps,
+approvals, and recovery. Move to `showcase` after you have a working
+implementation and evidence others can inspect. Use `learn` when the blocker
+is understanding a concept rather than applying it.
+
+Do not post sensitive inputs or make productivity claims that the comparison
+did not measure.

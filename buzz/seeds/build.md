@@ -1,8 +1,15 @@
 <!-- practice-seed:build-v1 -->
-# Build thread
+# Make the behavior reproducible
 
-Share a working system or a reproducible experiment with:
+Open with a compact system card:
 
-`Goal · users/context · architecture · tools/interfaces · evaluation · known failure modes · observability · code or reproduction steps`
+- **Job and intended user**
+- **Inputs, outputs, and allowed actions**
+- **Approval boundary**
+- **Evaluation and pass condition**
+- **Known failure and recovery path**
+- **Smallest runnable artifact**
 
-Separate what is implemented from what is proposed. Include the smallest artifact another Practitioner can run, inspect, or critique. Do not treat a demo as evidence of reliability; state what the evaluation does and does not establish.
+Separate what is implemented from what is proposed. Include code, a test,
+configuration, or a trace another Practitioner can inspect. A demo is not
+evidence of reliability; state what the evaluation does and does not establish.

@@ -1,8 +1,19 @@
 <!-- practice-seed:start-here-v1 -->
-# Make one useful first post
+# Welcome — bring one real task
 
-Copy, complete, and post this one universal form:
+You do not need a polished bio or an advanced use case. Reply with four short
+lines:
 
-`I am a [role or work context]. I want to work on [one non-sensitive real task or workflow]. My next outcome is [Learn | Use | Automate | Build | Transform]. My first small action is [one checkable action I can take next].`
+- I work on …
+- I want to improve or understand …
+- My next outcome is **Learn | Use | Automate | Build | Transform**.
+- My first small action is …
 
-Keep the task truthful and bounded. The outcome is a route for this work, not a rank or permanent level. The first action should be something you can check yourself and then report back with what happened.
+**Example (hypothetical):** I coordinate operations. I want to improve a weekly
+meeting brief made from approved notes. My next outcome is **Use**. My first
+small action is to compare one draft with the notes for every decision and
+owner.
+
+If you are unsure about the route, say so. Take the small action, then return to
+your thread with what you checked, what changed, what failed, or where you are
+stuck. Keep restricted information out of Buzz.

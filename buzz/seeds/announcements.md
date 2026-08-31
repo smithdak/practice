@@ -1,6 +1,14 @@
 <!-- practice-seed:announcements-v1 -->
-# Practice is being built in the open
+# How this stream works
 
-This is the canonical, low-volume stream for Practice releases, new Guides and Practices, Sessions, governance changes, and major community decisions.
+This is the low-volume record of approved releases, Sessions, and operating
+changes. Each announcement should tell you:
 
-For each update, maintainers will state: **what changed**, **who it helps**, **where the durable artifact lives**, and **what action (if any) Practitioners should take**. Questions and working discussion belong in the relevant channel so this stream remains easy to scan.
+- what changed;
+- who it affects;
+- where the durable Git record lives; and
+- what to do next, including when no action is required.
+
+Questions and working discussion belong in the channel where the work happened
+so this stream remains easy to scan. An announcement is not approval unless a
+named human owner has made and recorded that decision.

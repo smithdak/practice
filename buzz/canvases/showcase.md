@@ -1,20 +1,32 @@
 # Showcase
 
-Show a working implementation so another Practitioner can judge what changed, what failed, and what can be reused.
+Show what happened so another Practitioner can judge the result, reproduce the
+useful part, and avoid the same failure. Negative results are welcome when they
+change the next decision.
 
-## Belongs here
+## Tell the smallest complete story
 
-- Practice Stories with before state, constraint, intervention, implementation, after state, result, evidence quality, and lessons.
-- Working examples, reproducible artifacts, and negative results.
-- A clear boundary between observed results and proposed next steps.
+```text
+Before and constraint: …
+Change or implementation: …
+How it was checked: …
+Observed result or failure: …
+Evidence quality and limitation: …
+Reusable artifact: …
+What another Practitioner should try next: …
+```
 
-## Keep out
+Separate measured results, observations, and hypotheses. Link the durable
+method, code, checklist, Lab, or Story when it is safe to share.
 
-- Product promotion, hype, or unsupported success claims.
-- Preliminary concepts or observations without an implementation; route them to a Note or Learn.
-- Reproducible experiments without a working implementation or result to show; route them to a Lab.
-- Sensitive data, credentials, or identifiable client details.
+### Example (hypothetical)
 
-## First action
+> Five synthetic records were checked manually. A deterministic schema check
+> then accepted the five valid fixtures and rejected one intentionally invalid
+> fixture. This shows fixture behavior only; it does not establish performance
+> on real records. The reusable artifact is the test fixture and check command.
 
-Share the smallest reproducible example and answer: what was the before state, what did you change, how did you check it, and what still needs human judgment?
+Use `ask-practice` for an unresolved problem, `build` for implementation help,
+and a Lab for an experiment that does not yet have a working implementation or
+result to show. Keep product promotion, unsupported success claims, sensitive
+data, credentials, and identifiable client details out of this channel.

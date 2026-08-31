@@ -1,10 +1,17 @@
 <!-- practice-seed:learn-v1 -->
-# Capability check
+# Learn one thing by checking it
 
-Choose one foundation—models, context, tools, structured output, limitations, evaluation, privacy, or security—and name a capability you want to check.
+Tie one concept to a task you care about:
 
-Post:
+- **Task:** where the concept matters.
+- **Concept:** what you need to understand.
+- **Exercise:** one small way to make it observable.
+- **Check:** what would demonstrate understanding.
+- **Boundary:** one limitation, privacy, or security concern.
 
-`Capability · small exercise · expected output · pass/fail check · limitation or safety boundary`
+**Example (hypothetical):** I want to understand citation verification for a
+research brief. I will check generated citations from three short synthetic
+passages and explain why each is supported or unsupported.
 
-Share the exercise result or the failure mode, not only a reading list. Keep examples free of sensitive data. The next Practitioner should be able to repeat the exercise and know what to try after a failed check.
+Return with the result or failure, not only a reading list. The next
+Practitioner should be able to repeat the exercise and know what to try next.

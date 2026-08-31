@@ -1,23 +1,37 @@
 # Ask Practice
 
-Bring a real unresolved problem framed well enough for another Practitioner to investigate, answer, or turn into reusable knowledge.
+Bring the exact point where useful work has stalled. You do not need a polished
+solution; give another Practitioner enough context to suggest a next check,
+experiment, or decision.
 
-## Belongs here
+## Start with five short lines
 
-- A desired outcome and the current process.
-- Available inputs and systems, constraints, human-review needs, and failure risks.
-- What you tried, what happened, and the decision or evidence you need.
+```text
+Outcome: …
+Current approach: …
+Constraint or failure risk: …
+Tried so far: …
+A useful reply would help me decide or test: …
+```
 
-## Keep out
+Use a sanitized description when the real inputs are restricted. Never include
+credentials, personal data, private keys, or client-confidential material.
 
-- Vague requests for “the best AI tool.”
-- Sensitive data, credentials, or client-confidential material.
-- Questions that hide the actual workflow or acceptance condition.
+## A helpful reply leaves something testable
 
-## First action
+- Restate the problem and surface a missing assumption.
+- Suggest one bounded experiment, source, or decision rule.
+- Name the failure mode or evidence that would change the recommendation.
+- Route reusable work into the smallest suitable Git artifact.
 
-Post this template, using placeholders for sensitive details:
+Move to `learn`, `use`, `automate`, `build`, or `transform` once the next
+outcome is clear. Use `showcase` only after there is an implementation or
+result to inspect.
 
-`Outcome · Current process · Inputs · Constraints · Failure condition · Tried so far · Help needed`
+### Example (hypothetical)
 
-When an answer becomes reusable, propose a Note, Practice, Guide change, Lab, Story, or Project.
+> **Outcome:** reduce missed decisions in a weekly brief. **Current approach:**
+> copy decisions manually from approved notes. **Constraint:** a person must
+> verify every owner and date. **Tried:** a generated draft, but it omitted one
+> decision. **Useful reply:** help me design a five-case check before choosing a
+> tool.

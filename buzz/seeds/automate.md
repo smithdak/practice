@@ -1,8 +1,16 @@
 <!-- practice-seed:automate-v1 -->
-# Automation candidate
+# Map it before you automate it
 
-Bring a repeated workflow and map it before choosing tools:
+Describe one repeated workflow:
 
-`Trigger · inputs · step-by-step actions · output · approval gate · failure path · rollback`
+- **Trigger and frequency**
+- **Steps and owners**
+- **Input and output**
+- **Human approval point**
+- **Likely failure and recovery**
+- **Observable success check**
 
-Label each step **deterministic**, **AI-suitable**, **human judgment**, or **unsafe to automate**. Start with one bounded step and define how a person will review it. A useful reply leaves a reviewable workflow design or a small experiment to run next.
+Label each step **deterministic**, **AI-suitable**, **human judgment**, or
+**unsafe to automate**. Start with one reversible step and define how a person
+will review it. Scheduled Buzz workflows are experimental, not a launch
+dependency.

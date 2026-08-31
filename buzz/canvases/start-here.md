@@ -1,23 +1,42 @@
 # Start Here
 
-Find one practical next step in the open community for AI practitioners. Practice follows: **Learn it. Build it. Use it. Share it.**
+Bring one real, non-sensitive task. You do not need a polished introduction, a
+tool preference, or prior AI experience. Leave with one channel and one small
+action you can take now.
 
-## Belongs here
+## Choose the outcome you need next
 
-- Introductions that name your role or work context, one non-sensitive real task, and a next outcome.
-- Requests for help choosing a next capability or channel.
-- Early observations that can become a reusable artifact.
+- **Learn** → `learn`: understand a concept well enough to apply it.
+- **Use** → `use`: improve one task you already know how to judge.
+- **Automate** → `automate`: map repeated work and its approval points.
+- **Build** → `build`: engineer a reproducible agent, tool, or evaluation.
+- **Transform** → `transform`: change how a team handles one workflow or decision.
+- **Not sure yet** → `ask-practice`: describe the stuck point and ask for help routing it.
 
-## Keep out
+Use `projects` for a bounded open-source Project proposal and `showcase` when
+you have an implementation or result others can inspect.
 
-- Model-release chatter without a practical question or test.
-- Generic tool lists or requests to “learn AI” without a concrete outcome.
-- Claims of results without enough evidence to inspect.
+## Make one useful first post
 
-## First action
+Use four short lines:
 
-Post this introduction, then take the stated action:
+```text
+I work on …
+I want to improve or understand …
+My next outcome is Learn | Use | Automate | Build | Transform.
+My first small action is …
+```
 
-`I am a [role or work context]. I want to work on [one non-sensitive real task or workflow]. My next outcome is [Learn | Use | Automate | Build | Transform]. My first small action is [one checkable action I can take next].`
+### Example (hypothetical)
 
-The outcome labels route your next piece of work; they are not a rank or permanent level.
+> I coordinate operations. I want to improve a weekly meeting brief made from
+> approved notes. My next outcome is **Use**. My first small action is to draft
+> one brief and compare every decision and owner with the notes.
+
+After posting, take the action and return to the same thread with what you
+checked, what changed, what failed, or where you are stuck. The outcome is a
+route for this piece of work, not a rank or permanent level.
+
+Keep credentials, private keys, personal data, client material, and other
+restricted information out of Buzz. Use a truthful sanitized description or a
+clearly labeled synthetic example when the real task cannot be shared safely.

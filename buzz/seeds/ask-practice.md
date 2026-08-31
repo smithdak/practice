@@ -1,8 +1,17 @@
 <!-- practice-seed:ask-practice-v1 -->
-# First workflow clinic
+# What are you stuck on?
 
-Bring one real, unresolved workflow question using this compact brief:
+Bring the exact point where useful work has stalled:
 
-`Outcome · current process · inputs/tools · constraints · failure risk · what you tried`
+- **Outcome:** what you need to decide or produce.
+- **Current approach:** what happens now.
+- **Constraint or failure risk:** what must not go wrong.
+- **Tried:** what happened when you attempted it.
+- **Useful reply:** the next test or decision you need help shaping.
 
-Ask for a next experiment, not a list of “best tools.” When the thread resolves something, summarize the decision, steps, and checks that another Practitioner could reuse. A strong answer can become a Note, Practice, Guide change, Lab, Story, or Project.
+**Example (hypothetical):** I need to reduce missed decisions in a weekly
+brief. A generated draft omitted one decision. A person must verify every owner
+and date. Help me design a five-case check before I choose a tool.
+
+Ask for a next experiment, not a list of “best tools.” Keep the real problem
+visible without posting sensitive inputs.

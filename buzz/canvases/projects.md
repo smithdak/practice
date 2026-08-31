@@ -1,20 +1,33 @@
 # Projects
 
-Turn a bounded open-source software or infrastructure proposal into a contribution path, implementation, and release.
+Shape open-source software or infrastructure that solves a real Practitioner
+problem and can be maintained after the first demo.
 
-## Belongs here
+## Start with a Project brief
 
-- The Practitioner problem and intended users.
-- Smallest useful release, maintainer, contribution path, and relationship to existing tools.
-- Issues, design decisions, working code, tests, and release evidence.
+```text
+Practitioner problem: …
+Intended users: …
+Smallest useful release: …
+Existing alternatives and the material difference: …
+Proposed maintainer: …
+First contribution someone else can complete: …
+How the release will be checked: …
+```
 
-## Keep out
+A repository or Buzz Project container is a workspace, not proof that a
+canonical **Project** is maintained. Human maintainer acceptance, contribution
+guidance, licensing, review, safety, and release ownership are still required.
 
-- A tool directory, speculative platform, or project with no user problem.
-- Reproducible experiments without a bounded open-source project proposal; route them to a Lab.
-- Preliminary observations or concepts without an implementation; route them to a Note or Learn.
-- Credentials, client-confidential code, or vendor lock-in presented as a requirement.
+### Example (hypothetical)
 
-## First action
+> **Problem:** artifact reviewers miss required evidence fields. **Users:**
+> maintainers of small knowledge repositories. **Smallest release:** a local
+> checker for one documented schema. **Alternative:** existing generic linters
+> do not know the schema. **Maintainer:** not yet confirmed, so this remains a
+> proposal. **First contribution:** add one failing fixture and expected error.
 
-Propose one project in five lines: problem, users, smallest useful release, maintainer, and how someone can try or contribute.
+Use a Lab for a reproducible experiment without a credible Project case. Use a
+Note or `learn` for a preliminary observation, `build` for implementation help,
+and `showcase` for a working result. Do not post credentials,
+client-confidential code, or an unbounded platform pitch.

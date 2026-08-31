@@ -1,19 +1,32 @@
 # Transform
 
-Redesign how teams and organizations operate around real work and measurable outcomes—not an enterprise-wide AI purchase.
+Start with one workflow or decision, not an organization-wide AI program.
+Investigate how ownership, skills, governance, and measurement would need to
+change around real work.
 
-## Belongs here
+## Frame one operating change
 
-- Opportunity maps, workflow and knowledge architecture, adoption plans, governance, and operating-model choices.
-- A named owner, affected people, approval boundaries, and measures of change.
-- Honest constraints, reversibility, and lessons from implementation.
+```text
+Workflow or decision: …
+Current owner and affected people: …
+Bottleneck or risk: …
+Proposed change: …
+Approval and governance boundary: …
+Measure and review point: …
+Reversal or containment path: …
+```
 
-## Keep out
+Treat the change as a hypothesis until evidence exists. Include affected people
+in the review and name the human who owns the decision.
 
-- Platform-first strategy without a defined work problem.
-- Organization-wide mandates without an adoption or governance path.
-- Claims of transformation without a before state and evidence.
+### Example (hypothetical)
 
-## First action
+> A service team wants to change how recurring knowledge gaps reach the
+> documentation owner. The team will map the current handoff, test one
+> human-reviewed summary step, and compare missed fields and reviewer
+> corrections before deciding whether to expand it.
 
-Choose one workflow or decision. Record its current owner, bottleneck, risk, desired outcome, and one measure that would show whether a change helped.
+Use `automate` for a bounded workflow design, `build` for a technical system,
+and `showcase` only after an implementation has evidence to share. Keep
+platform-first strategies, unsupported transformation claims, and mandates
+without an adoption or governance path out of this channel.

@@ -1,19 +1,36 @@
 # Build
 
-Engineer AI-native systems such as agents, tools, context architectures, retrieval, MCP integrations, skills, evaluations, observability, and orchestration.
+Make an AI-native system reproducible enough for another Practitioner to run,
+inspect, and challenge. Separate implemented behavior from the proposed next
+version.
 
-## Belongs here
+## Open with a system card
 
-- Working code, reproducible setups, architecture decisions, and test cases.
-- Tool and permission boundaries, evaluation criteria, logs, and known failure modes.
-- Trade-offs another Practitioner can review or reproduce.
+```text
+Job and intended user: …
+Inputs and outputs: …
+Allowed tools or actions: …
+Approval boundary: …
+Evaluation and pass condition: …
+Known failure and recovery path: …
+Smallest reproducible artifact: …
+```
 
-## Keep out
+Share the code, configuration, test, trace, or architecture decision that makes
+the claim inspectable. A demo is not evidence of reliability; say what the
+evaluation does and does not establish.
 
-- Unsupported architecture claims or demos with no stated behavior to check.
-- Credentials, private keys, or confidential data.
-- A vendor or framework as a requirement when the capability is portable.
+### Example (hypothetical)
 
-## First action
+> A tool extracts five fields from synthetic support requests. It may read only
+> the fixture folder and write one JSON file. The test checks the schema and an
+> intentionally missing field. A person reviews the output before any record is
+> changed.
 
-State the system’s job, inputs, allowed actions, approval boundary, and pass condition. Attach the smallest reproducible example or test that exercises it.
+Use `projects` when the work has a bounded open-source user problem, proposed
+maintainer, and contribution path. Use `showcase` for an implementation result
+or lesson. Use `automate` when the main artifact is still a workflow map.
+
+Never post credentials, private keys, confidential code, or restricted data.
+Keep the capability portable unless a vendor-specific dependency is essential
+and stated.

@@ -1,8 +1,15 @@
 <!-- practice-seed:transform-v1 -->
-# Organization opportunity map
+# Start with one workflow, not the whole organization
 
-Map one organizational opportunity before proposing a broad AI program:
+Frame one operating change:
 
-`Workflow/outcome · frequency and capacity signal · inputs/data access · affected roles · accountability that must remain · smallest safe intervention · measure · decision owner`
+- **Workflow or decision**
+- **Current owner and affected people**
+- **Bottleneck or risk**
+- **Proposed change**
+- **Approval and governance boundary**
+- **Measure, review point, and reversal path**
 
-Use estimates when you do not have measurements and label them as estimates. End with one bounded decision or discovery step. Start with work and outcomes; do not assume a platform purchase is the answer.
+Treat the change as a hypothesis until evidence exists. Label estimates, name
+the human decision owner, and end with one bounded test or discovery step. Do
+not assume a platform purchase is the answer.

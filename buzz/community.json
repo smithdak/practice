@@ -23,8 +23,8 @@
     {
       "name": "start-here",
       "visibility": "open",
-      "topic": "Begin your Practice path",
-      "purpose": "Help a new Practitioner identify a next capability, a real problem, and the first useful action.",
+      "topic": "Bring one real task and choose a next step",
+      "purpose": "Welcome new Practitioners, help them choose an outcome, and make one small, safe first move.",
       "canvas": "buzz/canvases/start-here.md",
       "seed": "buzz/seeds/start-here.md",
       "type": "stream"
@@ -32,8 +32,8 @@
     {
       "name": "announcements",
       "visibility": "open",
-      "topic": "Method trials and Practice updates",
-      "purpose": "Give the community one canonical, low-volume place for releases, Sessions, and major decisions.",
+      "topic": "What changed and what to do next",
+      "purpose": "Share approved releases, Sessions, and operating changes in one low-volume stream.",
       "canvas": "buzz/canvases/announcements.md",
       "seed": "buzz/seeds/announcements.md",
       "type": "stream"
@@ -41,8 +41,8 @@
     {
       "name": "ask-practice",
       "visibility": "open",
-      "topic": "Bring a real problem",
-      "purpose": "Frame a real unresolved problem well enough to get useful help and become reusable community knowledge.",
+      "topic": "Get unstuck on a real problem",
+      "purpose": "Turn a stuck point into a bounded question, a useful next experiment, or reusable knowledge.",
       "canvas": "buzz/canvases/ask-practice.md",
       "seed": "buzz/seeds/ask-practice.md",
       "type": "stream"
@@ -50,8 +50,8 @@
     {
       "name": "learn",
       "visibility": "open",
-      "topic": "Understand the foundations",
-      "purpose": "Help Practitioners gain checkable foundations in models, context, tools, limitations, security, and evaluation.",
+      "topic": "Understand one concept well enough to use it",
+      "purpose": "Build checkable foundations through bounded questions, small exercises, and honest failure reports.",
       "canvas": "buzz/canvases/learn.md",
       "seed": "buzz/seeds/learn.md",
       "type": "stream"
@@ -59,8 +59,8 @@
     {
       "name": "use",
       "visibility": "open",
-      "topic": "Improve real daily work",
-      "purpose": "Help Practitioners improve a real daily-work task while retaining appropriate judgment.",
+      "topic": "Improve one task you already do",
+      "purpose": "Try AI on a bounded task, inspect the output, and keep the right human judgment visible.",
       "canvas": "buzz/canvases/use.md",
       "seed": "buzz/seeds/use.md",
       "type": "stream"
@@ -68,8 +68,8 @@
     {
       "name": "automate",
       "visibility": "open",
-      "topic": "Turn repetition into reliable workflows",
-      "purpose": "Turn a repeated workflow into a decomposed, reviewable design with triggers, approvals, and failure paths.",
+      "topic": "Map the workflow before automating it",
+      "purpose": "Turn repeated work into a reviewable design with clear triggers, owners, checks, and recovery paths.",
       "canvas": "buzz/canvases/automate.md",
       "seed": "buzz/seeds/automate.md",
       "type": "stream"
@@ -77,8 +77,8 @@
     {
       "name": "build",
       "visibility": "open",
-      "topic": "Engineer AI-native systems",
-      "purpose": "Develop reproducible AI-native systems with clear architecture, tools, evaluation, and observability.",
+      "topic": "Make AI-native systems reproducible",
+      "purpose": "Build agents, tools, and evaluations that another Practitioner can run, inspect, and challenge.",
       "canvas": "buzz/canvases/build.md",
       "seed": "buzz/seeds/build.md",
       "type": "stream"
@@ -86,8 +86,8 @@
     {
       "name": "transform",
       "visibility": "open",
-      "topic": "Change how teams and organizations operate",
-      "purpose": "Help teams make concrete operating-model and adoption decisions through opportunity mapping, governance, and measurement.",
+      "topic": "Change one team workflow with evidence",
+      "purpose": "Investigate operating-model changes through bounded hypotheses, accountable owners, and measurable checks.",
       "canvas": "buzz/canvases/transform.md",
       "seed": "buzz/seeds/transform.md",
       "type": "stream"
@@ -95,8 +95,8 @@
     {
       "name": "projects",
       "visibility": "open",
-      "topic": "Build open-source Practice projects",
-      "purpose": "Turn a bounded open-source project proposal into a contribution path, implementation, and release.",
+      "topic": "Shape open-source tools people can maintain",
+      "purpose": "Move a bounded Project from a real Practitioner problem to stewardship, contributions, and a useful release.",
       "canvas": "buzz/canvases/projects.md",
       "seed": "buzz/seeds/projects.md",
       "type": "stream"
@@ -104,8 +104,8 @@
     {
       "name": "showcase",
       "visibility": "open",
-      "topic": "Show the work and the evidence",
-      "purpose": "Help others learn from working implementations, Practice Stories, failures, lessons, and evidence quality.",
+      "topic": "Share what worked, failed, and changed",
+      "purpose": "Help others learn from working implementations, negative results, evidence, and reusable artifacts.",
       "canvas": "buzz/canvases/showcase.md",
       "seed": "buzz/seeds/showcase.md",
       "type": "stream"
