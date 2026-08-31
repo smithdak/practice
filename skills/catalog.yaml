@@ -1,0 +1,109 @@
+schema_version: 1
+catalog:
+  name: Practice Core Skills
+  release_stage: post-launch
+  updated: 2026-08-31
+  capability_vocabulary: [learn, use, automate, build, transform]
+  maturity_vocabulary: [experimental, tested, stable]
+  environment_vocabulary: [agent-skills-compatible, codex-repository]
+  tool_vocabulary: [filesystem-read, filesystem-write, git, python3, shell]
+skills:
+  - id: build-context-pack
+    version: 0.1.0
+    path: .agents/skills/build-context-pack
+    use_case: Create a maintained context pack for one recurring AI-assisted task.
+    intended_users: [individual-practitioner, operator]
+    capability_tags: [use, learn, automate]
+    sources:
+      - kind: practice
+        path: practices/001-context-pack.md
+        version: 0.1.0
+    maturity: experimental
+    supported_environments: [agent-skills-compatible, codex-repository]
+    required_tools: []
+    maintainer: practice-maintainers
+    last_reviewed: 2026-08-31
+    distribution: public-candidate
+    eval: skills/evals/build-context-pack.yaml
+
+  - id: redesign-ai-workflow
+    version: 0.1.0
+    path: .agents/skills/redesign-ai-workflow
+    use_case: Map one recurring workflow and design a controlled, reversible AI-assisted experiment.
+    intended_users: [operator, transformation-lead, builder]
+    capability_tags: [automate, use, build, transform]
+    sources:
+      - kind: practice
+        path: practices/002-workflow-redesign.md
+        version: 0.1.0
+    maturity: experimental
+    supported_environments: [agent-skills-compatible, codex-repository]
+    required_tools: []
+    maintainer: practice-maintainers
+    last_reviewed: 2026-08-31
+    distribution: public-candidate
+    eval: skills/evals/redesign-ai-workflow.yaml
+
+  - id: verify-agent-output
+    version: 0.1.0
+    path: .agents/skills/verify-agent-output
+    use_case: Build an evidence-backed acceptance record for one exact agent-produced artifact or change.
+    intended_users: [individual-practitioner, operator, engineer]
+    capability_tags: [use, learn, automate, build]
+    sources:
+      - kind: practice
+        path: practices/003-verification-gate.md
+        version: 0.1.0
+    maturity: experimental
+    supported_environments: [agent-skills-compatible, codex-repository]
+    required_tools: []
+    maintainer: practice-maintainers
+    last_reviewed: 2026-08-31
+    distribution: public-candidate
+    eval: skills/evals/verify-agent-output.yaml
+
+  - id: contribute-to-practice
+    version: 0.1.0
+    path: .agents/skills/contribute-to-practice
+    use_case: Produce one bounded Practice repository contribution while preserving swarm task ownership and handoff rules.
+    intended_users: [contributor, maintainer]
+    capability_tags: [build, use]
+    sources:
+      - kind: governance
+        path: AGENTS.md
+      - kind: governance
+        path: CONTRIBUTING.md
+      - kind: governance
+        path: community/CONTRIBUTION_MODEL.md
+      - kind: enforcement
+        path: scripts/taskctl.py
+    maturity: experimental
+    supported_environments: [codex-repository]
+    required_tools: [filesystem-read, filesystem-write, git, python3, shell]
+    maintainer: practice-maintainers
+    last_reviewed: 2026-08-31
+    distribution: repository-only
+    eval: skills/evals/contribute-to-practice.yaml
+
+  - id: review-practice-artifact
+    version: 0.1.0
+    path: .agents/skills/review-practice-artifact
+    use_case: Assess a Practice artifact or change against its evidence, artifact schema, safety constraints, and Quality Bar.
+    intended_users: [contributor, maintainer]
+    capability_tags: [learn, use, build]
+    sources:
+      - kind: governance
+        path: QUALITY_BAR.md
+      - kind: governance
+        path: DECISIONS.md
+      - kind: governance
+        path: NON_GOALS.md
+      - kind: framework
+        path: docs/framework/TAXONOMY.md
+    maturity: experimental
+    supported_environments: [codex-repository]
+    required_tools: [filesystem-read]
+    maintainer: practice-maintainers
+    last_reviewed: 2026-08-31
+    distribution: repository-only
+    eval: skills/evals/review-practice-artifact.yaml
