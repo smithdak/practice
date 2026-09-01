@@ -22,9 +22,10 @@ Wave O sibling outputs cited here —
 [ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md) (O4, which
 reviewed commit `1f80f96`),
 [BETA_OPS.md](../ops/BETA_OPS.md) and
-[TRIAGE_POLICY.md](../.github/TRIAGE_POLICY.md) (O5) — were present in the
-repository but not yet committed when this packet was refreshed; O2's
-steward-readiness script does not exist yet. Platform facts are as of
+[TRIAGE_POLICY.md](../.github/TRIAGE_POLICY.md) (O5), and
+`scripts/steward_readiness_check.py` with `tests/test_steward_readiness.py`
+(O2) — were present in the repository but not yet committed when this packet
+was refreshed. Platform facts are as of
 2026-09-01 per the [Buzz platform snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md).
 
 **Readiness scale** (repository evidence completeness for the human decision,
@@ -447,22 +448,30 @@ derived only from what is cited in the section):
    enablement gate — expected disabled at inspection, pass only with retained
    readiness evidence ([HOSTED_INSPECTION.md](HOSTED_INSPECTION.md)); the
    sponsor model and channel exclusions are in the least-membership table
-   ([security runbook](../ops/BUZZ_SECURITY.md)). The human-executed readiness
-   test script planned as Wave O task O2
-   ([SWARM_PHASE2_PLAN.md](../SWARM_PHASE2_PLAN.md)) is still absent from the
-   repository.
-3. **Still missing and why.** The sponsor name is private; the visible route
-   and its receipt test live on the hosted surface (needs Gate 1) and require
-   a human to receive and confirm — agents can neither configure a member
-   escalation route nor verify that a human received anything.
+   ([security runbook](../ops/BUZZ_SECURITY.md)). A human-maintainer
+   dry-run readiness checker now exists: `scripts/steward_readiness_check.py`
+   (with `tests/test_steward_readiness.py`) inspects configuration only — it
+   never contacts the relay, enables nothing, and handles no credentials — and
+   verifies the five prerequisites (sponsor role label, member-visible
+   escalation route, non-secret receipt target, confirmed test receipt, and
+   declared membership exactly matching the least-membership model),
+   re-reading [STEWARD.md](../buzz/agents/STEWARD.md) and the security runbook
+   at run time so drift fails loudly.
+3. **Still missing and why.** The checker's inputs are the private facts:
+   the sponsor designation, the configured member-visible route, and the
+   confirmed human receipt of a test escalation. A human must run the checker
+   against those inputs and retain its non-secret output; no agent may
+   configure a member escalation route, receive an escalation, or enable the
+   Steward.
 4. **Human action checklist.**
    - [ ] Privately name the Steward's human sponsor.
    - [ ] Configure a visible escalation route/label members can actually use, citing no private address or invitation link.
    - [ ] Test that a human receives and can act on an escalation through it.
-   - [ ] Record the deployment prerequisite as passed (sponsor named privately, route cited, receipt confirmed); only then enable the Steward, with the readiness evidence the inspection checklist requires.
-5. **Evidence completeness.** partial — the fail-closed prerequisite and the
-   inspection gate are specified; configuration and testing are human-hosted
-   work, and the O2 readiness script is still missing.
+   - [ ] Run `python3 scripts/steward_readiness_check.py` with those inputs (flags or `--config` JSON); keep real names and private details out of any retained output.
+   - [ ] Record the deployment prerequisite as passed (sponsor named privately, route cited, receipt confirmed, checker exit 0); only then enable the Steward, with the readiness evidence the inspection checklist requires.
+5. **Evidence completeness.** partial — the fail-closed prerequisite, the
+   inspection gate, and the readiness checker are in place; configuration,
+   receipt testing, and the checker run are human-hosted work.
 
 ### Hold 7 — Publication destinations
 
