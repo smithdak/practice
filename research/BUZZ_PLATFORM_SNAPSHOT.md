@@ -1,6 +1,6 @@
 # Buzz Platform Snapshot
 
-**As of:** 2026-09-01  
+**As of:** 2026-09-01
 **Purpose:** Prevent construction agents from inventing or depending on unstable Buzz capabilities.
 
 ## Changes since 2026-08-31
