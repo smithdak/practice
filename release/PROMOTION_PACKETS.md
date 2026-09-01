@@ -3,8 +3,9 @@
 Decision packet for a human reviewer deciding whether the three method
 candidates become tested Practices. Evidence is dated 2026-09-01; the three
 trials were recorded against repository commit `6f205d65453c7699016abc2f4d18e5db31002544`
-(this packet was assembled at `1e22021` the same day; the only material change
-since the trials is the whitespace fix `c2a10c0`, noted in Packet 1). Numbers
+(this packet was assembled at `1e22021` the same day; the only commits between
+the trials' base and this packet's assembly are the four Wave E evidence
+records themselves and the whitespace fix `c2a10c0`, noted in Packet 1). Numbers
 are quoted only from the Labs and the eval report; anything not recorded in a
 source is labeled unknown, not estimated.
 
@@ -51,8 +52,10 @@ Source: [labs/002-context-pack-trial.md](../labs/002-context-pack-trial.md)
 the run (sha256 prefix `8025c2e83c0f87a4`), single agent operator.
 
 What was actually run: a context pack assembled strictly per the Practice's
-seven Method steps was the sole operating input for the nine launch-checklist
-§1 automated/repository checks, producing a non-secret evidence summary.
+seven Method steps was the operating input for the run, together with the
+repository sources the pack itself names (the launch checklist §1 that defines
+the nine checks is source S1 of that pack), producing a non-secret evidence
+summary.
 
 What passed and failed (real numbers):
 
@@ -82,10 +85,10 @@ judgment-heavy tasks (every trial step was a deterministic command with
 readable exit codes), accuracy/speed/cost effects (explicitly not measured),
 and drift after the candidate commit.
 
-### 3. Corroborating evidence
+### 3. Related eval run (same operator class — not corroboration)
 
 [skills/evals/EVAL_REPORT.md](../skills/evals/EVAL_REPORT.md) (2026-09-01): the
-`build-context-pack` skill passed 9 of 9 cases. Self-graded limitation, stated
+`build-context-pack` skill self-graded 9 of 9 cases. Self-graded limitation, stated
 by the report itself: all 45 cases were run by one model family (GLM,
 `z-ai/glm-5.3-flash`), self-run and self-graded, activation simulated rather
 than host-driven, no human reviewer; per the eval YAMLs' own policy these
@@ -180,8 +183,11 @@ against R4's recorded verdicts on 68 reference files.
 
 What passed and failed (real numbers):
 
-- 68/68 per-file agreement with R4's recorded verdicts for both mechanized
-  classes, in both included runs (T3 checker v0.3, T4 v0.4); 0 findings.
+- In both included runs (T3 checker v0.3, T4 v0.4) the checker reported 0
+  findings, matching R4's recorded clean verdicts on the 68 reference files.
+  Every reference verdict is "clean", so the comparison can only show the
+  checker does not over-flag; it measures nothing about detection. The checker
+  was revised twice against this same corpus before the included runs.
 - SOCIAL_KIT exception self-check: 26/26 tokens (per-token counts 12/4/4 and
   six 1s) in both included runs.
 - Front-matter inventory: T3 matched R4's claim 6/6; T4 found 7 — the seventh
@@ -209,10 +215,10 @@ recorded); the AI-assisted triage step (W5) and the human review checkpoint
 (W6) — designed but never executed; any speed or cost comparison (the manual
 audit's duration is unknown); generalization beyond this corpus and commit.
 
-### 3. Corroborating evidence
+### 3. Related eval run (same operator class — not corroboration)
 
 [skills/evals/EVAL_REPORT.md](../skills/evals/EVAL_REPORT.md) (2026-09-01): the
-`redesign-ai-workflow` skill passed 9 of 9 cases, including an unsafe-input
+`redesign-ai-workflow` skill self-graded 9 of 9 cases, including an unsafe-input
 case that kept payment approval human-owned. Same self-graded limitation as
 Packet 1: single model family, self-run/self-graded, simulated routing, no
 human reviewer; by the evals' own policy these results do not count toward
@@ -305,13 +311,18 @@ trial, R2 rollback rehearsal). Executed 2026-09-01 at HEAD `6f205d65`; gated
 artifact: commit `421ed6e` (task A2's link checker), produced by a different
 task than the one running the gate.
 
-What was actually run: the full Practice 003 gate (frame, baseline, checks,
-diff review, decision) applied end to end to one real committed code change,
-plus a predeclared rollback rehearsal against that commit.
+What was actually run: the gate's framing, checks, diff review, and decision
+steps executed once on one code change that had already been merged before the
+gate ran, plus a predeclared rollback rehearsal. The approval step was never
+executed (`approval: null`), and because the artifact pre-landed, the gate
+could not have prevented the merge — the trial documents the artifact and
+rehearses recovery rather than demonstrating prevention.
 
 What passed and failed (real numbers):
 
-- R1: all 6 mandatory checks passed — M1 unit tests: `34 tests` OK in `0.028s`;
+- R1: all 6 checks that the single operator had pre-framed as mandatory passed
+  (the mandatory/advisory split was authored by the same agent that ran the
+  checks) — M1 unit tests: `34 tests` OK in `0.028s`;
   M2 repo-wide run: `Checked 230 markdown file(s), 340 link target(s): 0
   broken link(s), 0 stale as-of date(s)`, exit 0; M3 full diff review: 3 files,
   634 insertions, standard library only, no secrets or network; M4 scope
@@ -342,10 +353,10 @@ mandatory check failed, so the gate never had to refuse `accept` and preserve
 the baseline); no human approval was obtained; no independent reproducer has
 re-executed the record.
 
-### 3. Corroborating evidence
+### 3. Related eval run (same operator class — not corroboration)
 
 [skills/evals/EVAL_REPORT.md](../skills/evals/EVAL_REPORT.md) (2026-09-01): the
-`verify-agent-output` skill passed 9 of 9 cases; the produced hypothetical gate
+`verify-agent-output` skill self-graded 9 of 9 cases; the produced hypothetical gate
 record contained a failing mandatory permission-boundary check → decision
 `revise`, approval `null` — the correct refusal shape, but as a produced
 artifact in an eval, not as an executed gate. Same self-graded limitation:
@@ -421,7 +432,7 @@ does not execute it):
 
 | Candidate | Agent recommendation (non-binding) | Strength | What would change the recommendation |
 |---|---|---|---|
-| 001 — Build a reusable context pack | Promote now, recording the independent-reader limitation in the Evidence section | Moderate–strong | An independent cold-reader trial that fails; evidence that pack usability does not extend beyond command-backed tasks |
+| 001 — Build a reusable context pack | Promote now, recording the independent-reader limitation in the Evidence section | Moderate (schema-minimum only; no independent-reader evidence) | An independent cold-reader trial that fails; evidence that pack usability does not extend beyond command-backed tasks |
 | 002 — Redesign a recurring workflow | Hold; promote after the human review checkpoint is executed | Moderate | A second trial executing W6 with a named human reviewer and the W5 AI-triage slice, against an independent reference |
 | 003 — Verify an agent's output | Hold | Strong | A second gate trial on a different artifact type whose planted mandatory failure forces refusal and baseline preservation, plus a human-executed approval step |
 

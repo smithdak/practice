@@ -18,7 +18,7 @@ flowchart LR
     C -. may stop here .-> C
 ```
 
-The diagram shows possible growth, not a required sequence. A contribution can enter at the path that fits its evidence and stop when it is useful. A Project is open-source software or infrastructure built by the community; a demonstration without intended users belongs in a Lab until it has a credible Project case.
+The diagram shows possible growth, not a required sequence. A contribution can enter at the path that fits its evidence and stop when it is useful. To choose the entry path that fits a specific contribution, answer the classification questions in [the Knowledge Taxonomy](../docs/framework/TAXONOMY.md). A Project is open-source software or infrastructure built by the community; a demonstration without intended users belongs in a Lab until it has a credible Project case.
 
 | Path | Contribution promise | Minimum review question | Typical next step |
 |---|---|---|---|

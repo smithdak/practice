@@ -199,7 +199,7 @@ run cost =
   fixed per-request charges, if applicable
 ```
 
-Convert a published per-million-token price to per-token before calculation. Do not convert currencies for comparison unless the exchange-rate source, date, and calculation are recorded. Exclude evaluator labor, local compute, network, subscriptions not charged by usage, taxes, and failed requests with no billable usage; list any exception in the run ledger.
+When the recorded price basis is per-million tokens, convert it to per-token before calculation; otherwise compute from the recorded basis directly. Do not convert currencies for comparison unless the exchange-rate source, date, and calculation are recorded. Exclude evaluator labor, local compute, network, subscriptions not charged by usage, taxes, and failed requests with no billable usage; list any exception in the run ledger.
 
 ## Results
 

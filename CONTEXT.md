@@ -57,15 +57,20 @@ Practice is not optimized for passive AI spectators, model-release chatter, or p
 
 **The AI-Native Practitioner** should take someone from casual AI use through reliable automation, agentic engineering, and organizational transformation.
 
-## First three Practice candidates
+## Method candidates
 
-These proposed methods are the first candidates for promotion to tested
-Practices. Their files retain `maturity: proposed` and `evidence_quality: none`
-until a recorded trial and human review support promotion.
+Six proposed methods are the current candidates for promotion to tested
+Practices (see `practices/README.md`). The first three have recorded trials in
+`labs/002`–`004`; a recorded trial does not change a method's maturity, and all
+six files retain `maturity: proposed` and `evidence_quality: none` pending
+human review.
 
 1. Build a reusable context pack for recurring work.
 2. Redesign a recurring workflow into a human-reviewed AI workflow.
 3. Verify an agent's output before accepting or shipping it.
+4. Triage community issues with an evidence-backed state machine.
+5. Write release notes from committed evidence.
+6. Run a lightweight contributor feedback instrument.
 
 ## Community behavior
 

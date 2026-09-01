@@ -143,7 +143,8 @@ derived only from what is cited in the section):
    at `6f205d6`). The defaults are locked in [DECISIONS.md](../DECISIONS.md).
    The R4 claim re-audit found zero license/attribution defects
    ([CLAIM_AUDIT.md](../research/CLAIM_AUDIT.md)), and labs/003 mechanized the
-   license front-matter class with 68/68 agreement against that audit
+   license front-matter class with 68/68 one-sided agreement (all reference
+   verdicts "clean") against that audit
    ([labs/003](../labs/003-workflow-redesign-trial.md), runs T3/T4).
 3. **Still missing and why.** License and governance acceptance is on the
    never-delegated list in [OWNER_GATES.md](../OWNER_GATES.md) — only a human
@@ -363,9 +364,10 @@ derived only from what is cited in the section):
    8 of 9 launch-checklist §1 checks passed, one real trailing-whitespace
    failure correctly routed and later fixed in `c2a10c0`; pack checklist 9
    PASS / 1 FAIL-as-written), [labs/003](../labs/003-workflow-redesign-trial.md)
-   (runs T3/T4: 68/68 agreement for the two mechanized claim-audit classes,
-   26/26 token exception verified twice, two excluded defective runs
-   retained), and [labs/004](../labs/004-verification-gate-trial.md) (gate
+   (runs T3/T4: 68/68 one-sided agreement for the two mechanized claim-audit
+   classes — every reference verdict was "clean", so misses were unavailable by
+   construction, 26/26 token exception verified twice, two excluded defective
+   runs retained), and [labs/004](../labs/004-verification-gate-trial.md) (gate
    trial on commit `421ed6e` plus a clean rollback rehearsal; the Practice's
    own two-artifact/refusal-path bar recorded as unmet). The human decision
    packets are assembled in [PROMOTION_PACKETS.md](PROMOTION_PACKETS.md):

@@ -1,5 +1,8 @@
 # Adversarial editorial and coherence review
 
+**As of:** 2026-09-01 (currency re-stamp added at Phase 2 integration; the
+review itself was recorded 2026-08-31 against the pre-Phase-2 tree).
+
 ## Outcome
 
 **Not ready for publication.** The reviewed corpus is careful about evidence,

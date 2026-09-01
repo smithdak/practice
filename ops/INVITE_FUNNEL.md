@@ -235,11 +235,11 @@ failure or success.
 ## Sources and review date
 
 - [Buzz Platform Snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md), reviewed
-  2026-08-31: hosted invite-only constraint, member-visible open channels, and
+  2026-09-01: hosted invite-only constraint, member-visible open channels, and
   the limit of verified hosted capabilities.
-- [Practice onboarding](../community/ONBOARDING.md), reviewed 2026-08-31:
+- [Practice onboarding](../community/ONBOARDING.md), reviewed 2026-09-01:
   post-entry path, first action, routing, and manual follow-up.
-- [Buzz access and security runbook](BUZZ_SECURITY.md), reviewed 2026-08-31:
+- [Buzz access and security runbook](BUZZ_SECURITY.md), reviewed 2026-09-01:
   identity, offboarding, compromise, and human-access boundaries.
 - [Practice health and outcome metrics](METRICS.md), reviewed 2026-08-31:
   definitions, evidence rules, data minimization, and maintainer-health review.

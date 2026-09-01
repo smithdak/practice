@@ -1,5 +1,11 @@
 # Platform and license fact audit
 
+**Superseded:** superseded by [FACT_AUDIT_V2.md](FACT_AUDIT_V2.md) (2026-09-01);
+current platform facts live in
+[research/BUZZ_PLATFORM_SNAPSHOT.md](../research/BUZZ_PLATFORM_SNAPSHOT.md) as
+of 2026-09-01. Do not cite this 2026-08-31 audit for current platform state —
+its platform picture predates the #6116 closure the refreshed snapshot records.
+
 ## Outcome
 
 No blocking factual contradiction was found in the launch-critical outputs for

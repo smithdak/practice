@@ -154,7 +154,7 @@ Result status: complete. Two runs, both included; none excluded. Wall-clock time
 | A1 | Repo validator (advisory) | `python3 scripts/validate.py --root .` | exit 0, or failures attributed outside the gated paths | `Validation passed.`, exit 0 | pass |
 | A2-check | Boundary fixtures (advisory) | checker run on `/tmp/opencode/e3-edge` | actual behavior recorded | 1 false-positive class and 3 false-pass classes (below) | pass, findings recorded |
 
-Note on A1: the producer handoffs ([handoffs/A1.md](../handoffs/A1.md), [handoffs/A2.md](../handoffs/A2.md)) recorded `scripts/validate.py --root .` failing on a false positive in `handoffs/R2.md`. As of this trial it passes; the earlier failure no longer reproduces and was evidently fixed by another task between the A-wave handoffs and this run.
+Note on A1: the producer handoffs ([handoffs/A1.md](../handoffs/A1.md), [handoffs/A2.md](../handoffs/A2.md)) recorded `scripts/validate.py --root .` failing on a false positive in `handoffs/R2.md`. As of this trial it passes; the earlier failure no longer reproduces as of this run; the cause and the fix are unverified.
 
 ### Boundary fixture findings — what the gate does NOT prove
 

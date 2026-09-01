@@ -1,5 +1,8 @@
 # Repository integrity and release validation review
 
+**As of:** 2026-09-01 (currency re-stamp added at Phase 2 integration; the
+audit itself was recorded 2026-08-31 at commit `b02c696`).
+
 ## Outcome
 
 **Revision needed; do not represent this candidate as release-validated.** The

@@ -60,7 +60,7 @@ Link or describe the source record supporting Before, After, and Result. State w
 
 ## Anonymization and consent
 
-State whether the organization is public, anonymized, or withheld, and confirm permission to publish the included details. Use role labels instead of names where identity is unnecessary. Generalize or remove client, employer, project, location, dates, volume, and technical details when their combination could re-identify someone. Never use anonymization to conceal an unsupported claim; preserve enough context and limitation for review.
+For a real implementation, complete [the intake and consent record](INTAKE_CONSENT.md) and [the redaction checklist](REDACTION_CHECKLIST.md) before drafting this Story. State whether the organization is public, anonymized, or withheld, and confirm permission to publish the included details. Use role labels instead of names where identity is unnecessary. Generalize or remove client, employer, project, location, dates, volume, and technical details when their combination could re-identify someone. Never use anonymization to conceal an unsupported claim; preserve enough context and limitation for review.
 
 ## Changelog
 

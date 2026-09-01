@@ -1,5 +1,9 @@
 # Onboarding dry run V2 — Phase 2 persona simulation
 
+**As of:** 2026-09-01 — repository at commit `1f80f96` at review start; the
+integration fixes for this review's findings are recorded in
+[FINAL_INTEGRATION_REPORT_V2.md](../release/FINAL_INTEGRATION_REPORT_V2.md).
+
 ## Outcome
 
 **Conditional yes for private beta; no for public invitation promotion.** All

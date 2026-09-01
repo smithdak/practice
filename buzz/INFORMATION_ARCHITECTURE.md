@@ -90,4 +90,4 @@ status, role, or vendor preference.
 This launch plan relies on Buzz stream channels and direct CLI seeding. It does
 not depend on forum channels or scheduled workflows. See
 [`research/BUZZ_PLATFORM_SNAPSHOT.md`](../research/BUZZ_PLATFORM_SNAPSHOT.md)
-(as of 2026-08-31) for the verified platform assumptions.
+(as of 2026-09-01) for the verified platform assumptions.

@@ -7,9 +7,12 @@ for the full rules.
 
 ## Choose a path
 
+Not sure which type fits? Answer the questions in [the Knowledge Taxonomy](../docs/framework/TAXONOMY.md) before drafting.
+
 - **Correction or Note:** fix an unclear or inaccurate detail, or preserve a bounded observation. Open a focused issue or pull request (PR).
 - **Practice:** share a repeatable method with inputs, steps, outputs, evaluation, failure modes, and variations. Start from the [Practice template](../templates/PRACTICE.md).
 - **Lab:** propose a reproducible experiment or evaluation. Use the [Lab issue form](../.github/ISSUE_TEMPLATE/lab.yml), then the [Lab template](../templates/LAB.md) for the durable artifact.
+- **Story:** document a real implementation with before, intervention, result, and lessons. Complete [the intake and consent record](../templates/INTAKE_CONSENT.md) and [the redaction checklist](../templates/REDACTION_CHECKLIST.md) first, then use the [Story issue form](../.github/ISSUE_TEMPLATE/story.yml) and the [Story template](../templates/STORY.md).
 - **Project:** propose open-source software or infrastructure for a defined Practitioner problem. Use the [Project issue form](../.github/ISSUE_TEMPLATE/project.yml).
 
 ## Two ways to begin

@@ -6,7 +6,7 @@ Practice uses Block-hosted Buzz as a coordination hub. It is not the durable
 source of truth: publish reusable work in Git. Treat every Buzz message, direct
 message, and upload as hosted-community data, not as a confidential vault.
 
-This runbook is based on the verified platform snapshot as of 2026-08-31:
+This runbook is based on the verified platform snapshot as of 2026-09-01:
 [Buzz Platform Snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md). In particular,
 hosted communities are invite-only, open channels are visible to members of the
 community, and messages, direct messages, and uploaded media are not end-to-end
@@ -176,7 +176,7 @@ durable public artifacts in Git.
 ## Sources and review date
 
 - [Buzz Platform Snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md), reviewed
-  2026-08-31; it links the official Buzz repository, CLI documentation,
+  2026-09-01; it links the official Buzz repository, CLI documentation,
   introduction, and hosted support page used for platform assumptions.
 - [Buzz information architecture](../buzz/INFORMATION_ARCHITECTURE.md),
-  reviewed 2026-08-31.
+  reviewed 2026-09-01.

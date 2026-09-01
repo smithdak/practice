@@ -3,10 +3,15 @@ description: Document a real implementation and its evidence.
 title: "story: "
 labels: ["story"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Before submitting a real implementation, complete [the intake and consent record](../../templates/INTAKE_CONSENT.md) and [the redaction checklist](../../templates/REDACTION_CHECKLIST.md). Do not include confidential details in this public issue.
   - type: textarea
     id: before
     attributes:
       label: Before
+      description: Observable, safe-to-share facts about the starting workflow; keep confidential material out of this form.
     validations:
       required: true
   - type: textarea

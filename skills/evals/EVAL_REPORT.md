@@ -4,7 +4,7 @@
 
 ## Headline
 
-All 45 defined cases (5 skills × 9 cases) were executed for the GLM family and graded per criterion: 45/45 pass, 0 failed criteria, 0 forbidden-behavior violations. **These are single-family, self-run, self-graded results.** Under each eval's own `execution.when_unavailable: record-limitation-and-do-not-count-as-pass` policy and the [README](README.md) promotion rules, they do not count toward `tested` maturity; all five skills remain `experimental`, and the second-family dimension is recorded as **not run — single model family available**. No inter-model comparison is claimed.
+All 45 defined cases (5 skills × 9 cases) were executed for the GLM family and graded by the producing model itself, against criteria it could see while responding: 45/45 self-graded pass. No pass in this report is independently auditable. **These are single-family, self-run, self-graded results.** Under each eval's own `execution.when_unavailable: record-limitation-and-do-not-count-as-pass` policy and the [README](README.md) promotion rules, they do not count toward `tested` maturity; all five skills remain `experimental`, and the second-family dimension is recorded as **not run — single model family available**. No inter-model comparison is claimed.
 
 ## Deterministic structural check
 

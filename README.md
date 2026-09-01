@@ -40,7 +40,7 @@ corrections across artifacts.
 
 ## Core documents
 
-- `NEW_TERMINAL.md` — exact pickup sequence for Dakota's WSL environment.
+- `NEW_TERMINAL.md` — exact pickup sequence for the owner's terminal environment.
 - `SWARM_PLAN.md` — topology, waves, model routing, and merge protocol.
 - `AGENTS.md` — rules every agent must follow.
 - `tasks/manifest.json` — machine-readable dependency graph.
@@ -48,7 +48,7 @@ corrections across artifacts.
 - `buzz/community.json` — idempotent Buzz community specification.
 - `scripts/buzz_bootstrap.py` — dry-run-first Buzz seeder.
 - `buzz/PROJECT_AND_WORKFLOW_RUNBOOK.md` — owner-run Buzz Project setup and a disabled private workflow pilot.
-- `research/BUZZ_PLATFORM_SNAPSHOT.md` — verified Buzz constraints as of 2026-08-31.
+- `research/BUZZ_PLATFORM_SNAPSHOT.md` — verified Buzz constraints as of 2026-09-01.
 
 ## Launch boundary
 
@@ -67,8 +67,10 @@ It is useful to the task controller but is not release evidence and is not
 reproducible from a checkout. Release validation derives completion from the
 committed manifest-owned outputs and `COMPLETE` handoffs.
 
-The three current method files are proposed candidates with
-`evidence_quality: none`, so criterion 4 and public-launch completion remain
-unmet until recorded trials and human review support promotion.
+The six current method files are proposed candidates with
+`evidence_quality: none`. The first three have recorded trials in
+`labs/002`–`004`; a recorded trial does not change a method's maturity, and no
+candidate has a recorded promotion decision, so criterion 4 and public-launch
+completion remain unmet pending human review.
 
 No custom SaaS, course platform, certification program, or large marketing site belongs in this build.
