@@ -6,10 +6,10 @@ status: draft
 capability: automate
 secondary_capabilities: [learn, use, build, transform]
 audience: [individual-practitioner, engineer, builder, operator, internal-ai-champion, transformation-lead, consultant, executive]
-version: 0.2.0
+version: 0.2.1
 license: CC-BY-4.0
 created: 2026-08-31
-updated: 2026-08-31
+updated: 2026-09-01
 maintainers: [Practice guide maintainers]
 source_links:
   - "../../docs/framework/CAPABILITY_LADDER.md"
@@ -85,14 +85,19 @@ workflow is mature.
 
 The detailed curriculum contracts—including prerequisites, module capstones,
 and evidence—are in the [curriculum map](CURRICULUM.md). Each module and
-proposed method is linked below. File availability does not imply tested
-evidence; follow each artifact's maturity label.
+method is linked below. File availability does not imply tested evidence;
+each artifact's front matter records its current maturity. A first recorded
+trial of each method exists in the Labs—[context pack](../../labs/002-context-pack-trial.md),
+[workflow redesign](../../labs/003-workflow-redesign-trial.md), and
+[verification gate](../../labs/004-verification-gate-trial.md)—and a recorded
+trial does not change a method's maturity; promotion is a separate human
+review decision.
 
 ### Module 1 — Foundations
 
 **Purpose:** Advance **Learn** capability by explaining the relevant behavior and limits of an AI-assisted task, then choosing a safe bounded test.
 
-**Methods:** Use the proposed [Verification Gate](../../practices/003-verification-gate.md) for the acceptance record; it remains `maturity: proposed`.
+**Methods:** Use the [Verification Gate](../../practices/003-verification-gate.md) for the acceptance record, at its current front-matter maturity label.
 
 **Output:** A task-and-risk brief, structured-output specification, and evaluation plan for the chosen task.
 
@@ -104,7 +109,7 @@ evidence; follow each artifact's maturity label.
 
 **Purpose:** Advance **Use** capability by completing and checking one discrete real-work task with deliberate framing, iteration, critique, and source-aware verification.
 
-**Methods:** Apply the proposed [Verification Gate](../../practices/003-verification-gate.md) and preserve its current evidence limits.
+**Methods:** Apply the [Verification Gate](../../practices/003-verification-gate.md) and preserve its current evidence limits.
 
 **Output:** A baseline record, assisted work artifact, revision history, verification record, and decision about whether AI should remain in the task.
 
@@ -116,7 +121,7 @@ evidence; follow each artifact's maturity label.
 
 **Purpose:** Advance **Use** capability by designing context as a maintained system of instructions, approved sources, examples, boundaries, and checks rather than as one long prompt.
 
-**Methods:** Apply the proposed [Reusable Context Pack](../../practices/001-context-pack.md); its publication as a candidate does not make it tested.
+**Methods:** Apply the [Reusable Context Pack](../../practices/001-context-pack.md) at its current front-matter maturity label.
 
 **Output:** A context pack with source authority, freshness, conflict, privacy, disclosure, and maintenance rules.
 
@@ -128,7 +133,7 @@ evidence; follow each artifact's maturity label.
 
 **Purpose:** Advance **Automate** capability by turning the recurring task into a reviewable workflow with the smallest justified amount of autonomy.
 
-**Methods:** Apply the proposed [Workflow Redesign](../../practices/002-workflow-redesign.md) and [Verification Gate](../../practices/003-verification-gate.md), retaining their evidence labels.
+**Methods:** Apply the [Workflow Redesign](../../practices/002-workflow-redesign.md) and [Verification Gate](../../practices/003-verification-gate.md), retaining their evidence labels.
 
 **Output:** A workflow map, step classification, permissions table, test set, approval rules, failure paths, rollback, and run record.
 
@@ -140,7 +145,7 @@ evidence; follow each artifact's maturity label.
 
 **Purpose:** Advance **Build** capability by turning a bounded system change into an inspectable specification, implementation or implementation brief, test record, independent review, and controlled handoff.
 
-**Methods:** The proposed [Verification Gate](../../practices/003-verification-gate.md) is the acceptance boundary for the module.
+**Methods:** The [Verification Gate](../../practices/003-verification-gate.md) is the acceptance boundary for the module.
 
 **Output:** Everyone produces a system boundary, acceptance criteria, test plan, file or component ownership, and handoff. Technical-route Practitioners also produce a runnable or inspectable change with test and delivery evidence.
 
@@ -152,7 +157,7 @@ evidence; follow each artifact's maturity label.
 
 **Purpose:** Advance **Transform** capability by connecting the workflow to an operating outcome, roles, decision rights, knowledge, governance, enablement, and measurement.
 
-**Methods:** Apply the proposed [Workflow Redesign](../../practices/002-workflow-redesign.md) and [Verification Gate](../../practices/003-verification-gate.md); do not treat tool deployment or activity as transformation evidence.
+**Methods:** Apply the [Workflow Redesign](../../practices/002-workflow-redesign.md) and [Verification Gate](../../practices/003-verification-gate.md); do not treat tool deployment or activity as transformation evidence.
 
 **Output:** An opportunity map and change brief. Organizational-route Practitioners add a bounded pilot operating model with owners, controls, enablement, measures, review cadence, and stop or rollback conditions.
 
@@ -212,9 +217,10 @@ Evaluation shows that the stated artifact met the stated gate in the documented 
 
 Practice guide maintainers own the sequence, cross-module terminology, module contracts, Practice references, capstone gate, and changelog. Module maintainers own the instructional detail and must not silently change the shared outcomes or evidence requirements.
 
-Review this Guide when a referenced Practice changes materially, a module changes its completion check, a route no longer reaches the shared capstone, a link breaks, or the evaluation gate no longer matches the stated outcome. A material path change returns the Guide to draft until the end-to-end path is reviewed.
+Review this Guide when a referenced Practice changes materially or its maturity label changes, a module changes its completion check, a route no longer reaches the shared capstone, a link breaks, or the evaluation gate no longer matches the stated outcome. A material path change returns the Guide to draft until the end-to-end path is reviewed.
 
 ## Changelog
 
+- **2026-09-01 — 0.2.1 (draft):** Deferred method maturity statements to each artifact's front matter, linked the first recorded trial Labs for the three methods, and added a Practice maturity-label change to the review triggers.
 - **2026-08-31 — 0.2.0 (draft):** Linked all available modules and proposed methods directly, removed stale construction-state language, and kept evidence maturity distinct from file availability.
 - **2026-08-31 — 0.1.0 (draft):** Established the shared six-module spine, applied/technical/organizational route overlays, starter path, evidence gate, route-specific capstones, and separately bounded Frontier Studio.

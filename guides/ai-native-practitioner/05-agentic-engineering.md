@@ -221,7 +221,7 @@ If any answer is `no` or `unknown`, do not parallelize that implementation bound
 
 ## Worked example — a bounded Practice swarm task
 
-This is an **illustrative plan based on Practice’s K008 task contract**, not a report of an observed outcome or a claim that the swarm has delivered reliable results. The task is to write the Agentic Engineering module and its handoff. Its declared owned outputs are one module file and one handoff; the task contract also requires a repository validator, a commit, and a clean worktree.
+This is an **illustrative plan based on Practice’s K008 task contract (as of 2026-09-01)**, not a report of an observed outcome or a claim that the swarm has delivered reliable results. The task is to write the Agentic Engineering module and its handoff. Its declared owned outputs are one module file and one handoff; the task contract also requires a repository validator, a commit, and a clean worktree.
 
 | Task | Owner and isolated area | Owned output | Acceptance evidence | Integration rule |
 |---|---|---|---|---|
