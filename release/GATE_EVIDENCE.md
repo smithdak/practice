@@ -2,19 +2,30 @@
 
 One evidence packet per open owner gate and per evidenced operating hold in the
 [owner review packet](OWNER_REVIEW.md). The repository-side work that can
-prepare each human decision is now done and cited here; no rating below clears
-or half-clears anything — every gate and hold stays **OPEN** until Dakota
-records the approval or supplies the private evidence, and an unchecked row is
-not implied approval.
+prepare each human decision is done and cited here; no rating below clears or
+half-clears anything — every gate and hold stays **OPEN** until Dakota records
+the approval or supplies the private evidence, and an unchecked row is not
+implied approval.
 
-**Evidence basis.** Phase 2 trials were recorded on 2026-09-01 at commit
-`6f205d65453c7699016abc2f4d18e5db31002544` (baseline
+**Evidence basis.** Phase 2 trials were recorded on 2026-09-01 at repository
+snapshot `6f205d65453c7699016abc2f4d18e5db31002544` (baseline
 `d97fe4a6e3c6c143b0587ee24f005e13d54b7cea` per the Q005 acceptance record in
-[FINAL_INTEGRATION_REPORT.md](FINAL_INTEGRATION_REPORT.md)); commit ids were
-verified with `git log`. Since that commit, only the E-wave evidence commits
-(08123e5, 42869f4, 39f290c, 1e22021, df16c27) and the whitespace fix `c2a10c0`
-have touched the paths cited here. Platform facts are as of 2026-09-01 per the
-[Buzz platform snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md).
+[FINAL_INTEGRATION_REPORT.md](FINAL_INTEGRATION_REPORT.md)). Commit ids below
+were verified with `git log`. Since the trial snapshot, the cited evidence
+paths were touched only by the E-wave commits (`08123e5` trials, `1e22021`
+evals, `df16c27` [promotion packets](PROMOTION_PACKETS.md)), the whitespace fix
+`c2a10c0`, the G-wave commits (`cda441a` guide review, `7a0573c` Note/Project
+schemas, `3ffe31e` Practices 004–006, `1f80f96` intake/consent templates), and the
+earlier O1 packet draft `96e0e6c`, which this refresh supersedes. The
+Wave O sibling outputs cited here —
+[HOSTED_INSPECTION.md](HOSTED_INSPECTION.md) (O3),
+[ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md) (O4, which
+reviewed commit `1f80f96`),
+[BETA_OPS.md](../ops/BETA_OPS.md) and
+[TRIAGE_POLICY.md](../.github/TRIAGE_POLICY.md) (O5) — were present in the
+repository but not yet committed when this packet was refreshed; O2's
+steward-readiness script does not exist yet. Platform facts are as of
+2026-09-01 per the [Buzz platform snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md).
 
 **Readiness scale** (repository evidence completeness for the human decision,
 derived only from what is cited in the section):
@@ -39,7 +50,7 @@ derived only from what is cited in the section):
 | 2. Human operating coverage | Hold | partial | Name eligible humans in a private record; open the `RELEASE` item |
 | 3. Evidence-ready launch measurement | Hold | partial | Name the human and the private, access-controlled ledger |
 | 4. Tested-Practice evidence | Hold | ready-for-decision | Decide each candidate in [PROMOTION_PACKETS.md](PROMOTION_PACKETS.md) |
-| 5. Hosted member-visible surface | Hold | partial | Owner-operated apply, then manual hosted inspection |
+| 5. Hosted member-visible surface | Hold | partial | Owner-operated apply, then the [hosted inspection checklist](HOSTED_INSPECTION.md) |
 | 6. Steward escalation readiness | Hold | partial | Name the sponsor privately; configure and test the escalation route |
 | 7. Publication destinations | Hold | partial | Replace and click-test tokens per selected post |
 
@@ -109,7 +120,10 @@ derived only from what is cited in the section):
    check at `6f205d6` (labs/002 §1 item 8: 9 of 9 public entry points found).
    Git as the durable source of truth is locked in
    [DECISIONS.md](../DECISIONS.md), and the launch-checklist §3 first item
-   names this gate ([LAUNCH_CHECKLIST.md](LAUNCH_CHECKLIST.md)).
+   names this gate ([LAUNCH_CHECKLIST.md](LAUNCH_CHECKLIST.md)). O4's dry run
+   found the root README operator-facing
+   ([ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md), finding
+   N6) — a copy fix owned by the integrator, not a destination question.
 3. **Still missing and why.** Only the availability check on GitHub and the
    choice itself — external facts only the owner can establish.
 4. **Human action checklist.**
@@ -148,9 +162,12 @@ derived only from what is cited in the section):
    recordkeeping, and the launch-readiness checklist in the [invitation
    funnel](../ops/INVITE_FUNNEL.md); reusable invitation links are banned and
    the social kit carries the wording slots
-   ([SOCIAL_KIT.md](../content/launch/SOCIAL_KIT.md)). The [onboarding dry
-   run](../reviews/ONBOARDING_DRY_RUN.md) records the invitation stage FAIL
-   (live) — no named, tested route exists.
+   ([SOCIAL_KIT.md](../content/launch/SOCIAL_KIT.md)). Two independent dry
+   runs record the live gap: the invitation stage is FAIL (live) — no named,
+   tested route exists ([ONBOARDING_DRY_RUN.md](../reviews/ONBOARDING_DRY_RUN.md)),
+   and V2 confirms the blocker persists while direct human invitation of known
+   collaborators remains available for a beta
+   ([ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md)).
 3. **Still missing and why.** The route itself does not exist; establishing
    and testing it requires a live hosted community and a human receiver.
    Agents may not qualify people or create/forward invitations
@@ -178,7 +195,9 @@ derived only from what is cited in the section):
    [Research Auditor](../buzz/agents/RESEARCH_AUDITOR.md),
    [Release Editor](../buzz/agents/RELEASE_EDITOR.md)); the never-delegate
    list covers billing credentials and provider secrets
-   ([OWNER_GATES.md](../OWNER_GATES.md)).
+   ([OWNER_GATES.md](../OWNER_GATES.md)); the beta kit's agent-sponsor role
+   bounds activation and output inspection
+   ([BETA_OPS.md](../ops/BETA_OPS.md)).
 3. **Still missing and why.** The selection is a human choice reserved to the
    owner; billing credentials and provider secrets may never pass through an
    agent.
@@ -202,12 +221,17 @@ derived only from what is cited in the section):
    validation, 100 unit tests, skills validator, dry run, and 8 of 9 §1 checks
    pass (labs/002), with the one failure (trailing whitespace) fixed in
    `c2a10c0`; the promotion decisions awaiting a human are packaged in
-   [PROMOTION_PACKETS.md](PROMOTION_PACKETS.md).
+   [PROMOTION_PACKETS.md](PROMOTION_PACKETS.md); guide currency fixes landed
+   in `cda441a` (G1); O4's re-run verdict is conditional yes for private beta
+   only, with public promotion still blocked
+   ([ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md)).
 3. **Still missing and why.** The evidence this gate names does not exist yet:
    no final-candidate release-validation record is filled (that runs after
    final integration per [SWARM_PHASE2_PLAN.md](../SWARM_PHASE2_PLAN.md)), no
    private `RELEASE` item is open, and no human release owner is named —
    naming humans is reserved to humans (see Human operating coverage below).
+   O4 also records copy fixes (stale "three Practices" wording, unreachable
+   Story intake route) that the integrator owns before a candidate is final.
 4. **Human action checklist.**
    - [ ] After final integration, run release validation on the final candidate and fill `templates/RELEASE_EVIDENCE.md` (baseline/candidate commit IDs, all automated and content checks, agent-permission checks, dry-run exit summary).
    - [ ] Confirm the required human owners are named (Human operating coverage hold).
@@ -249,10 +273,15 @@ derived only from what is cited in the section):
    procedure are in the [invitation funnel](../ops/INVITE_FUNNEL.md) (its
    launch-readiness checklist is unchecked by design); the live gap is
    evidenced in the [onboarding dry run](../reviews/ONBOARDING_DRY_RUN.md)
-   (invitation stage FAIL (live) for all three personas); the data-minimized
-   intake ledger and review rules are in
-   [METRICS.md](../ops/METRICS.md); hosted invitation/revocation controls are
-   explicitly unverified per the platform snapshot (as of 2026-09-01).
+   (invitation stage FAIL (live) for all three personas), and V2 re-confirms
+   the blocker persists while keeping a conditional private-beta path open via
+   direct human invitations
+   ([ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md), ranked
+   defect 3); the data-minimized intake ledger and review rules are in
+   [METRICS.md](../ops/METRICS.md); the beta kit sequences the intake and
+   escalation handling for the first cohort
+   ([BETA_OPS.md](../ops/BETA_OPS.md)); hosted invitation/revocation controls
+   are explicitly unverified per the platform snapshot (as of 2026-09-01).
 3. **Still missing and why.** The tested route, the authorized-inviter /
    private-ledger / escalation-owner knowledge, and the control verification
    are hosted and private facts; agents cannot establish routes, hold ledger
@@ -278,17 +307,23 @@ derived only from what is cited in the section):
    route before public participation opens
    ([MODERATION.md](../community/MODERATION.md)); the weekly cadence assigns
    each queue a human owner ([WEEKLY_CADENCE.md](../ops/WEEKLY_CADENCE.md));
-   the release record keeps only roles and a private-record pointer, never
-   names ([RELEASE_EVIDENCE.md](../templates/RELEASE_EVIDENCE.md)).
+   the beta kit adds a roles-not-names operating table, private-intake
+   handling, and an escalation-route table ready to receive the names
+   ([BETA_OPS.md](../ops/BETA_OPS.md)), with the GitHub triage state machine
+   mapped to labels ([TRIAGE_POLICY.md](../.github/TRIAGE_POLICY.md)); the
+   release record keeps only roles and a private-record pointer, never names
+   ([RELEASE_EVIDENCE.md](../templates/RELEASE_EVIDENCE.md)).
 3. **Still missing and why.** The humans' names and the escalation/recusal
    route belong in a private record or a safe Git record maintained by a
    human; no agent may name owners, accept ownership, or open a `RELEASE`
-   item on a human's behalf.
+   item on a human's behalf. The triage labels themselves cannot be created
+   until the repository destination (Gate 3) exists.
 4. **Human action checklist.**
    - [ ] Record eligible humans and the escalation/recusal route in the appropriate private (or safe Git) record for: release ownership, final announcement, moderation/private reporting, and continuity.
    - [ ] Confirm the release owner opens the private `RELEASE` item per the runbook's queue format.
-5. **Evidence completeness.** partial — the role model is complete; the names
-   are human-only inputs.
+   - [ ] When the repository destination exists, create the triage labels per the triage policy.
+5. **Evidence completeness.** partial — the role model and beta scaffolding
+   are complete; the names are human-only inputs.
 
 ### Hold 3 — Evidence-ready launch measurement
 
@@ -302,8 +337,10 @@ derived only from what is cited in the section):
    [METRICS.md](../ops/METRICS.md); the launch review wiring (entry source per
    Activation, sampled Response quality, maintainer health) is in the
    funnel's measurement section ([INVITE_FUNNEL.md](../ops/INVITE_FUNNEL.md));
-   the launch checklist requires the human and setup to be named before beta
-   exit ([LAUNCH_CHECKLIST.md](LAUNCH_CHECKLIST.md)).
+   the beta kit summarizes the recorded/never-recorded boundary for daily use
+   ([BETA_OPS.md](../ops/BETA_OPS.md)); the launch checklist requires the
+   human and setup to be named before beta exit
+   ([LAUNCH_CHECKLIST.md](LAUNCH_CHECKLIST.md)).
 3. **Still missing and why.** The named human and the private,
    access-controlled spreadsheet/ledger are private operational facts; agents
    must never run measurement or hold access to private behavior data.
@@ -336,8 +373,14 @@ derived only from what is cited in the section):
    Corroborating but non-counting evidence:
    [EVAL_REPORT.md](../skills/evals/EVAL_REPORT.md) — 45/45 single-family,
    self-run/self-graded, does not count toward promotion by its own policy.
-   The index and candidates all still read `maturity: proposed` /
-   `evidence_quality: none` ([practices/README.md](../practices/README.md)).
+   The method index lists all six candidates as `maturity: proposed` /
+   `evidence_quality: none`
+   ([practices/README.md](../practices/README.md)): the three trial-backed
+   candidates above, plus 004–006 scoped without trials in `3ffe31e` (G3),
+   which follow the same trial path in a later phase. O4 flags the stale
+   "three Practices" copy in `README.md`/`CONTEXT.md` as an integrator-owned
+   fix ([ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md),
+   finding N4).
 3. **Still missing and why.** The promotion decision itself is human-only —
    "a human maintainer may promote a method only after the artifact records
    the trial and review evidence required by its schema"; the agent
@@ -360,29 +403,33 @@ derived only from what is cited in the section):
    membership visibility, and the `start-here` path, retaining only non-secret
    channel/seed evidence.
 2. **Evidence now available.** The [onboarding dry
-   run](../reviews/ONBOARDING_DRY_RUN.md) found full configuration but
-   explicitly no sanitized evidence that any hosted surface exists. Repository
-   side is verified at `6f205d6`: the dry-run plan matches
-   [buzz/community.json](../buzz/community.json) 12/12, all canvases and seeds
-   exist with exactly one marker each, and the private `foundry`/`maintainers`
-   plus ten open channels match the intended visibility (labs/002 §1 items
-   6–7). The inspection procedure and failure handling are in the
-   [bootstrap runbook](../buzz/BOOTSTRAP_RUNBOOK.md); a dedicated hosted
-   inspection checklist is planned as Wave O work
-   ([SWARM_PHASE2_PLAN.md](../SWARM_PHASE2_PLAN.md), task O3 — not yet in the
-   repository).
+   run](../reviews/ONBOARDING_DRY_RUN.md) found full configuration but no
+   evidence that any hosted surface exists; O4 dispositions that finding as
+   partially addressed — the dedicated post-apply inspection checklist now
+   exists with its fields unfilled, so no executed inspection evidence exists
+   yet ([ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md),
+   original finding 3). Repository side is verified at `6f205d6`: the dry-run
+   plan matches [buzz/community.json](../buzz/community.json) 12/12, all
+   canvases and seeds exist with exactly one marker each, and the private
+   `foundry`/`maintainers` plus ten open channels match the intended
+   visibility (labs/002 §1 items 6–7). The fillable record an authorized human
+   completes after apply — per-channel table, membership spot-checks,
+   `start-here` member-path check, Steward enablement gate, failure handling,
+   sign-off — is [HOSTED_INSPECTION.md](HOSTED_INSPECTION.md); the apply and
+   manual-rollback procedure is in the
+   [bootstrap runbook](../buzz/BOOTSTRAP_RUNBOOK.md).
 3. **Still missing and why.** Nothing hosted can be evidenced before the
    owner-operated apply, which requires the owner identity and the hosted
-   community (Gate 1). Agents must never run `--apply` or hold owner
-   credentials.
+   community (Gate 1); the inspection itself is excluded from agent work by
+   the checklist's own preconditions. Agents must never run `--apply` or hold
+   owner credentials.
 4. **Human action checklist.**
    - [ ] After Gate 1 and a fresh dry run: run the bootstrapper locally with `--apply` (owner environment only).
-   - [ ] Inspect all twelve channels: streams only, `foundry` and `maintainers` private, the ten participation channels open as intended.
-   - [ ] Inspect every canvas and one-time seed message; check the `start-here` path.
+   - [ ] Complete [HOSTED_INSPECTION.md](HOSTED_INSPECTION.md) as the authorized inspector: all twelve per-channel rows, membership spot-checks, the `start-here` member path, and the Steward enablement gate.
    - [ ] If a seed may be duplicated, stop repeated applies and inspect recent history manually (marker check sees up to 100 messages only).
-   - [ ] Retain only non-secret channel/seed evidence.
-5. **Evidence completeness.** partial — configuration and dry-run evidence are
-   verified; the hosted inspection is impossible until the owner applies.
+   - [ ] Retain only non-secret channel/seed evidence; sign off by role with a pointer to the private `RELEASE` item.
+5. **Evidence completeness.** partial — configuration, dry-run evidence, and
+   the inspection instrument are ready; the hosted execution is owner-only.
 
 ### Hold 6 — Steward escalation readiness
 
@@ -392,12 +439,18 @@ derived only from what is cited in the section):
 2. **Evidence now available.** The Steward profile fails closed: "Do not
    enable this profile until the human sponsor has configured and tested a
    member-actionable escalation reference," with a prescribed fallback message
-   when the reference is absent ([STEWARD.md](../buzz/agents/STEWARD.md)); the
+   when the reference is absent ([STEWARD.md](../buzz/agents/STEWARD.md)); O4
+   records this as addressing the original dry-run finding at profile level,
+   while the configured destination remains a human deployment act
+   ([ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md), original
+   finding 4); the hosted inspection now carries an explicit Steward
+   enablement gate — expected disabled at inspection, pass only with retained
+   readiness evidence ([HOSTED_INSPECTION.md](HOSTED_INSPECTION.md)); the
    sponsor model and channel exclusions are in the least-membership table
-   ([security runbook](../ops/BUZZ_SECURITY.md)); a human-executed readiness
-   test script is planned as Wave O work
-   ([SWARM_PHASE2_PLAN.md](../SWARM_PHASE2_PLAN.md), task O2 — not yet in the
-   repository).
+   ([security runbook](../ops/BUZZ_SECURITY.md)). The human-executed readiness
+   test script planned as Wave O task O2
+   ([SWARM_PHASE2_PLAN.md](../SWARM_PHASE2_PLAN.md)) is still absent from the
+   repository.
 3. **Still missing and why.** The sponsor name is private; the visible route
    and its receipt test live on the hosted surface (needs Gate 1) and require
    a human to receive and confirm — agents can neither configure a member
@@ -406,9 +459,10 @@ derived only from what is cited in the section):
    - [ ] Privately name the Steward's human sponsor.
    - [ ] Configure a visible escalation route/label members can actually use, citing no private address or invitation link.
    - [ ] Test that a human receives and can act on an escalation through it.
-   - [ ] Record the deployment prerequisite as passed (sponsor named privately, route cited, receipt confirmed); only then enable the Steward.
-5. **Evidence completeness.** partial — the fail-closed prerequisite is
-   specified; configuration and testing are human-hosted work.
+   - [ ] Record the deployment prerequisite as passed (sponsor named privately, route cited, receipt confirmed); only then enable the Steward, with the readiness evidence the inspection checklist requires.
+5. **Evidence completeness.** partial — the fail-closed prerequisite and the
+   inspection gate are specified; configuration and testing are human-hosted
+   work, and the O2 readiness script is still missing.
 
 ### Hold 7 — Publication destinations
 
@@ -421,10 +475,13 @@ derived only from what is cited in the section):
    ([SOCIAL_KIT.md](../content/launch/SOCIAL_KIT.md)); the token inventory was
    verified twice by the labs/003 checker (26/26 per-token counts in runs T3
    and T4 at `6f205d6`, against the R4 claim-audit exception data
-   [labs/003](../labs/003-workflow-redesign-trial.md)), and the publication
+   [labs/003](../labs/003-workflow-redesign-trial.md)), the publication
    checks each post must pass are in the
-   [funnel](../ops/INVITE_FUNNEL.md). The real destinations do not exist
-   until Gate 3 (GitHub) and Gate 1 (Buzz) are confirmed.
+   [funnel](../ops/INVITE_FUNNEL.md), and O4 confirms the placeholders remain
+   a publish-time gate by design
+   ([ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md), original
+   finding 2). The real destinations do not exist until Gate 3 (GitHub) and
+   Gate 1 (Buzz) are confirmed.
 3. **Still missing and why.** Token replacement and click-testing are
    inherently per-post human work with real, approved destinations; an agent
    must not invent handles, publish, or verify links on a human's behalf.
@@ -446,4 +503,6 @@ release/moderation owners); the live hosted community and its inspection;
 provider billing credentials; and the recorded human decisions themselves
 (gate approvals, promotion decisions, launch date). The [evidence-record
 template](../templates/RELEASE_EVIDENCE.md) shows where the private evidence
-is pointed to without being copied.
+is pointed to without being copied, and the beta kit
+([BETA_OPS.md](../ops/BETA_OPS.md)) shows how the first invited cohort runs
+inside those boundaries.
