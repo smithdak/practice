@@ -1,0 +1,11 @@
+name: Practice foundry manual smoke test
+description: One human-triggered message used to verify the bounded workflow path.
+enabled: false
+trigger:
+  on: webhook
+steps:
+  - id: post-verification-message
+    action: send_message
+    text: >-
+      Workflow smoke test — manually triggered in foundry. No action is required.
+      Verify that this is the only test message, then confirm the workflow is disabled.

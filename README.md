@@ -47,6 +47,7 @@ corrections across artifacts.
 - `prompts/ORCHESTRATOR.md` — master swarm prompt.
 - `buzz/community.json` — idempotent Buzz community specification.
 - `scripts/buzz_bootstrap.py` — dry-run-first Buzz seeder.
+- `buzz/PROJECT_AND_WORKFLOW_RUNBOOK.md` — owner-run Buzz Project setup and a disabled private workflow pilot.
 - `research/BUZZ_PLATFORM_SNAPSHOT.md` — verified Buzz constraints as of 2026-08-31.
 
 ## Launch boundary
