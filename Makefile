@@ -1,5 +1,5 @@
 .PHONY: init doctor status ready validate release buzz-dry-run \
-	checks agents packets cadence metrics triage brief
+	checks agents packets cadence metrics triage brief autonomy
 
 init:
 	./scripts/init.sh
@@ -31,6 +31,8 @@ checks:
 	python3 scripts/validate_agents.py --root .
 	python3 scripts/validate_agent_evals.py --root .
 	python3 scripts/triage.py validate ops/triage --root .
+	python3 scripts/ledger.py validate ops/ledger --root .
+	python3 scripts/demotion_check.py --root .
 	python3 scripts/check_links.py
 
 agents:
@@ -54,3 +56,12 @@ triage:
 # Draft a release brief for human approval: make brief SINCE=<rev> AS_OF=<date>
 brief:
 	python3 scripts/release_brief.py --since $(SINCE) --as-of $(AS_OF) --root .
+
+# The A3 substrate: what the guard permits today, and whether anything demoted.
+# Nothing is promoted, so every operation is expected to refuse.
+autonomy:
+	python3 scripts/demotion_check.py --root .
+	python3 scripts/ledger.py validate ops/ledger --root .
+	@for op in $$(python3 -c "import yaml;print(' '.join(o['id'] for o in yaml.safe_load(open('ops/autonomy/operations.yaml'))['operations']))"); do \
+		python3 scripts/autonomy_guard.py --operation $$op --root . || true; \
+	done

@@ -83,13 +83,49 @@ These operations may never run unattended. No amount of evidence, run history, o
 |---|---|---|---|
 | `moderation-and-removal` | Removing, hiding, editing, banning, or restricting a person or their content; deciding an enforcement outcome or an appeal. | The decision is human-owned and a removal is not reversible for the person it affects. An agent flags a concern, captures a link and a non-diagnostic summary, and suggests routing. | `DECISIONS.md` (Moderation), `NON_GOALS.md` (autonomous moderation, banning, or content deletion), `community/MODERATION.md` (Roles and authority) |
 | `maturity-promotion` | Changing a `maturity` or `evidence_quality` value, or presenting a proposed method as a tested Practice. | A promotion is a human decision with recorded trial evidence; an agent that could set the field could manufacture the evidence level it reports. | `release/OWNER_REVIEW.md` (hold 4, Tested-Practice evidence), `buzz/agents/registry.yaml` (every entry's prohibited list) |
-| `publication-and-announcement` | Publishing or announcing an artifact, release, decision, or policy in any public or member-visible surface. | A public claim cannot be silently retracted, and the final launch announcement is a manual action the owner never delegates. | `OWNER_GATES.md` (Manual actions never delegated), `ops/MAINTAINER_RUNBOOK.md` (Releases), `buzz/agents/registry.yaml` |
-| `merge` | Merging a change into the canonical repository or accepting a contribution as canonical. | The merge, request-changes, redirect, or decline decision belongs to the responsible human maintainer, and community agents cannot merge changes. | `community/GOVERNANCE.md` (Launch authority and roles), `ops/MAINTAINER_RUNBOOK.md` (Agent-assisted work and review) |
+| `publication-approval` | Deciding that an artifact, release, decision, or policy may be published or announced, in any public or member-visible surface. | A public claim cannot be silently retracted, and the final launch announcement is a manual action the owner never delegates. Approval is the judgment; delivering content already approved is a separate operation and is not this row. | `OWNER_GATES.md` (Manual actions never delegated), `ops/MAINTAINER_RUNBOOK.md` (Releases), `buzz/agents/registry.yaml`, `community/AMENDMENTS.md` (001) |
 | `owner-identity-and-keys` | Creating, recovering, holding, entering, or requesting the owner identity, a private key, a credential, a token, or a recovery code. | One identity per agent with least access is a locked decision, and identity creation and key handling are manual actions never delegated. | `DECISIONS.md` (Agent security), `OWNER_GATES.md` (Manual actions never delegated), `ops/BUZZ_SECURITY.md` |
 | `license-and-governance-change` | Changing a license, the governance model, the mission, the non-goals, repository ownership, privileged access, or a maintainer appointment. | These are reserved, hard-to-reverse decisions; the governance model states that no agent may make them. | `OWNER_GATES.md` (Manual actions never delegated), `community/GOVERNANCE.md` (Decision paths), `DECISIONS.md` |
 | `owner-reserved-decision` | Any decision `OWNER_GATES.md` reserves to the owner: every gate row, and every manual action listed as never delegated. | The gate exists because a human has to look at the thing before it is true. An agent that could close a gate would be closing it on its own report. | `OWNER_GATES.md`, `release/OWNER_REVIEW.md` (Owner gates) |
 
 An operation that is a near neighbour of one of these rows is treated as the row until a human says otherwise. Recommending a removal is not moderation; drafting an announcement is not publication; proposing a patch is not a merge. The boundary is the act, not the preparation.
+
+This list held seven rows until [amendment 001](../../community/AMENDMENTS.md)
+narrowed two of them. `merge` left the list in favour of bounded auto-merge, and
+`publication-and-announcement` split so that only the approval half remains here.
+Both replacements are *eligible*, which means they may be proposed through the
+normal path and nothing more: a signed promotion in `ops/autonomy/promotions.yaml`
+and an independently released kill switch. Neither is catalogued, promoted, or
+running.
+
+**Bounded auto-merge.** A merge may run unattended only when the pull request was
+opened by the unattended runner itself and never by a person, changes nothing
+outside the promoted operation's declared write scope, passes every required
+check with no reviewer requesting changes, and is recorded in the action ledger
+with the resulting commit and the exact command that reverts it.
+
+**Approved-content delivery.** A delivery may run unattended only when a signed
+approval record in Git identifies the exact content by commit or content hash,
+the content is delivered byte-identical with no edit or reformatting, the
+destination is named in the approval rather than chosen by the agent, the
+approval is within the window the promotion states, and the delivery is recorded
+against the approval reference. Selecting an audience, scheduling, and
+re-publishing stay outside it.
+
+### The self-modification exclusion
+
+No A3 operation may create, change, merge, or deliver a change to a file that
+governs its own bounds — at minimum `DECISIONS.md`, `NON_GOALS.md`,
+`OWNER_GATES.md`, `community/GOVERNANCE.md`, `community/AMENDMENTS.md`, this
+document, anything under `ops/autonomy/`, and anything under `.github/`.
+
+This exclusion is not waivable by a promotion, because an agent that can widen
+its own bounds has no bounds. `scripts/autonomy_guard.py` enforces it by
+refusing any write scope that could reach a governed path, matching loosely so
+that a scope dangerous under the widest reading is refused;
+`scripts/run_unattended.py` enforces the other half, applying a written path
+only when it is in scope under the narrowest reading. The two matchers
+deliberately disagree, and both err toward refusing.
 
 ## Action vocabulary
 
@@ -133,7 +169,7 @@ A level here is a ceiling, not a status. Every agent entry reads `not_enabled` w
 | `intake` | pass | A2 | `read-assigned`, `report-observation`, `name-next-action`, `flag-concern`, `escalate`, `draft-artifact`, `deliver-recommendation` | `R4`, plus a reversal for a route a member has already acted on. The cadence assigns confirmation of routing, scope, and priority to a Maintainer. |
 | `build` | pass | A1 | `read-assigned`, `report-observation`, `name-next-action`, `escalate`, `draft-artifact`, `draft-patch` | Nothing to deliver at A2: the output is a draft for review. A rise to A3 needs `R4`, and the merge that ends the pass is permanently ineligible. |
 | `review` | pass | A1 | `read-assigned`, `report-observation`, `name-next-action`, `escalate`, `draft-artifact`, `draft-patch` | `R4`. Reviewing agents return findings; the merge, request-changes, redirect, or decline decision is the area maintainer's. |
-| `release` | pass | A1 | `read-assigned`, `report-observation`, `name-next-action`, `escalate`, `draft-artifact` | Cannot rise. The pass ends in `publication-and-announcement`, which is permanently ineligible for A3 regardless of evidence. |
+| `release` | pass | A1 | `read-assigned`, `report-observation`, `name-next-action`, `escalate`, `draft-artifact` | Cannot rise. The pass ends in `publication-approval`, which is permanently ineligible for A3 regardless of evidence. |
 | `session` | pass | A1 | `read-assigned`, `report-observation`, `name-next-action`, `escalate`, `draft-artifact` | `R4`, plus consent handling that stays with the human facilitator. Participant material is never committed to this repository, so there is no record an unattended run could work from. |
 | `maintenance` | pass | A1 | `read-assigned`, `report-observation`, `name-next-action`, `flag-concern`, `escalate`, `draft-artifact`, `draft-patch` | `R4`. Disposition is the artifact maintainer's decision, and a deprecation changes an artifact's standing, which is human-owned. |
 | `safety_privacy_access_conduct` | queue | A0 | `read-assigned`, `flag-concern`, `name-next-action`, `escalate` | Cannot rise. The case record is private by design, so there is nothing here an agent may draft, and the operation is permanently ineligible as `moderation-and-removal`. |

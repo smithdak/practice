@@ -1,0 +1,501 @@
+# Unattended operation: the scheduled half of the A3 substrate.
+#
+# WHAT THIS IS. docs/framework/AUTONOMY_LADDER.md defines A3,
+# act-unattended-within-bounds, as an action performed without a person, inside a
+# bound a human recorded in advance. This workflow is the only thing in the
+# repository that can start such an action without someone typing a command.
+#
+# WHAT IT DOES AS SHIPPED: nothing. ops/autonomy/promotions.yaml records
+# `kill_switch: engaged` and an empty promotion list, so scripts/autonomy_guard.py
+# refuses every catalogued operation, the `propose` job below never starts, and
+# the run ends green with a summary naming each refused operation and the
+# precondition that refused it. A refusal is the expected weekly outcome here, not
+# a broken build. If this workflow ever goes red, something is actually wrong.
+#
+# WHAT AN UNATTENDED RUN ARRIVES AS: a pull request against the default branch,
+# never a push to it. Closing that pull request unmerged is a complete reversal,
+# so reversibility is structural rather than a procedure someone has to remember.
+# What a reviewer of one of these pull requests is agreeing to is written down in
+# ops/autonomy/PR_REVIEW_CONTRACT.md.
+#
+# THE TWO RECORDS that must both change before anything runs:
+#   1. a promotion signed by a human in ops/autonomy/promotions.yaml, and
+#   2. the kill switch released in the same file, as a separate edit.
+# This workflow is deliberately not a third record. It discovers what to attempt
+# by reading ops/autonomy/operations.yaml, so promoting an operation later never
+# requires editing this file. A workflow that had to be edited to promote
+# something would be a permission that no governance record could see.
+#
+# WHY THERE IS NO AUTO-MERGE. community/AMENDMENTS.md amendment 001 made bounded
+# merge *eligible* for A3. Eligible is not promoted, not catalogued, and not
+# enabled. A workflow that merged its own pull request would remove the only step
+# in this design where a person looks at what a machine did, which is the whole
+# design. Adding auto-merge is a governance decision recorded through
+# community/GOVERNANCE.md, not a change to this file.
+#
+# WHAT AN OWNER MUST ENABLE BEFORE THE PULL-REQUEST PATH CAN WORK AT ALL: see the
+# `permissions` comment on the `propose` job. Do not assume it is on; it is off by
+# default on a new repository.
+
+name: unattended
+
+on:
+  schedule:
+    # Mondays at 06:23 UTC. Weekly, because ops/WEEKLY_CADENCE.md makes the
+    # operating loop weekly with a Monday intake window, and every operation in
+    # ops/autonomy/operations.yaml is an input to that window - a cadence report,
+    # a metrics snapshot, a drift check, a staleness sweep, a draft brief. Running
+    # more often would open pull requests faster than the review window that reads
+    # them, and a queue of unread machine pull requests is worse than no pull
+    # request. Running less often would let a drift or staleness finding sit for
+    # more than one cadence.
+    #
+    # 06:23 rather than 06:00: GitHub's shared scheduler delays jobs queued on the
+    # hour, and a report that claims to describe Monday is less useful when it
+    # runs on Tuesday.
+    #
+    # GitHub disables a scheduled workflow after 60 days with no repository
+    # activity, and re-enabling it is a manual act. A silent schedule is the
+    # expected state of a dormant repository, not evidence that the substrate is
+    # working.
+    - cron: '23 6 * * 1'
+
+  # Manual start, for an owner rehearsing the path or checking a refusal.
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Simulate: run the runner with --dry-run so nothing is written and no pull request is opened.'
+        type: boolean
+        default: true
+        required: false
+
+# Read-only by default for the whole workflow. The one job that needs to write
+# raises exactly two scopes for itself, below.
+permissions:
+  contents: read
+
+# One unattended run at a time, and never cancel one that is mid-flight: a
+# cancelled run can leave a pushed branch with no pull request pointing at it,
+# which is a change nobody was asked to review.
+concurrency:
+  group: unattended
+  cancel-in-progress: false
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Job 1: ask the guard, and only the guard.
+  #
+  # This job holds a read-only token. In the shipped state it is the only job that
+  # runs, so a repository with nothing promoted never grants a write token to this
+  # workflow at all.
+  # ---------------------------------------------------------------------------
+  guard:
+    name: Guard verdicts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    outputs:
+      # Space-separated operation ids the guard permitted. Empty in the shipped
+      # state, which is what keeps the `propose` job from starting.
+      permitted: ${{ steps.verdicts.outputs.permitted }}
+      refused_count: ${{ steps.verdicts.outputs.refused_count }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history. In a --depth 1 clone, scripts/cadence.py collapses all
+          # six pass dates onto the clone's tip commit and prints no warning, so a
+          # scheduled cadence report would be quietly wrong for as long as nobody
+          # checked it by hand. A shallow clone is cheaper, and this is exactly
+          # the place not to buy it.
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # The catalog, the promotion record, and the ledger are all YAML.
+      - run: python3 -m pip install --disable-pip-version-check PyYAML
+
+      - name: Discover catalogued operations
+        id: catalog
+        # The list of operations to attempt comes from ops/autonomy/operations.yaml
+        # and is never written here. Adding an operation to the catalog, or signing
+        # a promotion for one, changes what this workflow attempts without anyone
+        # editing this file.
+        run: |
+          set -euo pipefail
+          python3 - >> "$GITHUB_OUTPUT" <<'PY'
+          import sys
+
+          import yaml
+
+          with open("ops/autonomy/operations.yaml", encoding="utf-8") as handle:
+              document = yaml.safe_load(handle)
+          if not isinstance(document, dict):
+              sys.exit("ops/autonomy/operations.yaml is not a YAML mapping.")
+          entries = document.get("operations")
+          if not isinstance(entries, list) or not entries:
+              sys.exit("ops/autonomy/operations.yaml lists no operations.")
+          ids = []
+          for entry in entries:
+              if not isinstance(entry, dict):
+                  sys.exit("ops/autonomy/operations.yaml: an entry is not a mapping.")
+              identifier = str(entry.get("id", "")).strip()
+              # The guard validates every id properly. This only has to be safe to
+              # pass through a shell loop, so it refuses anything surprising.
+              if not identifier or not identifier.replace("-", "").isalnum():
+                  sys.exit(f"ops/autonomy/operations.yaml: unusable operation id {entry.get('id')!r}.")
+              ids.append(identifier)
+          print("ids=" + " ".join(ids))
+          PY
+
+      - name: Ask the guard about every catalogued operation
+        id: verdicts
+        env:
+          # Passed through the environment rather than interpolated into the
+          # script, so file content can never become shell syntax.
+          OPERATIONS: ${{ steps.catalog.outputs.ids }}
+        # scripts/autonomy_guard.py: exit 0 permitted, 1 refused with the reason on
+        # stdout, 2 usage or record error. A refusal is a normal answer and keeps
+        # the job green; an exit 2 means the governance records themselves are
+        # unreadable, which is a real failure and fails the job.
+        run: |
+          set -u
+          # GitHub runs every `run:` block under `bash -e -o pipefail`. This loop
+          # reads exit codes on purpose, so errexit is turned off for it and every
+          # code is handled explicitly below.
+          set +e
+          permitted=""
+          refused=0
+          broken=0
+          {
+            echo "## Guard verdicts"
+            echo
+          } >> "$GITHUB_STEP_SUMMARY"
+          for operation in $OPERATIONS; do
+            verdict="$(python3 scripts/autonomy_guard.py --operation "$operation" --root .)"
+            code=$?
+            case "$code" in
+              0)
+                permitted="${permitted}${operation} "
+                echo "PERMITTED: $operation"
+                echo "- **$operation**: permitted." >> "$GITHUB_STEP_SUMMARY"
+                ;;
+              1)
+                refused=$((refused + 1))
+                printf '%s\n' "$verdict"
+                {
+                  echo "<details><summary><strong>$operation</strong>: refused</summary>"
+                  echo
+                  echo '```text'
+                  printf '%s\n' "$verdict"
+                  echo '```'
+                  echo
+                  echo "</details>"
+                } >> "$GITHUB_STEP_SUMMARY"
+                ;;
+              *)
+                broken=$((broken + 1))
+                printf '%s\n' "$verdict"
+                echo "- **$operation**: the guard could not reach a decision (exit $code)." >> "$GITHUB_STEP_SUMMARY"
+                ;;
+            esac
+          done
+          permitted="${permitted% }"
+          echo "permitted=$permitted" >> "$GITHUB_OUTPUT"
+          echo "refused_count=$refused" >> "$GITHUB_OUTPUT"
+          {
+            echo
+            if [ -n "$permitted" ]; then
+              echo "Permitted this run: \`$permitted\`. The next job runs them and opens one pull request."
+            else
+              echo "**Nothing ran.** $refused operation(s) refused, none permitted, no pull request opened, no file changed."
+              echo "This is the expected outcome while \`ops/autonomy/promotions.yaml\` carries no signed promotion"
+              echo "and records \`kill_switch: engaged\`. Both must change, as two separate human decisions,"
+              echo "before any operation runs unattended."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$broken" -gt 0 ]; then
+            echo "The guard failed to reach a decision for $broken operation(s); the governance records may be malformed." >&2
+            exit 1
+          fi
+          exit 0
+
+  # ---------------------------------------------------------------------------
+  # Job 2: run what the guard permitted, and propose the result as a pull request.
+  #
+  # Skipped entirely when nothing is permitted, which is the shipped state.
+  # ---------------------------------------------------------------------------
+  propose:
+    name: Run and propose
+    needs: guard
+    if: needs.guard.outputs.permitted != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # The minimum that can open a pull request from a workflow, and nothing else.
+    # Never `write-all`.
+    #   contents: write       - push the disposable branch. It cannot push to the
+    #                           default branch here because nothing below ever
+    #                           names the default branch as a push target, and the
+    #                           branch step refuses to run if the generated branch
+    #                           name collides with it.
+    #   pull-requests: write  - open the pull request.
+    # Neither scope is granted to job 1, and neither exists at all in the shipped
+    # state, because this job does not start.
+    #
+    # SEPARATELY, AND OFF BY DEFAULT: opening a pull request from a workflow also
+    # requires the repository setting
+    #   Settings -> Actions -> General -> Workflow permissions ->
+    #   "Allow GitHub Actions to create and approve pull requests"
+    # An owner must enable it. Until they do, `gh pr create` below fails with
+    # "GitHub Actions is not permitted to create or approve pull requests" even
+    # though the token carries `pull-requests: write`. Do not assume it is on: it
+    # is off by default, and it is an owner decision, not a workflow one.
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # See job 1: a shallow clone makes scripts/cadence.py silently wrong.
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: python3 -m pip install --disable-pip-version-check PyYAML
+
+      - name: Create the disposable branch
+        id: branch
+        # A fresh branch per run, named after the run, used once and never reused.
+        # Because it is new every time, no push here can ever be a force-push, and
+        # deleting it destroys everything the run produced.
+        run: |
+          set -euo pipefail
+          default_branch="${{ github.event.repository.default_branch }}"
+          branch="unattended/$(date -u +%Y-%m-%d)-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          if [ "$branch" = "$default_branch" ]; then
+            echo "Refusing to run: the branch name collides with the default branch '$default_branch'." >&2
+            exit 1
+          fi
+          git config user.name 'practice-unattended-runner'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch --create "$branch"
+          echo "name=$branch" >> "$GITHUB_OUTPUT"
+          echo "base=$default_branch" >> "$GITHUB_OUTPUT"
+
+      - name: Run the permitted operations
+        id: run
+        env:
+          PERMITTED: ${{ needs.guard.outputs.permitted }}
+          # `schedule` when the clock started the run, `manual` when a person did.
+          # The actor stays `scheduled-workflow` either way: the workflow is what
+          # executed the operation, and the runner records roles, never people.
+          TRIGGER: ${{ github.event_name == 'schedule' && 'schedule' || 'manual' }}
+          # A dispatch defaults to a simulation. --dry-run writes nothing at all,
+          # so the change-detection step below finds an unchanged tree and the run
+          # ends without a pull request. On the schedule this is empty.
+          DRY_RUN: ${{ inputs.dry_run && '--dry-run' || '' }}
+        # scripts/run_unattended.py calls the guard again itself, executes the
+        # catalogued command against a private staging copy so an out-of-scope
+        # write is never applied to this checkout, and appends one ledger entry per
+        # run under ops/ledger/. Exit 0 completed or dry run, 1 refused or failed,
+        # 2 usage error.
+        #
+        # A failing operation does not stop the loop. Whatever the earlier
+        # operations wrote is still proposed for review, and the last step of this
+        # job fails the run so the failure is visible.
+        run: |
+          set -u
+          # Errexit off: a non-zero runner exit is data here, not a reason to stop.
+          set +e
+          : > "$RUNNER_TEMP/outcomes.txt"
+          for operation in $PERMITTED; do
+            echo "::group::run_unattended.py --operation $operation"
+            python3 scripts/run_unattended.py \
+              --operation "$operation" \
+              --root . \
+              --trigger "$TRIGGER" \
+              --actor scheduled-workflow \
+              $DRY_RUN
+            code=$?
+            echo "::endgroup::"
+            printf '%s %s\n' "$operation" "$code" >> "$RUNNER_TEMP/outcomes.txt"
+          done
+          cat "$RUNNER_TEMP/outcomes.txt"
+
+      - name: Refuse to propose a change to the records that bound the run
+        # A backstop, not the bound. The bound is the runner, which applies only
+        # paths inside the operation's declared write_scope, and the guard, which
+        # refuses a write_scope that reaches a governance record in the first
+        # place. This check is here because community/AMENDMENTS.md amendment 001
+        # states the self-modification exclusion is not waivable by a promotion, so
+        # it is worth enforcing once more at the last point before a change leaves
+        # the machine. If it ever fires, the substrate has a defect: stop and read
+        # the runner's ledger entry rather than adjusting this list.
+        #
+        # ops/ledger/ is deliberately absent from the list. No operation may write
+        # there - the guard refuses a write_scope that reaches it - but the runner
+        # writes one entry per run there itself, and that record is the thing being
+        # proposed.
+        run: |
+          set -euo pipefail
+          violations=""
+          while IFS= read -r path; do
+            case "$path" in
+              .github/*|ops/autonomy/*|scripts/*|tests/*|tasks/*|buzz/agents/*|docs/framework/*|docs/schemas/*|handoffs/*|community/GOVERNANCE.md|community/AMENDMENTS.md|DECISIONS.md|NON_GOALS.md|OWNER_GATES.md|AGENTS.md|QUALITY_BAR.md|Makefile)
+                violations="${violations}${path} "
+                ;;
+            esac
+          done < <(git status --porcelain=v1 --untracked-files=all | cut -c4-)
+          if [ -n "$violations" ]; then
+            echo "Refusing to open a pull request: the run changed files that govern its own bounds: $violations" >&2
+            echo "See community/AMENDMENTS.md amendment 001, self-modification exclusion." >&2
+            exit 1
+          fi
+          echo "No governance record was changed."
+
+      - name: Detect what the run produced
+        id: changes
+        # An unchanged tree is the normal end of a dispatch simulation: --dry-run
+        # writes nothing at all, so there is nothing to review and no pull request.
+        # Any real run appends at least its own ledger entry even when the
+        # operation's write_scope is empty, so an unchanged tree after a non-dry
+        # run means the runner never got as far as recording itself - read the log
+        # above rather than treating it as a quiet success.
+        run: |
+          set -euo pipefail
+          if [ -z "$(git status --porcelain=v1 --untracked-files=all)" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "The working tree is unchanged: no pull request to open." | tee -a "$GITHUB_STEP_SUMMARY"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git status --porcelain=v1 --untracked-files=all
+          fi
+
+      - name: Compose the pull request body
+        id: body
+        if: steps.changes.outputs.changed == 'true'
+        # The body carries every ledger entry this run appended, in full, so a
+        # reviewer reads what the run recorded about itself without leaving the
+        # pull request - and can then check that record against the diff beside it.
+        run: |
+          set -euo pipefail
+          body="$RUNNER_TEMP/pr-body.md"
+          {
+            echo "Opened by \`.github/workflows/unattended.yml\` (run \`${GITHUB_RUN_ID}\`, attempt \`${GITHUB_RUN_ATTEMPT}\`) from \`${GITHUB_SHA}\`."
+            echo
+            echo "**No person wrote this change.** It was produced by an unattended run of a promoted"
+            echo "operation and is proposed, not applied. Read the review contract at"
+            echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/${GITHUB_SHA}/ops/autonomy/PR_REVIEW_CONTRACT.md"
+            echo "before approving: it states what you are agreeing to by merging, and what makes this"
+            echo "pull request closeable without discussion."
+            echo
+            echo "## Operations that ran"
+            echo
+            while read -r operation code; do
+              if [ "$code" = "0" ]; then
+                echo "- \`$operation\` - completed."
+              else
+                echo "- \`$operation\` - **did not complete** (exit \`$code\`). The runner applies nothing from a failed run; anything in this diff came from another operation."
+              fi
+            done < "$RUNNER_TEMP/outcomes.txt"
+            echo
+            echo "## Files changed"
+            echo
+            echo '```text'
+            git status --porcelain=v1 --untracked-files=all
+            echo '```'
+            echo
+            echo "## Ledger entries appended by this run"
+            echo
+            for entry in $(git status --porcelain=v1 --untracked-files=all | cut -c4- | grep '^ops/ledger/' || true); do
+              echo "### \`$entry\`"
+              echo
+              # Five backticks: a ledger entry may itself contain fenced blocks.
+              echo '`````markdown'
+              cat "$entry"
+              echo '`````'
+              echo
+            done
+          } > "$body"
+          echo "path=$body" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push the branch
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          BRANCH: ${{ steps.branch.outputs.name }}
+          PERMITTED: ${{ needs.guard.outputs.permitted }}
+        # `git push origin "$BRANCH"` with no --force and no refspec that names the
+        # default branch. The branch is new this run, so a force-push is never even
+        # possible here.
+        run: |
+          set -euo pipefail
+          git add --all
+          git commit --message "unattended(${PERMITTED// /,}): run ${GITHUB_RUN_ID}" \
+                     --message "Opened for review by .github/workflows/unattended.yml. Nothing here was written by a person. Reversal: close the pull request unmerged and delete branch ${BRANCH}."
+          git push origin "$BRANCH"
+
+      - name: Open the pull request
+        id: pr
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ steps.branch.outputs.name }}
+          BASE: ${{ steps.branch.outputs.base }}
+          PERMITTED: ${{ needs.guard.outputs.permitted }}
+          BODY: ${{ steps.body.outputs.path }}
+        # One pull request per run, carrying every operation this run performed.
+        #
+        # The exact reversal commands need the pull request's number, which does
+        # not exist until it is created - so the body is finished with a second
+        # call once the number is known. A reviewer should never have to work out
+        # the undo for themselves.
+        run: |
+          set -euo pipefail
+          url="$(gh pr create \
+            --base "$BASE" \
+            --head "$BRANCH" \
+            --title "Unattended run ${GITHUB_RUN_ID}: ${PERMITTED// /, }" \
+            --body-file "$BODY")"
+          number="${url##*/}"
+          {
+            echo "## Reversal"
+            echo
+            echo "Before merge - this is a complete reversal, and it is why an unattended run arrives"
+            echo "as a pull request rather than a push:"
+            echo
+            echo '```bash'
+            echo "gh pr close ${number} --delete-branch"
+            echo '```'
+            echo
+            echo "After merge, revert the commit this pull request put on \`${BASE}\`:"
+            echo
+            echo '```bash'
+            echo "git revert -m 1 \$(gh pr view ${number} --json mergeCommit --jq .mergeCommit.oid)"
+            echo '```'
+            echo
+            echo "Each operation also records its own reversal in the \`reversal\` field of its ledger"
+            echo "entry above - use that when only part of this pull request needs undoing."
+          } >> "$BODY"
+          gh pr edit "$number" --body-file "$BODY"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          {
+            echo "## Pull request"
+            echo
+            echo "Opened $url from \`$BRANCH\` against \`$BASE\`. Closing it unmerged reverses the run completely."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail the run if any operation did not complete
+        # Runs last so that a partial failure is still proposed for review and
+        # still recorded in the ledger, while the workflow itself goes red.
+        run: |
+          set -euo pipefail
+          failed="$(awk '$2 != 0 {print $1}' "$RUNNER_TEMP/outcomes.txt" | tr '\n' ' ')"
+          if [ -n "$failed" ]; then
+            echo "Operations that did not complete: $failed" >&2
+            exit 1
+          fi
+          echo "Every permitted operation completed."

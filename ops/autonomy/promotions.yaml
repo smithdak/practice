@@ -1,0 +1,36 @@
+# The governance record for unattended action. Nothing is promoted.
+#
+# scripts/autonomy_guard.py reads this file before any operation acts. It
+# permits a run only when this file both releases the kill switch and carries a
+# signed promotion for that operation at A3. Editing one of those two without
+# the other changes nothing: the guard refuses, and names which of the two is
+# missing.
+#
+# Shipped state, 2026-09-02: the kill switch is engaged and the promotion list
+# is empty, so every catalogued operation is refused. Verify it:
+#
+#     python3 scripts/autonomy_guard.py --operation cadence-snapshot --root .
+#
+# Writing an entry here is a reserved decision under community/GOVERNANCE.md,
+# made by a human through the reserved-decision path and recorded with its
+# evidence. No agent, runner, validator, or guard may add one, and a run of good
+# outputs is not a promotion. The proposal a human signs is
+# ops/autonomy/PROMOTION_PROPOSAL.md; the case for and against each candidate is
+# in ops/autonomy/CANDIDATES.md.
+#
+# A promotion entry has exactly these fields:
+#
+#   operation          id of an entry in ops/autonomy/operations.yaml
+#   level              A3; this record grants nothing else
+#   write_scope        must equal the catalog entry's write_scope exactly
+#   evidence           repository paths a reviewer can open; each must exist
+#   demotion_triggers  the observable conditions that end this promotion
+#   signed_by          founder, beta-owner, or continuity-owner
+#   signed_on          ISO date the decision was made, not in the future
+#
+# Reversal, in the order a human would use it under pressure: set kill_switch
+# back to engaged (one edit, stops everything), then delete the promotion entry.
+
+schema_version: 1
+kill_switch: engaged
+promotions: []

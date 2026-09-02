@@ -77,6 +77,42 @@ collector: see [`ops/metrics/README.md`](metrics/README.md) for what it can and
 cannot see, and [`release/briefs/README.md`](../release/briefs/README.md) for the
 approval rule a brief is subject to.
 
+## The A3 substrate
+
+Everything above runs when a person types the command. The substrate below is
+what an operation would need to run *without* one. It is built and **inert**:
+nothing is promoted, and the kill switch is engaged.
+
+| Piece | File | What it guarantees |
+|---|---|---|
+| Operation catalog | [`ops/autonomy/operations.yaml`](autonomy/operations.yaml) | Every operation that could one day run unattended, with the narrow path glob it may write and the command that reverses it |
+| Promotion record | [`ops/autonomy/promotions.yaml`](autonomy/promotions.yaml) | The signed decisions. Ships empty, with `kill_switch: engaged` |
+| Guard | `scripts/autonomy_guard.py` | Refuses by default. Twenty-four preconditions; missing or malformed input refuses rather than defaulting to permitted |
+| Runner | `scripts/run_unattended.py` | Executes in a staging copy, so a write outside the declared scope is never applied rather than applied and undone |
+| Ledger | [`ops/ledger/`](ledger/README.md) | Append-only record of what a run read, wrote, and how to reverse it |
+| Demotion check | `scripts/demotion_check.py` | Evaluates the ladder's observable triggers. Detects and reports; removing a promotion stays a human act |
+| Scheduled workflow | `.github/workflows/unattended.yml` | Opens a pull request; never pushes to the default branch. Its writing job does not start while nothing is permitted, so the run holds no token that can write |
+
+**Two independent records must both change before anything runs.** A signed
+promotion alone is refused while the kill switch is engaged; a released kill
+switch alone is refused with nothing promoted. Neither is sufficient, which is
+the property that makes a single mistaken edit harmless.
+
+An unattended run arrives as a pull request, so closing it is a complete
+reversal and merging it is an acceptance of the content —
+[the review contract](autonomy/PR_REVIEW_CONTRACT.md) says what a reviewer is
+agreeing to. [The candidate dossiers](autonomy/CANDIDATES.md) state what each
+operation would do and what could go wrong; two of the five argue against their
+own promotion. [The promotion proposal](autonomy/PROMOTION_PROPOSAL.md) is what
+a human signs, and it requires a reversal that has been executed rather than
+asserted.
+
+See it refuse:
+
+```bash
+make autonomy
+```
+
 ## A week on the loop
 
 1. **Open the loop.** `make cadence` names the due passes, the blocked handoffs,

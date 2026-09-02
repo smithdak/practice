@@ -20,5 +20,6 @@ Agents must treat these as settled unless `OWNER_GATES.md` explicitly reopens th
 | Moderation | Human-owned decisions; agents may triage and recommend but not silently remove people/content |
 | Content license default | CC BY 4.0 |
 | Code license default | Apache License 2.0 |
+| Unattended agent action | Eligible only with a signed promotion **and** an independently released kill switch; nothing is promoted (see `community/AMENDMENTS.md` 001) |
 | Custom website | Not required for initial launch |
 | Paid products | Not part of initial build |

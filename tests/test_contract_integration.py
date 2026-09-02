@@ -13,6 +13,8 @@ from __future__ import annotations
 
 import subprocess
 import sys
+
+import yaml
 import tempfile
 import unittest
 from pathlib import Path
@@ -149,6 +151,17 @@ class ValidatorWiringTests(unittest.TestCase):
             "a human runs it against a live route before enabling the Steward"
         ),
         "scripts/validate.py": "run by CI through its --release mode, asserted separately",
+        "scripts/autonomy_guard.py": (
+            "decides whether one operation may run; its exit code is a decision, not a "
+            "build verdict, and wiring it as a step would fail CI precisely because the "
+            "substrate is inert. The refusal invariant is asserted by "
+            "tests/test_autonomy_guard.py, which CI runs"
+        ),
+        "scripts/run_unattended.py": (
+            "executes one catalogued operation and exits 1 while nothing is promoted, "
+            "which is the shipped state; its refusal and containment invariants are "
+            "asserted by tests/test_run_unattended.py"
+        ),
     }
 
     @classmethod
@@ -249,6 +262,108 @@ class RepositoryCheckTests(unittest.TestCase):
     def test_triage_records_validate(self):
         result = run_script("scripts/triage.py", "validate", "ops/triage", "--root", ".")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+
+class AmendmentConsistencyTests(unittest.TestCase):
+    """Amendment 001, the ladder, and the guard must say the same thing.
+
+    A governance amendment that reaches one of the three and not the others is
+    the failure mode the guard's ladder-agreement precondition exists to catch:
+    it refused this amendment until the tooling was updated deliberately.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        sys.path.insert(0, str(REPOSITORY_ROOT / "scripts"))
+        import autonomy_guard  # noqa: E402
+
+        cls.guard = autonomy_guard
+        cls.ladder = (REPOSITORY_ROOT / LADDER_RELATIVE).read_text(encoding="utf-8")
+        cls.amendment = (REPOSITORY_ROOT / "community" / "AMENDMENTS.md").read_text(encoding="utf-8")
+
+    def test_the_split_publication_operation_is_still_ineligible(self):
+        self.assertIn("publication-approval", self.guard.INELIGIBLE_OPERATIONS)
+        self.assertIn("`publication-approval`", self.ladder)
+
+    def test_merge_left_the_ineligible_list_in_both_places(self):
+        self.assertNotIn("merge", self.guard.INELIGIBLE_OPERATIONS)
+        section = self.ladder.split("## Permanently ineligible for A3", 1)[1].split("\n## ", 1)[0]
+        self.assertNotIn("| `merge` |", section)
+
+    def test_the_amendment_is_recorded_before_the_lists_changed(self):
+        self.assertIn("Amendment 001", self.amendment)
+        self.assertIn("publication-approval", self.amendment)
+        self.assertIn("self-modification", self.amendment.lower())
+
+    def test_nothing_the_amendment_declined_became_eligible(self):
+        for declined in ("moderation-and-removal", "maturity-promotion",
+                         "owner-identity-and-keys", "license-and-governance-change",
+                         "owner-reserved-decision"):
+            with self.subTest(operation=declined):
+                self.assertIn(declined, self.guard.INELIGIBLE_OPERATIONS)
+
+    def test_the_ladder_states_the_self_modification_exclusion(self):
+        self.assertIn("self-modification exclusion", self.ladder.lower())
+        self.assertIn("not waivable", self.ladder.lower())
+
+
+class ContainmentTests(unittest.TestCase):
+    """The two write-scope matchers disagree on purpose, both toward refusing."""
+
+    @classmethod
+    def setUpClass(cls):
+        sys.path.insert(0, str(REPOSITORY_ROOT / "scripts"))
+        import autonomy_guard  # noqa: E402
+        import run_unattended  # noqa: E402
+
+        cls.guard = autonomy_guard
+        cls.runner = run_unattended
+
+    def test_the_runner_does_not_let_a_glob_cross_a_directory(self):
+        """Plain fnmatch would admit this, widening the scope by a directory."""
+        self.assertFalse(self.runner.matches_scope("ops/status/archive/old.md", ["ops/status/*.md"]))
+        self.assertTrue(self.runner.matches_scope("ops/status/today.md", ["ops/status/*.md"]))
+
+    def test_a_subtree_scope_has_to_say_so(self):
+        self.assertTrue(self.runner.matches_scope("ops/status/archive/old.md", ["ops/status/**"]))
+
+    def test_the_shipped_catalog_scopes_reach_no_governed_path(self):
+        catalog = yaml.safe_load((REPOSITORY_ROOT / "ops" / "autonomy" / "operations.yaml").read_text())
+        for operation in catalog["operations"]:
+            for pattern in operation.get("write_scope") or []:
+                with self.subTest(operation=operation["id"], pattern=pattern):
+                    self.assertIsNone(
+                        self.guard.glob_reaches_governed_path(pattern),
+                        "a catalogued write scope must not reach a file governing the agent's bounds",
+                    )
+
+    def test_no_catalogued_scope_admits_a_governing_file(self):
+        catalog = yaml.safe_load((REPOSITORY_ROOT / "ops" / "autonomy" / "operations.yaml").read_text())
+        scopes = [p for op in catalog["operations"] for p in (op.get("write_scope") or [])]
+        for governed in ("DECISIONS.md", "NON_GOALS.md", "community/GOVERNANCE.md",
+                         "community/AMENDMENTS.md", LADDER_RELATIVE,
+                         "ops/autonomy/promotions.yaml", ".github/workflows/ci.yml"):
+            with self.subTest(path=governed):
+                self.assertFalse(self.runner.matches_scope(governed, scopes))
+
+
+class LedgerIdentityTests(unittest.TestCase):
+    """Run ids are allocated from recorded ids, not file names."""
+
+    def test_the_next_id_does_not_collide_with_the_sample(self):
+        sys.path.insert(0, str(REPOSITORY_ROOT / "scripts"))
+        import ledger  # noqa: E402
+
+        sample = (REPOSITORY_ROOT / "ops" / "ledger" / "SAMPLE_run.md").read_text(encoding="utf-8")
+        recorded = [line for line in sample.split("\n") if line.startswith("run_id:")]
+        self.assertEqual(len(recorded), 1, "the sample should record exactly one run id")
+        taken = recorded[0].split(":", 1)[1].strip()
+        operation = taken.rsplit("-", 1)[0]
+        self.assertNotEqual(
+            ledger.next_run_id(operation, root=REPOSITORY_ROOT),
+            taken,
+            "the sample is exempt from the file-naming rule, so a name-only scan reissues its id",
+        )
 
 
 if __name__ == "__main__":

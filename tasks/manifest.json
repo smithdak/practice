@@ -3095,6 +3095,272 @@
       ],
       "spec": "tasks/specs/W1.md",
       "status": "todo"
+    },
+    {
+      "id": "X1",
+      "title": "Action ledger schema, validator, and sample",
+      "wave": 13,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "docs/schemas/ACTION_LEDGER_SCHEMA.md",
+        "ops/ledger/README.md",
+        "ops/ledger/SAMPLE_run.md",
+        "scripts/ledger.py",
+        "tests/test_ledger.py"
+      ],
+      "handoff": "handoffs/X1.md",
+      "objective": "Give an unattended run a record that says what it read, every path it wrote, and how to reverse it.",
+      "requirements": [
+        "Record enough for the demotion checker to evaluate the ladder's observable triggers.",
+        "Reject an entry that omits its reversal or records no preconditions.",
+        "Keep the ledger append-only: a correction supersedes an earlier entry, never edits it.",
+        "State that a valid entry is a record, not an authorization."
+      ],
+      "acceptance": [
+        "An entry missing its reversal fails validation.",
+        "The committed sample is hypothetical and depicts no promoted run.",
+        "The append interface round-trips and refuses to overwrite."
+      ],
+      "spec": "tasks/specs/X1.md",
+      "status": "todo"
+    },
+    {
+      "id": "X2",
+      "title": "Operation catalog, promotion record, and fail-closed guard",
+      "wave": 13,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/autonomy/operations.yaml",
+        "ops/autonomy/promotions.yaml",
+        "ops/autonomy/README.md",
+        "scripts/autonomy_guard.py",
+        "tests/test_autonomy_guard.py"
+      ],
+      "handoff": "handoffs/X2.md",
+      "objective": "Make unattended eligibility a record a validator checks, and refuse by default when it does not hold.",
+      "requirements": [
+        "Catalog only operations the repository already implements; derive each command from its script.",
+        "Ship the promotion record empty with the kill switch engaged.",
+        "Refuse on missing, malformed, or disagreeing records; never default to permitted.",
+        "Refuse a write scope that could reach a file governing the agent's own bounds."
+      ],
+      "acceptance": [
+        "With the shipped records every catalogued operation is refused.",
+        "A promotion alone, or a released kill switch alone, is still refused.",
+        "A catalog entry may not declare A3, so one file can never promote."
+      ],
+      "spec": "tasks/specs/X2.md",
+      "status": "todo"
+    },
+    {
+      "id": "X3",
+      "title": "Unattended runner with bounded writes",
+      "wave": 14,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [
+        "X1",
+        "X2"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "scripts/run_unattended.py",
+        "tests/test_run_unattended.py"
+      ],
+      "handoff": "handoffs/X3.md",
+      "objective": "Execute a permitted operation inside its declared write scope and record what it did.",
+      "requirements": [
+        "Call the guard first and stop on refusal; do not reimplement a precondition.",
+        "Treat the operation's command as untrusted with respect to its own bound.",
+        "Write nothing at all under --dry-run.",
+        "Append exactly one valid ledger entry per non-dry run, including refusals."
+      ],
+      "acceptance": [
+        "A command writing outside its scope leaves nothing behind.",
+        "All five catalogued operations refuse against the shipped records.",
+        "The containment mechanism's limits are stated rather than overclaimed."
+      ],
+      "spec": "tasks/specs/X3.md",
+      "status": "todo"
+    },
+    {
+      "id": "X4",
+      "title": "Demotion trigger detection",
+      "wave": 14,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [
+        "X1",
+        "X2"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "scripts/demotion_check.py",
+        "tests/test_demotion_check.py"
+      ],
+      "handoff": "handoffs/X4.md",
+      "objective": "Evaluate the autonomy ladder's observable demotion triggers so a level can go down as well as up.",
+      "requirements": [
+        "Parse the triggers from the ladder rather than transcribing a copy that will drift.",
+        "Classify every trigger as evaluable here or not, with a stated reason.",
+        "Detect and report only; removing a promotion stays a human act.",
+        "Fail loudly when the ladder's trigger section is missing rather than reporting zero triggers."
+      ],
+      "acceptance": [
+        "Drift in either direction between the ladder and the classifications fails loudly.",
+        "An empty ledger exits 0 for the right reason, not a vacuous one.",
+        "A refused or dry run fires no trigger."
+      ],
+      "spec": "tasks/specs/X4.md",
+      "status": "todo"
+    },
+    {
+      "id": "X5",
+      "title": "Scheduled workflow that opens a pull request",
+      "wave": 15,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [
+        "X3"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        ".github/workflows/unattended.yml",
+        "ops/autonomy/PR_REVIEW_CONTRACT.md"
+      ],
+      "handoff": "handoffs/X5.md",
+      "objective": "Fire a permitted operation on a schedule and deliver its result as a reviewable pull request.",
+      "requirements": [
+        "Run the guard first and exit cleanly when nothing is promoted.",
+        "Never push to the default branch and never force-push.",
+        "Discover operations from the catalog rather than hardcoding a list.",
+        "Request the minimum permissions that can open a pull request, and implement no auto-merge."
+      ],
+      "acceptance": [
+        "The writing job does not start while nothing is permitted.",
+        "A refusal is the expected outcome today and does not look like a broken build.",
+        "The review contract states that merging accepts the content, not the process."
+      ],
+      "spec": "tasks/specs/X5.md",
+      "status": "todo"
+    },
+    {
+      "id": "X6",
+      "title": "Promotion proposal and candidate dossiers",
+      "wave": 13,
+      "lane": "operations",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/autonomy/PROMOTION_PROPOSAL.md",
+        "ops/autonomy/CANDIDATES.md"
+      ],
+      "handoff": "handoffs/X6.md",
+      "objective": "Make an A3 promotion recordable and well-informed without making it easier to approve.",
+      "requirements": [
+        "Require a reversal that has been executed rather than asserted.",
+        "State the evidence that does not exist as well as the evidence that does.",
+        "Ground every dossier claim in the script that implements the operation.",
+        "Recommend no promotion; say plainly where a candidate should stay where it is."
+      ],
+      "acceptance": [
+        "Every candidate dossier states write scope, reversal, blast radius, and how it could go wrong.",
+        "Neither document contains a filled-in signature or implies a decision was made.",
+        "A candidate unsuitable for unattended running is identified as such."
+      ],
+      "spec": "tasks/specs/X6.md",
+      "status": "todo"
+    },
+    {
+      "id": "W2",
+      "title": "Wire the A3 substrate, apply amendment 001, and record the phase",
+      "wave": 15,
+      "lane": "integration",
+      "model_tier": "strong",
+      "mode": "integration",
+      "dependencies": [
+        "X1",
+        "X2",
+        "X3",
+        "X4",
+        "X5",
+        "X6"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "community/AMENDMENTS.md",
+        "release/PHASE4_REPORT.md"
+      ],
+      "handoff": "handoffs/W2.md",
+      "objective": "Join the substrate into the operating procedure, carry the founder's governance amendment into the ladder and the tooling, and record what the phase did and did not change.",
+      "requirements": [
+        "Record the amendment before changing any list it governs.",
+        "Keep the guard's ineligible list and the ladder in agreement, deliberately.",
+        "Tighten write-scope matching where it was wider than it read.",
+        "Change no owner gate, operating hold, maturity, or evidence_quality value, and promote nothing."
+      ],
+      "acceptance": [
+        "Every gate and hold still reads OPEN, and nothing is promoted.",
+        "All repository checks pass and run in CI or carry a stated exemption.",
+        "The phase report separates what was built from what it does not establish."
+      ],
+      "spec": "tasks/specs/W2.md",
+      "status": "todo"
     }
   ]
 }

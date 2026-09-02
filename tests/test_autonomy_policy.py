@@ -45,11 +45,13 @@ UNATTENDED_LEVEL = "A3"
 # The operations the repository has already reserved to a human. Each one must
 # appear in the ladder's ineligible table and in no operation's allowed
 # actions. Adding a row to that table is allowed; dropping one of these is not.
+# Amended by community/AMENDMENTS.md (001): `merge` left this list in favour
+# of bounded auto-merge, and `publication-and-announcement` split so that only
+# `publication-approval` remains. Both replacements are eligible, not promoted.
 REQUIRED_INELIGIBLE = (
     "moderation-and-removal",
     "maturity-promotion",
-    "publication-and-announcement",
-    "merge",
+    "publication-approval",
     "owner-identity-and-keys",
     "license-and-governance-change",
     "owner-reserved-decision",

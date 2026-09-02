@@ -1,0 +1,142 @@
+# Every operation that could one day run unattended, whether or not it is promoted.
+#
+# This catalog is a description, not a permission. `level` records where an
+# operation sits today under docs/framework/AUTONOMY_LADDER.md, and the ladder's
+# A3 value may not appear here at all: an unattended level comes only from a
+# signed promotion in ops/autonomy/promotions.yaml, so editing this file alone
+# can never let anything run on its own. scripts/autonomy_guard.py refuses a
+# catalog entry that declares A3.
+#
+# Fields, one entry per operation:
+#
+#   id           lowercase slug a promotion and a ledger entry reference
+#   summary      what one run does, in one line
+#   command      the argv an unattended run would execute, no shell
+#   write_scope  the ONLY paths the run may create or change; [] writes nothing
+#   reversal     what a human does to undo the run without the agent
+#   blast_radius what one run touches, including whether it reaches a member
+#   level        current level: A0, A1, or A2
+#   level_basis  the ladder row or action vocabulary that sets that level
+#   note         optional; a limit a reader would otherwise have to discover
+#
+# A `write_scope` glob is matched with fnmatch against the repository-relative
+# POSIX path, where `*` is not special about `/`. Keep every glob rooted in a
+# directory that holds only generated files, and never let one reach a
+# governance record, a script, a test, or a workflow: the guard refuses a scope
+# that covers the records deciding whether the operation may run.
+#
+# Adding an operation here proposes nothing. The dossiers in
+# ops/autonomy/CANDIDATES.md are where a human reads the case for and against
+# promoting one.
+
+schema_version: 1
+
+sources:
+  - docs/framework/AUTONOMY_LADDER.md
+  - ops/AUTONOMOUS_OPERATION.md
+  - ops/cadence.yaml
+  - SWARM_PHASE4_PLAN.md
+
+operations:
+  - id: cadence-snapshot
+    summary: Run the cadence report and write a dated status file.
+    command: ["python3", "scripts/cadence.py", "--root", "."]
+    write_scope: ["ops/status/*.md"]
+    reversal: Delete the written file, or close the pull request unmerged.
+    blast_radius: One new file in the repository. No member contact.
+    level: A1
+    level_basis: >-
+      The ladder maps the blocked-handoff, open-gate, and stale-as-of checks this
+      report computes at A0. Writing the report to a file is `draft-artifact`,
+      which the action vocabulary places at A1.
+    note: >-
+      The report never exits non-zero on a due pass, and an elapsed window is not
+      overdue work for any person. A dated file is a description of the loop on
+      the day it ran, not an assignment to anyone.
+
+  - id: metrics-snapshot
+    summary: Collect the repository-observable metrics and write a dated status file.
+    command: ["python3", "scripts/collect_metrics.py", "--root", "."]
+    write_scope: ["ops/status/*.md"]
+    reversal: Delete the written file, or close the pull request unmerged.
+    blast_radius: >-
+      One new file in the repository. The collector opens no socket and reads no
+      person, so nothing about a member is written or transmitted. No member
+      contact.
+    level: A1
+    level_basis: >-
+      Counting what committed files state is `report-observation` at A0; writing
+      the report to a file is `draft-artifact`, which is A1.
+    note: >-
+      Every metric the collector cannot see is printed as needing the human route
+      in ops/METRICS.md, never as a zero. A snapshot is not a measurement of the
+      community.
+
+  - id: contract-drift-check
+    summary: >-
+      Check the agent registry against the profiles, channel map, and owner-gate
+      record it claims to describe, and report every disagreement.
+    command: ["python3", "scripts/validate_agents.py", "--root", "."]
+    write_scope: []
+    reversal: >-
+      Nothing to reverse: the check creates and changes no path. Close the pull
+      request unmerged if the scheduled workflow opened one.
+    blast_radius: >-
+      No file is created or changed. The run is visible only in its ledger entry
+      and the report it prints. No member contact.
+    level: A0
+    level_basis: >-
+      `read-assigned` and `report-observation` only. The validator reads files
+      and prints findings; the ladder places both actions at A0.
+    note: >-
+      This covers the registry contract only. The eval-definition, packet, and
+      artifact validators are separate commands and are not catalogued here; a
+      clean run of this one is not evidence that they pass.
+
+  - id: staleness-sweep
+    summary: >-
+      Scan every markdown file for broken relative links and As-of dates older
+      than the staleness limit, and report them.
+    command: ["python3", "scripts/check_links.py", "."]
+    write_scope: []
+    reversal: >-
+      Nothing to reverse: the sweep creates and changes no path. Close the pull
+      request unmerged if the scheduled workflow opened one.
+    blast_radius: >-
+      No file is created or changed. The sweep exits non-zero on a broken link,
+      which fails the run rather than fixing anything. No member contact.
+    level: A0
+    level_basis: >-
+      The `stale_as_of` check row in the ladder is A0, and its raise column asks
+      for R2 only if a human wants a drafted disposition per stale file.
+    note: >-
+      A stale As-of date is a warning, never an error, and deciding what to do
+      about one stays with the artifact maintainer. The sweep reports; it never
+      edits a date or a link.
+
+  - id: release-brief-draft
+    summary: >-
+      Assemble a draft release brief from committed evidence in a commit range
+      and write it into the briefs directory.
+    command: ["python3", "scripts/release_brief.py", "--root", "."]
+    write_scope: ["release/briefs/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]-*.md"]
+    reversal: >-
+      Delete the written brief, or close the pull request unmerged. A brief is a
+      draft until a named human maintainer approves it, so no reversal has to
+      reach anything published.
+    blast_radius: >-
+      One new dated file under release/briefs/. The glob excludes that
+      directory's README, so a run cannot rewrite the rule a brief is read
+      under. No member contact.
+    level: A1
+    level_basis: >-
+      The `release` pass row is A1: the brief is `draft-artifact`. That row also
+      records that the pass cannot rise, because it ends in
+      `publication-and-announcement`, which is permanently ineligible for A3.
+      Drafting the brief is not that act; publishing it is.
+    note: >-
+      The catalogued command is deliberately incomplete. scripts/release_brief.py
+      requires --since and --as-of, and both are per-run judgments - which range,
+      which date - that no record here binds. Run as catalogued it exits 2 and
+      writes nothing, so promoting this operation means first deciding who
+      chooses those two inputs and how.

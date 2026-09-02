@@ -39,5 +39,9 @@ jobs:
         run: python3 scripts/validate_agent_evals.py --root .
       - name: Triage records
         run: python3 scripts/triage.py validate ops/triage --root .
+      - name: Ledger entries
+        run: python3 scripts/ledger.py validate ops/ledger --root .
+      - name: Demotion triggers
+        run: python3 scripts/demotion_check.py --root .
       - name: Links and as-of dates
         run: python3 scripts/check_links.py
