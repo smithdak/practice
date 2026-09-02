@@ -18,20 +18,16 @@ you have an implementation or result others can inspect.
 
 ## Make one useful first post
 
-Use four short lines:
+Use the canonical first-post form from
+[Onboarding](../../community/ONBOARDING.md):
 
-```text
-I work on …
-I want to improve or understand …
-My next outcome is Learn | Use | Automate | Build | Transform.
-My first small action is …
-```
+> I am a **[role or work context]**. I want to work on **[a non-sensitive real task or workflow]**. My next outcome is **[Learn | Use | Automate | Build | Transform]**. My first small action is **[one checkable action I can take next]**.
 
 ### Example (hypothetical)
 
-> I coordinate operations. I want to improve a weekly meeting brief made from
-> approved notes. My next outcome is **Use**. My first small action is to draft
-> one brief and compare every decision and owner with the notes.
+> I am an operations coordinator. I want to work on a weekly meeting brief
+> made from approved notes. My next outcome is **Use**. My first small action
+> is to draft one brief and compare every decision and owner with the notes.
 
 After posting, take the action and return to the same thread with what you
 checked, what changed, what failed, or where you are stuck. The outcome is a

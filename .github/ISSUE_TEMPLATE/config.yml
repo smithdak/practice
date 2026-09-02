@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Read the contribution guide first
+    url: https://github.com/smithdak/practice/blob/main/CONTRIBUTING.md
+    about: How contributions are proposed, evidenced, reviewed, and merged.
+  - name: How issues are triaged
+    url: https://github.com/smithdak/practice/blob/main/.github/TRIAGE_POLICY.md
+    about: The category and state labels an issue moves through, and who decides what.
+  - name: Report a conduct concern privately
+    url: https://github.com/smithdak/practice/blob/main/CODE_OF_CONDUCT.md
+    about: Do not open a public issue. Use the private route in the Code of Conduct.
+  - name: Report a security or privacy problem
+    url: https://github.com/smithdak/practice/blob/main/SECURITY.md
+    about: Do not open a public issue for an unfixed vulnerability.

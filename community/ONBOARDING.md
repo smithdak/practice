@@ -19,7 +19,9 @@ Hosted Buzz communities are invite-only; joining an open channel is possible onl
 
 ### First action: make one `start-here` post
 
-After selecting a route, copy, complete, and post this message in `start-here`:
+After selecting a route, copy, complete, and post this message in `start-here`.
+This is the canonical first-post form; every other surface that shows it
+reproduces this wording.
 
 > I am a **[role or work context]**. I want to work on **[a non-sensitive real task or workflow]**. My next outcome is **[Learn | Use | Automate | Build | Transform]**. My first small action is **[one checkable action I can take next]**.
 

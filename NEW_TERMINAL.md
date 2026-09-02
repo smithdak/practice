@@ -1,18 +1,45 @@
 # New Terminal Pickup
 
-These commands assume the downloaded ZIP is in the Windows Downloads folder and the working copy should live in Dakota's WSL projects directory.
+Use this page when you open a fresh terminal and want the repository ready to
+work in. It assumes you have a copy of the kit — either a Git clone or a
+downloaded archive — and a POSIX shell with Python 3 available.
+
+Set two variables once, then the rest of the page is copy-paste. Adjust the
+paths to wherever you keep projects and downloads.
 
 ```bash
-mkdir -p /home/dakota/projects
-cd /home/dakota/projects
-rm -rf practice-swarm-kit practice
-unzip /mnt/c/Users/dakot/Downloads/practice-swarm-kit.zip
-mv practice-swarm-kit practice
-cd practice
+PRACTICE_DIR="$HOME/projects/practice"
+PRACTICE_ARCHIVE="$HOME/Downloads/practice-swarm-kit.zip"   # only for the archive route
+```
+
+> On WSL, a Windows download usually lives under
+> `/mnt/c/Users/<your-windows-user>/Downloads`.
+
+## Get a working copy
+
+From a Git clone:
+
+```bash
+mkdir -p "$(dirname "$PRACTICE_DIR")"
+git clone <repository-url> "$PRACTICE_DIR"
+cd "$PRACTICE_DIR"
 ./scripts/init.sh
 ```
 
-Open or attach the persistent terminal session:
+From a downloaded archive (this **removes** any existing copy at the target
+path — check it first if you have local work there):
+
+```bash
+mkdir -p "$(dirname "$PRACTICE_DIR")"
+cd "$(dirname "$PRACTICE_DIR")"
+rm -rf practice-swarm-kit "$PRACTICE_DIR"
+unzip "$PRACTICE_ARCHIVE"
+mv practice-swarm-kit "$PRACTICE_DIR"
+cd "$PRACTICE_DIR"
+./scripts/init.sh
+```
+
+Open or attach a persistent terminal session:
 
 ```bash
 tmux new-session -A -s practice
@@ -21,7 +48,7 @@ tmux new-session -A -s practice
 Run the environment and repository checks:
 
 ```bash
-cd /home/dakota/projects/practice
+cd "$PRACTICE_DIR"
 make doctor
 make validate
 make status

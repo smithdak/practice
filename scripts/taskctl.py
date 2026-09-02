@@ -173,10 +173,16 @@ def changed_files(base: str, branch: str) -> set[str]:
     return {line.strip() for line in out.splitlines() if line.strip()}
 
 
+# Modes allowed to touch paths beyond their declared output set. `integration`
+# applies reviewed corrections across artifacts; `revision` reworks an existing
+# artifact and may need to follow a correction into a neighbouring file.
+BROAD_SCOPE_MODES = {"integration", "revision"}
+
+
 def validate_changed_scope(task: dict, files: set[str]) -> tuple[list[str], list[str]]:
     expected = set(task["outputs"] + [task["handoff"]])
     unchanged = sorted(expected - files)
-    unexpected = [] if task.get("mode") == "integration" else sorted(files - expected)
+    unexpected = [] if task.get("mode") in BROAD_SCOPE_MODES else sorted(files - expected)
     return unchanged, unexpected
 
 

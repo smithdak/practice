@@ -1811,6 +1811,944 @@
       ],
       "spec": "tasks/specs/Q005.md",
       "status": "todo"
+    },
+    {
+      "id": "R1",
+      "title": "Refresh the Buzz platform snapshot against live sources",
+      "wave": 6,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "revision",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "research/BUZZ_PLATFORM_SNAPSHOT.md"
+      ],
+      "handoff": "handoffs/R1.md",
+      "objective": "Re-verify every Buzz capability claim against primary sources and restamp the snapshot with a current as-of date.",
+      "requirements": [
+        "Re-verify each existing capability claim against a primary source.",
+        "List every claim removed or corrected and why.",
+        "Do not assert a new capability without a source URL.",
+        "Restamp the as-of date to the verification date."
+      ],
+      "acceptance": [
+        "Every capability claim carries a primary source and a verification date.",
+        "Removed or corrected claims are listed explicitly.",
+        "No new capability is asserted without a source URL."
+      ],
+      "spec": "tasks/specs/R1.md",
+      "status": "todo"
+    },
+    {
+      "id": "R2",
+      "title": "Currency audit of guide modules and Practices",
+      "wave": 6,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "review",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "research/GUIDE_CURRENCY_AUDIT.md"
+      ],
+      "handoff": "handoffs/R2.md",
+      "objective": "Identify stale, unsourced, or drifted claims across the guide modules and method candidates, and propose corrections for G1 to apply.",
+      "requirements": [
+        "Produce a per-module table of stale or unsourced claims.",
+        "Propose a specific correction for each finding.",
+        "Do not edit guide prose; G1 owns the edits."
+      ],
+      "acceptance": [
+        "Every finding names a file, a location, and a proposed correction.",
+        "No guide prose is edited by this task.",
+        "Findings separate factual staleness from stylistic drift."
+      ],
+      "spec": "tasks/specs/R2.md",
+      "status": "todo"
+    },
+    {
+      "id": "R3",
+      "title": "Adjacent-community landscape scan",
+      "wave": 6,
+      "lane": "knowledge",
+      "model_tier": "cheap",
+      "mode": "review",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "research/COMMUNITY_LANDSCAPE.md"
+      ],
+      "handoff": "handoffs/R3.md",
+      "objective": "Scan what practitioner communities already offer and record where Practice is genuinely differentiated.",
+      "requirements": [
+        "Record only factually verifiable observations about each community.",
+        "Do not fabricate user counts, revenue, or engagement figures.",
+        "Label every example or hypothetical explicitly."
+      ],
+      "acceptance": [
+        "No fabricated metrics appear anywhere in the scan.",
+        "Every example and hypothetical is labeled as such.",
+        "Positioning gaps are stated as observations, not as strategy decisions."
+      ],
+      "spec": "tasks/specs/R3.md",
+      "status": "todo"
+    },
+    {
+      "id": "R4",
+      "title": "License, attribution, and claim re-audit of publishable artifacts",
+      "wave": 6,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "review",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "research/CLAIM_AUDIT.md"
+      ],
+      "handoff": "handoffs/R4.md",
+      "objective": "Re-audit every publishable artifact for unlicensed content, missing attribution, and unsupported claims.",
+      "requirements": [
+        "Sweep all publishable artifacts for license and attribution defects.",
+        "Record findings as a checklist, not as prose.",
+        "Name the exact file and location for each finding."
+      ],
+      "acceptance": [
+        "Zero unlicensed or unattributed items remain unrecorded.",
+        "Findings are a checklist a human can work through item by item.",
+        "Each item states the file, the defect class, and the correction."
+      ],
+      "spec": "tasks/specs/R4.md",
+      "status": "todo"
+    },
+    {
+      "id": "A1",
+      "title": "Schema-aware artifact validators",
+      "wave": 6,
+      "lane": "foundation",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "scripts/validate_artifacts.py",
+        "tests/test_validate_artifacts.py"
+      ],
+      "handoff": "handoffs/A1.md",
+      "objective": "Mechanize the Practice, Guide, Lab, and Story front-matter schemas and the maturity/evidence invariants.",
+      "requirements": [
+        "Validate front matter for every artifact type against its schema.",
+        "Flag any artifact claiming `maturity: tested` without a linked trial record.",
+        "Run offline and deterministically; fail with actionable messages.",
+        "Ship unit tests covering each invariant."
+      ],
+      "acceptance": [
+        "A tested-maturity artifact with no linked trial record fails validation.",
+        "The validator runs offline and exits non-zero with an actionable message.",
+        "Unit tests cover every enforced invariant."
+      ],
+      "spec": "tasks/specs/A1.md",
+      "status": "todo"
+    },
+    {
+      "id": "A2",
+      "title": "Link checker and as-of-date linter",
+      "wave": 6,
+      "lane": "foundation",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "scripts/check_links.py",
+        "tests/test_check_links.py"
+      ],
+      "handoff": "handoffs/A2.md",
+      "objective": "Detect broken relative links and stale as-of dates across all committed markdown.",
+      "requirements": [
+        "Resolve every relative markdown link and report broken targets.",
+        "Report as-of dates older than the current snapshot date.",
+        "Run offline and deterministically; make no network requests.",
+        "Ship unit tests for both check classes."
+      ],
+      "acceptance": [
+        "Broken links and stale as-of dates are both reported with file and line.",
+        "The checker makes no network requests.",
+        "Unit tests cover both check classes."
+      ],
+      "spec": "tasks/specs/A2.md",
+      "status": "todo"
+    },
+    {
+      "id": "A3",
+      "title": "IA to community.json parity test",
+      "wave": 6,
+      "lane": "buzz",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "tests/test_buzz_parity.py"
+      ],
+      "handoff": "handoffs/A3.md",
+      "objective": "Prevent drift between the documented Buzz information architecture and the idempotent community specification.",
+      "requirements": [
+        "Compare every channel and canvas in the IA document with `buzz/community.json`.",
+        "Fail with the exact drifted entries named.",
+        "Run offline against committed files only."
+      ],
+      "acceptance": [
+        "A channel present in one source and absent from the other fails the test.",
+        "The failure message names the drifted entries.",
+        "The test runs offline."
+      ],
+      "spec": "tasks/specs/A3.md",
+      "status": "todo"
+    },
+    {
+      "id": "A4",
+      "title": "GitHub CI wiring",
+      "wave": 6,
+      "lane": "foundation",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        ".github/workflows/ci.yml"
+      ],
+      "handoff": "handoffs/A4.md",
+      "objective": "Run the unit tests, release validation, and link check on every pull request.",
+      "requirements": [
+        "Run `python3 -m unittest discover -s tests`.",
+        "Run `python3 scripts/validate.py --release`.",
+        "Run the link checker.",
+        "Pin the runner and Python version explicitly."
+      ],
+      "acceptance": [
+        "All three checks run on pull request and on pushes to the default branch.",
+        "The workflow fails the build when any check fails.",
+        "No secret is required for the workflow to run."
+      ],
+      "spec": "tasks/specs/A4.md",
+      "status": "todo"
+    },
+    {
+      "id": "A5",
+      "title": "Reusable non-secret release-evidence record template",
+      "wave": 6,
+      "lane": "release",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "templates/RELEASE_EVIDENCE.md"
+      ],
+      "handoff": "handoffs/A5.md",
+      "objective": "Give a human a fillable, non-secret record for the evidence gathered at each release.",
+      "requirements": [
+        "Provide fields for command, output, date, and operator.",
+        "Contain no secrets, credentials, or participant data.",
+        "State explicitly what must never be recorded in it."
+      ],
+      "acceptance": [
+        "The template is fillable without any tooling.",
+        "It names the categories of material that must never be pasted into it.",
+        "It carries no placeholder that could be published unfilled."
+      ],
+      "spec": "tasks/specs/A5.md",
+      "status": "todo"
+    },
+    {
+      "id": "E1",
+      "title": "Trial Practice 001 (context pack) and record a Lab",
+      "wave": 7,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "A1"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "labs/002-context-pack-trial.md"
+      ],
+      "handoff": "handoffs/E1.md",
+      "objective": "Apply the context-pack method to a real recurring task inside this repository and record the result as a Lab.",
+      "requirements": [
+        "Run the trial on this repository's own work so the evidence is real and reproducible.",
+        "Use the LAB schema.",
+        "Record what the run actually shows; do not round a partial result up.",
+        "Do not change the method's `maturity` or `evidence_quality`."
+      ],
+      "acceptance": [
+        "The Lab validates against the LAB schema.",
+        "Every claimed outcome is traceable to a recorded command or artifact.",
+        "No maturity or evidence-quality field is changed by this task."
+      ],
+      "spec": "tasks/specs/E1.md",
+      "status": "todo"
+    },
+    {
+      "id": "E2",
+      "title": "Trial Practice 002 (workflow redesign) and record a Lab",
+      "wave": 7,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "A1"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "labs/003-workflow-redesign-trial.md"
+      ],
+      "handoff": "handoffs/E2.md",
+      "objective": "Redesign one safe, owned repository workflow using the method and record the result as a Lab.",
+      "requirements": [
+        "Redesign a real repository workflow, not a hypothetical one.",
+        "Use the LAB schema.",
+        "State plainly which steps of the method were executed and which were not.",
+        "Do not change the method's `maturity` or `evidence_quality`."
+      ],
+      "acceptance": [
+        "The Lab validates against the LAB schema.",
+        "Unexecuted steps of the method are named explicitly.",
+        "No maturity or evidence-quality field is changed by this task."
+      ],
+      "spec": "tasks/specs/E2.md",
+      "status": "todo"
+    },
+    {
+      "id": "E3",
+      "title": "Trial Practice 003 (verification gate) with a rollback rehearsal",
+      "wave": 7,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "A1"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "labs/004-verification-gate-trial.md"
+      ],
+      "handoff": "handoffs/E3.md",
+      "objective": "Apply the verification gate to a real repository change, rehearse the rollback, and record the result as a Lab.",
+      "requirements": [
+        "Apply the gate to a real merge and predeclare the checks before running them.",
+        "Include one rollback rehearsal.",
+        "Record any bar the Practice sets for itself that this trial did not meet.",
+        "Do not change the method's `maturity` or `evidence_quality`."
+      ],
+      "acceptance": [
+        "The Lab validates against the LAB schema.",
+        "The rollback rehearsal is recorded with its outcome.",
+        "Unmet self-imposed bars are stated in the record."
+      ],
+      "spec": "tasks/specs/E3.md",
+      "status": "todo"
+    },
+    {
+      "id": "E4",
+      "title": "Run the five Practice-core skill evals and record results",
+      "wave": 7,
+      "lane": "foundation",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "skills/evals/results/build-context-pack.md",
+        "skills/evals/results/contribute-to-practice.md",
+        "skills/evals/results/redesign-ai-workflow.md",
+        "skills/evals/results/review-practice-artifact.md",
+        "skills/evals/results/verify-agent-output.md",
+        "skills/evals/EVAL_REPORT.md"
+      ],
+      "handoff": "handoffs/E4.md",
+      "objective": "Execute the defined eval cases for the five Practice-core skills and record per-criterion results.",
+      "requirements": [
+        "Execute every defined case and grade it per criterion.",
+        "Record the model family and whether grading was self-administered.",
+        "State the report's own limits: what a passing score does and does not establish.",
+        "Record forbidden-behavior violations separately from criterion failures."
+      ],
+      "acceptance": [
+        "Every defined case has a recorded per-criterion result.",
+        "The report states the operator class and grading method.",
+        "The report states explicitly that it does not count toward Practice promotion."
+      ],
+      "spec": "tasks/specs/E4.md",
+      "status": "todo"
+    },
+    {
+      "id": "E5",
+      "title": "Assemble per-candidate promotion packets",
+      "wave": 7,
+      "lane": "release",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "E1",
+        "E2",
+        "E3",
+        "E4"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "release/PROMOTION_PACKETS.md"
+      ],
+      "handoff": "handoffs/E5.md",
+      "objective": "Package the trial evidence, reviewer notes, and the exact human decision for each method candidate.",
+      "requirements": [
+        "Give each candidate a criteria checklist scored against its schema.",
+        "State the residual risks and the exact decision question per candidate.",
+        "List the exact edits a promotion would require.",
+        "Never flip `maturity` or `evidence_quality`; package the decision only."
+      ],
+      "acceptance": [
+        "Each packet states its decision question and the edits a promotion requires.",
+        "Agent recommendations are labeled non-binding.",
+        "No maturity or evidence-quality field is changed by this task."
+      ],
+      "spec": "tasks/specs/E5.md",
+      "status": "todo"
+    },
+    {
+      "id": "G1",
+      "title": "End-to-end guide review and correction pass",
+      "wave": 7,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "revision",
+      "dependencies": [
+        "R2",
+        "R4"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "guides/ai-native-practitioner/README.md",
+        "guides/ai-native-practitioner/CURRICULUM.md",
+        "guides/ai-native-practitioner/01-foundations.md",
+        "guides/ai-native-practitioner/02-effective-use.md",
+        "guides/ai-native-practitioner/03-context-engineering.md",
+        "guides/ai-native-practitioner/04-automation-agents.md",
+        "guides/ai-native-practitioner/05-agentic-engineering.md",
+        "guides/ai-native-practitioner/06-organizational-ai.md"
+      ],
+      "handoff": "handoffs/G1.md",
+      "objective": "Apply the R2 currency corrections and R4 claim findings to the guide, fix links, and cross-link canonical method candidates.",
+      "requirements": [
+        "Apply every R2 correction accepted for the guide.",
+        "Apply R4 findings that fall inside the guide.",
+        "Fix broken links and add canonical cross-links to the method candidates.",
+        "Do not introduce a claim that R2 or R4 did not source."
+      ],
+      "acceptance": [
+        "Every accepted R2 and R4 finding inside the guide is applied or explicitly declined with a reason.",
+        "The link checker passes over the guide.",
+        "No unsourced claim is introduced."
+      ],
+      "spec": "tasks/specs/G1.md",
+      "status": "todo",
+      "scope_rule": "This task revises artifacts K003 created. It owns the guide-module edits; it must not rewrite the research reports it applies."
+    },
+    {
+      "id": "G2",
+      "title": "Note, Project, and Issue schemas and templates",
+      "wave": 7,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "docs/schemas/NOTE_SCHEMA.md",
+        "docs/schemas/PROJECT_SCHEMA.md",
+        "templates/NOTE.md",
+        "templates/PROJECT.md"
+      ],
+      "handoff": "handoffs/G2.md",
+      "objective": "Complete the artifact taxonomy with schemas and fillable templates for Notes and Projects.",
+      "requirements": [
+        "Match the structure and strictness of the existing Practice, Guide, Lab, and Story schemas.",
+        "Give each schema a fillable template.",
+        "State the maturity path from a Note to a Practice candidate."
+      ],
+      "acceptance": [
+        "Both schemas match the existing schema house style.",
+        "Each schema has a matching fillable template.",
+        "The Note-to-Practice maturity path is stated."
+      ],
+      "spec": "tasks/specs/G2.md",
+      "status": "todo"
+    },
+    {
+      "id": "G3",
+      "title": "Scope Practices 004-006 from demonstrated needs",
+      "wave": 7,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "practices/004-issue-triage.md",
+        "practices/005-release-notes.md",
+        "practices/006-feedback-instrument.md"
+      ],
+      "handoff": "handoffs/G3.md",
+      "objective": "Scope three further method candidates from needs this repository has actually demonstrated.",
+      "requirements": [
+        "Ground each candidate in a demonstrated need, not a hypothetical one.",
+        "Set `maturity: proposed` and `evidence_quality: none` on all three.",
+        "State the trial each candidate would need for promotion."
+      ],
+      "acceptance": [
+        "All three files carry `maturity: proposed` and `evidence_quality: none`.",
+        "Each candidate names the demonstrated need it comes from.",
+        "Each candidate states the trial required for promotion."
+      ],
+      "spec": "tasks/specs/G3.md",
+      "status": "todo"
+    },
+    {
+      "id": "G4",
+      "title": "Contributor intake, consent, and redaction templates",
+      "wave": 7,
+      "lane": "community",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "templates/INTAKE_CONSENT.md",
+        "templates/REDACTION_CHECKLIST.md"
+      ],
+      "handoff": "handoffs/G4.md",
+      "objective": "Give Story and Workflow Clinic contributors a consent record and a redaction checklist before anything is published.",
+      "requirements": [
+        "Record informed consent for publication, including what the contributor is consenting to.",
+        "Cover confidential material, personal data, client identity, and unlicensed content.",
+        "Keep both templates usable without any tooling."
+      ],
+      "acceptance": [
+        "The consent record states exactly what is being consented to and by whom.",
+        "The redaction checklist covers every category of restricted material.",
+        "Neither template asks for material that must not be stored in Git."
+      ],
+      "spec": "tasks/specs/G4.md",
+      "status": "todo"
+    },
+    {
+      "id": "O1",
+      "title": "Evidence packet per open owner gate",
+      "wave": 8,
+      "lane": "release",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "E5"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "release/GATE_EVIDENCE.md"
+      ],
+      "handoff": "handoffs/O1.md",
+      "objective": "Give each open owner gate and operating hold a packet stating what to review, the evidence available, and the exact human action.",
+      "requirements": [
+        "Cover every gate in OWNER_GATES.md and every evidenced operating hold.",
+        "State what is still missing and why for each.",
+        "Never assert that a gate is cleared.",
+        "Do not rewrite release/OWNER_REVIEW.md; Q-INT applies accepted updates."
+      ],
+      "acceptance": [
+        "Every gate and hold has a packet with a human action checklist.",
+        "No packet asserts a gate is cleared.",
+        "release/OWNER_REVIEW.md is not edited by this task."
+      ],
+      "spec": "tasks/specs/O1.md",
+      "status": "todo"
+    },
+    {
+      "id": "O2",
+      "title": "Steward escalation readiness checker",
+      "wave": 8,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "scripts/steward_readiness_check.py"
+      ],
+      "handoff": "handoffs/O2.md",
+      "objective": "Let a human verify, before enabling the Steward, that a member-actionable human escalation route is configured.",
+      "requirements": [
+        "Check configuration only; never contact a relay or send a message.",
+        "Fail closed when the escalation reference is missing or unusable.",
+        "Report each prerequisite separately with an actionable message."
+      ],
+      "acceptance": [
+        "The checker exits non-zero when any prerequisite is unmet.",
+        "It performs no network access.",
+        "Each unmet prerequisite is reported with the action that would satisfy it."
+      ],
+      "spec": "tasks/specs/O2.md",
+      "status": "todo"
+    },
+    {
+      "id": "O3",
+      "title": "Hosted-surface inspection checklist",
+      "wave": 8,
+      "lane": "release",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "release/HOSTED_INSPECTION.md"
+      ],
+      "handoff": "handoffs/O3.md",
+      "objective": "Give the owner a fillable record for manually inspecting the hosted Buzz surface after the owner-operated apply.",
+      "requirements": [
+        "Cover channels, canvases, seeds, membership visibility, and the start-here path.",
+        "Record only non-secret evidence.",
+        "State that an agent may not perform the apply or the inspection."
+      ],
+      "acceptance": [
+        "Every member-visible surface has an inspection line.",
+        "The record asks for no secret or participant data.",
+        "The owner-only boundary is stated in the document."
+      ],
+      "spec": "tasks/specs/O3.md",
+      "status": "todo"
+    },
+    {
+      "id": "O4",
+      "title": "Re-run the onboarding simulation over Phase 2 artifacts",
+      "wave": 8,
+      "lane": "community",
+      "model_tier": "balanced",
+      "mode": "review",
+      "dependencies": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "A1",
+        "A2"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "reviews/ONBOARDING_DRY_RUN_V2.md"
+      ],
+      "handoff": "handoffs/O4.md",
+      "objective": "Walk the current entry path as distinct personas and record where a newcomer stalls.",
+      "requirements": [
+        "Walk from the repository README through the quickstart, onboarding, and first contribution.",
+        "Label every persona reaction as simulation, never as user research.",
+        "Disposition each finding from the original dry run.",
+        "Do not edit the artifacts under review."
+      ],
+      "acceptance": [
+        "Every persona reaction is labeled as simulated.",
+        "Each original dry-run finding has a current disposition.",
+        "Findings are ranked with the smallest correction named for each."
+      ],
+      "spec": "tasks/specs/O4.md",
+      "status": "todo"
+    },
+    {
+      "id": "O5",
+      "title": "Private-beta ops kit and issue triage policy",
+      "wave": 8,
+      "lane": "operations",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/BETA_OPS.md",
+        ".github/TRIAGE_POLICY.md"
+      ],
+      "handoff": "handoffs/O5.md",
+      "objective": "Prepare the facilitation backlog scaffold and the issue triage labels and response guide for a private beta.",
+      "requirements": [
+        "Scaffold the facilitation prompt backlog without inventing member questions.",
+        "Define triage labels and the response guide for each.",
+        "Keep every human-owned decision human-owned."
+      ],
+      "acceptance": [
+        "No fabricated member question or quotation appears in the kit.",
+        "Each triage label has a defined entry condition and response.",
+        "Human-only decisions are named as such."
+      ],
+      "spec": "tasks/specs/O5.md",
+      "status": "todo"
+    },
+    {
+      "id": "Q6",
+      "title": "Adversarial review of all Wave E evidence",
+      "wave": 9,
+      "lane": "review",
+      "model_tier": "strong",
+      "mode": "review",
+      "dependencies": [
+        "E1",
+        "E2",
+        "E3",
+        "E4",
+        "E5"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "reviews/EVIDENCE_REVIEW.md"
+      ],
+      "handoff": "handoffs/Q6.md",
+      "objective": "Attempt to break every claim in the Wave E trial records and promotion packets, and list the wording changes required before a human reads them.",
+      "requirements": [
+        "Test each claim for overreach against what the record actually shows.",
+        "Distinguish a real result from a self-graded or one-sided one.",
+        "List required wording changes as exact replacements with file and line.",
+        "Do not edit the artifacts under review."
+      ],
+      "acceptance": [
+        "Every overreaching claim is named with its file and location.",
+        "Required wording changes are exact enough to apply verbatim.",
+        "No artifact under review is edited by this task."
+      ],
+      "spec": "tasks/specs/Q6.md",
+      "status": "todo"
+    },
+    {
+      "id": "Q7",
+      "title": "Fact and currency re-audit of research outputs",
+      "wave": 9,
+      "lane": "review",
+      "model_tier": "balanced",
+      "mode": "review",
+      "dependencies": [
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "G1"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "reviews/FACT_AUDIT_V2.md"
+      ],
+      "handoff": "handoffs/Q7.md",
+      "objective": "Re-verify the research outputs against primary sources and list every stale date and missing as-of stamp.",
+      "requirements": [
+        "Re-verify each sourced claim against its primary source.",
+        "List every stale date and every undated review file.",
+        "Distinguish snapshot-derived dates from independently dated ones.",
+        "Do not edit the artifacts under review."
+      ],
+      "acceptance": [
+        "Every stale date is listed with its file and line.",
+        "Snapshot-derived and independent dates are distinguished.",
+        "No artifact under review is edited by this task."
+      ],
+      "spec": "tasks/specs/Q7.md",
+      "status": "todo"
+    },
+    {
+      "id": "Q-INT",
+      "title": "Integrate accepted Phase 2 findings and re-run release validation",
+      "wave": 9,
+      "lane": "integration",
+      "model_tier": "strong",
+      "mode": "integration",
+      "dependencies": [
+        "Q6",
+        "Q7",
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "release/FINAL_INTEGRATION_REPORT_V2.md"
+      ],
+      "handoff": "handoffs/Q-INT.md",
+      "objective": "Apply every accepted review correction across the repository, update the owner review evidence rows, and record the validation evidence.",
+      "requirements": [
+        "Apply accepted findings without reopening settled strategy.",
+        "Update release/OWNER_REVIEW.md gate and hold rows to point at their Phase 2 evidence packets.",
+        "Never assert an owner gate is cleared and never change a `maturity` or `evidence_quality` field.",
+        "Run release validation, the unit tests, the link checker, and artifact validation."
+      ],
+      "acceptance": [
+        "Every accepted finding is applied or explicitly declined with a reason.",
+        "All gate and hold statuses remain OPEN.",
+        "All four validation commands pass and their output is recorded."
+      ],
+      "spec": "tasks/specs/Q-INT.md",
+      "status": "todo"
     }
   ]
 }

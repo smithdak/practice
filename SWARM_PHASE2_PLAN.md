@@ -141,10 +141,12 @@ scoped small enough for balanced models: one task, one trial, one Lab.
 
 ## Wiring and completion
 
-- Wiring: when the owner approves this plan, a single authorized task appends
-  these tasks to `tasks/manifest.json` (ids as listed, waves 6–9) and updates
-  `scripts/taskctl.py` state initialization. Until then, run manual fan-out
-  with `taskctl.py worktree <ID>`.
+- Wiring: **done.** All 26 tasks are in `tasks/manifest.json` as waves 6–9 with
+  a spec under `tasks/specs/`, so `taskctl.py` and
+  `scripts/validate.py --task <ID>` recognize them. `taskctl.py` backfills any
+  manifest id it has not seen into `.swarm/state.json`, so no state-init change
+  was needed. Tasks R1–Q-INT ran before this wiring and landed directly on
+  `main`; their state records the landing commit and says so.
 - Definition of done for the phase: all non-deferred tasks `COMPLETE`;
   `python3 scripts/validate.py --release`, `python3 -m unittest discover -s
   tests`, and `python3 skills/evals/validate.py --root .` pass; every owner

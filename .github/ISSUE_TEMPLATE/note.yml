@@ -1,0 +1,37 @@
+name: Share a Note
+description: Share a smaller observation that may later mature into a Practice.
+title: "note: "
+labels: ["note", "proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A Note is the lowest-friction artifact in Practice. Use the [Note template](../../templates/NOTE.md) for the durable artifact and the [Note schema](../../docs/schemas/NOTE_SCHEMA.md) for its required fields. Label anything you have not verified.
+  - type: textarea
+    id: observation
+    attributes:
+      label: What you observed
+      description: State the observation plainly, including the context it came from.
+    validations:
+      required: true
+  - type: textarea
+    id: basis
+    attributes:
+      label: What it is based on
+      description: One run, repeated use, a source you read, or a hunch. Say which — a hunch is a valid Note as long as it is labeled.
+    validations:
+      required: true
+  - type: textarea
+    id: usefulness
+    attributes:
+      label: Why the next person would want this
+      description: What this saves, prevents, or clarifies for someone doing similar work.
+    validations:
+      required: true
+  - type: textarea
+    id: limits
+    attributes:
+      label: Limits and open questions
+      description: Where you would not trust this yet, and what would have to be tried before it could become a Practice candidate.
+    validations:
+      required: false

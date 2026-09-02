@@ -102,9 +102,10 @@ Hypothetical example: “A support team wants to move first-draft triage to a re
 
 ## Post your result
 
-The universal first action is one `start-here` post. Use this completed form:
+The universal first action is one `start-here` post. Use the canonical
+first-post form from [Onboarding](ONBOARDING.md):
 
-> I am a **[role or work context]**. I want to work on **[non-sensitive task or workflow]**. My next outcome is **[route]** because **[immediate output I need]**. My first small action is **[checkable action]**.
+> I am a **[role or work context]**. I want to work on **[a non-sensitive real task or workflow]**. My next outcome is **[Learn | Use | Automate | Build | Transform]**. My first small action is **[one checkable action I can take next]**.
 
 Then go to the selected channel and complete the route card's first action. Return to the same `start-here` thread with what you checked, what changed, what failed, or the next smallest question.
 

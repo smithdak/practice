@@ -42,7 +42,11 @@ def validate_manifest(root: Path, errors: list[str]) -> dict | None:
     if len(ids) != len(set(ids)):
         fail(errors, "Duplicate task IDs")
     known = set(ids)
-    owners: dict[str, str] = {}
+    # Exclusive path ownership is enforced within a mode, not across modes: a
+    # `build` task creates an artifact, and a later-phase `revision` task may be
+    # the sole owner of edits to that same artifact. Two tasks of the same mode
+    # may never own one path.
+    owners: dict[str, dict[str, str]] = {"build": {}, "revision": {}}
     for t in tasks:
         for dep in t.get("dependencies", []):
             if dep not in known:
@@ -50,11 +54,12 @@ def validate_manifest(root: Path, errors: list[str]) -> dict | None:
         spec = root / t.get("spec", "")
         if not spec.exists():
             fail(errors, f"Missing task spec for {t['id']}: {spec}")
-        if t.get("mode") == "build":
+        mode = t.get("mode")
+        if mode in owners:
             for out in t.get("outputs", []):
-                if out in owners:
-                    fail(errors, f"Output collision: {out} owned by {owners[out]} and {t['id']}")
-                owners[out] = t["id"]
+                if out in owners[mode]:
+                    fail(errors, f"Output collision: {out} owned by {owners[mode][out]} and {t['id']}")
+                owners[mode][out] = t["id"]
     # Cycle check
     graph = {t["id"]: t.get("dependencies", []) for t in tasks}
     visiting, visited = set(), set()

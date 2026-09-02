@@ -1,0 +1,38 @@
+name: Report a correction
+description: Report something in this repository that is wrong, broken, stale, or unclear.
+title: "fix: "
+labels: ["correction", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for a factual error, a broken link or script, a stale claim, or a passage that misleads a reader. For a conduct concern use the private route in the [Code of Conduct](../../CODE_OF_CONDUCT.md); for an unfixed security or privacy problem see [SECURITY.md](../../SECURITY.md).
+  - type: input
+    id: location
+    attributes:
+      label: Where
+      description: The file path, and a line or heading if you have one.
+      placeholder: guides/ai-native-practitioner/03-context-engineering.md, "Choosing what to include"
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong
+      description: Quote or describe the current content and say what a reader would get wrong because of it.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: A primary source with the date you checked it, a reproduction, or the reasoning behind the correction. For a broken script, paste the command and its output.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed correction
+      description: The smallest change that fixes it. Optional — reporting the problem is a complete contribution on its own.
+    validations:
+      required: false

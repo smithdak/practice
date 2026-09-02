@@ -8,14 +8,14 @@ Practice uses Buzz for conversation and Git for durable work. Discuss an idea, q
 
 Choose the smallest path that matches the outcome. You can stop at any path; a correction does not need to become a full Practice.
 
-| Path | Good starting point | Done when |
-|---|---|---|
-| Correction | A typo, broken link, unclear instruction, or inaccurate statement | The correction is merged with enough context for a reviewer to verify it. |
-| Note | An observation, question, or small technique worth preserving | The Note separates observation from evidence and states its limits. |
-| Practice | A repeatable method someone else can try | It states inputs, steps, outputs, evaluation, failure modes, and variations. |
-| Guide, Lab, or Story | A learning path, reproducible experiment, or real implementation | It meets the artifact's definition and its claims have appropriate evidence. |
-| Project proposal | A shared software or infrastructure need | It names the Practitioner problem, intended users, smallest useful release, maintainer, and relationship to existing tools. |
-| Maintained Project | A Project ready for continuing community stewardship | A maintainer accepts responsibility, the repository contains its operating and contribution information, and its release process is defined. |
+| Path | Good starting point | Start here | Done when |
+|---|---|---|---|
+| Correction | A typo, broken link, unclear instruction, or inaccurate statement | [Correction form](.github/ISSUE_TEMPLATE/correction.yml) | The correction is merged with enough context for a reviewer to verify it. |
+| Note | An observation, question, or small technique worth preserving | [Note form](.github/ISSUE_TEMPLATE/note.yml) · [template](templates/NOTE.md) | The Note separates observation from evidence and states its limits. |
+| Practice | A repeatable method someone else can try | [Practice form](.github/ISSUE_TEMPLATE/practice.yml) · [template](templates/PRACTICE.md) | It states inputs, steps, outputs, evaluation, failure modes, and variations. |
+| Guide, Lab, or Story | A learning path, reproducible experiment, or real implementation | [Lab form](.github/ISSUE_TEMPLATE/lab.yml) · [Story form](.github/ISSUE_TEMPLATE/story.yml) | It meets the artifact's definition and its claims have appropriate evidence. |
+| Project proposal | A shared software or infrastructure need | [Project form](.github/ISSUE_TEMPLATE/project.yml) · [template](templates/PROJECT.md) | It names the Practitioner problem, intended users, smallest useful release, maintainer, and relationship to existing tools. |
+| Maintained Project | A Project ready for continuing community stewardship | — | A maintainer accepts responsibility, the repository contains its operating and contribution information, and its release process is defined. |
 
 If you are unsure, create an issue or ask in the relevant Buzz channel with the problem, who it affects, and the smallest useful outcome. A maintainer can help select the path.
 
@@ -35,7 +35,10 @@ You may also post the draft or question in Buzz first. Once a change is proposed
 
 ### 1. Frame the work in an issue
 
-Open an issue before substantial work. Reuse an existing issue when it already describes the same problem. State:
+Open an issue before substantial work, using the form that matches your path
+(the table above links each one). Reuse an existing issue when it already
+describes the same problem. Every issue is categorized, verified, and routed
+under the [triage policy](.github/TRIAGE_POLICY.md). State:
 
 - the contribution path and the concrete Practitioner problem;
 - the intended user and smallest useful result;
@@ -65,7 +68,7 @@ Evidence should fit the claim:
 |---|---|
 | Correction | The incorrect location and a reliable source, reproduction, or explanation of the fix. |
 | Reusable method or Lab | Inputs, steps, outputs, evaluation method, failure modes, and clearly labeled variations or hypotheses. |
-| Story | Before, intervention, result, and lessons; omit or anonymize confidential details only with permission and do not invent missing outcomes. |
+| Story | Before, intervention, result, and lessons; omit or anonymize confidential details only with permission and do not invent missing outcomes. Complete [the intake and consent record](templates/INTAKE_CONSENT.md) and [the redaction checklist](templates/REDACTION_CHECKLIST.md) before opening the pull request. |
 | Current technical claim | A primary-source URL and the date checked. |
 | Code or Project change | How the change was checked, such as a test command, manual reproduction, or an explicit statement that verification was not available. |
 

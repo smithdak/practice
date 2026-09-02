@@ -143,9 +143,11 @@ derived only from what is cited in the section):
    at `6f205d6`). The defaults are locked in [DECISIONS.md](../DECISIONS.md).
    The R4 claim re-audit found zero license/attribution defects
    ([CLAIM_AUDIT.md](../research/CLAIM_AUDIT.md)), and labs/003 mechanized the
-   license front-matter class with 68/68 one-sided agreement (all reference
-   verdicts "clean") against that audit
-   ([labs/003](../labs/003-workflow-redesign-trial.md), runs T3/T4).
+   license front-matter class: in both included runs the checker reported 0
+   findings, matching R4's recorded clean verdicts on the 68 reference files
+   ([labs/003](../labs/003-workflow-redesign-trial.md), runs T3/T4). Because
+   every reference verdict is "clean", that comparison shows only that the
+   checker does not over-flag; it measures nothing about detection.
 3. **Still missing and why.** License and governance acceptance is on the
    never-delegated list in [OWNER_GATES.md](../OWNER_GATES.md) — only a human
    can accept it.
@@ -364,18 +366,21 @@ derived only from what is cited in the section):
    8 of 9 launch-checklist §1 checks passed, one real trailing-whitespace
    failure correctly routed and later fixed in `c2a10c0`; pack checklist 9
    PASS / 1 FAIL-as-written), [labs/003](../labs/003-workflow-redesign-trial.md)
-   (runs T3/T4: 68/68 one-sided agreement for the two mechanized claim-audit
-   classes — every reference verdict was "clean", so misses were unavailable by
-   construction, 26/26 token exception verified twice, two excluded defective
+   (runs T3/T4: for the two mechanized claim-audit classes the checker
+   reported 0 findings, matching R4's recorded clean verdicts on the 68
+   reference files — every reference verdict was "clean", so misses were
+   unavailable by construction and the comparison measures nothing about
+   detection; 26/26 token exception verified twice, two excluded defective
    runs retained), and [labs/004](../labs/004-verification-gate-trial.md) (gate
    trial on commit `421ed6e` plus a clean rollback rehearsal; the Practice's
    own two-artifact/refusal-path bar recorded as unmet). The human decision
    packets are assembled in [PROMOTION_PACKETS.md](PROMOTION_PACKETS.md):
    per-candidate criteria checklists (001: 4 met / 1 partial / 4 not met;
    002: 4/1/4; 003: 4/0/5), residual risks, and the exact decision questions.
-   Corroborating but non-counting evidence:
-   [EVAL_REPORT.md](../skills/evals/EVAL_REPORT.md) — 45/45 single-family,
-   self-run/self-graded, does not count toward promotion by its own policy.
+   Related eval run (same operator class — not corroboration):
+   [EVAL_REPORT.md](../skills/evals/EVAL_REPORT.md) — 45/45 self-graded on a
+   single model family, and does not count toward promotion by its own policy.
+   Treat it as a smoke pass, not behavioral proof.
    The method index lists all six candidates as `maturity: proposed` /
    `evidence_quality: none`
    ([practices/README.md](../practices/README.md)): the three trial-backed
