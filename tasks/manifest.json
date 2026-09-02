@@ -2749,6 +2749,352 @@
       ],
       "spec": "tasks/specs/Q-INT.md",
       "status": "todo"
+    },
+    {
+      "id": "S1",
+      "title": "Machine-readable agent registry and boundary validator",
+      "wave": 10,
+      "lane": "buzz",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/agents/registry.yaml",
+        "scripts/validate_agents.py",
+        "tests/test_validate_agents.py"
+      ],
+      "handoff": "handoffs/S1.md",
+      "objective": "Declare each agent profile's identity, channel scope, guardrails, escalation route, and enablement prerequisites in a form a validator can check.",
+      "requirements": [
+        "Derive every registry entry from its profile text; never grant scope a profile does not state.",
+        "Fail when a declared channel is absent from `buzz/community.json`.",
+        "Fail when a guardrail list drops a locked non-negotiable, or an escalation route names a person rather than a role.",
+        "Fail when an entry claims enabled while owner gate 6 reads OPEN, and fail closed if that gate cannot be anchored."
+      ],
+      "acceptance": [
+        "Every profile has an entry and every entry names an existing profile.",
+        "No agent declares an unattended autonomy level; every status reads not_enabled.",
+        "Unit tests cover every enforced failure mode."
+      ],
+      "spec": "tasks/specs/S1.md",
+      "status": "todo"
+    },
+    {
+      "id": "S2",
+      "title": "Agent output packet contract",
+      "wave": 10,
+      "lane": "operations",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "docs/schemas/AGENT_PACKET_SCHEMA.md",
+        "templates/AGENT_PACKET.md",
+        "scripts/validate_packet.py",
+        "tests/test_validate_packet.py"
+      ],
+      "handoff": "handoffs/S2.md",
+      "objective": "Turn the bounded packet every agent profile promises into a schema a validator can check.",
+      "requirements": [
+        "Record provenance and a trust level for every input.",
+        "Require a pointer or a dated source on every evidence claim.",
+        "Require a refusals section and fix `human_decision_required` true.",
+        "Constrain `decision_owner` to a controlled role vocabulary so a personal name cannot be recorded."
+      ],
+      "acceptance": [
+        "A packet asserting a promotion, a maturity change, or a cleared gate fails validation.",
+        "The worked example is labeled hypothetical and validates against its own rules.",
+        "Unit tests cover every rejection path."
+      ],
+      "spec": "tasks/specs/S2.md",
+      "status": "todo"
+    },
+    {
+      "id": "S3",
+      "title": "Autonomy ladder and policy test",
+      "wave": 11,
+      "lane": "operations",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "S1",
+        "S2"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "docs/framework/AUTONOMY_LADDER.md",
+        "tests/test_autonomy_policy.py"
+      ],
+      "handoff": "handoffs/S3.md",
+      "objective": "Define what each autonomy level means, what evidence raises one, what demotes one, and which operations may never be automated.",
+      "requirements": [
+        "Reuse the vocabulary the registry and the packet schema already spell.",
+        "State demotion triggers as observable events, never judgment calls.",
+        "List every operation permanently ineligible for unattended action with the decision that makes it so.",
+        "Map every registered agent and every cadence operation to a level."
+      ],
+      "acceptance": [
+        "Nothing in the repository is mapped to the unattended level.",
+        "Adding an agent or a cadence pass without updating the mapping fails the test.",
+        "The parser fails loudly on a missing section rather than passing vacuously."
+      ],
+      "spec": "tasks/specs/S3.md",
+      "status": "todo"
+    },
+    {
+      "id": "T1",
+      "title": "Cadence and queue runner",
+      "wave": 10,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/cadence.yaml",
+        "scripts/cadence.py",
+        "tests/test_cadence.py"
+      ],
+      "handoff": "handoffs/T1.md",
+      "objective": "Compute the state of the operating loop the weekly cadence defines, instead of leaving a maintainer to derive it by hand.",
+      "requirements": [
+        "Encode only the passes and queues `ops/WEEKLY_CADENCE.md` defines, citing the section each came from.",
+        "Report due passes, blocked handoffs, open gates and holds, and stale as-of dates.",
+        "Reuse the staleness rule in `scripts/check_links.py` rather than restating it.",
+        "Degrade to a stated unknown outside a git checkout."
+      ],
+      "acceptance": [
+        "The report exits 0 regardless of what it finds; only a configuration or usage error exits non-zero.",
+        "The report states that it reads Git and knows nothing about Buzz activity.",
+        "Unit tests cover the due rules, each queue, and the no-git path."
+      ],
+      "spec": "tasks/specs/T1.md",
+      "status": "todo"
+    },
+    {
+      "id": "T2",
+      "title": "Metrics collector",
+      "wave": 10,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "scripts/collect_metrics.py",
+        "tests/test_collect_metrics.py",
+        "ops/metrics/README.md"
+      ],
+      "handoff": "handoffs/T2.md",
+      "objective": "Count the part of the measurement contract that committed Git evidence can support, with denominators and coverage.",
+      "requirements": [
+        "Implement only the metrics `ops/METRICS.md` says are countable from committed evidence.",
+        "Print every remaining metric as needing the human route, never as a zero.",
+        "Enforce the data-not-to-collect rules in code, not only in prose.",
+        "Produce identical bytes across two runs on the same tree."
+      ],
+      "acceptance": [
+        "A measured zero is distinguishable from a metric that was not collected.",
+        "The collector reads no path outside its root and makes no network call.",
+        "Unit tests cover each counting rule and the privacy constraints."
+      ],
+      "spec": "tasks/specs/T2.md",
+      "status": "todo"
+    },
+    {
+      "id": "T3",
+      "title": "Release brief generator",
+      "wave": 10,
+      "lane": "release",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "scripts/release_brief.py",
+        "tests/test_release_brief.py",
+        "release/briefs/README.md",
+        "release/briefs/2026-09-02-phase-2.md"
+      ],
+      "handoff": "handoffs/T3.md",
+      "objective": "Implement the pointer-checked draft method from Practice 005 as a generator over a commit range.",
+      "requirements": [
+        "Carry a repository path or a commit hash on every shipped line; omit anything unbacked.",
+        "Read files with `git show` at the range head so a rerun reproduces the brief.",
+        "Mark output a draft requiring human approval; never assert a maturity change or a cleared gate.",
+        "Check generated text against the release token rules before writing it."
+      ],
+      "acceptance": [
+        "The committed Phase 2 brief matches a fresh run of the generator.",
+        "An unknown revision or a non-checkout exits 1 and writes no partial file.",
+        "Unit tests cover pointer-backing, omission, determinism, and every error path."
+      ],
+      "spec": "tasks/specs/T3.md",
+      "status": "todo"
+    },
+    {
+      "id": "T4",
+      "title": "Issue triage state machine",
+      "wave": 10,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "scripts/triage.py",
+        "tests/test_triage.py",
+        "ops/triage/README.md",
+        "ops/triage/SAMPLE_triage_record.md"
+      ],
+      "handoff": "handoffs/T4.md",
+      "objective": "Enforce the states, transitions, and evidence requirements Practice 004 and the triage policy already specify.",
+      "requirements": [
+        "Implement exactly the documented states and transitions; invent no new state.",
+        "Refuse a record whose last actor is an agent sitting in a human-owned state.",
+        "Route safety, privacy, access, conduct, and legal categories to a human in every state.",
+        "Apply a field allowlist and scan for identity and credential leakage."
+      ],
+      "acceptance": [
+        "An agent cannot move a record into a human-owned state.",
+        "A state missing its required evidence fails with the file, field, and fix named.",
+        "The committed sample record is hypothetical and validates."
+      ],
+      "spec": "tasks/specs/T4.md",
+      "status": "todo"
+    },
+    {
+      "id": "V1",
+      "title": "Community-agent eval suites with adversarial cases",
+      "wave": 11,
+      "lane": "buzz",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "S1",
+        "S2"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/agents/evals/README.md",
+        "buzz/agents/evals/steward.yaml",
+        "buzz/agents/evals/librarian.yaml",
+        "buzz/agents/evals/release-editor.yaml",
+        "buzz/agents/evals/research-auditor.yaml",
+        "buzz/agents/evals/guide-maintainer.yaml",
+        "scripts/validate_agent_evals.py",
+        "tests/test_validate_agent_evals.py"
+      ],
+      "handoff": "handoffs/V1.md",
+      "objective": "Give every agent guardrail an observable case, including the untrusted-input claim every profile makes and none of them tested.",
+      "requirements": [
+        "Follow the `skills/evals` conventions rather than inventing a second dialect.",
+        "Cover injection, key requests, publication, maturity change, removal, participation-as-evidence, and vendor endorsement per agent.",
+        "Give every case an id, input, expected, forbidden, and severity.",
+        "Record no results and state that a defined case is not evidence of a pass."
+      ],
+      "acceptance": [
+        "Every registered agent has a suite and every suite names a registered agent.",
+        "Dropping a required adversarial topic fails validation.",
+        "No case contains a credential, an address, a handle, or a real person's name."
+      ],
+      "spec": "tasks/specs/V1.md",
+      "status": "todo"
+    },
+    {
+      "id": "W1",
+      "title": "Wire the loop, extend CI, and record the phase",
+      "wave": 12,
+      "lane": "integration",
+      "model_tier": "strong",
+      "mode": "integration",
+      "dependencies": [
+        "S1",
+        "S2",
+        "S3",
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "V1"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "CONTEXT.md",
+        "DECISIONS.md",
+        "NON_GOALS.md",
+        "QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/AUTONOMOUS_OPERATION.md",
+        "tests/test_contract_integration.py",
+        "release/PHASE3_REPORT.md"
+      ],
+      "handoff": "handoffs/W1.md",
+      "objective": "Join the contracts and runners into one operating procedure, enforce the cross-contract invariants no single task owns, and record what the phase did and did not change.",
+      "requirements": [
+        "Reject a packet declaring more autonomy than the registry grants its agent.",
+        "Fail when a repository check runs nowhere and carries no recorded exemption.",
+        "Run the new validators in CI and expose them as make targets.",
+        "Change no owner gate, operating hold, `maturity`, or `evidence_quality` value."
+      ],
+      "acceptance": [
+        "Every gate and hold still reads OPEN and no agent is enabled.",
+        "All repository checks pass and run in CI or carry a stated exemption.",
+        "The phase report separates what was built from what it does not establish."
+      ],
+      "spec": "tasks/specs/W1.md",
+      "status": "todo"
     }
   ]
 }

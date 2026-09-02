@@ -59,7 +59,9 @@ An input that cannot be pointed at is not an input. If the agent needed material
 | `draft` | Produced draft text, a patch, or a candidate artifact that nobody has applied. | Apply, merge, publish, or post it. |
 | `recommend` | Named one action for a human to take, with a way to check the result. | Take the action or imply it is taken. |
 
-An agent that finds itself needing a level above the one it was assigned stops and escalates instead of upgrading itself. The agent registry at `buzz/agents/registry.yaml` records the autonomy each profile is bounded to; a packet claiming more than its registry entry allows is a review failure even though the validator checks only the identifier.
+An agent that finds itself needing a level above the one it was assigned stops and escalates instead of upgrading itself. The agent registry at `buzz/agents/registry.yaml` records the autonomy each profile is bounded to, and `scripts/validate_packet.py` rejects a packet declaring more than its registry entry grants. A packet may declare less. Raising an agent's grant is a human decision recorded through [the autonomy ladder](../framework/AUTONOMY_LADDER.md), never a change an agent makes to its own packet.
+
+The level records what left the agent and who received it, not how much of the packet is filled in. `Recommended action` is required at every level, including `observe`: naming the one action a human could take next is how a packet stays checkable. What separates the levels is whether that action reached a channel, which is why the registry's `channels.write` list is the operative bound. The ladder states this separation in full.
 
 ## Required content
 
@@ -98,13 +100,14 @@ These rules restate existing boundaries rather than adding new ones. Promotion, 
 2. `packet_id` matches the slug pattern and is unique across the invocation; `agent_version` matches `MAJOR.MINOR.PATCH`; `run_date` is an ISO date; `source_commit` is hexadecimal.
 3. `decision_owner` is one value from the controlled role vocabulary, so a personal name cannot be recorded there.
 4. `agent_id` is a slug and, when `buzz/agents/registry.yaml` exists and lists agent identifiers, appears in it. When that file is absent the check is skipped with an informational message rather than a failure.
-5. Every `inputs` entry has a non-empty `ref` and a controlled `trust`, and carries `as_of` when `ref` is a URL.
-6. The body carries an H1 title, and all seven required headings exist exactly once, in canonical order, with no empty section.
-7. Every top-level bullet under `What the evidence shows` carries either a repository path that resolves under `--root`, or a URL accompanied by an as-of date in the same bullet.
-8. `Recommended action` contains exactly one top-level bullet and a non-empty `Verification:` line.
-9. `Decision requested from a human` names the `decision_owner` role value.
-10. Every `ref` in `inputs` appears in `Provenance`.
-11. Visible prose contains none of the forbidden assertions above.
+5. `autonomy` does not exceed the level the registry grants that agent, ordered `observe` < `draft` < `recommend`. An agent absent from the registry, or a registry entry with no autonomy value, is not bounded and the check is skipped for that agent rather than guessed.
+6. Every `inputs` entry has a non-empty `ref` and a controlled `trust`, and carries `as_of` when `ref` is a URL.
+7. The body carries an H1 title, and all seven required headings exist exactly once, in canonical order, with no empty section.
+8. Every top-level bullet under `What the evidence shows` carries either a repository path that resolves under `--root`, or a URL accompanied by an as-of date in the same bullet.
+9. `Recommended action` contains exactly one top-level bullet and a non-empty `Verification:` line.
+10. `Decision requested from a human` names the `decision_owner` role value.
+11. Every `ref` in `inputs` appears in `Provenance`.
+12. Visible prose contains none of the forbidden assertions above.
 
 Human review remains necessary to judge whether the evidence actually supports the claims, whether the recommended action is proportionate, whether the refusals were complete, and whether the assignment should have been given to an agent at all. A packet that validates is a packet worth reading, not a packet worth accepting.
 
@@ -125,7 +128,7 @@ inputs:
   - ref: https://example.invalid/docs/changelog
     trust: untrusted
     as_of: 2026-09-02
-autonomy: recommend
+autonomy: draft
 human_decision_required: true
 decision_owner: artifact-maintainer
 status: draft

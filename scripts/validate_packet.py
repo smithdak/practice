@@ -19,6 +19,9 @@ Checks applied to every packet:
 - ``agent_id`` appears in ``buzz/agents/registry.yaml`` when that file exists
   and lists identifiers; the cross-check is skipped with an informational note
   when it does not;
+- ``autonomy`` never exceeds the level the registry grants that agent, ordered
+  ``observe`` < ``draft`` < ``recommend`` as ``docs/framework/AUTONOMY_LADDER.md``
+  orders them; a packet cannot promote its own agent;
 - every ``inputs`` entry has a provenance pointer and a trust level, with an
   as-of date whenever the pointer is a URL;
 - the seven required sections exist exactly once, in canonical order, and none
@@ -69,6 +72,11 @@ REQUIRED_FIELDS = (
 KNOWN_FIELDS = frozenset(REQUIRED_FIELDS) | {"task_ref", "supersedes"}
 
 AUTONOMY_LEVELS = frozenset({"observe", "draft", "recommend"})
+# Ordered as docs/framework/AUTONOMY_LADDER.md orders them: each level is what
+# leaves the agent and who receives it. A packet may declare a lower level than
+# the registry grants; it may never declare a higher one.
+AUTONOMY_RANK = {"observe": 0, "draft": 1, "recommend": 2}
+LADDER_RELATIVE = "docs/framework/AUTONOMY_LADDER.md"
 TRUST_LEVELS = frozenset({"untrusted", "repository", "human_supplied"})
 DECISION_OWNER_ROLES = frozenset(
     {
@@ -420,7 +428,45 @@ def load_registry_ids(root: Path, notes: list[str]) -> set[str] | None:
     return identifiers
 
 
-def check_front_matter(packet: Packet, registry_ids: set[str] | None, seen_ids: dict[str, str], errors: list[str]) -> None:
+def load_registry_autonomy(root: Path, notes: list[str]) -> dict[str, str]:
+    """Return each registered agent's granted autonomy level.
+
+    An agent missing from the result is not bounded: the check is skipped for
+    that agent rather than guessed. Reading failures are already reported by
+    ``load_registry_ids``, so this loader stays quiet about them.
+    """
+    path = root / REGISTRY_RELATIVE
+    if not path.is_file():
+        return {}
+    try:
+        document = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except (OSError, yaml.YAMLError):
+        return {}
+    agents = document.get("agents") if isinstance(document, dict) else None
+    if not isinstance(agents, list):
+        notes.append(
+            f"note: {REGISTRY_RELATIVE} has no agents list; "
+            "skipping the autonomy bound cross-check."
+        )
+        return {}
+    bounds: dict[str, str] = {}
+    for entry in agents:
+        if not isinstance(entry, dict):
+            continue
+        agent_id = as_text(entry.get("id"))
+        granted = as_text(entry.get("autonomy"))
+        if agent_id and granted in AUTONOMY_RANK:
+            bounds[agent_id] = granted
+    return bounds
+
+
+def check_front_matter(
+    packet: Packet,
+    registry_ids: set[str] | None,
+    registry_autonomy: dict[str, str],
+    seen_ids: dict[str, str],
+    errors: list[str],
+) -> None:
     data = packet.data
     assert data is not None
 
@@ -471,6 +517,16 @@ def check_front_matter(packet: Packet, registry_ids: set[str] | None, seen_ids: 
     autonomy = as_text(data.get("autonomy"))
     if autonomy and autonomy not in AUTONOMY_LEVELS:
         add("autonomy", f"autonomy must be one of {sorted(AUTONOMY_LEVELS)}: {autonomy}")
+    elif autonomy and agent_id:
+        granted = registry_autonomy.get(agent_id)
+        if granted and AUTONOMY_RANK[autonomy] > AUTONOMY_RANK[granted]:
+            add(
+                "autonomy",
+                f"autonomy {autonomy} exceeds the {granted} level "
+                f"{REGISTRY_RELATIVE} grants {agent_id}; lower the packet to {granted} "
+                f"or raise the grant through {LADDER_RELATIVE}, which reserves that "
+                "decision to a human",
+            )
 
     if "human_decision_required" in data and data["human_decision_required"] is not True:
         add(
@@ -655,7 +711,13 @@ def check_forbidden_assertions(packet: Packet, errors: list[str]) -> None:
             errors.append(f"{packet.relative}:{line_no}: {message}: {compact(match.group(0))!r}")
 
 
-def validate_packet(path: Path, root: Path, registry_ids: set[str] | None, seen_ids: dict[str, str]) -> list[str]:
+def validate_packet(
+    path: Path,
+    root: Path,
+    registry_ids: set[str] | None,
+    registry_autonomy: dict[str, str],
+    seen_ids: dict[str, str],
+) -> list[str]:
     try:
         relative = path.resolve().relative_to(root).as_posix()
     except ValueError:
@@ -666,7 +728,7 @@ def validate_packet(path: Path, root: Path, registry_ids: set[str] | None, seen_
     packet = Packet(relative, text)
     errors: list[str] = [f"{relative}:{line}: {message}" for line, message in packet.parse_errors]
     if packet.data is not None:
-        check_front_matter(packet, registry_ids, seen_ids, errors)
+        check_front_matter(packet, registry_ids, registry_autonomy, seen_ids, errors)
     check_sections(packet, errors)
     check_evidence_claims(packet, root, errors)
     check_recommended_action(packet, errors)
@@ -679,10 +741,11 @@ def validate_packet(path: Path, root: Path, registry_ids: set[str] | None, seen_
 def validate_paths(paths: list[Path], root: Path) -> tuple[list[str], list[str]]:
     notes: list[str] = []
     registry_ids = load_registry_ids(root, notes)
+    registry_autonomy = load_registry_autonomy(root, notes)
     seen_ids: dict[str, str] = {}
     errors: list[str] = []
     for path in paths:
-        errors.extend(validate_packet(path, root, registry_ids, seen_ids))
+        errors.extend(validate_packet(path, root, registry_ids, registry_autonomy, seen_ids))
     return errors, notes
 
 
