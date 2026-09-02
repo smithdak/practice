@@ -65,7 +65,7 @@ DEFAULT_ROOT = SCRIPTS_DIR.parent
 COLLECTOR = "scripts/collect_metrics.py"
 CONTRACT = "ops/METRICS.md"
 OWNER_REVIEW_REL = "release/OWNER_REVIEW.md"
-OWNER_GATES_REL = "OWNER_GATES.md"
+OWNER_GATES_REL = "docs/OWNER_GATES.md"
 
 NOT_COLLECTED_LABEL = "not collected"
 

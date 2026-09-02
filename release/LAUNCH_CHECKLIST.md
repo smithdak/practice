@@ -11,7 +11,7 @@ private invitation links in the evidence record.
 
 Read [Owner review](OWNER_REVIEW.md), the [maintainer runbook](../ops/MAINTAINER_RUNBOOK.md),
 [Buzz bootstrap runbook](../buzz/BOOTSTRAP_RUNBOOK.md), [Buzz security runbook](../ops/BUZZ_SECURITY.md),
-and [invitation funnel](../ops/INVITE_FUNNEL.md) before acting.
+and [invitation funnel](../ops/outreach/INVITE_FUNNEL.md) before acting.
 
 ## 1. Dry run — no hosted changes
 
@@ -65,10 +65,10 @@ channel, message, or other hosted change. It does not clear an owner gate.
   [Story template](../templates/STORY.md), [Story schema](../docs/schemas/STORY_SCHEMA.md),
   and [hypothetical Story sample](../stories/SAMPLE_HYPOTHETICAL.md) for
   explicit evidence status and safe sharing.
-- [ ] Review [first-ten briefs](../content/launch/FIRST_10.md),
-  [launch narrative](../content/launch/FOUNDING_STORY.md),
-  [social kit](../content/launch/SOCIAL_KIT.md), and
-  [launch video plan](../content/launch/LAUNCH_VIDEO.md). Do not publish a
+- [ ] Review [first-ten briefs](../ops/outreach/FIRST_10.md),
+  [launch narrative](../docs/founding/FOUNDING_STORY.md),
+  [social kit](../ops/outreach/SOCIAL_KIT.md), and
+  [launch video plan](../ops/outreach/LAUNCH_VIDEO.md). Do not publish a
   real case, URL, handle, invitation route, or outcome claim until a human has
   verified it. The social kit is the sole whole-file publication-token
   exception and currently retains 26 tokens for human replacement/testing.
@@ -163,13 +163,13 @@ owner gate and launch hold in [Owner review](OWNER_REVIEW.md) are cleared.
 - [ ] Dakota confirms the public GitHub destination, code/content licenses,
   public invitation path, initial agent providers, launch date, and text-only
   brand treatment (or records an approved brand mark) under
-  [Owner Gates](../OWNER_GATES.md).
+  [Owner Gates](../docs/OWNER_GATES.md).
 - [ ] A private, human-monitored invitation-request route is established and
   tested. Public copy names it only after that test; public Git access remains
   available even when Buzz invitations are paused.
 - [ ] A human verifies final social destinations, handles, repository URL,
   invitation wording, and visuals against the
-  [social kit](../content/launch/SOCIAL_KIT.md).
+  [social kit](../ops/outreach/SOCIAL_KIT.md).
 - [ ] The human release owner opens and decides a `RELEASE` record with the
   release commit, validation evidence, included artifacts, limitations,
   unresolved risks, and final-announcement owner.
@@ -193,7 +193,7 @@ evidence; do not repair a failure by deleting people, content, or history.
 | Wrong membership, lost access, compromise, or secret exposure | Pause affected identity/agent and stop promotion. | Follow [Buzz security recovery](../ops/BUZZ_SECURITY.md); rotate/revoke in originating system and recheck membership. |
 | Unsafe agent output or autonomous decision attempt | Do not merge, publish, moderate, or act on it. | Human accepts, revises, rejects, or escalates using the [verification gate](../practices/003-verification-gate.md). |
 | Public claim conflicts with Git | Stop further promotion. | Release owner publishes visible correction or withdrawal; never silently replace a material claim. |
-| Invitation, conduct, or privacy concern | Pause affected invitation or discussion; keep restricted details out of Buzz. | Eligible human uses [invitation funnel](../ops/INVITE_FUNNEL.md) and [moderation model](../community/MODERATION.md). |
+| Invitation, conduct, or privacy concern | Pause affected invitation or discussion; keep restricted details out of Buzz. | Eligible human uses [invitation funnel](../ops/outreach/INVITE_FUNNEL.md) and [moderation model](../community/MODERATION.md). |
 
 ## Artifact map
 
@@ -202,8 +202,8 @@ evidence; do not repair a failure by deleting people, content, or history.
 | Public foundation | [manifesto](../docs/founding/MANIFESTO.md), [README](../README.md), [contributing](../CONTRIBUTING.md), [Lab issue form](../.github/ISSUE_TEMPLATE/lab.yml), [Project issue form](../.github/ISSUE_TEMPLATE/project.yml), [Code of Conduct](../CODE_OF_CONDUCT.md), [governance](../community/GOVERNANCE.md), [moderation](../community/MODERATION.md), [onboarding](../community/ONBOARDING.md), [quickstart](../community/CONTRIBUTOR_QUICKSTART.md), [licenses](../LICENSES.md) |
 | Learning and methods | [curriculum](../guides/ai-native-practitioner/CURRICULUM.md), [foundations](../guides/ai-native-practitioner/01-foundations.md), [effective use](../guides/ai-native-practitioner/02-effective-use.md), [context engineering](../guides/ai-native-practitioner/03-context-engineering.md), [automation and agents](../guides/ai-native-practitioner/04-automation-agents.md), [agentic engineering](../guides/ai-native-practitioner/05-agentic-engineering.md), [organizational AI](../guides/ai-native-practitioner/06-organizational-ai.md), [Practices](../practices/README.md), [Lab](../labs/001-cheap-model-bounded-task.md), [Lab schema](../docs/schemas/LAB_SCHEMA.md), [Story sample](../stories/SAMPLE_HYPOTHETICAL.md), [Story schema](../docs/schemas/STORY_SCHEMA.md) |
 | Experimental post-launch Project | [Practice core skills](../skills/README.md), [catalog](../skills/catalog.yaml), [evaluation specifications](../skills/evals/README.md), and `python3 skills/evals/validate.py --root .`. Inclusion in the repository is explicit; it is not part of public-launch claims and its structural pass is not behavioral validation. |
-| Buzz setup and safety | [architecture](../buzz/INFORMATION_ARCHITECTURE.md), [community map](../buzz/community.json), [canvases](../buzz/canvases/), [seeds](../buzz/seeds/), [bootstrap](../buzz/BOOTSTRAP_RUNBOOK.md), [platform snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md), [security](../ops/BUZZ_SECURITY.md), [agent profiles](../buzz/agents/) |
-| Operations and launch | [maintainer runbook](../ops/MAINTAINER_RUNBOOK.md), [metrics](../ops/METRICS.md), [first Practice Session](../ops/FIRST_PRACTICE_SESSION.md), [invitation funnel](../ops/INVITE_FUNNEL.md), [weekly cadence](../ops/WEEKLY_CADENCE.md), [first ten](../content/launch/FIRST_10.md), [social kit](../content/launch/SOCIAL_KIT.md), [launch video](../content/launch/LAUNCH_VIDEO.md), [Owner Gates](../OWNER_GATES.md) |
+| Buzz setup and safety | [architecture](../buzz/CHANNELS.md), [community map](../buzz/community.json), [canvases](../buzz/canvases/), [seeds](../buzz/seeds/), [bootstrap](../buzz/BOOTSTRAP_RUNBOOK.md), [platform snapshot](../buzz/PLATFORM_SNAPSHOT.md), [security](../ops/BUZZ_SECURITY.md), [agent profiles](../buzz/agents/) |
+| Operations and launch | [maintainer runbook](../ops/MAINTAINER_RUNBOOK.md), [metrics](../ops/METRICS.md), [first Practice Session](../ops/FIRST_PRACTICE_SESSION.md), [invitation funnel](../ops/outreach/INVITE_FUNNEL.md), [weekly cadence](../ops/WEEKLY_CADENCE.md), [first ten](../ops/outreach/FIRST_10.md), [social kit](../ops/outreach/SOCIAL_KIT.md), [launch video](../ops/outreach/LAUNCH_VIDEO.md), [Owner Gates](../docs/OWNER_GATES.md) |
 
 ## Explicitly deferred
 

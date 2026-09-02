@@ -378,7 +378,7 @@ As of: 2026-09-02.
   path a promotion travels, and the roles that may sign one.
 - [ops/BETA_OPS.md](../BETA_OPS.md) — the operating role vocabulary used in the
   fields above.
-- [ops/AUTONOMOUS_OPERATION.md](../AUTONOMOUS_OPERATION.md) — what runs without a
+- [ops/OPERATING_LOOP.md](../OPERATING_LOOP.md) — what runs without a
   person today and what does not.
 - [release/GATE_EVIDENCE.md](../../release/GATE_EVIDENCE.md) and
   [release/OWNER_REVIEW.md](../../release/OWNER_REVIEW.md) — the house pattern for

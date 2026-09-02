@@ -120,5 +120,5 @@ No agent should receive identity keys, passwords, recovery codes, tokens, or res
 ## Sources and review date
 
 - [Capability Ladder](../docs/framework/CAPABILITY_LADDER.md), reviewed 2026-08-31.
-- [Buzz information architecture](../buzz/INFORMATION_ARCHITECTURE.md), reviewed 2026-09-01.
+- [Buzz information architecture](../buzz/CHANNELS.md), reviewed 2026-09-01.
 - [Buzz access and security runbook](../ops/BUZZ_SECURITY.md), reviewed 2026-09-01.

@@ -125,7 +125,7 @@ step, and deciding what follows from a fired trigger stays with a human.
 ## How this fits the operating loop
 
 The ledger is the record side of the substrate described in
-[running Practice on the loop](../AUTONOMOUS_OPERATION.md). It is the sibling of
+[running Practice on the loop](../OPERATING_LOOP.md). It is the sibling of
 [the triage records](../triage/README.md): both are checked markdown records of
 something an agent did or proposed, and both stop at a human decision. The
 difference is that a triage record proposes a route and a ledger entry reports a
@@ -138,6 +138,6 @@ As of: 2026-09-02.
 
 - [docs/schemas/ACTION_LEDGER_SCHEMA.md](../../docs/schemas/ACTION_LEDGER_SCHEMA.md) — the fields, the controlled values, and every rule the checker enforces.
 - [docs/framework/AUTONOMY_LADDER.md](../../docs/framework/AUTONOMY_LADDER.md) — A3, what must be recorded when a run happens, and the triggers that demote it.
-- [ops/AUTONOMOUS_OPERATION.md](../AUTONOMOUS_OPERATION.md) — what runs without a person and what does not.
-- [DECISIONS.md](../../DECISIONS.md) and [NON_GOALS.md](../../NON_GOALS.md) — the locked decisions behind the operations no run may perform.
+- [ops/OPERATING_LOOP.md](../OPERATING_LOOP.md) — what runs without a person and what does not.
+- [docs/DECISIONS.md](../../docs/DECISIONS.md) and [docs/NON_GOALS.md](../../docs/NON_GOALS.md) — the locked decisions behind the operations no run may perform.
 - [tests/test_ledger.py](../../tests/test_ledger.py) — the executable statement of the rules.

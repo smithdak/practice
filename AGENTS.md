@@ -4,17 +4,22 @@ You are working on **Practice**, an open-source community for AI practitioners.
 
 ## Read before acting
 
-1. `CONTEXT.md`
-2. `DECISIONS.md`
-3. `NON_GOALS.md`
-4. `QUALITY_BAR.md`
+1. `docs/CONTEXT.md`
+2. `docs/DECISIONS.md`
+3. `docs/NON_GOALS.md`
+4. `docs/QUALITY_BAR.md`
 5. your assigned task specification
+
+## Orientation
+
+- Setup, the task loop, and where construction truth lives: `swarm/README.md`.
+- The repository layout: the Repository map in `README.md`.
 
 ## Scope
 
 - Complete exactly one task.
-- Modify only the output paths listed in the task plus `handoffs/<TASK_ID>.md`.
-- Do not edit `tasks/manifest.json`, `.swarm/state.json`, or another task's handoff.
+- Modify only the output paths listed in the task plus `swarm/handoffs/<TASK_ID>.md`.
+- Do not edit `swarm/manifest.json`, `.taskctl/state.json`, or another task's handoff.
 - Do not expand the product scope.
 - Record adjacent ideas under **Deferred opportunities** in the handoff.
 
@@ -22,7 +27,7 @@ You are working on **Practice**, an open-source community for AI practitioners.
 
 - Never invent facts, metrics, quotes, case studies, users, outcomes, or platform features.
 - For current technical claims, prefer primary sources and record the source URL and as-of date.
-- Use `research/BUZZ_PLATFORM_SNAPSHOT.md` for Buzz assumptions.
+- Use `buzz/PLATFORM_SNAPSHOT.md` for Buzz assumptions.
 - Label examples and hypothetical scenarios explicitly.
 
 ## Writing
@@ -45,7 +50,7 @@ You are working on **Practice**, an open-source community for AI practitioners.
 ## Completion
 
 1. Run `python3 scripts/validate.py --task <TASK_ID> --root .`.
-2. Create `handoffs/<TASK_ID>.md` using `templates/HANDOFF.md`.
+2. Create `swarm/handoffs/<TASK_ID>.md` using `templates/HANDOFF.md`.
 3. Commit all changes with `task(<TASK_ID>): <concise description>`.
 4. Leave the worktree clean.
 

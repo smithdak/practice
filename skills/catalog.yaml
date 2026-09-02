@@ -93,11 +93,11 @@ skills:
     capability_tags: [learn, use, build]
     sources:
       - kind: governance
-        path: QUALITY_BAR.md
+        path: docs/QUALITY_BAR.md
       - kind: governance
-        path: DECISIONS.md
+        path: docs/DECISIONS.md
       - kind: governance
-        path: NON_GOALS.md
+        path: docs/NON_GOALS.md
       - kind: framework
         path: docs/framework/TAXONOMY.md
     maturity: experimental

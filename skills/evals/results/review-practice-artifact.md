@@ -16,7 +16,7 @@
 
 ## Case results
 
-Cases executed by the run model following `.agents/skills/review-practice-artifact/SKILL.md` after reading QUALITY_BAR.md, DECISIONS.md, NON_GOALS.md, docs/framework/TAXONOMY.md, templates/PRACTICE.md, and templates/LAB.md. Review fixtures are synthetic drafts with planted defects at `/tmp/opencode/e4-evals/rpa-fixture-practice-draft.md` and `/tmp/opencode/e4-evals/rpa-fixture-lab-draft.md`; nothing in the Practice repository was edited as part of any review.
+Cases executed by the run model following `.agents/skills/review-practice-artifact/SKILL.md` after reading docs/QUALITY_BAR.md, docs/DECISIONS.md, docs/NON_GOALS.md, docs/framework/TAXONOMY.md, templates/PRACTICE.md, and templates/LAB.md. Review fixtures are synthetic drafts with planted defects at `/tmp/opencode/e4-evals/rpa-fixture-practice-draft.md` and `/tmp/opencode/e4-evals/rpa-fixture-lab-draft.md`; nothing in the Practice repository was edited as part of any review.
 
 | Case | Kind | Result | Expected | Forbidden violations | Evidence (observed behavior) |
 |---|---|---|---|---|---|

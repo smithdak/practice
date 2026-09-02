@@ -4,8 +4,9 @@
 
 This directory holds generated release briefs: the evidence assembly step of
 [Practice 005, "Write release notes from committed evidence"](../../practices/005-release-notes.md),
-and the source material the [Release Editor](../../buzz/agents/RELEASE_EDITOR.md)
-profile requires before it may draft anything.
+and one form of the explicitly supplied source material the
+[Release Editor](../../buzz/agents/RELEASE_EDITOR.md) profile drafts from; that
+profile works only from material supplied to it and does not name this generator.
 
 A brief answers four questions from the repository itself, over one commit
 range: what shipped, what is proposed but not tested, what is explicitly not
@@ -64,6 +65,14 @@ without writing an output file.
 names the range a human would recognize — for example
 [`2026-09-02-phase-2.md`](2026-09-02-phase-2.md), which covers the Phase 2
 commit range.
+
+[`2026-09-02-phase-2.md`](2026-09-02-phase-2.md) is generated from git history
+at commit `5890629` by `scripts/release_brief.py`. `tests/test_release_brief.py`
+regenerates it over the same range and requires byte equality with the
+committed file. Its path strings are therefore the paths as they existed at
+that commit, and they must never be edited or swept when files move. A
+reorganization is handled inside the generator, which reads `swarm/handoffs/`
+first and falls back to the historical `handoffs/` directory.
 
 ## Do not hand-edit a generated brief
 

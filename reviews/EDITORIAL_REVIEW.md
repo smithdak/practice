@@ -30,14 +30,14 @@ The primary corpus was the 13 outputs owned by Q002's dependencies:
   `06-organizational-ai.md`
 - `practices/001-context-pack.md` through
   `003-verification-gate.md`
-- `content/launch/FOUNDING_STORY.md`
-- `content/launch/LAUNCH_VIDEO.md`
-- `content/launch/FIRST_10.md`
+- `docs/founding/FOUNDING_STORY.md`
+- `ops/outreach/LAUNCH_VIDEO.md`
+- `ops/outreach/FIRST_10.md`
 
 Together these files contain 34,625 words. The linked Guide entry point and
 curriculum map were also checked where a reviewed module directs readers to
-them. Findings were tested against `CONTEXT.md`, `DECISIONS.md`,
-`QUALITY_BAR.md`, `brand/VOICE.md`, and `brand/LEXICON.md`.
+them. Findings were tested against `docs/CONTEXT.md`, `docs/DECISIONS.md`,
+`docs/QUALITY_BAR.md`, `docs/style/VOICE.md`, and `docs/style/LEXICON.md`.
 
 Two adversarial readings were used:
 
@@ -58,8 +58,8 @@ Severity means:
 
 ### 1. Proposed methods do not meet the canonical threshold for a Practice
 
-**Conflict.** `brand/LEXICON.md:24-37` defines a Practice as “a reusable,
-tested method” and directs untested work to a Note. `CONTEXT.md:47-54` repeats
+**Conflict.** `docs/style/LEXICON.md:24-37` defines a Practice as “a reusable,
+tested method” and directs untested work to a Note. `docs/CONTEXT.md:47-54` repeats
 the tested-method definition. Yet all three flagship files declare
 `maturity: proposed` and `evidence_quality: none`:
 
@@ -71,9 +71,9 @@ the tested-method definition. Yet all three flagship files declare
   completed trial, measured effectiveness, or independent reproduction.
 
 The launch layer then removes even the proposed qualifier.
-`content/launch/FOUNDING_STORY.md:34-41` defines a Practice as a tested method,
+`docs/founding/FOUNDING_STORY.md:34-41` defines a Practice as a tested method,
 and `:67-69` calls these three files “canonical methods.”
-`content/launch/LAUNCH_VIDEO.md:60-62` likewise presents “the three canonical
+`ops/outreach/LAUNCH_VIDEO.md:60-62` likewise presents “the three canonical
 Practices.” A skeptical expert receives two incompatible maturity claims; a
 beginner is told to trust an artifact category the same artifact says it has
 not earned.
@@ -83,15 +83,15 @@ recorded trial and review, remove public claims that it is a canonical Practice
 and label it as a proposed method or Note. Alternatively, supply the missing
 trial evidence and make an explicit promotion decision. Do not solve the
 conflict by deleting the `evidence_quality: none` disclosure or weakening it in
-launch copy. Because `CONTEXT.md:60-64` also names the “First three Practices,”
+launch copy. Because `docs/CONTEXT.md:60-64` also names the “First three Practices,”
 the owner or final integrator must reconcile the canonical naming before
 release rather than changing one downstream label in isolation.
 
 ### 2. Launch content creates capability stages outside the locked ladder
 
-**Conflict.** `DECISIONS.md:15` locks the information architecture to Learn →
-Use → Automate → Build → Transform. `brand/LEXICON.md:80-92` says not to add or
-rename stages. In `content/launch/FIRST_10.md:26-37`, however, a column labeled
+**Conflict.** `docs/DECISIONS.md:15` locks the information architecture to Learn →
+Use → Automate → Build → Transform. `docs/style/LEXICON.md:80-92` says not to add or
+rename stages. In `ops/outreach/FIRST_10.md:26-37`, however, a column labeled
 “Capability move” uses `Share / applicable capability` for item 9 and `Improve`
 for item 10. Those are contribution actions, not capability stages.
 
@@ -141,7 +141,7 @@ above would leave the entry point contradictory.
 
 ### 4. The Guide duplicates the canonical methods instead of sequencing them
 
-`brand/LEXICON.md:39-46` says a Guide combines multiple Practices and explains
+`docs/style/LEXICON.md:39-46` says a Guide combines multiple Practices and explains
 sequence and tradeoffs. In the current corpus, the Guide frequently republishes
 the methods as parallel sources:
 
@@ -218,13 +218,13 @@ The launch story's first-person opening is useful, but most subsequent sections
 repeat the manifesto's structure and claims:
 
 - implementation gap: `docs/founding/MANIFESTO.md:3-13` and
-  `content/launch/FOUNDING_STORY.md:3-12`;
+  `docs/founding/FOUNDING_STORY.md:3-12`;
 - artifact taxonomy: manifesto `:33-41` and story `:32-43`;
 - openness and human-agent roles: manifesto `:53-69` and story `:45-61`;
 - one-task invitation: manifesto `:83-91` and story `:65-71`.
 
 The video then repeats the launch story's claim/evidence formulation, Git/Buzz
-division, and invitation at `content/launch/LAUNCH_VIDEO.md:54-62` and `:102-108`.
+division, and invitation at `ops/outreach/LAUNCH_VIDEO.md:54-62` and `:102-108`.
 This is coherent but not additive. Repetition makes the launch corpus feel like
 one thesis expanded across surfaces rather than each surface doing a distinct
 job.
@@ -280,7 +280,7 @@ section. Add no new artifact name.
 
 ### 10. The first ten briefs sometimes describe participation as the artifact
 
-The release rule in `content/launch/FIRST_10.md:11-22` requires a canonical Git
+The release rule in `ops/outreach/FIRST_10.md:11-22` requires a canonical Git
 artifact to be opened or improved. The sequence table at `:26-37` nevertheless
 lists “Guide worksheet completion” as a contribution for items 1, 7, and 8,
 and Brief 1 permits a “documented completion” at `:60-63`. Completing a
@@ -310,7 +310,7 @@ replace every ordinary use of AI.
 
 - **No material generic hype found.** The corpus avoids the lexicon's banned
   superlatives, vendor evangelism, market statistics, and autonomous-agent
-  spectacle. `content/launch/LAUNCH_VIDEO.md:93-100` explicitly excludes them.
+  spectacle. `ops/outreach/LAUNCH_VIDEO.md:93-100` explicitly excludes them.
 - **Examples are honestly labeled.** The reviewed Practices and modules
   distinguish hypothetical or proposed work from observed evidence.
 - **Current technical claims are avoided.** The corpus mostly uses enduring

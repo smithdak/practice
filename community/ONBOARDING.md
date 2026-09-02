@@ -101,7 +101,7 @@ This loop deliberately avoids scheduled workflows, automated forum posts, and ac
 
 ## Sources and review date
 
-- [Buzz Platform Snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md), reviewed 2026-09-01: invite-only hosted-community constraint, open-channel visibility after joining, and launch-safe capabilities.
+- [Buzz Platform Snapshot](../buzz/PLATFORM_SNAPSHOT.md), reviewed 2026-09-01: invite-only hosted-community constraint, open-channel visibility after joining, and launch-safe capabilities.
 - [Buzz access and security runbook](../ops/BUZZ_SECURITY.md), reviewed 2026-09-01: identity ownership, restricted data, and agent boundaries.
-- [Buzz information architecture](../buzz/INFORMATION_ARCHITECTURE.md), reviewed 2026-09-01: channel outcomes and routing.
+- [Buzz information architecture](../buzz/CHANNELS.md), reviewed 2026-09-01: channel outcomes and routing.
 - [Capability Ladder](../docs/framework/CAPABILITY_LADDER.md), reviewed 2026-08-31: outcome definitions and evidence boundaries.

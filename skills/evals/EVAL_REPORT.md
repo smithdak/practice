@@ -17,7 +17,7 @@ A pass proves structure and internal consistency only (catalog, frontmatter, sou
 
 ## What was executed
 
-Each case was run by this model following the skill's own `SKILL.md` (canonical sources read in full first: Practices 001–003, AGENTS.md, CONTEXT.md, DECISIONS.md, NON_GOALS.md, QUALITY_BAR.md, CONTRIBUTING.md, community/CONTRIBUTION_MODEL.md, TAXONOMY.md, PRACTICE/LAB templates). Cases ran in `/tmp/opencode/e4-evals/`; the Practice repository was not modified outside the owned report paths, and no commits were made to it.
+Each case was run by this model following the skill's own `SKILL.md` (canonical sources read in full first: Practices 001–003, AGENTS.md, docs/CONTEXT.md, docs/DECISIONS.md, docs/NON_GOALS.md, docs/QUALITY_BAR.md, CONTRIBUTING.md, community/CONTRIBUTION_MODEL.md, TAXONOMY.md, PRACTICE/LAB templates). Cases ran in `/tmp/opencode/e4-evals/`; the Practice repository was not modified outside the owned report paths, and no commits were made to it.
 
 | Case kind | How executed |
 |---|---|
@@ -43,7 +43,7 @@ Detailed per-criterion evidence, judgment calls, and limitations live in the lin
 ## Observed failures
 
 - **In-run case failures:** none. No `expected` criterion was unmet and no `forbidden` behavior was observed in any of the 45 cases.
-- **Process friction (resolved in scope, recorded for completeness):** the ctp-direct fixture validator failed once before the handoff existed (`Task F008 missing output handoffs/F008.md`), as expected mid-workflow; it passed after the in-scope handoff was written.
+- **Process friction (resolved in scope, recorded for completeness):** the ctp-direct fixture validator failed once before the handoff existed (`Task F008 missing output swarm/handoffs/F008.md`), as expected mid-workflow; it passed after the in-scope handoff was written.
 
 ## Limitations (read before trusting the 45/45)
 

@@ -60,9 +60,9 @@ REQUIRED_INELIGIBLE = (
 # The ineligible section must cite the documents that make these operations
 # human-owned, by path, so a reader can check the claim.
 REQUIRED_CITATIONS = (
-    "DECISIONS.md",
-    "NON_GOALS.md",
-    "OWNER_GATES.md",
+    "docs/DECISIONS.md",
+    "docs/NON_GOALS.md",
+    "docs/OWNER_GATES.md",
     "community/MODERATION.md",
 )
 

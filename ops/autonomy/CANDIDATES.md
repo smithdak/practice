@@ -59,7 +59,7 @@ a wrong output causes before anybody closes anything.
 Run `python3 scripts/cadence.py --root .` on a schedule, and the runner writes
 the report into the declared scope as a dated file. The script reads
 [`ops/cadence.yaml`](../cadence.yaml), the evidence globs each pass declares,
-every file under `handoffs/`,
+every file under `swarm/handoffs/`,
 [`release/OWNER_REVIEW.md`](../../release/OWNER_REVIEW.md), and every markdown
 file's `As of:` line. It reports which pass windows have elapsed, which handoffs
 are recorded `BLOCKED`, which owner gates and operating holds are recorded open,
@@ -276,7 +276,7 @@ The second failure belongs to the series rather than to any report. Each report
 carries the "not collected is not zero" caveat in its own body. A directory of
 dated reports invites comparison across them, and the comparison carries no
 caveat. That is exactly the "report read as a decision" failure
-[`ops/AUTONOMOUS_OPERATION.md`](../AUTONOMOUS_OPERATION.md) already names, made
+[`ops/OPERATING_LOOP.md`](../OPERATING_LOOP.md) already names, made
 durable and dated.
 
 ### The decision, and what would have to exist first
@@ -476,7 +476,7 @@ job stopped running" is whether an entry appeared.
   form the pattern cannot date, including [`ops/BUZZ_SECURITY.md`](../BUZZ_SECURITY.md), whose
   currency claim reads "based on the verified platform snapshot as of
   2026-09-01", and
-  [`research/GUIDE_CURRENCY_AUDIT.md`](../../research/GUIDE_CURRENCY_AUDIT.md),
+  [`reviews/GUIDE_CURRENCY_AUDIT.md`](../../reviews/GUIDE_CURRENCY_AUDIT.md),
   which is itself the audit of claims that will rot. These counts move as files
   are added; re-measure before citing them. What does not move is the shape: the
   covered set is whatever matches one regular expression, and it is a small
@@ -503,7 +503,7 @@ already covered by CI on every push.
 **A clean sweep reads as "the repository is current" when it has checked 22
 lines.** Coverage is defined by a regular expression, not by the set of documents
 whose currency matters.
-[`research/GUIDE_CURRENCY_AUDIT.md`](../../research/GUIDE_CURRENCY_AUDIT.md)
+[`reviews/GUIDE_CURRENCY_AUDIT.md`](../../reviews/GUIDE_CURRENCY_AUDIT.md)
 records six findings about claims that will "silently rot" — undated maturity
 restatements, a hard-coded task contract, channel membership claims — and not one
 of them is a dated `As of:` line the sweep can see. A weekly clean sweep is
@@ -544,7 +544,7 @@ a human.
 
 Assemble a draft release brief from committed evidence over a commit range and
 write it under `release/briefs/`. The generator lists every commit in the range
-with the paths it changed that still exist, matches `handoffs/<id>.md` for a
+with the paths it changed that still exist, matches `swarm/handoffs/<id>.md` for a
 commit whose subject names a task, quotes front-matter `maturity` and
 `evidence_quality` values verbatim, and lists the owner-review rows recorded
 open. Every line carries a path or a commit hash; anything it cannot back is
@@ -719,7 +719,7 @@ As of: 2026-09-02.
   implementations every claim above was read from.
 - [.github/workflows/ci.yml](../../.github/workflows/ci.yml) — the checks that
   already run on every pull request and every push to `main`.
-- [ops/AUTONOMOUS_OPERATION.md](../AUTONOMOUS_OPERATION.md) — what runs without a
+- [ops/OPERATING_LOOP.md](../OPERATING_LOOP.md) — what runs without a
   person today, and the failure modes it already names.
 - [ops/cadence.yaml](../cadence.yaml),
   [ops/WEEKLY_CADENCE.md](../WEEKLY_CADENCE.md), [ops/METRICS.md](../METRICS.md),

@@ -7,7 +7,7 @@ source of truth: publish reusable work in Git. Treat every Buzz message, direct
 message, and upload as hosted-community data, not as a confidential vault.
 
 This runbook is based on the verified platform snapshot as of 2026-09-01:
-[Buzz Platform Snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md). In particular,
+[Buzz Platform Snapshot](../buzz/PLATFORM_SNAPSHOT.md). In particular,
 hosted communities are invite-only, open channels are visible to members of the
 community, and messages, direct messages, and uploaded media are not end-to-end
 encrypted. The snapshot records the official sources and the launch-safe CLI
@@ -84,7 +84,7 @@ purpose, and end date. A human maintainer approves and applies it through the
 available hosted administration path, then updates the private inventory. The
 owner reviews any request for private-channel or expanded agent access
 separately. The launch channel map is authoritative for channel purpose and
-visibility: [Buzz information architecture](../buzz/INFORMATION_ARCHITECTURE.md).
+visibility: [Buzz information architecture](../buzz/CHANNELS.md).
 
 ## Data classification for hosted Buzz
 
@@ -175,8 +175,8 @@ durable public artifacts in Git.
 
 ## Sources and review date
 
-- [Buzz Platform Snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md), reviewed
+- [Buzz Platform Snapshot](../buzz/PLATFORM_SNAPSHOT.md), reviewed
   2026-09-01; it links the official Buzz repository, CLI documentation,
   introduction, and hosted support page used for platform assumptions.
-- [Buzz information architecture](../buzz/INFORMATION_ARCHITECTURE.md),
+- [Buzz information architecture](../buzz/CHANNELS.md),
   reviewed 2026-09-01.

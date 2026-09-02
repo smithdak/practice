@@ -7,9 +7,9 @@ description: Produce one scoped, reviewable change in the Practice repository, s
 
 ## Source of truth
 
-Read [AGENTS.md](../../../AGENTS.md), [CONTEXT.md](../../../CONTEXT.md), [DECISIONS.md](../../../DECISIONS.md), [NON_GOALS.md](../../../NON_GOALS.md), and [QUALITY_BAR.md](../../../QUALITY_BAR.md) before editing. Use [CONTRIBUTING.md](../../../CONTRIBUTING.md) and the [Contribution Model](../../../community/CONTRIBUTION_MODEL.md) to choose the smallest contribution path.
+Read [AGENTS.md](../../../AGENTS.md), [docs/CONTEXT.md](../../../docs/CONTEXT.md), [docs/DECISIONS.md](../../../docs/DECISIONS.md), [docs/NON_GOALS.md](../../../docs/NON_GOALS.md), and [docs/QUALITY_BAR.md](../../../docs/QUALITY_BAR.md) before editing. Use [CONTRIBUTING.md](../../../CONTRIBUTING.md) and the [Contribution Model](../../../community/CONTRIBUTION_MODEL.md) to choose the smallest contribution path.
 
-For a registered swarm task, its task specification owns scope and paths. [`scripts/taskctl.py`](../../../scripts/taskctl.py) is authoritative for task state, worktrees, verification, and integration. Never edit `tasks/manifest.json` or `.swarm/state.json` directly and never imitate their state in another file.
+For a registered swarm task, its task specification owns scope and paths. [`scripts/taskctl.py`](../../../scripts/taskctl.py) is authoritative for task state, worktrees, verification, and integration. Never edit `swarm/manifest.json` or `.taskctl/state.json` directly and never imitate their state in another file.
 
 ## Inputs and routing
 
@@ -23,7 +23,7 @@ Stop before editing when the required scope or owned paths are missing, a locked
 2. State the exact output paths and acceptance checks. Make the smallest change that solves the assigned problem; record adjacent ideas for later rather than expanding scope.
 3. Keep claims proportional to evidence. Label examples, proposals, hypotheses, and unknowns. For current technical claims, use a primary source and record its URL and as-of date. Do not include secrets, confidential material, unnecessary personal data, or unlicensed content.
 4. Run checks appropriate to the artifact. For a swarm task, run the exact task validation command and resolve failures only within owned paths.
-5. For a swarm task, create `handoffs/<TASK_ID>.md` from the handoff template with status, changed files, validation evidence, task-local decisions, risks, and deferred opportunities. If blocked, record the exact evidence and smallest decision needed rather than guessing.
+5. For a swarm task, create `swarm/handoffs/<TASK_ID>.md` from the handoff template with status, changed files, validation evidence, task-local decisions, risks, and deferred opportunities. If blocked, record the exact evidence and smallest decision needed rather than guessing.
 6. Review the complete diff for scope, accidental changes, and unsupported claims. Commit only the owned paths with `task(<TASK_ID>): <concise description>` when the task contract requires a commit, then confirm the worktree is clean.
 
 Do not claim or integrate a task, open an external issue or pull request, publish to Buzz, or make another external change unless the user explicitly requested that action and the current environment authorizes it.

@@ -10,8 +10,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-MANIFEST_PATH = ROOT / "tasks" / "manifest.json"
-STATE_PATH = ROOT / ".swarm" / "state.json"
+MANIFEST_PATH = ROOT / "swarm" / "manifest.json"
+STATE_PATH = ROOT / ".taskctl" / "state.json"
 
 
 def run(cmd: list[str], cwd: Path = ROOT, check: bool = True) -> subprocess.CompletedProcess:
@@ -113,7 +113,7 @@ def cmd_show(args: argparse.Namespace) -> None:
 
 
 def render_prompt(task: dict) -> str:
-    worker = (ROOT / "prompts" / "WORKER.md").read_text(encoding="utf-8")
+    worker = (ROOT / "swarm" / "prompts" / "WORKER.md").read_text(encoding="utf-8")
     spec = (ROOT / task["spec"]).read_text(encoding="utf-8")
     return f"{worker}\n\n---\n\n{spec}\n"
 

@@ -1,6 +1,6 @@
 # Buzz Bootstrap Runbook
 
-Use the bootstrapper to reconcile the stream channels in `buzz/community.json` with their canonical topic, purpose, canvas, and first seed message. It only uses the launch-safe Buzz CLI commands recorded in [the platform snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md).
+Use the bootstrapper to reconcile the stream channels in `buzz/community.json` with their canonical topic, purpose, canvas, and first seed message. It only uses the launch-safe Buzz CLI commands recorded in [the platform snapshot](PLATFORM_SNAPSHOT.md).
 
 ## Before applying
 

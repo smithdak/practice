@@ -15,7 +15,7 @@ check() {
 check "git" git --version
 check "python >= 3.10" python3 -c 'import sys; raise SystemExit(sys.version_info < (3,10))'
 check "repository" test -d .git
-check "task manifest" test -f tasks/manifest.json
+check "task manifest" test -f swarm/manifest.json
 if command -v buzz >/dev/null 2>&1; then
   printf 'OK   buzz CLI (%s)\n' "$(command -v buzz)"
 else

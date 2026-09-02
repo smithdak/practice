@@ -345,12 +345,12 @@ class WriteOutsideScopeTests(FixtureCase):
     """A1: a draft edits a path outside the scope named in its assignment."""
 
     def test_a_write_outside_the_recorded_scope_fires(self):
-        self.repo.add_entry(entry(paths_written=[WRITTEN_PATH, "DECISIONS.md"]))
+        self.repo.add_entry(entry(paths_written=[WRITTEN_PATH, "docs/DECISIONS.md"]))
         report = self.repo.evaluate()
         self.assertIn("write-outside-scope", self.fired_keys(report))
         self.assertEqual(report.exit_code, 1)
         finding = next(f for f in report.findings if f.trigger_key == "write-outside-scope")
-        self.assertIn("DECISIONS.md", finding.observed)
+        self.assertIn("docs/DECISIONS.md", finding.observed)
         self.assertIn("ops/status/*.md", finding.declared)
         self.assertEqual(finding.operation, "cadence-snapshot")
         self.assertEqual(finding.claimed_level, "A3")
@@ -513,7 +513,7 @@ class SupersedesTests(FixtureCase):
     """A correction is a new entry, and the superseding entry is authoritative."""
 
     def test_a_superseded_entry_is_not_judged(self):
-        self.repo.add_entry(entry(run_id="cadence-snapshot-001", paths_written=[WRITTEN_PATH, "DECISIONS.md"]))
+        self.repo.add_entry(entry(run_id="cadence-snapshot-001", paths_written=[WRITTEN_PATH, "docs/DECISIONS.md"]))
         self.repo.add_entry(entry(run_id="cadence-snapshot-002", supersedes="cadence-snapshot-001"))
         report = self.repo.evaluate()
         self.assertEqual(report.findings, [])
@@ -528,7 +528,7 @@ class SupersedesTests(FixtureCase):
             entry(
                 run_id="cadence-snapshot-003",
                 supersedes="cadence-snapshot-002",
-                paths_written=[WRITTEN_PATH, "NON_GOALS.md"],
+                paths_written=[WRITTEN_PATH, "docs/NON_GOALS.md"],
             )
         )
         report = self.repo.evaluate()
@@ -536,7 +536,7 @@ class SupersedesTests(FixtureCase):
         self.assertIn("cadence-snapshot-003", report.runs_evaluated[0])
         self.assertIn("write-outside-scope", self.fired_keys(report))
         finding = next(f for f in report.findings if f.trigger_key == "write-outside-scope")
-        self.assertIn("NON_GOALS.md", finding.observed)
+        self.assertIn("docs/NON_GOALS.md", finding.observed)
 
     def test_the_superseding_entry_is_still_judged(self):
         self.repo.add_entry(entry(run_id="cadence-snapshot-001"))
@@ -544,7 +544,7 @@ class SupersedesTests(FixtureCase):
             entry(
                 run_id="cadence-snapshot-002",
                 supersedes="cadence-snapshot-001",
-                paths_written=[WRITTEN_PATH, "DECISIONS.md"],
+                paths_written=[WRITTEN_PATH, "docs/DECISIONS.md"],
             )
         )
         self.assertIn("write-outside-scope", self.fired_keys(self.repo.evaluate()))
@@ -614,7 +614,7 @@ class SampleEntryTests(FixtureCase):
     """A hypothetical worked example is a document, not a run."""
 
     def test_a_sample_entry_is_reported_and_not_judged(self):
-        path = self.repo.add_entry(entry(paths_written=[WRITTEN_PATH, "DECISIONS.md"]))
+        path = self.repo.add_entry(entry(paths_written=[WRITTEN_PATH, "docs/DECISIONS.md"]))
         path.rename(path.parent / "SAMPLE_run.md")
         report = self.repo.evaluate()
         self.assertEqual(report.findings, [])
@@ -627,7 +627,7 @@ class OutputTests(FixtureCase):
     """The text report and the JSON report say the same things."""
 
     def test_json_shape(self):
-        self.repo.add_entry(entry(paths_written=[WRITTEN_PATH, "DECISIONS.md"]))
+        self.repo.add_entry(entry(paths_written=[WRITTEN_PATH, "docs/DECISIONS.md"]))
         result = subprocess.run(
             [sys.executable, str(SCRIPT), "--root", str(self.repo.root), "--json"],
             capture_output=True,
@@ -696,7 +696,7 @@ class OutputTests(FixtureCase):
                 )
 
     def test_json_is_deterministic(self):
-        self.repo.add_entry(entry(paths_written=[WRITTEN_PATH, "DECISIONS.md"]))
+        self.repo.add_entry(entry(paths_written=[WRITTEN_PATH, "docs/DECISIONS.md"]))
         outputs = {
             subprocess.run(
                 [sys.executable, str(SCRIPT), "--root", str(self.repo.root), "--json"],
@@ -709,10 +709,10 @@ class OutputTests(FixtureCase):
         self.assertEqual(len(outputs), 1)
 
     def test_a_fired_report_is_actionable_without_the_ladder(self):
-        self.repo.add_entry(entry(paths_written=[WRITTEN_PATH, "DECISIONS.md"]))
+        self.repo.add_entry(entry(paths_written=[WRITTEN_PATH, "docs/DECISIONS.md"]))
         text = check.render(self.repo.evaluate())
         self.assertIn("FIRED", text)
-        self.assertIn("DECISIONS.md", text)
+        self.assertIn("docs/DECISIONS.md", text)
         self.assertIn("cadence-snapshot", text)
         self.assertIn("would be demoted from A3 to A2", text)
         self.assertIn("2026-09-02-cadence-snapshot-001.md", text)

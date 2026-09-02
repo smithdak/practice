@@ -251,7 +251,7 @@ Checked 2026-09-01:
 - [Buzz workflow action report](https://github.com/block/buzz/issues/4865)
   records incomplete or failing actions beyond `send_message` and the lack of
   visible run errors.
-- [`research/BUZZ_PLATFORM_SNAPSHOT.md`](../research/BUZZ_PLATFORM_SNAPSHOT.md)
+- [`buzz/PLATFORM_SNAPSHOT.md`](PLATFORM_SNAPSHOT.md)
   remains the repository's launch-boundary source.
 
 The locally installed CLI help was also checked for every command shown here

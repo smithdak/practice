@@ -61,7 +61,7 @@ What passed and failed (real numbers):
 
 - 8 of 9 §1 checks passed. Item 1a failed for real: `git diff --check
   d97fe4a6..6f205d65` exited 2 with one trailing-whitespace finding at
-  `research/BUZZ_PLATFORM_SNAPSHOT.md:3`; the pack routed it correctly (record
+  `buzz/PLATFORM_SNAPSHOT.md:3`; the pack routed it correctly (record
   verbatim, no repair, continue, escalate to the release maintainer).
   Repository state as of this packet: the whitespace was fixed post-trial in
   commit `c2a10c0` (2026-09-01), closing that escalation.
@@ -152,7 +152,7 @@ packet does not execute it):
    link).
 4. Downstream copy owned by other files — practices/README.md index,
    [LAUNCH_CHECKLIST.md](LAUNCH_CHECKLIST.md) content check, OWNER_REVIEW.md
-   hold row, CONTEXT.md candidate note — is updated by those files' owners to
+   hold row, docs/CONTEXT.md candidate note — is updated by those files' owners to
    match the decision.
 
 ---
@@ -200,7 +200,7 @@ What passed and failed (real numbers):
   instead of the optional class `[@#]?`, count 1/26). Both were caught by
   comparison against the recorded reference, not by the checker itself.
 - Sensitivity: removing the masking policy produces 3 extra hits in 1 file
-  (`release/FINAL_INTEGRATION_REPORT.md:87`) — the masking policy is
+  (`swarm/reports/PHASE1_REPORT.md:87`) — the masking policy is
   load-bearing for agreement.
 
 Observed failure modes (recorded in the Lab): transcription error twice (T1,
@@ -289,7 +289,7 @@ packet does not execute it):
    must pass.
 4. Downstream copy owned by other files (practices/README.md index,
    [LAUNCH_CHECKLIST.md](LAUNCH_CHECKLIST.md), OWNER_REVIEW.md hold row,
-   CONTEXT.md candidate note) is updated by those files' owners.
+   docs/CONTEXT.md candidate note) is updated by those files' owners.
 
 ---
 
@@ -424,7 +424,7 @@ does not execute it):
    must pass.
 4. Downstream copy owned by other files (practices/README.md index,
    [LAUNCH_CHECKLIST.md](LAUNCH_CHECKLIST.md), OWNER_REVIEW.md hold row,
-   CONTEXT.md candidate note) is updated by those files' owners.
+   docs/CONTEXT.md candidate note) is updated by those files' owners.
 
 ---
 

@@ -64,7 +64,7 @@ REQUIRED_PASS_KEYS = (
 REQUIRED_QUEUE_KEYS = ("id", "name", "source_section", "repo_check")
 KNOWN_REPO_CHECKS = {"none", "blocked_handoffs", "stale_as_of", "open_owner_gates"}
 # The cadence assigns every pass to a role. This guard catches the one personal
-# name the repository uses (the founder, per OWNER_GATES.md) being set as an
+# name the repository uses (the founder, per docs/OWNER_GATES.md) being set as an
 # owner_role, which would turn a role contract into an assignment to a person.
 FOUNDER_NAME = "Dakota"
 

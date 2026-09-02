@@ -226,7 +226,7 @@ This is an **illustrative plan based on Practice’s K008 task contract (as of 2
 | Task | Owner and isolated area | Owned output | Acceptance evidence | Integration rule |
 |---|---|---|---|---|
 | K008 authoring | One worker in an assigned K008 worktree. | `guides/ai-native-practitioner/05-agentic-engineering.md` | Module content covers the assigned subjects; task validator passes; diff inspection. | The author does not edit the curriculum map, task manifest, or another worker’s handoff. |
-| K008 handoff | Same worker because it describes the same change. | `handoffs/K008.md` | Handoff records status, validation, decisions, risks, and deferred opportunities. | Write only after the final evidence is known; do not copy a completion claim from chat. |
+| K008 handoff | Same worker because it describes the same change. | `swarm/handoffs/K008.md` | Handoff records status, validation, decisions, risks, and deferred opportunities. | Write only after the final evidence is known; do not copy a completion claim from chat. |
 | Integration/review | Designated reviewer or maintainer, outside the author’s acceptance claim. | Review decision and any merge/delivery record. | Inspect contract, final diff, validation output, scope, limitations, and commit. | The reviewer decides acceptance or revision; no automatic conclusion follows from task completion. |
 
 The decomposition is deliberately small. Splitting the module prose and its handoff across agents would create unnecessary dependency: the handoff must accurately reflect the final module and validation. Giving a second worker the curriculum file merely to add a link would violate ownership and create an unneeded integration task. The responsible plan is one isolated authoring task, then independent review.

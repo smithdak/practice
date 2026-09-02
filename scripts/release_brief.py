@@ -10,7 +10,7 @@ What the generator does:
 
 - lists every commit in ``--since``..``--until`` (``--since`` included), with
   the paths each commit changed that still exist at the range head;
-- matches ``handoffs/<id>.md`` for a commit whose subject names a task in
+- matches ``swarm/handoffs/<id>.md`` for a commit whose subject names a task in
   ``task(<id>)`` form and quotes that handoff's ``## Status`` value;
 - reports front-matter ``maturity`` and ``evidence_quality`` values verbatim
   for the files the range touched;
@@ -44,6 +44,10 @@ FIELD_SEP = "\x1f"
 CHUNK = 100
 
 OWNER_REVIEW_PATH = "release/OWNER_REVIEW.md"
+# Handoff directories in preference order. The first is where handoffs live now;
+# the rest are where earlier revisions kept them, so a brief over a historical
+# range reads the path that existed at its range head and renders that path.
+HANDOFF_DIRS = ("swarm/handoffs", "handoffs")
 TASK_SUBJECT_RE = re.compile(r"^\w+\(([^)]*)\)\s*:")
 HANDOFF_STATUS_RE = re.compile(r"^## Status\s*\n+\s*(COMPLETE|BLOCKED)\s*$", re.MULTILINE)
 FRONT_MATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*(?:\n|\Z)", re.DOTALL)
@@ -198,6 +202,14 @@ def tree_paths(root: Path, rev: str, rev_label: str) -> set[str]:
     return {line.strip() for line in out.splitlines() if line.strip()}
 
 
+def handoff_dir_at(live: set[str]) -> str:
+    """The handoff directory in use at a revision: the first of HANDOFF_DIRS with any file present."""
+    for directory in HANDOFF_DIRS:
+        if any(path.startswith(directory + "/") for path in live):
+            return directory
+    return HANDOFF_DIRS[0]
+
+
 def read_blob(root: Path, rev: str, path: str) -> str | None:
     result = run_git(root, ["show", f"{rev}:{path}"])
     if result.returncode != 0:
@@ -297,7 +309,7 @@ def check_release_tokens(text: str) -> None:
         )
 
 
-def render_shipped(commits: list[Commit], handoffs: dict[str, list[tuple[str, str | None, bool]]], until_short: str) -> list[str]:
+def render_shipped(commits: list[Commit], handoffs: dict[str, list[tuple[str, str | None, bool, str]]], until_short: str) -> list[str]:
     verb = "commit is" if len(commits) == 1 else "commits are"
     lines = [
         "## What shipped",
@@ -311,8 +323,8 @@ def render_shipped(commits: list[Commit], handoffs: dict[str, list[tuple[str, st
         lines.append(f"### {index}. {code(commit.short)} — {code(commit.subject)}")
         lines.append("")
         lines.append(f"- Commit {code(commit.sha)}, author date {code(commit.authored)}.")
-        for name, status, present in handoffs[commit.sha]:
-            path = code(f"handoffs/{name}.md")
+        for _name, status, present, rel in handoffs[commit.sha]:
+            path = code(rel)
             if not present:
                 lines.append(
                     f"- Handoff {path} is not present at {code(until_short)}; no handoff status is claimed."
@@ -486,16 +498,18 @@ def build_brief(
     since_short = commits[0].short
     commit_word = "commit" if len(commits) == 1 else "commits"
 
-    handoffs: dict[str, list[tuple[str, str | None, bool]]] = {}
+    handoff_dir = handoff_dir_at(live)
+    handoffs: dict[str, list[tuple[str, str | None, bool, str]]] = {}
     for commit in commits:
-        entries: list[tuple[str, str | None, bool]] = []
+        entries: list[tuple[str, str | None, bool, str]] = []
         for task_id in task_ids(commit.subject):
-            rel = f"handoffs/{task_id}.md"
-            if rel not in live:
-                entries.append((task_id, None, False))
+            candidates = [f"{directory}/{task_id}.md" for directory in HANDOFF_DIRS]
+            rel = next((candidate for candidate in candidates if candidate in live), None)
+            if rel is None:
+                entries.append((task_id, None, False, f"{handoff_dir}/{task_id}.md"))
                 continue
             text = read_blob(root, until, rel)
-            entries.append((task_id, handoff_status(text or ""), True))
+            entries.append((task_id, handoff_status(text or ""), True, rel))
         handoffs[commit.sha] = entries
 
     first_touch: dict[str, str] = {}
@@ -550,7 +564,7 @@ def build_brief(
         f"- Paths are the files each commit changed that still exist at {code(until_short)}. A path "
         "removed before the range head is left out rather than pointed at.",
         "- A handoff is matched when the commit subject names a task in `task(<id>)` form and the "
-        "matching file exists under `handoffs/`; its `## Status` value is quoted, not interpreted.",
+        f"matching file exists under {code(handoff_dir + '/')}; its `## Status` value is quoted, not interpreted.",
         f"- File contents are read with `git show` at {code(until_short)}, not from a working tree, "
         "so a rerun over the same range produces the same brief.",
         "- Anything that cannot be backed by a repository path or a commit hash is omitted. It is "

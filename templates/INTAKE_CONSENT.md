@@ -19,7 +19,7 @@ These statements are operational commitments between the contributor and the Pra
 
 ## Part 2 — What must not be shared
 
-*This contribution must meet the repository's [Safe to publish](../QUALITY_BAR.md#safe-to-publish) bar and the [data red lines](../ops/METRICS.md#data-not-to-collect). The contributor confirms the summary and every attached artifact exclude:*
+*This contribution must meet the repository's [Safe to publish](../docs/QUALITY_BAR.md#safe-to-publish) bar and the [data red lines](../ops/METRICS.md#data-not-to-collect). The contributor confirms the summary and every attached artifact exclude:*
 
 - secrets, credentials, tokens, private keys, recovery codes, and signed or internal-only URLs;
 - client, employer, or partner-confidential material, including prompts or outputs that contain it;
@@ -37,7 +37,7 @@ If an excluded detail is load-bearing for the story, describe it as a category o
 | ID | Statement | Choice | Date |
 |---|---|---|---|
 | C1 | **Publication scope.** I consent to publishing the redacted contribution described in Part 1 as a durable Git artifact, and to maintainers referencing that published artifact in community channels. | `[yes / no]` | `[YYYY-MM-DD]` |
-| C2 | **License grant.** I have the right to submit this material, and I grant Practice permission to publish it under CC BY 4.0, the repository's default content license per [locked decisions](../DECISIONS.md) and [LICENSE-CONTENT.md](../LICENSE-CONTENT.md). I understand anyone may reuse and adapt it with credit. I have identified all third-party material, which remains under its own terms per [LICENSES.md](../LICENSES.md). | `[yes / no]` | `[YYYY-MM-DD]` |
+| C2 | **License grant.** I have the right to submit this material, and I grant Practice permission to publish it under CC BY 4.0, the repository's default content license per [locked decisions](../docs/DECISIONS.md) and [LICENSE-CONTENT.md](../LICENSE-CONTENT.md). I understand anyone may reuse and adapt it with credit. I have identified all third-party material, which remains under its own terms per [LICENSES.md](../LICENSES.md). | `[yes / no]` | `[YYYY-MM-DD]` |
 | C3 | **Attribution.** Attribute my contribution as: `[chosen handle | role label only | no attribution]`. | `[as stated]` | `[YYYY-MM-DD]` |
 | C4 | **Withdrawal.** I understand my withdrawal rights as recorded below: I may withdraw before publication at any time without explanation; after publication, no erasure is promised. | `[yes / no]` | `[YYYY-MM-DD]` |
 | C5 | **Human review.** I understand publication is not promised and requires an independent human review pass on the exact candidate version using the [redaction checklist](REDACTION_CHECKLIST.md); a reviewer may accept, request revision, reject, or keep the artifact private. | `[yes / no]` | `[YYYY-MM-DD]` |

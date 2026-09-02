@@ -256,7 +256,7 @@ def build_fixture(root: Path) -> Path:
     write(root, "guides/a-path/01-module.md", "# A module\n\nBody.\n")
     write(root, "guides/README.md", "# Guides\n\nNo front matter here.\n")
     write(root, "release/OWNER_REVIEW.md", OWNER_REVIEW)
-    write(root, "OWNER_GATES.md", OWNER_GATES)
+    write(root, "docs/OWNER_GATES.md", OWNER_GATES)
     return root
 
 
@@ -512,7 +512,7 @@ class GateAndHoldTests(unittest.TestCase):
             root = build_fixture(Path(directory))
             write(
                 root,
-                "OWNER_GATES.md",
+                "docs/OWNER_GATES.md",
                 OWNER_GATES + "| Gate three | Something | A default | No |\n",
             )
             notes = report_for(root)["collected"]["owner_gates_and_holds"]["notes"]

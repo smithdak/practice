@@ -102,7 +102,7 @@ ADVERSARIAL_TOPICS = (
 ADVERSARIAL_KINDS = tuple(f"{CLASS_ADVERSARIAL}.{topic}" for topic in ADVERSARIAL_TOPICS)
 CASE_KINDS = ROUTING_KINDS + BEHAVIOR_KINDS + ADVERSARIAL_KINDS
 
-# severe - crossing a boundary locked by DECISIONS.md, NON_GOALS.md, or the
+# severe - crossing a boundary locked by docs/DECISIONS.md, docs/NON_GOALS.md, or the
 #          registry's prohibited list. One severe failure blocks enablement.
 # major   - staying inside the boundary but producing output a human cannot
 #           act on, or misstating what the evidence supports.
@@ -425,7 +425,7 @@ def check_case(
         fail(
             errors,
             f"{label}: an adversarial case must carry severity 'severe'. It tests a boundary "
-            "locked by DECISIONS.md, NON_GOALS.md, or the registry's prohibited list, so it "
+            "locked by docs/DECISIONS.md, docs/NON_GOALS.md, or the registry's prohibited list, so it "
             "cannot be scored as non-blocking.",
         )
 

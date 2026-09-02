@@ -17,7 +17,7 @@ updated: 2026-09-01
 
 # Trial the agent-output verification gate on a code commit with a rollback rehearsal
 
-This Lab records the first executed trial of [Practice 003](../practices/003-verification-gate.md), "Verify an agent's output before accepting or shipping it", run inside this repository's own work per the Phase 2 plan: the gate is applied to a real worker commit, and the rollback the Practice requires is rehearsed against that commit. The gate reviewer (task E3) did not produce the gated artifact; it was produced by task A2 (see [handoffs/A2.md](../handoffs/A2.md)). The trial covers one artifact of one type; it does not establish general effectiveness of the method.
+This Lab records the first executed trial of [Practice 003](../practices/003-verification-gate.md), "Verify an agent's output before accepting or shipping it", run inside this repository's own work per the Phase 2 plan: the gate is applied to a real worker commit, and the rollback the Practice requires is rehearsed against that commit. The gate reviewer (task E3) did not produce the gated artifact; it was produced by task A2 (see [swarm/handoffs/A2.md](../swarm/handoffs/A2.md)). The trial covers one artifact of one type; it does not establish general effectiveness of the method.
 
 ## Question
 
@@ -87,7 +87,7 @@ out of scope: heading-anchor correctness, reference-style usage completeness,
   documented contract is file existence for inline links and reference
   definitions
 baseline/diff: git show 421ed6e at HEAD 6f205d65; starting tree clean
-sources: handoffs/A2.md (producer record); SWARM_PHASE2_PLAN.md Wave A row
+sources: swarm/handoffs/A2.md (producer record); swarm/plans/PHASE2_PLAN.md Wave A row
   (task definition and owned paths)
 rollback: git revert --no-commit 421ed6e, then git revert --abort (rehearsal);
   recovery owner: repository maintainer
@@ -117,7 +117,7 @@ If any step fails: abort immediately and record the incident as the outcome.
 2. Preserve the starting point: confirm a clean tree and record HEAD. The committed history is the baseline; the gate must not mutate it.
 3. Run M1, M2, M5, and A1 in that order; capture full outputs and exit codes. All checks are deterministic and offline, so no rerun rule is needed.
 4. Perform M3: read `scripts/check_links.py` and `tests/test_check_links.py` in full; inspect `git show 421ed6e --stat`; verify with `git log 421ed6e..HEAD` that no later commit touched the three paths; sweep the repository for references to the tool outside its owned paths.
-5. Perform M4 from the stat in step 4: the commit must touch only `scripts/check_links.py`, `tests/test_check_links.py`, and `handoffs/A2.md` (A2's owned paths plus its own handoff).
+5. Perform M4 from the stat in step 4: the commit must touch only `scripts/check_links.py`, `tests/test_check_links.py`, and `swarm/handoffs/A2.md` (A2's owned paths plus its own handoff).
 6. Build the boundary fixtures under `/tmp/opencode/e3-edge` (advisory A2) and run the checker against the fixture root with `--as-of 2026-09-01`; record output and exit code; delete the fixture.
 7. Execute the Packet 2 rollback rehearsal after all read-only checks; record staged state, conflicts, and recovery.
 8. Decide: apply the Practice's decision rule to the check table; record the decision, approval state, and any observed failure modes in Results.
@@ -148,13 +148,13 @@ Result status: complete. Two runs, both included; none excluded. Wall-clock time
 | M1 | Unit tests | `python3 -m unittest tests.test_check_links -v` | exit 0, all tests OK | `Ran 34 tests in 0.028s` / `OK`, exit 0 | pass |
 | M2 | Checker repo-wide | `python3 scripts/check_links.py` | exit 0, zero broken links | `Checked 230 markdown file(s), 340 link target(s): 0 broken link(s), 0 stale as-of date(s).`, exit 0 | pass |
 | M3 | Complete diff review | `git show 421ed6e`; both files read in full | change matches the producer handoff; no secrets, no network, no scope creep | 3 files, 634 insertions; standard library only; no subprocess or network calls; tests use tempfile fixtures with a pinned as-of date of 2026-09-01 | pass |
-| M4 | Scope discipline | `git show 421ed6e --stat`; `git log 421ed6e..HEAD -- <paths>` | only the three owned paths, untouched since | exactly `handoffs/A2.md` (+98), `scripts/check_links.py` (+186), `tests/test_check_links.py` (+350); the later-commit log over these paths is empty | pass |
+| M4 | Scope discipline | `git show 421ed6e --stat`; `git log 421ed6e..HEAD -- <paths>` | only the three owned paths, untouched since | exactly `swarm/handoffs/A2.md` (+98), `scripts/check_links.py` (+186), `tests/test_check_links.py` (+350); the later-commit log over these paths is empty | pass |
 | M5 | Artifact validator | `python3 scripts/validate_artifacts.py` | exit 0 | `Artifact validation passed (1 guide, 6 guide modules, 1 lab, 3 practices, 1 story).`, exit 0 | pass |
 | M6 | Rollback rehearsed | Run 2 below | clean revert and restore | clean (see Run 2) | pass |
 | A1 | Repo validator (advisory) | `python3 scripts/validate.py --root .` | exit 0, or failures attributed outside the gated paths | `Validation passed.`, exit 0 | pass |
 | A2-check | Boundary fixtures (advisory) | checker run on `/tmp/opencode/e3-edge` | actual behavior recorded | 1 false-positive class and 3 false-pass classes (below) | pass, findings recorded |
 
-Note on A1: the producer handoffs ([handoffs/A1.md](../handoffs/A1.md), [handoffs/A2.md](../handoffs/A2.md)) recorded `scripts/validate.py --root .` failing on a false positive in `handoffs/R2.md`. As of this trial it passes; the earlier failure no longer reproduces as of this run; the cause and the fix are unverified.
+Note on A1: the producer handoffs ([swarm/handoffs/A1.md](../swarm/handoffs/A1.md), [swarm/handoffs/A2.md](../swarm/handoffs/A2.md)) recorded `scripts/validate.py --root .` failing on a false positive in `swarm/handoffs/R2.md`. As of this trial it passes; the earlier failure no longer reproduces as of this run; the cause and the fix are unverified.
 
 ### Boundary fixture findings — what the gate does NOT prove
 
@@ -169,7 +169,7 @@ Probes are written here as link text and target separately; in the fixture each 
 | Parentheses | `[x]` / `weird(1).md`, file exists | valid target | false broken: `a.md:7: broken relative link: weird(1` — the target is truncated at the first `)` |
 | Directory target | `[dir link]` / `sub`, a directory | not a page target | passes the existence check |
 
-Recording frictions, observed while writing this record: `scripts/validate.py` flagged the Lab's own backticked fixture examples as three broken relative links because it scans raw text and masks neither code fences nor inline code spans — the same false-positive class the producer handoff predicted for it. The gated checker handled the identical document correctly (0 broken links). The probes were reworded to break the bracket-parenthesis adjacency rather than modify any validator; the incident is evidence for the masking decision recorded in [handoffs/A2.md](../handoffs/A2.md).
+Recording frictions, observed while writing this record: `scripts/validate.py` flagged the Lab's own backticked fixture examples as three broken relative links because it scans raw text and masks neither code fences nor inline code spans — the same false-positive class the producer handoff predicted for it. The gated checker handled the identical document correctly (0 broken links). The probes were reworded to break the bracket-parenthesis adjacency rather than modify any validator; the incident is evidence for the masking decision recorded in [swarm/handoffs/A2.md](../swarm/handoffs/A2.md).
 
 Consequences for the gate: a checker pass proves link targets exist as files; it does not prove anchors resolve, reference usages have definitions, or that a target with literal parentheses is judged correctly. The parenthesized-target class is a false positive inside the tool's own contract — in CI it would block a pull request containing a valid file named like `weird(1).md`. Severity today: latent. No filename in the repository contains parentheses (verified with `git ls-files` on 2026-09-01), and reference-style usages currently have definitions where used.
 
@@ -179,7 +179,7 @@ Pre-state: `git status --short` empty; HEAD before `6f205d65453c7699016abc2f4d18
 
 | Step | Command | Observed |
 |---|---|---|
-| Revert | `git revert --no-commit 421ed6e` | exit 0; no conflicts; staged exactly `D handoffs/A2.md`, `D scripts/check_links.py`, `D tests/test_check_links.py`; `git diff --cached --stat`: 3 files changed, 634 deletions(-) |
+| Revert | `git revert --no-commit 421ed6e` | exit 0; no conflicts; staged exactly `D swarm/handoffs/A2.md`, `D scripts/check_links.py`, `D tests/test_check_links.py`; `git diff --cached --stat`: 3 files changed, 634 deletions(-) |
 | Inspect | `git status --short`; `git diff --cached --stat` | staged deletions only, as above |
 | Abort | `git revert --abort` | exit 0 |
 | Verify | `git status --short`; `git rev-parse HEAD` | tree empty; HEAD after `6f205d65453c7699016abc2f4d18e5db31002544`, identical to before |
@@ -189,8 +189,8 @@ What reverted cleanly: the entire commit. All three files were added in `421ed6e
 What would need manual attention if the revert were actually committed:
 
 - CI breaks: `.github/workflows/ci.yml` runs `python3 scripts/check_links.py`, which the revert deletes. A4 wired CI to this tool, so a tool revert requires a matching CI revert in the same change.
-- Stale prose references to the tool remain in `handoffs/A4.md`, `handoffs/R3.md`, and `SWARM_PHASE2_PLAN.md`.
-- Confirmed non-issues: no other test module imports the deleted test file, so unittest discovery would still pass; nothing else links to `handoffs/A2.md`.
+- Stale prose references to the tool remain in `swarm/handoffs/A4.md`, `swarm/handoffs/R3.md`, and `swarm/plans/PHASE2_PLAN.md`.
+- Confirmed non-issues: no other test module imports the deleted test file, so unittest discovery would still pass; nothing else links to `swarm/handoffs/A2.md`.
 
 Recovery commands, exact: while the sequence is open, `git revert --abort`; if a revert had been committed, `git revert HEAD` of the revert commit, or `git reset --hard 6f205d65453c7699016abc2f4d18e5db31002544` before any push. Recovery owner: repository maintainer.
 
@@ -219,7 +219,7 @@ Against the Practice's own trial bar: not fully met. The Practice's Evaluation s
 - Boundary findings come from synthetic fixtures outside the repository; they demonstrate checker behavior classes, not incidence in this repo's actual files.
 - Repo-wide counts (230 files, 340 link targets) drift as parallel Wave E/G tasks land files; a later rerun will produce different counts.
 - The rehearsal never executed a revert in a pushed history; recovery from a committed revert (`git revert HEAD`) is stated, not rehearsed.
-- `python3 scripts/validate.py --task E3 --root .` reports `Unknown task E3` because Wave E tasks are not wired into `tasks/manifest.json`; task-scoped validation could not run.
+- `python3 scripts/validate.py --task E3 --root .` reports `Unknown task E3` because Wave E tasks are not wired into `swarm/manifest.json`; task-scoped validation could not run.
 
 ## Reproduction
 
@@ -227,7 +227,7 @@ Environment: this repository at HEAD `6f205d65453c7699016abc2f4d18e5db31002544`,
 
 1. Verify the start state: `git status --short` (expect empty), `git rev-parse HEAD`, `git show 421ed6e --stat`.
 2. Run the gate checks in order: `python3 -m unittest tests.test_check_links -v`; `python3 scripts/check_links.py`; `python3 scripts/validate_artifacts.py`; `python3 scripts/validate.py --root .`.
-3. Perform the diff review: `git show 421ed6e`, read both gated files in full, and run `git log 421ed6e..HEAD -- scripts/check_links.py tests/test_check_links.py handoffs/A2.md` (expect empty output).
+3. Perform the diff review: `git show 421ed6e`, read both gated files in full, and run `git log 421ed6e..HEAD -- scripts/check_links.py tests/test_check_links.py swarm/handoffs/A2.md` (expect empty output).
 4. Build the boundary fixture outside the repository: a directory containing `target.md` (`target`), a file literally named `weird(1).md` (`target`), `sub/note.md`, and `a.md` with the four probe links from the boundary table, each composed in the usual bracket-parenthesis form with the recorded link text and target. Run `python3 <repo>/scripts/check_links.py <fixture-dir> --as-of 2026-09-01` and expect the single false positive `a.md:7: broken relative link: weird(1` with exit 1.
 5. Run the rollback rehearsal with the Packet 2 protocol; expect 634 staged deletions across exactly the three files, zero conflicts, and an identical HEAD after `git revert --abort`.
 6. Compare observed outputs against the Run 1 and Run 2 tables. Any divergence marks the corresponding check as not reproduced for the diverging condition.

@@ -151,26 +151,25 @@ GOVERNED_PATHS = (
     "docs/framework/AUTONOMY_LADDER.md",
     "release/OWNER_REVIEW.md",
     "buzz/agents/registry.yaml",
-    "tasks/manifest.json",
+    "swarm/manifest.json",
     "AGENTS.md",
-    "DECISIONS.md",
-    "NON_GOALS.md",
-    "OWNER_GATES.md",
-    "QUALITY_BAR.md",
+    "docs/DECISIONS.md",
+    "docs/NON_GOALS.md",
+    "docs/OWNER_GATES.md",
+    "docs/QUALITY_BAR.md",
     "Makefile",
 )
 GOVERNED_PREFIXES = (
     ".git/",
     ".github/",
-    ".swarm/",
+    ".taskctl/",
     "buzz/agents/",
     "docs/framework/",
     "docs/schemas/",
-    "handoffs/",
     "ops/autonomy/",
     "ops/ledger/",
     "scripts/",
-    "tasks/",
+    "swarm/",
     "tests/",
 )
 GOVERNED_PROBE_SUFFIXES = ("probe.md", "probe.py", "probe.yaml", "probe.json", "sub/probe.md")
@@ -548,7 +547,7 @@ def read_ineligible_operations(root: Path, decision: Decision) -> set[str] | Non
             "ladder-agreement",
             f"{LADDER_PATH} no longer lists {', '.join(missing)} as permanently ineligible "
             "for A3, but scripts/autonomy_guard.py still does. Removing an operation from "
-            "that list is a governance amendment to DECISIONS.md and NON_GOALS.md, not a "
+            "that list is a governance amendment to docs/DECISIONS.md and docs/NON_GOALS.md, not a "
             "tooling change; until the two agree the guard refuses.",
         )
         return None

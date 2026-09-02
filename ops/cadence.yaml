@@ -42,8 +42,8 @@ passes:
       classify, route, or select. Safety and access items are handled first
       whenever they arrive, inside or outside a pass.
     evidence:
-      - tasks/specs/*.md
-      - tasks/manifest.json
+      - swarm/specs/*.md
+      - swarm/manifest.json
     off_repo_records:
       - Git issue opened when durable work is needed
       - private maintainers queue item
@@ -89,7 +89,7 @@ passes:
       is hold or no release.
     evidence:
       - reviews/*.md
-      - handoffs/*.md
+      - swarm/handoffs/*.md
     off_repo_records:
       - review record in the affected Git issue or pull request
     note: >-
@@ -164,7 +164,7 @@ passes:
       release and maintenance passes may be combined when there is little work.
     evidence:
       - reviews/*.md
-      - research/*.md
+      - buzz/PLATFORM_SNAPSHOT.md
     off_repo_records:
       - stale-content Git issue or pull request
       - private continuity, access, and recovery records
@@ -244,7 +244,7 @@ escalations:
 
 checks:
   blocked_handoffs:
-    scans: handoffs/*.md
+    scans: swarm/handoffs/*.md
     description: >-
       Handoff records whose "## Status" section reads BLOCKED, plus records
       whose status line cannot be read.

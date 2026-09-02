@@ -11,7 +11,7 @@ broad invitation promotion and creates no expectation of automated support
 - [Weekly operating cadence](WEEKLY_CADENCE.md) is the controlling rhythm. This
   kit adds one beta-only daily pass and the facilitation prompt backlog; it
   changes nothing else in the weekly loop.
-- [Invitation funnel](INVITE_FUNNEL.md) governs request review, invitation
+- [Invitation funnel](outreach/INVITE_FUNNEL.md) governs request review, invitation
   issuance, and the private intake ledger. The steps below only sequence those
   rules for beta operation.
 - [Moderation model](../community/MODERATION.md) is the complete conduct
@@ -68,7 +68,7 @@ still applies.
 
 ## Private intake route handling
 
-These steps implement the [invitation funnel](INVITE_FUNNEL.md); that document
+These steps implement the [invitation funnel](outreach/INVITE_FUNNEL.md); that document
 controls on conflict.
 
 1. Requests arrive on the single private, human-monitored request route the
@@ -110,7 +110,7 @@ member reporting conduct uses the private reporting route in the
 
 Community agents may prepare packets and recommend routes. They never remove
 content, restrict a person, resolve a case, or publish a decision. This is the
-locked moderation decision in [DECISIONS.md](../DECISIONS.md).
+locked moderation decision in [docs/DECISIONS.md](../docs/DECISIONS.md).
 
 ## Facilitation prompt backlog (scaffold)
 
@@ -253,7 +253,7 @@ cases; on conflict, those documents control.
 
 ## Sources
 
-- [Weekly operating cadence](WEEKLY_CADENCE.md), [invitation funnel](INVITE_FUNNEL.md),
+- [Weekly operating cadence](WEEKLY_CADENCE.md), [invitation funnel](outreach/INVITE_FUNNEL.md),
   [metrics](METRICS.md), and [maintainer runbook](MAINTAINER_RUNBOOK.md),
   reviewed 2026-09-01.
 - [Moderation model](../community/MODERATION.md), [Code of Conduct](../CODE_OF_CONDUCT.md),

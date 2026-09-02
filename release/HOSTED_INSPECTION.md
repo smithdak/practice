@@ -7,7 +7,7 @@ hold in [Owner review](OWNER_REVIEW.md). It verifies existence and
 configuration; it fixes nothing, clears no other gate, and never constitutes
 launch approval.
 
-Why this exists: the [onboarding dry run](../reviews/ONBOARDING_DRY_RUN.md)
+Why this exists: the [onboarding dry run](../reviews/ONBOARDING_DRY_RUN_PHASE1.md)
 found repository configuration but no evidence that the hosted channels,
 canvases, seeds, membership visibility, or the `start-here` path actually
 exist. This checklist is the manual inspection the
@@ -149,7 +149,7 @@ without quoting member content or recording who posts.
 - [ ] The seed message is visible to that member and contains the four-line
   reply template (I work on … / I want to improve or understand … / next
   outcome / first small action).
-- [ ] The routes the seed and [information architecture](../buzz/INFORMATION_ARCHITECTURE.md)
+- [ ] The routes the seed and [information architecture](../buzz/CHANNELS.md)
   point to exist and are member-visible (covered by the table above; record
   `pass` only if both are true).
 - [ ] The interactive posting test — a member posts the bounded introduction

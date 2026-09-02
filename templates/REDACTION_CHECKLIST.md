@@ -8,7 +8,7 @@
 - Version or commit: `[version or commit ID]`
 - Checklist date: `[YYYY-MM-DD]`
 - Contributor handle: `[@handle]`
-- Reviewer role: `[role]` — *the reviewer is not the contributor; a host who prepared the artifact may not self-approve (see the [editorial checklist](../content/launch/FIRST_10.md#editorial-and-release-checklist))*
+- Reviewer role: `[role]` — *the reviewer is not the contributor; a host who prepared the artifact may not self-approve (see the [editorial checklist](../ops/outreach/FIRST_10.md#editorial-and-release-checklist))*
 
 Record each check as `pass`, `fail`, or `n-a` with a one-line note. A check that could not be completed is a `fail`, not a pass. When any item is uncertain, redact or keep the artifact private.
 

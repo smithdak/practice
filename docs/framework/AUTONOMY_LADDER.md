@@ -81,12 +81,12 @@ These operations may never run unattended. No amount of evidence, run history, o
 
 | Operation id | Operation | Why it is permanently ineligible | Where the decision is recorded |
 |---|---|---|---|
-| `moderation-and-removal` | Removing, hiding, editing, banning, or restricting a person or their content; deciding an enforcement outcome or an appeal. | The decision is human-owned and a removal is not reversible for the person it affects. An agent flags a concern, captures a link and a non-diagnostic summary, and suggests routing. | `DECISIONS.md` (Moderation), `NON_GOALS.md` (autonomous moderation, banning, or content deletion), `community/MODERATION.md` (Roles and authority) |
+| `moderation-and-removal` | Removing, hiding, editing, banning, or restricting a person or their content; deciding an enforcement outcome or an appeal. | The decision is human-owned and a removal is not reversible for the person it affects. An agent flags a concern, captures a link and a non-diagnostic summary, and suggests routing. | `docs/DECISIONS.md` (Moderation), `docs/NON_GOALS.md` (autonomous moderation, banning, or content deletion), `community/MODERATION.md` (Roles and authority) |
 | `maturity-promotion` | Changing a `maturity` or `evidence_quality` value, or presenting a proposed method as a tested Practice. | A promotion is a human decision with recorded trial evidence; an agent that could set the field could manufacture the evidence level it reports. | `release/OWNER_REVIEW.md` (hold 4, Tested-Practice evidence), `buzz/agents/registry.yaml` (every entry's prohibited list) |
-| `publication-approval` | Deciding that an artifact, release, decision, or policy may be published or announced, in any public or member-visible surface. | A public claim cannot be silently retracted, and the final launch announcement is a manual action the owner never delegates. Approval is the judgment; delivering content already approved is a separate operation and is not this row. | `OWNER_GATES.md` (Manual actions never delegated), `ops/MAINTAINER_RUNBOOK.md` (Releases), `buzz/agents/registry.yaml`, `community/AMENDMENTS.md` (001) |
-| `owner-identity-and-keys` | Creating, recovering, holding, entering, or requesting the owner identity, a private key, a credential, a token, or a recovery code. | One identity per agent with least access is a locked decision, and identity creation and key handling are manual actions never delegated. | `DECISIONS.md` (Agent security), `OWNER_GATES.md` (Manual actions never delegated), `ops/BUZZ_SECURITY.md` |
-| `license-and-governance-change` | Changing a license, the governance model, the mission, the non-goals, repository ownership, privileged access, or a maintainer appointment. | These are reserved, hard-to-reverse decisions; the governance model states that no agent may make them. | `OWNER_GATES.md` (Manual actions never delegated), `community/GOVERNANCE.md` (Decision paths), `DECISIONS.md` |
-| `owner-reserved-decision` | Any decision `OWNER_GATES.md` reserves to the owner: every gate row, and every manual action listed as never delegated. | The gate exists because a human has to look at the thing before it is true. An agent that could close a gate would be closing it on its own report. | `OWNER_GATES.md`, `release/OWNER_REVIEW.md` (Owner gates) |
+| `publication-approval` | Deciding that an artifact, release, decision, or policy may be published or announced, in any public or member-visible surface. | A public claim cannot be silently retracted, and the final launch announcement is a manual action the owner never delegates. Approval is the judgment; delivering content already approved is a separate operation and is not this row. | `docs/OWNER_GATES.md` (Manual actions never delegated), `ops/MAINTAINER_RUNBOOK.md` (Releases), `buzz/agents/registry.yaml`, `community/AMENDMENTS.md` (001) |
+| `owner-identity-and-keys` | Creating, recovering, holding, entering, or requesting the owner identity, a private key, a credential, a token, or a recovery code. | One identity per agent with least access is a locked decision, and identity creation and key handling are manual actions never delegated. | `docs/DECISIONS.md` (Agent security), `docs/OWNER_GATES.md` (Manual actions never delegated), `ops/BUZZ_SECURITY.md` |
+| `license-and-governance-change` | Changing a license, the governance model, the mission, the non-goals, repository ownership, privileged access, or a maintainer appointment. | These are reserved, hard-to-reverse decisions; the governance model states that no agent may make them. | `docs/OWNER_GATES.md` (Manual actions never delegated), `community/GOVERNANCE.md` (Decision paths), `docs/DECISIONS.md` |
+| `owner-reserved-decision` | Any decision `docs/OWNER_GATES.md` reserves to the owner: every gate row, and every manual action listed as never delegated. | The gate exists because a human has to look at the thing before it is true. An agent that could close a gate would be closing it on its own report. | `docs/OWNER_GATES.md`, `release/OWNER_REVIEW.md` (Owner gates) |
 
 An operation that is a near neighbour of one of these rows is treated as the row until a human says otherwise. Recommending a removal is not moderation; drafting an announcement is not publication; proposing a patch is not a merge. The boundary is the act, not the preparation.
 
@@ -115,8 +115,8 @@ re-publishing stay outside it.
 ### The self-modification exclusion
 
 No A3 operation may create, change, merge, or deliver a change to a file that
-governs its own bounds — at minimum `DECISIONS.md`, `NON_GOALS.md`,
-`OWNER_GATES.md`, `community/GOVERNANCE.md`, `community/AMENDMENTS.md`, this
+governs its own bounds — at minimum `docs/DECISIONS.md`, `docs/NON_GOALS.md`,
+`docs/OWNER_GATES.md`, `community/GOVERNANCE.md`, `community/AMENDMENTS.md`, this
 document, anything under `ops/autonomy/`, and anything under `.github/`.
 
 This exclusion is not waivable by a promotion, because an agent that can widen
@@ -192,6 +192,6 @@ As of: 2026-09-02.
 - [ops/cadence.yaml](../../ops/cadence.yaml) and [ops/WEEKLY_CADENCE.md](../../ops/WEEKLY_CADENCE.md) — the operations mapped above and the human owner of each pass.
 - [ops/MAINTAINER_RUNBOOK.md](../../ops/MAINTAINER_RUNBOOK.md) — the human review checklist an A1 or A2 output is read against.
 - [community/MODERATION.md](../../community/MODERATION.md) and [community/GOVERNANCE.md](../../community/GOVERNANCE.md) — the human-owned enforcement boundary and the reserved-decision path.
-- [DECISIONS.md](../../DECISIONS.md), [NON_GOALS.md](../../NON_GOALS.md), and [OWNER_GATES.md](../../OWNER_GATES.md) — the locked decisions behind the permanently ineligible list.
+- [docs/DECISIONS.md](../DECISIONS.md), [docs/NON_GOALS.md](../NON_GOALS.md), and [docs/OWNER_GATES.md](../OWNER_GATES.md) — the locked decisions behind the permanently ineligible list.
 - [release/OWNER_REVIEW.md](../../release/OWNER_REVIEW.md) — owner gate 6 and the operating holds that keep every agent `not_enabled`.
 - [ops/triage/README.md](../../ops/triage/README.md) — the worked case of an agent that recommends a state and a human who owns the closing one.

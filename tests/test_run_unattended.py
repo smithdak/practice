@@ -175,11 +175,11 @@ def tree_file_names(root: Path) -> set[str]:
     """Every file under ``root`` that a run could plausibly disturb.
 
     ``.git`` is excluded because reading a repository refreshes its index,
-    ``__pycache__`` because importing a module writes one, and ``.swarm`` and
+    ``__pycache__`` because importing a module writes one, and ``.taskctl`` and
     ``.worktrees`` because they are local orchestration state this repository
     does not track.
     """
-    skipped = {".git", "__pycache__", ".swarm", ".worktrees"}
+    skipped = {".git", "__pycache__", ".taskctl", ".worktrees"}
     names: set[str] = set()
     for current, dirnames, filenames in os.walk(root):
         dirnames[:] = [name for name in dirnames if name not in skipped]
@@ -697,7 +697,7 @@ class ScopeMatchingTest(unittest.TestCase):
     def test_fnmatch_semantics_match_the_catalogued_rule(self):
         self.assertTrue(runner.matches_scope("ops/status/a.md", ["ops/status/*.md"]))
         self.assertFalse(runner.matches_scope("ops/status/a.txt", ["ops/status/*.md"]))
-        self.assertFalse(runner.matches_scope("DECISIONS.md", ["ops/status/*.md"]))
+        self.assertFalse(runner.matches_scope("docs/DECISIONS.md", ["ops/status/*.md"]))
         self.assertFalse(runner.matches_scope("ops/status/a.md", []))
         self.assertTrue(
             runner.matches_scope(

@@ -10,7 +10,7 @@ files under `skills/evals/results/`), as consumed by
 
 **Method and what was independently re-executed.** All four sets, all five Wave E
 handoffs, the packets, the three practice files, the schema, and R4's underlying
-audit (`research/CLAIM_AUDIT.md`) were read in full. Q6 then re-executed what was
+audit (`reviews/CLAIM_AUDIT.md`) were read in full. Q6 then re-executed what was
 re-executable from the records: (a) the lab 003 checker was extracted from the
 Lab's embedded source and run against this repository — its self-reported sha256
 is byte-identical to the canonical v0.4 hash the Lab records

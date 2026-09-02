@@ -41,7 +41,7 @@ Falsifiable threshold, declared before the run: the hypothesis is supported only
 
 ## Fixed conditions
 
-- Repository snapshot: commit `6f205d65453c7699016abc2f4d18e5db31002544`, clean tracked worktree at run start; baseline commit `d97fe4a6e3c6c143b0587ee24f005e13d54b7cea` as recorded in [the Q005 integration report](../release/FINAL_INTEGRATION_REPORT.md).
+- Repository snapshot: commit `6f205d65453c7699016abc2f4d18e5db31002544`, clean tracked worktree at run start; baseline commit `d97fe4a6e3c6c143b0587ee24f005e13d54b7cea` as recorded in [the Q005 integration report](../swarm/reports/PHASE1_REPORT.md).
 - Pack: the document in Appendix A, version 0.1.0, assembled and frozen before the run (sha256 prefix `8025c2e83c0f87a4`); not edited during or after the run.
 - Single run, single operator (an agent working the E1 swarm task); no second operator, no independent cold reader.
 - All commands run from the repository root, read-only or dry-run; no `--apply`, no file edits, no marker changes.
@@ -93,7 +93,7 @@ Record: launch dry-run automated and repository checks, §1 of [launch checklist
 
 | §1 item | Command | Exit code | Result | Retained output |
 |---|---|---|---|---|
-| 1a. Committed whitespace, baseline to candidate | `git diff --check d97fe4a6..6f205d65` | 2 | **FAIL** | `research/BUZZ_PLATFORM_SNAPSHOT.md:3: trailing whitespace.` on the added line `+**As of:** 2026-09-01  ` (two trailing spaces). |
+| 1a. Committed whitespace, baseline to candidate | `git diff --check d97fe4a6..6f205d65` | 2 | **FAIL** | `buzz/PLATFORM_SNAPSHOT.md:3: trailing whitespace.` on the added line `+**As of:** 2026-09-01  ` (two trailing spaces). |
 | 1b. Candidate commit whitespace | `git show --check 6f205d65` | 0 | PASS | No findings. |
 | 2. Release validation | `python3 scripts/validate.py --release` | 0 | PASS | `Validation passed.` |
 | 3. Unit tests | `python3 -m unittest discover -s tests` | 0 | PASS | `Ran 100 tests in 0.076s` / `OK` |
@@ -125,7 +125,7 @@ Failures and escalation: item 1a FAILED. Per the pack's edge-case rule, no repai
 
 Scope statement: a pass above proves only the check it names, at the candidate commit, on the run date. This summary does not approve launch, does not inspect any hosted surface, does not change any method's maturity, and does not represent a human decision. The clean tracked worktree at run start is context only, not whitespace evidence for item 1.
 
-Post-run worktree observation: `git status --porcelain` after the run listed 3 untracked entries — `handoffs/E4.md`, `skills/evals/EVAL_REPORT.md`, `skills/evals/results/` — created by the concurrent E4 task, not by this run (this run's only filesystem side effects were git-ignored `__pycache__` directories from the Python invocations). Recorded here because the run's checklist item C10 requires the observation; attribution and disposition belong to the reviewer.
+Post-run worktree observation: `git status --porcelain` after the run listed 3 untracked entries — `swarm/handoffs/E4.md`, `skills/evals/EVAL_REPORT.md`, `skills/evals/results/` — created by the concurrent E4 task, not by this run (this run's only filesystem side effects were git-ignored `__pycache__` directories from the Python invocations). Recorded here because the run's checklist item C10 requires the observation; attribution and disposition belong to the reviewer.
 
 ### Acceptance-checklist result (C1–C10, applied to the evidence summary above)
 
@@ -173,7 +173,7 @@ Non-result: this run does not show that context packs improve accuracy, speed, o
 
 1. Check out commit `6f205d65453c7699016abc2f4d18e5db31002544` (or a later commit and expect item-1 results to differ legitimately if the whitespace finding is corrected) with a clean tracked worktree.
 2. Rebuild the pack from Practice 001's Method, or use Appendix A verbatim as pack v0.1.0. Freeze it before running anything.
-3. Record candidate (`git rev-parse HEAD`), pre-run `git status --porcelain`, and the baseline commit from `release/FINAL_INTEGRATION_REPORT.md`.
+3. Record candidate (`git rev-parse HEAD`), pre-run `git status --porcelain`, and the baseline commit from `swarm/reports/PHASE1_REPORT.md`.
 4. Run the nine commands exactly as listed in the evidence summary, from the repository root, with no `BUZZ_*` environment variables and without `--apply`. Retain stdout/stderr and exit codes.
 5. Recompute the channel comparison and per-seed marker counts against `buzz/community.json`.
 6. Assemble the evidence summary in the pack's structure and score it against C1–C10. Compare against this Lab's Results; differences on item 1 after a fix commit are expected and are not a reproduction failure.
@@ -221,7 +221,7 @@ Authoritative sources:
 | # | Source | Owner | Date / version | Question it answers |
 |---|---|---|---|---|
 | S1 | `release/LAUNCH_CHECKLIST.md` §1 "Automated and repository checks" | Release maintainer | as committed at the candidate commit (read 2026-09-01) | The task definition and the nine steps to execute. |
-| S2 | `release/FINAL_INTEGRATION_REPORT.md` "Acceptance record" | Q005 integrator | read 2026-09-01 | The recorded immutable baseline commit: `d97fe4a6e3c6c143b0587ee24f005e13d54b7cea`. |
+| S2 | `swarm/reports/PHASE1_REPORT.md` "Acceptance record" | Q005 integrator | read 2026-09-01 | The recorded immutable baseline commit: `d97fe4a6e3c6c143b0587ee24f005e13d54b7cea`. |
 | S3 | `scripts/validate.py` | A1 owner | as committed at candidate | Behavior of `validate.py --release` and its output format. |
 | S4 | `scripts/buzz_bootstrap.py` | B-series owner | as committed at candidate | Behavior of `--dry-run`; dry-run needs no Buzz installation or credentials. |
 | S5 | `buzz/community.json` | Buzz configuration owner | version field `1`, read 2026-09-01 | The expected twelve channels, visibility, topic, purpose, canvas, seed. |

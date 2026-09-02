@@ -350,5 +350,5 @@ As of: 2026-09-02.
 
 - [docs/framework/AUTONOMY_LADDER.md](../framework/AUTONOMY_LADDER.md) — A3's "recorded when it runs" clause and the demotion triggers this schema makes checkable.
 - [docs/schemas/AGENT_PACKET_SCHEMA.md](AGENT_PACKET_SCHEMA.md) — the front-matter conventions, the role vocabulary, and the forbidden-assertion boundary reused here.
-- [ops/AUTONOMOUS_OPERATION.md](../../ops/AUTONOMOUS_OPERATION.md) — what runs without a person and what does not.
-- [DECISIONS.md](../../DECISIONS.md) and [NON_GOALS.md](../../NON_GOALS.md) — the locked decisions behind the operations no entry may ever record.
+- [ops/OPERATING_LOOP.md](../../ops/OPERATING_LOOP.md) — what runs without a person and what does not.
+- [docs/DECISIONS.md](../DECISIONS.md) and [docs/NON_GOALS.md](../NON_GOALS.md) — the locked decisions behind the operations no entry may ever record.

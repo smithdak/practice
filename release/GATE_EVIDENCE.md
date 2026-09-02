@@ -10,7 +10,7 @@ implied approval.
 **Evidence basis.** Phase 2 trials were recorded on 2026-09-01 at repository
 snapshot `6f205d65453c7699016abc2f4d18e5db31002544` (baseline
 `d97fe4a6e3c6c143b0587ee24f005e13d54b7cea` per the Q005 acceptance record in
-[FINAL_INTEGRATION_REPORT.md](FINAL_INTEGRATION_REPORT.md)). Commit ids below
+[PHASE1_REPORT.md](../swarm/reports/PHASE1_REPORT.md)). Commit ids below
 were verified with `git log`. Since the trial snapshot, the cited evidence
 paths were touched only by the E-wave commits (`08123e5` trials, `1e22021`
 evals, `df16c27` [promotion packets](PROMOTION_PACKETS.md)), the whitespace fix
@@ -19,14 +19,14 @@ schemas, `3ffe31e` Practices 004–006, `1f80f96` intake/consent templates), and
 earlier O1 packet draft `96e0e6c`, which this refresh supersedes. The
 Wave O sibling outputs cited here —
 [HOSTED_INSPECTION.md](HOSTED_INSPECTION.md) (O3),
-[ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md) (O4, which
+[ONBOARDING_DRY_RUN_PHASE2.md](../reviews/ONBOARDING_DRY_RUN_PHASE2.md) (O4, which
 reviewed commit `1f80f96`),
 [BETA_OPS.md](../ops/BETA_OPS.md) and
 [TRIAGE_POLICY.md](../.github/TRIAGE_POLICY.md) (O5), and
 `scripts/steward_readiness_check.py` with `tests/test_steward_readiness.py`
 (O2) — were present in the repository but not yet committed when this packet
 was refreshed. Platform facts are as of
-2026-09-01 per the [Buzz platform snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md).
+2026-09-01 per the [Buzz platform snapshot](../buzz/PLATFORM_SNAPSHOT.md).
 
 **Readiness scale** (repository evidence completeness for the human decision,
 derived only from what is cited in the section):
@@ -72,12 +72,12 @@ derived only from what is cited in the section):
    canvases/seeds exist with exactly one marker each. Platform facts are
    re-verified as of 2026-09-01: hosted communities are invite-only, a hosted
    account can create up to three communities, and the launch-safe CLI surface
-   is confirmed ([snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md)).
+   is confirmed ([snapshot](../buzz/PLATFORM_SNAPSHOT.md)).
 3. **Still missing and why.** The hosted community does not exist yet; the
    address/relay URL becomes knowable only after the owner creates the
    community with the owner identity. No agent may create or receive the owner
    identity or run `--apply` — creating the owner identity is on the
-   never-delegated list in [OWNER_GATES.md](../OWNER_GATES.md), and only the
+   never-delegated list in [docs/OWNER_GATES.md](../docs/OWNER_GATES.md), and only the
    owner may apply with the owner's local environment
    ([security runbook](../ops/BUZZ_SECURITY.md)).
 4. **Human action checklist.**
@@ -120,10 +120,10 @@ derived only from what is cited in the section):
    and names no conflicting public destination; it passed the entry-point
    check at `6f205d6` (labs/002 §1 item 8: 9 of 9 public entry points found).
    Git as the durable source of truth is locked in
-   [DECISIONS.md](../DECISIONS.md), and the launch-checklist §3 first item
+   [docs/DECISIONS.md](../docs/DECISIONS.md), and the launch-checklist §3 first item
    names this gate ([LAUNCH_CHECKLIST.md](LAUNCH_CHECKLIST.md)). O4's dry run
    found the root README operator-facing
-   ([ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md), finding
+   ([ONBOARDING_DRY_RUN_PHASE2.md](../reviews/ONBOARDING_DRY_RUN_PHASE2.md), finding
    N6) — a copy fix owned by the integrator, not a destination question.
 3. **Still missing and why.** Only the availability check on GitHub and the
    choice itself — external facts only the owner can establish.
@@ -140,16 +140,16 @@ derived only from what is cited in the section):
    content, or make an explicit governance decision before publication.
 2. **Evidence now available.** [LICENSES.md](../LICENSES.md) maps both;
    `LICENSE-CODE` and `LICENSE-CONTENT.md` exist (labs/002 §1 item 8: 9 of 9
-   at `6f205d6`). The defaults are locked in [DECISIONS.md](../DECISIONS.md).
+   at `6f205d6`). The defaults are locked in [docs/DECISIONS.md](../docs/DECISIONS.md).
    The R4 claim re-audit found zero license/attribution defects
-   ([CLAIM_AUDIT.md](../research/CLAIM_AUDIT.md)), and labs/003 mechanized the
+   ([CLAIM_AUDIT.md](../reviews/CLAIM_AUDIT.md)), and labs/003 mechanized the
    license front-matter class: in both included runs the checker reported 0
    findings, matching R4's recorded clean verdicts on the 68 reference files
    ([labs/003](../labs/003-workflow-redesign-trial.md), runs T3/T4). Because
    every reference verdict is "clean", that comparison shows only that the
    checker does not over-flag; it measures nothing about detection.
 3. **Still missing and why.** License and governance acceptance is on the
-   never-delegated list in [OWNER_GATES.md](../OWNER_GATES.md) — only a human
+   never-delegated list in [docs/OWNER_GATES.md](../docs/OWNER_GATES.md) — only a human
    can accept it.
 4. **Human action checklist.**
    - [ ] Confirm Apache-2.0 for code (`LICENSE-CODE`) and CC BY 4.0 for content (`LICENSE-CONTENT.md`).
@@ -164,18 +164,18 @@ derived only from what is cited in the section):
 2. **Evidence now available.** The route specification is complete: what a
    requester may provide, who may invite, the readiness review, issuance
    recordkeeping, and the launch-readiness checklist in the [invitation
-   funnel](../ops/INVITE_FUNNEL.md); reusable invitation links are banned and
+   funnel](../ops/outreach/INVITE_FUNNEL.md); reusable invitation links are banned and
    the social kit carries the wording slots
-   ([SOCIAL_KIT.md](../content/launch/SOCIAL_KIT.md)). Two independent dry
+   ([SOCIAL_KIT.md](../ops/outreach/SOCIAL_KIT.md)). Two independent dry
    runs record the live gap: the invitation stage is FAIL (live) — no named,
-   tested route exists ([ONBOARDING_DRY_RUN.md](../reviews/ONBOARDING_DRY_RUN.md)),
+   tested route exists ([ONBOARDING_DRY_RUN_PHASE1.md](../reviews/ONBOARDING_DRY_RUN_PHASE1.md)),
    and V2 confirms the blocker persists while direct human invitation of known
    collaborators remains available for a beta
-   ([ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md)).
+   ([ONBOARDING_DRY_RUN_PHASE2.md](../reviews/ONBOARDING_DRY_RUN_PHASE2.md)).
 3. **Still missing and why.** The route itself does not exist; establishing
    and testing it requires a live hosted community and a human receiver.
    Agents may not qualify people or create/forward invitations
-   ([funnel](../ops/INVITE_FUNNEL.md)), and approval before the test would
+   ([funnel](../ops/outreach/INVITE_FUNNEL.md)), and approval before the test would
    violate the funnel's own rule.
 4. **Human action checklist.**
    - [ ] Designate one existing, private, human-monitored request route.
@@ -199,7 +199,7 @@ derived only from what is cited in the section):
    [Research Auditor](../buzz/agents/RESEARCH_AUDITOR.md),
    [Release Editor](../buzz/agents/RELEASE_EDITOR.md)); the never-delegate
    list covers billing credentials and provider secrets
-   ([OWNER_GATES.md](../OWNER_GATES.md)); the beta kit's agent-sponsor role
+   ([docs/OWNER_GATES.md](../docs/OWNER_GATES.md)); the beta kit's agent-sponsor role
    bounds activation and output inspection
    ([BETA_OPS.md](../ops/BETA_OPS.md)).
 3. **Still missing and why.** The selection is a human choice reserved to the
@@ -228,10 +228,10 @@ derived only from what is cited in the section):
    [PROMOTION_PACKETS.md](PROMOTION_PACKETS.md); guide currency fixes landed
    in `cda441a` (G1); O4's re-run verdict is conditional yes for private beta
    only, with public promotion still blocked
-   ([ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md)).
+   ([ONBOARDING_DRY_RUN_PHASE2.md](../reviews/ONBOARDING_DRY_RUN_PHASE2.md)).
 3. **Still missing and why.** The evidence this gate names does not exist yet:
    no final-candidate release-validation record is filled (that runs after
-   final integration per [SWARM_PHASE2_PLAN.md](../SWARM_PHASE2_PLAN.md)), no
+   final integration per [swarm/plans/PHASE2_PLAN.md](../swarm/plans/PHASE2_PLAN.md)), no
    private `RELEASE` item is open, and no human release owner is named —
    naming humans is reserved to humans (see Human operating coverage below).
    O4 also records copy fixes (stale "three Practices" wording, unreachable
@@ -250,10 +250,10 @@ derived only from what is cited in the section):
 1. **What the gate needs.** Use the default text-only wordmark, or explicitly
    approve a mark before it is used publicly.
 2. **Evidence now available.** The text-only wordmark is the locked launch
-   default ([DECISIONS.md](../DECISIONS.md)); the launch materials are
+   default ([docs/DECISIONS.md](../docs/DECISIONS.md)); the launch materials are
    text-only today — the social kit contains only text tokens (26 bracketed
    placeholders, verified below under the Publication destinations hold); a
-   complex brand identity is a non-goal ([NON_GOALS.md](../NON_GOALS.md)).
+   complex brand identity is a non-goal ([docs/NON_GOALS.md](../docs/NON_GOALS.md)).
 3. **Still missing and why.** Only the owner's confirmation — or, if a mark is
    ever proposed, a human-created and human-approved design; agents must not
    invent a mark for approval.
@@ -274,13 +274,13 @@ derived only from what is cited in the section):
    are known to the responsible humans, and current invitation/revocation
    controls are verified or an official-support fallback is recorded.
 2. **Evidence now available.** The pause rule and the complete operating
-   procedure are in the [invitation funnel](../ops/INVITE_FUNNEL.md) (its
+   procedure are in the [invitation funnel](../ops/outreach/INVITE_FUNNEL.md) (its
    launch-readiness checklist is unchecked by design); the live gap is
-   evidenced in the [onboarding dry run](../reviews/ONBOARDING_DRY_RUN.md)
+   evidenced in the [onboarding dry run](../reviews/ONBOARDING_DRY_RUN_PHASE1.md)
    (invitation stage FAIL (live) for all three personas), and V2 re-confirms
    the blocker persists while keeping a conditional private-beta path open via
    direct human invitations
-   ([ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md), ranked
+   ([ONBOARDING_DRY_RUN_PHASE2.md](../reviews/ONBOARDING_DRY_RUN_PHASE2.md), ranked
    defect 3); the data-minimized intake ledger and review rules are in
    [METRICS.md](../ops/METRICS.md); the beta kit sequences the intake and
    escalation handling for the first cohort
@@ -340,7 +340,7 @@ derived only from what is cited in the section):
    unknown-retention, and the explicit do-not-collect list — is in
    [METRICS.md](../ops/METRICS.md); the launch review wiring (entry source per
    Activation, sampled Response quality, maintainer health) is in the
-   funnel's measurement section ([INVITE_FUNNEL.md](../ops/INVITE_FUNNEL.md));
+   funnel's measurement section ([INVITE_FUNNEL.md](../ops/outreach/INVITE_FUNNEL.md));
    the beta kit summarizes the recorded/never-recorded boundary for daily use
    ([BETA_OPS.md](../ops/BETA_OPS.md)); the launch checklist requires the
    human and setup to be named before beta exit
@@ -386,8 +386,8 @@ derived only from what is cited in the section):
    ([practices/README.md](../practices/README.md)): the three trial-backed
    candidates above, plus 004–006 scoped without trials in `3ffe31e` (G3),
    which follow the same trial path in a later phase. O4 flags the stale
-   "three Practices" copy in `README.md`/`CONTEXT.md` as an integrator-owned
-   fix ([ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md),
+   "three Practices" copy in `README.md`/`docs/CONTEXT.md` as an integrator-owned
+   fix ([ONBOARDING_DRY_RUN_PHASE2.md](../reviews/ONBOARDING_DRY_RUN_PHASE2.md),
    finding N4).
 3. **Still missing and why.** The promotion decision itself is human-only —
    "a human maintainer may promote a method only after the artifact records
@@ -399,7 +399,7 @@ derived only from what is cited in the section):
    - [ ] Read [PROMOTION_PACKETS.md](PROMOTION_PACKETS.md) Packets 1–3.
    - [ ] Record a promote-or-hold decision per candidate (Packet §6 states each question and the exact edits a promotion requires).
    - [ ] If promoting: apply the packet's edit steps, then run `python3 scripts/validate_artifacts.py --root .` (it enforces the tested/evidence pairing and the `labs/…` body link).
-   - [ ] Have the owners of downstream copy (practices index, launch checklist, this hold's row, CONTEXT.md note) update the wording to match.
+   - [ ] Have the owners of downstream copy (practices index, launch checklist, this hold's row, docs/CONTEXT.md note) update the wording to match.
 5. **Evidence completeness.** ready-for-decision — trials, criteria
    checklists, and decision questions are all in place; only the human
    decision and the edits it authorizes remain.
@@ -411,11 +411,11 @@ derived only from what is cited in the section):
    membership visibility, and the `start-here` path, retaining only non-secret
    channel/seed evidence.
 2. **Evidence now available.** The [onboarding dry
-   run](../reviews/ONBOARDING_DRY_RUN.md) found full configuration but no
+   run](../reviews/ONBOARDING_DRY_RUN_PHASE1.md) found full configuration but no
    evidence that any hosted surface exists; O4 dispositions that finding as
    partially addressed — the dedicated post-apply inspection checklist now
    exists with its fields unfilled, so no executed inspection evidence exists
-   yet ([ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md),
+   yet ([ONBOARDING_DRY_RUN_PHASE2.md](../reviews/ONBOARDING_DRY_RUN_PHASE2.md),
    original finding 3). Repository side is verified at `6f205d6`: the dry-run
    plan matches [buzz/community.json](../buzz/community.json) 12/12, all
    canvases and seeds exist with exactly one marker each, and the private
@@ -450,7 +450,7 @@ derived only from what is cited in the section):
    when the reference is absent ([STEWARD.md](../buzz/agents/STEWARD.md)); O4
    records this as addressing the original dry-run finding at profile level,
    while the configured destination remains a human deployment act
-   ([ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md), original
+   ([ONBOARDING_DRY_RUN_PHASE2.md](../reviews/ONBOARDING_DRY_RUN_PHASE2.md), original
    finding 4); the hosted inspection now carries an explicit Steward
    enablement gate — expected disabled at inspection, pass only with retained
    readiness evidence ([HOSTED_INSPECTION.md](HOSTED_INSPECTION.md)); the
@@ -488,14 +488,14 @@ derived only from what is cited in the section):
    reusable invitation link.
 2. **Evidence now available.** The social kit intentionally retains its 26
    bracketed tokens and is the sole whole-file publication-template exception
-   ([SOCIAL_KIT.md](../content/launch/SOCIAL_KIT.md)); the token inventory was
+   ([SOCIAL_KIT.md](../ops/outreach/SOCIAL_KIT.md)); the token inventory was
    verified twice by the labs/003 checker (26/26 per-token counts in runs T3
    and T4 at `6f205d6`, against the R4 claim-audit exception data
    [labs/003](../labs/003-workflow-redesign-trial.md)), the publication
    checks each post must pass are in the
-   [funnel](../ops/INVITE_FUNNEL.md), and O4 confirms the placeholders remain
+   [funnel](../ops/outreach/INVITE_FUNNEL.md), and O4 confirms the placeholders remain
    a publish-time gate by design
-   ([ONBOARDING_DRY_RUN_V2.md](../reviews/ONBOARDING_DRY_RUN_V2.md), original
+   ([ONBOARDING_DRY_RUN_PHASE2.md](../reviews/ONBOARDING_DRY_RUN_PHASE2.md), original
    finding 2). The real destinations do not exist until Gate 3 (GitHub) and
    Gate 1 (Buzz) are confirmed.
 3. **Still missing and why.** Token replacement and click-testing are

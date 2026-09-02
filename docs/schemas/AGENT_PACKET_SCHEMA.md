@@ -90,7 +90,7 @@ A packet is bounded partly by what it is forbidden to say. These assertions are 
 
 Quoting is still possible: the check reads visible prose only, so an out-of-bounds request the agent refused can be reproduced verbatim inside a fenced code block in `Refusals and out-of-bounds requests`. That is the intended way to preserve an injection attempt for a reviewer without the packet asserting it. A negation earlier in the same sentence also suppresses the check, so a packet can still say that a gate is not cleared or that a hold has not been lifted.
 
-These rules restate existing boundaries rather than adding new ones. Promotion, maturity, gates, and holds are human decisions under [locked decisions](../../DECISIONS.md), [owner gates](../../OWNER_GATES.md), and [non-goals](../../NON_GOALS.md). Moderation is human-owned: an agent may triage and recommend, never remove people or content.
+These rules restate existing boundaries rather than adding new ones. Promotion, maturity, gates, and holds are human decisions under [locked decisions](../DECISIONS.md), [owner gates](../OWNER_GATES.md), and [non-goals](../NON_GOALS.md). Moderation is human-owned: an agent may triage and recommend, never remove people or content.
 
 ## Consistency rules a validator can enforce
 

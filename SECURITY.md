@@ -31,7 +31,7 @@ editorial one.
   repository has none by design.
 - Constraints of the Buzz platform itself, which are documented as accepted
   operating limits in
-  [research/BUZZ_PLATFORM_SNAPSHOT.md](research/BUZZ_PLATFORM_SNAPSHOT.md) and
+  [buzz/PLATFORM_SNAPSHOT.md](buzz/PLATFORM_SNAPSHOT.md) and
   [ops/BUZZ_SECURITY.md](ops/BUZZ_SECURITY.md). Messages, direct messages, and
   uploaded media there are not end-to-end encrypted, and community
   documentation says so; report a case where an artifact contradicts that, not
@@ -44,7 +44,7 @@ editorial one.
 credentials or personal data in any report.
 
 Practice is pre-launch and the named private reporting route is an open owner
-decision recorded in [OWNER_GATES.md](OWNER_GATES.md); it has not been
+decision recorded in [docs/OWNER_GATES.md](docs/OWNER_GATES.md); it has not been
 established yet. Until it is published here:
 
 1. Use GitHub's private vulnerability reporting on this repository if it is

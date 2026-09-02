@@ -111,7 +111,7 @@ class PublicationTokenTests(unittest.TestCase):
     def test_social_kit_publication_token_is_an_approved_template_hold(self):
         errors: list[str] = []
         validate.validate_publication_tokens(
-            "content/launch/SOCIAL_KIT.md",
+            "ops/outreach/SOCIAL_KIT.md",
             "Inspect [REPOSITORY_URL] before publication.",
             errors,
         )

@@ -17,7 +17,7 @@ updated: 2026-09-01
 
 # Mechanize two claim-audit defect classes with a stdlib checker
 
-This Lab records the first trial of [Practice 002](../practices/002-workflow-redesign.md) (redesign a recurring workflow) on a real workflow in this repository: the six-class publishability claim audit that worker R4 executed manually on 2026-09-01 across all publishable artifacts (recorded in [research/CLAIM_AUDIT.md](../research/CLAIM_AUDIT.md) and `handoffs/R4.md`). The trial redesigns that workflow into deterministic, AI-assisted, and human-owned steps, then executes the deterministic slice: a Python-stdlib checker for defect class 6 (placeholder text) and class 4 (license-metadata mismatch), compared against R4's recorded manual verdicts. Classes 1, 2, 3, and 5 were not measured; the human review checkpoint was designed but not executed.
+This Lab records the first trial of [Practice 002](../practices/002-workflow-redesign.md) (redesign a recurring workflow) on a real workflow in this repository: the six-class publishability claim audit that worker R4 executed manually on 2026-09-01 across all publishable artifacts (recorded in [reviews/CLAIM_AUDIT.md](../reviews/CLAIM_AUDIT.md) and `swarm/handoffs/R4.md`). The trial redesigns that workflow into deterministic, AI-assisted, and human-owned steps, then executes the deterministic slice: a Python-stdlib checker for defect class 6 (placeholder text) and class 4 (license-metadata mismatch), compared against R4's recorded manual verdicts. Classes 1, 2, 3, and 5 were not measured; the human review checkpoint was designed but not executed.
 
 ## Question
 
@@ -41,10 +41,10 @@ Predeclared before the included runs: with the documented masking policy and exc
 ## Fixed conditions
 
 - Repository commit `6f205d6` (worktree). The trial modified no repository file; the checker and all outputs live outside the repository.
-- Corpus definition identical to R4's scope: all `*.md` under `docs/founding/`, `docs/framework/`, `community/`, `guides/` (including `guides/ai-native-practitioner/`), `practices/`, `labs/`, `stories/`, `buzz/canvases/`, `buzz/seeds/`, `content/launch/`, `ops/`, `release/`, `brand/`, plus root `README.md` — 68 files at the reference commit. The comparison set is pinned to these 68 files.
+- Corpus definition identical to R4's scope: all `*.md` under `docs/founding/`, `docs/framework/`, `community/`, `guides/` (including `guides/ai-native-practitioner/`), `practices/`, `labs/`, `stories/`, `buzz/canvases/`, `buzz/seeds/`, `content/launch/`, `ops/`, `release/`, `docs/style/`, plus root `README.md` — 68 files at the reference commit. The comparison set is pinned to these 68 files.
 - Python 3.12.3, standard library only, offline, read-only; one process per run.
-- Masking policy: fenced code blocks and inline code spans are masked before scanning, matching `scripts/check_links.py` and the Q004-RI-04 gate behavior documented in `release/FINAL_INTEGRATION_REPORT.md`.
-- Exception data version: the SOCIAL_KIT whole-file bracket-token exception with per-token counts transcribed from `research/CLAIM_AUDIT.md` (26 tokens total; per-token counts in the checker source below).
+- Masking policy: fenced code blocks and inline code spans are masked before scanning, matching `scripts/check_links.py` and the Q004-RI-04 gate behavior documented in `swarm/reports/PHASE1_REPORT.md`.
+- Exception data version: the SOCIAL_KIT whole-file bracket-token exception with per-token counts transcribed from `reviews/CLAIM_AUDIT.md` (26 tokens total; per-token counts in the checker source below).
 - One run = one full checker execution over the enumerated corpus, producing verdicts for both mechanized classes. Two included runs (T3, T4); two earlier defective runs (T1, T2) excluded and retained per the rerun rule in **Procedure**.
 - Design transparency: corpus reconnaissance informed the checker design before the formal runs; the hypothesis and decision thresholds were fixed before the included runs, and the two excluded runs are part of the record.
 
@@ -54,7 +54,7 @@ Predeclared before the included runs: with the documented masking policy and exc
 
 **Trigger:** the Director assigns a publishability re-audit before launch. **Owner:** the audit worker (R4). **Outcome:** a findings checklist over every publishable artifact. **Boundary:** read-only; remediation and publication decisions stay with the owner.
 
-**Current workflow, as R4 actually ran it** (reconstructed from `research/CLAIM_AUDIT.md` "Method and limitations" and `handoffs/R4.md`):
+**Current workflow, as R4 actually ran it** (reconstructed from `reviews/CLAIM_AUDIT.md` "Method and limitations" and `swarm/handoffs/R4.md`):
 
 | ID | Step | Actor | As-run classification | Control in the record |
 |---|---|---|---|---|
@@ -64,7 +64,7 @@ Predeclared before the included runs: with the documented masking policy and exc
 | B4 | Ad-hoc regex sweeps (metric patterns, attributed speech, vendor terms, URLs/emails, license fields, dates, marker words, bracketed tokens) | R4 | Deterministic operations executed agentically; commands not preserved | Results asserted in prose; not re-runnable |
 | B5 | Direct-inspection verifications (SOCIAL_KIT token count = 26; `buzz/community.json` channels = 12; validator control check on task Q005) | R4 | Deterministic checks executed by hand | Counts recorded in report |
 | B6 | Exception judgment calls (founder first name = intentional public identity; template fill-in fields are not placeholders; stale review dates are out of class) | R4 | Human-equivalent judgment performed by an AI worker | Documented as decisions for later human review |
-| B7 | Write `research/CLAIM_AUDIT.md` (verdict table, findings checklist, clean-file list) | R4 | AI-assisted | Director and Q-wave review after the fact |
+| B7 | Write `reviews/CLAIM_AUDIT.md` (verdict table, findings checklist, clean-file list) | R4 | AI-assisted | Director and Q-wave review after the fact |
 | B8 | Run `scripts/validate.py` (task unwired: fails) plus control check | R4 | Deterministic | Recorded in handoff |
 | B9 | Commit; Director review; owner remediation decision on the one finding | Director / owner | Human-owned | `release/OWNER_REVIEW.md` gates |
 
@@ -93,7 +93,7 @@ Predeclared before the included runs: with the documented masking policy and exc
 | 5 — Secrets / PII / private references | Deterministic shape screen + AI-assisted triage → human review | Regexes catch credential shapes; "intentional public identity" calls stay human (R4's founder-name decision) |
 | 6 — Placeholders / unresolved tokens | Deterministic script with versioned, human-owned exception data (W2) | Fixed rules; the exception list is a publication-policy judgment encoded as data |
 
-**Human checkpoint — designed, NOT executed in this trial.** The reviewer would see one page: (a) the checker verdict table per class with exception self-check results; (b) each AI-proposed finding as a row: `file:line`, class, exact quoted evidence, proposed remediation; (c) a diff of the exception list against the last run; (d) an explicit decision list (accept remediation / reject / defer). For the one live audit finding (`README.md:43`, class 5, the README advertising the machine-specific `NEW_TERMINAL.md` runbook), the card would show R4's severity (low) and its two remediation options; the accept/waive decision remains with the owner per R4's handoff. No human executed this checkpoint for this trial; it is a design record only.
+**Human checkpoint — designed, NOT executed in this trial.** The reviewer would see one page: (a) the checker verdict table per class with exception self-check results; (b) each AI-proposed finding as a row: `file:line`, class, exact quoted evidence, proposed remediation; (c) a diff of the exception list against the last run; (d) an explicit decision list (accept remediation / reject / defer). For the one live audit finding (`README.md:43`, class 5, the README advertising the machine-specific `swarm/README.md` runbook), the card would show R4's severity (low) and its two remediation options; the accept/waive decision remains with the owner per R4's handoff. No human executed this checkpoint for this trial; it is a design record only.
 
 ### Mechanized-class operational definitions
 
@@ -106,7 +106,7 @@ R4 recorded zero findings for classes 4 and 6 across all 68 reference files (its
 
 ## Procedure
 
-1. Map the current workflow from `research/CLAIM_AUDIT.md` and `handoffs/R4.md` (done; recorded above).
+1. Map the current workflow from `reviews/CLAIM_AUDIT.md` and `swarm/handoffs/R4.md` (done; recorded above).
 2. Classify steps and design the redesigned map with gates (done; recorded above).
 3. Write the checker v0.1 in `/tmp/opencode` (not committed). Run it (run T1, 2026-09-01 ~17:09:00Z).
 4. T1 disagreed with R4 on class 6. Diagnose the cause; revise the token regex (v0.2); rerun (run T2, 17:11:06Z). T2 disagreed again with a different count; diagnose again.
@@ -153,7 +153,7 @@ The included runs are deterministic local executions: no model requests, no bill
 
 ### Sensitivity observation (not an included run)
 
-Removing the masking policy (scanning raw text for marker words) yields 3 extra hits in 1 file: `release/FINAL_INTEGRATION_REPORT.md:87`, where `TODO`, `TBD`, and `LOREM IPSUM` appear inside inline code describing the scan gate itself — prose about markers, not placeholder text. Without the masking policy the checker would report a one-file false positive against R4's verdict; the policy is load-bearing for agreement.
+Removing the masking policy (scanning raw text for marker words) yields 3 extra hits in 1 file: `swarm/reports/PHASE1_REPORT.md:87`, where `TODO`, `TBD`, and `LOREM IPSUM` appear inside inline code describing the scan gate itself — prose about markers, not placeholder text. Without the masking policy the checker would report a one-file false positive against R4's verdict; the policy is load-bearing for agreement.
 
 ### Observed failure modes (mapped to Practice 002's hypotheses)
 
@@ -182,7 +182,7 @@ Non-results: nothing was measured for classes 1, 2, 3, or 5; the AI-assisted tri
 
 ## Reproduction
 
-Environment: Python 3.12.3, Linux, repository at commit `6f205d6` with the reference corpus (68 files listed in R4's scope). The trial edited no repository file. The checker is reproduced verbatim below; save it outside the repository (for example `/tmp/opencode/e2_check.py`) and run `python3 e2_check.py <repo-root>` from anywhere. Its JSON output contains the verdicts, exception counts, sensitivity hits, elapsed time, and the checker's own sha256; compare `class6.finding_count` and `class4.finding_count` (expect 0) against the class-4/6 rows of `research/CLAIM_AUDIT.md`, and compare `class4.front_matter_files` against R4's six-file claim (allowing explained deltas from concurrent edits, as in run T4). Checker versions: v0.1 `c2d650b1…`, v0.2 `840f609e…`, v0.3 `3fc05386…`, v0.4 `dabf8f388d8b20e3f5c937a6f173ac47d2563f89f3505887273fb95c504c4705` (canonical).
+Environment: Python 3.12.3, Linux, repository at commit `6f205d6` with the reference corpus (68 files listed in R4's scope). The trial edited no repository file. The checker is reproduced verbatim below; save it outside the repository (for example `/tmp/opencode/e2_check.py`) and run `python3 e2_check.py <repo-root>` from anywhere. Its JSON output contains the verdicts, exception counts, sensitivity hits, elapsed time, and the checker's own sha256; compare `class6.finding_count` and `class4.finding_count` (expect 0) against the class-4/6 rows of `reviews/CLAIM_AUDIT.md`, and compare `class4.front_matter_files` against R4's six-file claim (allowing explained deltas from concurrent edits, as in run T4). Checker versions: v0.1 `c2d650b1…`, v0.2 `840f609e…`, v0.3 `3fc05386…`, v0.4 `dabf8f388d8b20e3f5c937a6f173ac47d2563f89f3505887273fb95c504c4705` (canonical).
 
 ```python
 #!/usr/bin/env python3
@@ -227,7 +227,7 @@ MARKER_RE = re.compile(r"\b(TODO|FIXME|TBD|XXX|LOREM IPSUM)\b")
 # excludes markdown link labels ("[NOTICE](../NOTICE)") via the trailing
 # "(!\s*\()" guard.
 TOKEN_RE = re.compile(r"(?<!\w)\[[@#]?([A-Z][A-Z0-9_]*)\](?!\s*\()")
-SOCIAL_KIT = "content/launch/SOCIAL_KIT.md"
+SOCIAL_KIT = "ops/outreach/SOCIAL_KIT.md"
 SOCIAL_KIT_EXPECTED = {
     "[REPOSITORY_URL]": 12,
     "[#START_HERE_CHANNEL]": 4,

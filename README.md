@@ -8,7 +8,7 @@
 
 *Making practical AI capability open and accessible to everyone.*
 
-[What this is](#what-this-is) · [Start here](#start-here) · [The ladder](#the-capability-ladder) · [What we publish](#what-we-publish) · [Contribute](#how-to-contribute) · [Project status](#where-this-project-is-right-now)
+[What this is](#what-this-is) · [Start here](#start-here) · [The ladder](#the-capability-ladder) · [What we publish](#what-we-publish) · [Contribute](#how-to-contribute) · [Project status](#where-this-project-is-right-now) · [Repository map](#repository-map)
 
 </div>
 
@@ -18,9 +18,9 @@
 
 Most AI advice is either a demo or a hot take. Practice is neither.
 
-It is an open community and a public library of **methods that people actually
-ran, wrote down honestly, and made reusable** — including the parts that did
-not work. Everything here is plain text in an open Git repository, so anyone
+It is an open community and a public library whose standard is **methods that
+someone actually ran, wrote down honestly, and made reusable** — including the
+parts that did not work. Everything here is plain text in an open Git repository, so anyone
 who can reach it can read it, copy it, correct it, or fork it. Nothing is
 behind a signup.
 
@@ -29,7 +29,7 @@ out of AI tools, this is for you.
 
 **Practice is not** a course, a certification, a consultancy, a newsletter, or
 a place to collect prompts and argue about model releases. What else is out of
-scope is written down in [NON_GOALS.md](NON_GOALS.md).
+scope is written down in [docs/NON_GOALS.md](docs/NON_GOALS.md).
 
 ## Who it's for
 
@@ -48,7 +48,7 @@ scope is written down in [NON_GOALS.md](NON_GOALS.md).
 | Understand what Practice believes | [The manifesto](docs/founding/MANIFESTO.md) |
 | Find my starting point | [Capability self-assessment](community/CAPABILITY_SELF_ASSESSMENT.md) |
 | Learn the whole path, in order | [The AI-Native Practitioner guide](guides/ai-native-practitioner/README.md) |
-| Try a concrete method today | [Method candidates](practices/README.md) |
+| Try a concrete method today | [Proposed method candidates](practices/README.md) |
 | See what an experiment looks like | [Labs](labs/README.md) |
 | Join the community | [Onboarding](community/ONBOARDING.md) |
 | Give something back | [Contributor quickstart](community/CONTRIBUTOR_QUICKSTART.md) |
@@ -99,11 +99,12 @@ part of the standard we are trying to set, so here is the real state:
 - 🟡 All six methods are **proposed candidates**. Three have recorded trials in
   [labs/002–004](labs/README.md); a recorded trial is not a promotion, and none
   has a human promotion decision yet.
-- 🔴 The community hub is not open. There is no public invitation route yet.
+- 🔴 The hub is not open: no public invitation route yet, and no community agent is enabled.
 
 Nothing in this repository claims a result it cannot show you the evidence for.
-Open decisions are tracked in [OWNER_GATES.md](OWNER_GATES.md), and the
-launch criteria are in [the launch checklist](release/LAUNCH_CHECKLIST.md).
+Every owner gate and operating hold in [the owner review packet](release/OWNER_REVIEW.md)
+is open until a human clears it. The gates are defined in [docs/OWNER_GATES.md](docs/OWNER_GATES.md);
+the launch criteria are in [the launch checklist](release/LAUNCH_CHECKLIST.md).
 
 ## How to contribute
 
@@ -141,75 +142,74 @@ decisions; agents may label and recommend only.
 | [Attribution](community/ATTRIBUTION.md) | How contributors are credited |
 | [Licenses](LICENSES.md) | Apache-2.0 for code · CC BY 4.0 for content |
 
-## Working on the repository itself
+## Repository map
 
-Practice is assembled by a coordinated set of AI agents working in isolated
-worktrees, each producing a committed handoff that a human reviews. If you want
-to run or extend that build:
+Every top-level directory answers one question a newcomer arrives with, and the
+directories sort onto four shelves: what Practice publishes, how Practice thinks,
+how Practice is run, and how this repository is built. This is the one full map.
 
-- [NEW_TERMINAL.md](NEW_TERMINAL.md) — get a working copy and run the checks
-- [SWARM_PLAN.md](SWARM_PLAN.md) — topology, waves, and the merge protocol
-- [AGENTS.md](AGENTS.md) — the rules every agent must follow
-- [ARCHITECTURE.md](ARCHITECTURE.md) — how the repository is laid out
+**1. The library — what Practice publishes**
 
-```bash
-./scripts/init.sh
-make doctor          # check the environment
-make validate        # repository structure, manifest, and schemas
-make status          # where the build stands
-make ready           # tasks whose dependencies are met
-```
+| Directory | What it answers |
+|---|---|
+| `guides/` | Which Guides exist. One so far, The AI-Native Practitioner: a draft path across the ladder in six modules with a curriculum map. |
+| `practices/` | Which methods are proposed. Six candidates, each labeled `maturity: proposed`; none is a tested Practice. |
+| `labs/` | Which experiments were run and what they showed. Four Labs; three are completed trials of the first three candidates. |
+| `stories/` | What a real implementation looks like. The index and one sample labeled hypothetical; no real Story yet. |
+| `notes/` | Where a smaller observation goes before it is a method. None published yet. |
+| `projects/` | Which open-source software the community builds. None published yet. |
+| `templates/` | The blank form for each artifact type, and for operating records: handoff, agent packet, decision, intake consent, redaction checklist, release evidence. |
 
-Run the full check the way CI does:
+**2. How Practice thinks**
 
-```bash
-python3 -m unittest discover -s tests
-python3 scripts/validate.py --release
-python3 scripts/validate_artifacts.py
-python3 scripts/check_links.py
-```
+| Directory | What it answers |
+|---|---|
+| `docs/` | Why Practice exists and what is settled. The charter at the top level (context, locked decisions, non-goals, quality bar, owner gates, architecture), then `founding/` (manifesto, brief, story, landscape scan), `framework/` (capability ladder, autonomy ladder, taxonomy), `schemas/` (one per artifact type, plus agent packet and action ledger), and `style/` (voice, lexicon). |
+| `community/` | How people join, contribute, get credit, and are governed: onboarding, self-assessment, contribution model, contributor quickstart, attribution, governance and its amendments, moderation. |
 
-<details>
-<summary><b>Build-kit reference — release criteria and key files</b></summary>
+**3. How Practice is run**
 
-<br/>
+| Directory | What it answers |
+|---|---|
+| `buzz/` | What the hub is and how it is seeded: channel architecture, the community specification the bootstrapper applies, one canvas and one seed message per channel, the platform snapshot, and five community-agent profiles with their registry and eval suites. Every agent is `not_enabled`. |
+| `ops/` | How humans operate Practice: the maintainer, operating-loop, cadence, beta, first-session, security, and metrics runbooks; the outreach kit (`outreach/`); the unattended-action substrate (`autonomy/`); and the checked operating records (`ledger/`, `triage/`, `metrics/`). Nothing is promoted for unattended action. |
+| `release/` | Should Practice launch: the owner review packet, gate evidence, launch checklist, hosted inspection, promotion packets, and generated release briefs (`briefs/`). |
+| `reviews/` | What independent reviewers found: fact, editorial, evidence, onboarding, claim, guide-currency, and repository-integrity audits. |
+| `skills/` and `.agents/skills/` | The Practice core skills: the catalog and eval protocol in `skills/`, the five skill files in `.agents/skills/`. Experimental and post-launch; no passing eval evidence is recorded. |
+| `scripts/` and `tests/` | The tooling and its unittest suite: validators, the link checker, the task controller, the Buzz bootstrapper, the autonomy guard, and the metrics, triage, ledger, and release-brief tools. |
+| `.github/` | Issue forms, the pull-request template, the triage policy, the CI workflow, and the unattended workflow, which refuses every operation while nothing is promoted. |
 
-The first release is complete when Practice has:
+**4. How the repository is built**
 
-1. A seeded Buzz community with clear onboarding and no empty public channels.
-2. A public repository with the manifesto, governance, contribution system, licenses, and code of conduct.
-3. The AI-Native Practitioner guide map plus substantive initial modules.
-4. Three tested Open Practices — see the honest count in
-   [project status](#where-this-project-is-right-now); no candidate has a
-   recorded promotion decision, so this criterion is unmet.
-5. Five scoped community-agent profiles, with human-reviewed permissions.
-6. A launch narrative, first ten content briefs, invite funnel, and first Practice Session runbook.
-7. Independent fact, editorial, onboarding, and repository-integrity reviews.
+| Directory | What it answers |
+|---|---|
+| `swarm/` | How the construction swarm works: setup and how to run a phase (its README), the task graph (`manifest.json`), one spec and one handoff per task (`specs/`, `handoffs/`), role prompts (`prompts/`), phase plans (`plans/`), and phase reports (`reports/`). |
 
-Release validation derives completion from the committed manifest-owned outputs
-and `COMPLETE` handoffs. Construction status in `.swarm/state.json` is local,
-ignored operational state: useful to the task controller, but not release
-evidence and not reproducible from a checkout.
-
-Key files beyond the four documents above:
+**Root files**
 
 | File | What it holds |
 |---|---|
-| `tasks/manifest.json` | The machine-readable task and dependency graph |
-| `tasks/specs/` | One spec per task: objective, owned outputs, acceptance |
-| `prompts/ORCHESTRATOR.md` | The master prompt for the coordinating model |
-| `buzz/community.json` | The idempotent Buzz community specification |
-| `scripts/buzz_bootstrap.py` | The dry-run-first Buzz seeder |
-| `buzz/PROJECT_AND_WORKFLOW_RUNBOOK.md` | Owner-run Buzz Project setup and a disabled workflow pilot |
-| `research/BUZZ_PLATFORM_SNAPSHOT.md` | Verified Buzz platform constraints, as of 2026-09-01 |
-| `NON_GOALS.md` | What deliberately does not belong in this build |
+| `README.md` · `AGENTS.md` · `CONTRIBUTING.md` | This map; the operating contract every agent follows; how to propose a change and the evidence each kind of claim needs. |
+| `CODE_OF_CONDUCT.md` · `SECURITY.md` | Expected conduct and the private reporting route; what to report and how. |
+| `LICENSES.md` · `LICENSE-CODE` · `LICENSE-CONTENT.md` · `NOTICE` | Apache-2.0 for code, CC BY 4.0 for content, and third-party attribution. |
+| `Makefile` · `.env.example` · `.gitignore` | Local commands; the environment template; the ignored local state (`.env`, `.taskctl/`, `.worktrees/`). |
 
-Every ordinary task owns a non-overlapping file set, has explicit dependencies,
-and must produce a committed handoff. The task controller rejects branches that
-change paths outside that ownership; integration and revision tasks carry a
-narrow, declared exception so they can apply reviewed corrections.
+## Working on the repository itself
 
-</details>
+Practice is built by a construction swarm. A Director dispatches isolated workers,
+one task per worktree; each worker changes only its owned files and commits a
+handoff, independent reviewers report on the result, the Director integrates only
+validated branches, and every launch decision stays with a human owner. Setup and
+how to run a phase: [swarm/README.md](swarm/README.md). The rules: [AGENTS.md](AGENTS.md).
+
+```bash
+make init        # local state and first validation
+make doctor      # check the environment
+make validate    # repository structure, manifest, and required files
+make status      # where the build stands
+make ready       # tasks whose dependencies are met
+make checks      # every check CI runs, in the same order
+```
 
 <div align="center">
 

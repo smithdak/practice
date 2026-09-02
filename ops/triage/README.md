@@ -1,25 +1,22 @@
 # Triage records
 
-A triage record is where one reported issue sits in the state machine defined by
-[Triage community issues with an evidence-backed state machine](../../practices/004-issue-triage.md)
-and mapped onto GitHub labels by the [issue triage policy](../../.github/TRIAGE_POLICY.md).
-The record is a markdown file with YAML front matter in this directory, checked
-by [`scripts/triage.py`](../../scripts/triage.py).
+- Policy and labels: [.github/TRIAGE_POLICY.md](../../.github/TRIAGE_POLICY.md)
+- The method: [practices/004-issue-triage.md](../../practices/004-issue-triage.md)
+- This directory: the records, one markdown file with YAML front matter per issue, checked by [`scripts/triage.py`](../../scripts/triage.py)
 
-Before this directory existed, triage was a person reading the practice, the
-policy, and the [private beta operating kit](../BETA_OPS.md) and applying all
-three from memory. Nothing checked that a record carried the evidence its state
-requires, and nothing stopped an agent from parking an issue in a state a human
-owns. The checker closes both gaps.
+A triage record is where one reported issue sits in the state machine the
+method defines and the policy maps onto GitHub labels. The checker verifies
+that a record carries the evidence its state requires and that no agent has
+moved an issue into a state a human owns.
 
 ## What this tooling does and does not do
 
 `scripts/triage.py` reads and checks records. **It never performs a moderation
 action.** It does not label an issue, close or reopen one, remove content,
 restrict a person, change access, or accept work. Those remain human decisions
-under [DECISIONS.md](../../DECISIONS.md) and the
+under [docs/DECISIONS.md](../../docs/DECISIONS.md) and the
 [moderation model](../../community/MODERATION.md), and autonomous moderation is
-a [non-goal](../../NON_GOALS.md).
+a [non-goal](../../docs/NON_GOALS.md).
 
 The checker is offline and deterministic. It makes no network call and reads no
 issue tracker. It checks the shape and internal consistency of a record and the
@@ -172,10 +169,12 @@ evidence must be at least eight characters and may not be a placeholder; write
 from the operating documents: `agent-sponsor`, `authorized-inviter`,
 `beta-owner`, `bounded-agent`, `human-maintainer`, `human-moderator`,
 `human-triager`, `maintainer-on-duty`, `private-intake-owner`, `release-owner`,
-`reporter`. The first six operating roles are defined in
-[BETA_OPS](../BETA_OPS.md); the maintainer, triager, and bounded-agent roles in
-the [triage policy](../../.github/TRIAGE_POLICY.md); the moderator and reporter
-roles in the [moderation model](../../community/MODERATION.md).
+`reporter`. `agent-sponsor`, `authorized-inviter`, `beta-owner`,
+`maintainer-on-duty`, `private-intake-owner`, and `release-owner` are defined in
+[BETA_OPS](../BETA_OPS.md); `human-maintainer`, `human-triager`, and
+`bounded-agent` in the [triage policy](../../.github/TRIAGE_POLICY.md);
+`human-moderator` and `reporter` in the
+[moderation model](../../community/MODERATION.md).
 
 Constraints the checker enforces:
 

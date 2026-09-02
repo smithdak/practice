@@ -345,7 +345,7 @@ jobs:
           violations=""
           while IFS= read -r path; do
             case "$path" in
-              .github/*|ops/autonomy/*|scripts/*|tests/*|tasks/*|buzz/agents/*|docs/framework/*|docs/schemas/*|handoffs/*|community/GOVERNANCE.md|community/AMENDMENTS.md|DECISIONS.md|NON_GOALS.md|OWNER_GATES.md|AGENTS.md|QUALITY_BAR.md|Makefile)
+              .github/*|ops/autonomy/*|scripts/*|tests/*|swarm/*|buzz/agents/*|docs/framework/*|docs/schemas/*|community/GOVERNANCE.md|community/AMENDMENTS.md|docs/DECISIONS.md|docs/NON_GOALS.md|docs/OWNER_GATES.md|AGENTS.md|docs/QUALITY_BAR.md|Makefile)
                 violations="${violations}${path} "
                 ;;
             esac

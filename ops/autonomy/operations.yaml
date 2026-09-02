@@ -33,9 +33,9 @@ schema_version: 1
 
 sources:
   - docs/framework/AUTONOMY_LADDER.md
-  - ops/AUTONOMOUS_OPERATION.md
+  - ops/OPERATING_LOOP.md
   - ops/cadence.yaml
-  - SWARM_PHASE4_PLAN.md
+  - swarm/plans/PHASE4_PLAN.md
 
 operations:
   - id: cadence-snapshot

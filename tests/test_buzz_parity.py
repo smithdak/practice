@@ -1,4 +1,4 @@
-"""Parity tests between buzz/INFORMATION_ARCHITECTURE.md and buzz/community.json.
+"""Parity tests between buzz/CHANNELS.md and buzz/community.json.
 
 The document and the configuration describe the same channel set at different
 levels of detail, and the test encodes that mapping explicitly:
@@ -32,7 +32,7 @@ from pathlib import Path
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 COMMUNITY_CONFIG_PATH = REPOSITORY_ROOT / "buzz" / "community.json"
-INFORMATION_ARCHITECTURE_PATH = REPOSITORY_ROOT / "buzz" / "INFORMATION_ARCHITECTURE.md"
+INFORMATION_ARCHITECTURE_PATH = REPOSITORY_ROOT / "buzz" / "CHANNELS.md"
 LAUNCH_CHECKLIST_PATH = REPOSITORY_ROOT / "release" / "LAUNCH_CHECKLIST.md"
 
 DOCUMENT_ACCESS_TO_CONFIG_VISIBILITY = {"Private": "private", "Open": "open"}

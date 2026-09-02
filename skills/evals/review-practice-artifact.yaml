@@ -2,9 +2,9 @@ schema_version: 1
 skill_id: review-practice-artifact
 skill_version: 0.1.0
 source_paths:
-  - QUALITY_BAR.md
-  - DECISIONS.md
-  - NON_GOALS.md
+  - docs/QUALITY_BAR.md
+  - docs/DECISIONS.md
+  - docs/NON_GOALS.md
   - docs/framework/TAXONOMY.md
 execution:
   minimum_model_families: 2

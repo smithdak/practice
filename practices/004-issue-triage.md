@@ -20,7 +20,7 @@ tags: [issues, triage, evidence, routing, review, moderation-boundary]
 
 For one batch of community issues, produce a routing record in which every issue sits in exactly one state — `needs-info`, `ready-for-agent`, `ready-for-human`, or `wontfix` (closed) — and every state change names its category (bug or enhancement), the verification performed against the codebase, the evidence found or missing, and the next owner. A human maintainer, not the triager, makes the accept and close decisions.
 
-This Practice is a triage and routing method. It does not decide priority by itself, does not resolve the underlying issue, and does not replace the moderation model in [DECISIONS.md](../DECISIONS.md): community agents and non-maintainer triagers may categorize, verify, and recommend, but they never silently remove people or content, and they never close an issue without a human decision recorded in the issue.
+This Practice is a triage and routing method. It does not decide priority by itself, does not resolve the underlying issue, and does not replace the moderation model in [docs/DECISIONS.md](../docs/DECISIONS.md): community agents and non-maintainer triagers may categorize, verify, and recommend, but they never silently remove people or content, and they never close an issue without a human decision recorded in the issue.
 
 ## Problem and scope
 

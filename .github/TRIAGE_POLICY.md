@@ -3,7 +3,7 @@
 Every new issue gets exactly one category, one state label, and a written
 routing record. Humans decide accept and close; agents may label and recommend
 only. This policy fulfills the triage-policy deferral recorded in
-[handoffs/F005.md](../handoffs/F005.md) and maps the state machine from
+[swarm/handoffs/F005.md](../swarm/handoffs/F005.md) and maps the state machine from
 [Triage community issues with an evidence-backed state machine](../practices/004-issue-triage.md)
 onto GitHub labels.
 

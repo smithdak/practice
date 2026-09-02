@@ -4,6 +4,8 @@ The smallest useful contribution is welcome. Start by making one thing clearer, 
 
 Practice uses Buzz for conversation and Git for durable work. Discuss an idea, question, or draft in Buzz when that helps; record the accepted change, evidence, attribution, and review in Git. Do not maintain a second, competing copy of a Practice or decision in a Buzz thread.
 
+Practice is pre-launch and the Buzz hub is not open yet (see [where this project is right now](README.md#where-this-project-is-right-now)). Until it opens, open an issue instead of looking for a Buzz thread.
+
 ## Choose a contribution path
 
 Choose the smallest path that matches the outcome. You can stop at any path; a correction does not need to become a full Practice.
@@ -60,7 +62,7 @@ Create a branch from the current default branch using a descriptive name, such a
 
 ### 4. Make the change and show evidence
 
-Write for a Practitioner who will act on the artifact. Use the smallest change that solves the stated problem. Never include secrets, private keys, confidential material, personal data, or unlicensed third-party content.
+Write for a Practitioner who will act on the artifact. Use the smallest change that solves the stated problem. Finished artifacts live one directory per type at the repository root (`guides/`, `practices/`, `labs/`, `stories/`, `notes/`, `projects/`), with templates in `templates/` and schemas in `docs/schemas/`. Never include secrets, private keys, confidential material, personal data, or unlicensed third-party content.
 
 Evidence should fit the claim:
 
@@ -133,4 +135,4 @@ Project maintenance is earned by dependable stewardship, not granted by activity
 
 ## Need help?
 
-Ask in the Buzz channel that matches the outcome—Learn, Use, Automate, Build, or Transform—or open an issue with the smallest useful question. Do not share secrets, client material, credentials, private repositories, or personal information in either place.
+Open an issue with the smallest useful question. Once the Buzz hub opens, you can also ask in the channel that matches the outcome—Learn, Use, Automate, Build, or Transform. Do not share secrets, client material, credentials, private repositories, or personal information in either place.

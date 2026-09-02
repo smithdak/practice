@@ -45,12 +45,12 @@ disposition; a human release owner owns final approval and public effect.
 ### Q004-RI-01 — Blocker — release validation is not reproducible and is circular for Q005
 
 **Locations:** `.gitignore:2`, `scripts/validate.py:131-150`,
-`scripts/taskctl.py:205-222`, and `tasks/specs/Q005.md:30-44`.
+`scripts/taskctl.py:205-222`, and `swarm/specs/Q005.md:30-44`.
 
 **Criterion:** release validation must be runnable on the exact candidate and
 must distinguish construction state from release content.
 
-**Evidence:** `.swarm/state.json` is ignored and is absent from the Q004 linked
+**Evidence:** `.taskctl/state.json` is ignored and is absent from the Q004 linked
 worktree. It would also be absent from a clean checkout. In the primary
 orchestration worktree, the ignored state has 45 `done`, Q004 `claimed`, and
 Q005 `todo`. `validate_release()` rejects every state other than `done`.
@@ -60,7 +60,7 @@ merge and performs no release validation after updating state. Therefore Q005
 cannot satisfy its requested release pass inside its worktree, and a clean
 checkout cannot reproduce a later local pass from the commit alone.
 
-The missing `release/FINAL_INTEGRATION_REPORT.md` and incomplete Q004/Q005
+The missing `swarm/reports/PHASE1_REPORT.md` and incomplete Q004/Q005
 messages are expected at this pre-integration version. They are not source
 content defects in `0ec7ad9`; the state/ordering contract that makes them
 unresolvable during Q005 is the defect.
@@ -78,7 +78,7 @@ task, require all dependencies and owned outputs, and record the exact commit;
 it must not ignore arbitrary incomplete tasks. Then test both a clean-checkout
 case and a deliberately incomplete-task failure case. Owner paths:
 `scripts/validate.py`, `scripts/taskctl.py`, and, only if the workflow contract
-needs clarification, `tasks/specs/Q005.md`/release documentation.
+needs clarification, `swarm/specs/Q005.md`/release documentation.
 
 ### Q004-RI-02 — Blocker — four Release Editor template links are broken
 
@@ -133,7 +133,7 @@ ignored directories are skipped. Owner path: `scripts/validate.py`.
 ### Q004-RI-04 — Major validator defect — placeholder detection has false positives and misses the publication tokens
 
 **Locations:** `scripts/validate.py:151-162`,
-`content/launch/SOCIAL_KIT.md:5` and throughout that file, and
+`ops/outreach/SOCIAL_KIT.md:5` and throughout that file, and
 `ops/FIRST_PRACTICE_SESSION.md:106`.
 
 **Criterion:** release validation must distinguish unfinished publication
@@ -145,7 +145,7 @@ and use a category or placeholder to protect a participant's real details.
 They are false positives, not unfinished content. A Q005 correction reran the
 scan with optional `@`/`#` prefixes and found 26 actual bracketed
 publication-token occurrences in
-`content/launch/SOCIAL_KIT.md`, including repository, Buzz, channel, handle,
+`ops/outreach/SOCIAL_KIT.md`, including repository, Buzz, channel, handle,
 issue, and contribution destinations; the release regex reviewed by Q004 did
 not detect them.
 Q003 already records these tokens as a public-promotion blocker, and the launch
@@ -161,12 +161,12 @@ clear policy for reusable templates versus publication-ready derivatives.
 Exclude prose and code examples from unfinished-content detection, retain the
 Q003/human publication check, and add positive and negative fixtures. Do not
 fill owner-only URLs by guessing. Owner paths: `scripts/validate.py`,
-`content/launch/SOCIAL_KIT.md`, and release documentation.
+`ops/outreach/SOCIAL_KIT.md`, and release documentation.
 
 ### Q004-RI-05 — Major scope/coverage gap — a post-launch Project is in the launch candidate but outside its manifest and release checks
 
-**Locations:** commit `2127f8f`, `handoffs/PCS001.md`, `.agents/skills/`,
-`skills/`, `tasks/manifest.json`, `.github/workflows/validate.yml:14`, and the
+**Locations:** commit `2127f8f`, `swarm/handoffs/PCS001.md`, `.agents/skills/`,
+`skills/`, `swarm/manifest.json`, `.github/workflows/validate.yml:14`, and the
 artifact map in `release/LAUNCH_CHECKLIST.md`.
 
 **Criterion:** every release artifact has provenance, an explicit release
@@ -220,36 +220,36 @@ and narrow the README claim until enforcement exists. Owner paths:
 
 ### Q004-RI-07 — Moderate content/config defect — file and task status indexes are stale
 
-**Locations:** `FILE_INDEX.md` and every `status` field in
-`tasks/manifest.json` (first occurrence at line 45).
+**Locations:** `swarm/README.md` and every `status` field in
+`swarm/manifest.json` (first occurrence at line 45).
 
 **Criterion:** indexes and machine-readable status do not contradict the
 candidate they describe.
 
-**Evidence:** `FILE_INDEX.md` names 134 paths; all exist, but 111 of 245 tracked
+**Evidence:** `swarm/README.md` names 134 paths; all exist, but 111 of 245 tracked
 paths are absent, including the completed community artifacts, Guide/modules,
 schemas, Practices, launch content, two issue forms, `NOTICE`, reviews, and the
 skills Project. The manifest contains 47 `status: todo` values. Live state has
 45 `done`, Q004 `claimed`, and Q005 `todo`, producing 46 status mismatches.
-`taskctl.py` ignores manifest status and uses `.swarm/state.json`, so the stale
+`taskctl.py` ignores manifest status and uses `.taskctl/state.json`, so the stale
 field is redundant rather than authoritative.
 
 **Consequence:** readers and tools that reasonably treat these files as indexes
 receive an incomplete structure and obsolete construction status.
 
-**Smallest correction and recovery:** regenerate or retire `FILE_INDEX.md`;
-for status, either remove the manifest field and document `.swarm/state.json`
+**Smallest correction and recovery:** regenerate or retire `swarm/README.md`;
+for status, either remove the manifest field and document `.taskctl/state.json`
 as ephemeral operational state, or generate a committed completion record that
 does not undermine clean-checkout reproducibility. Owner paths:
-`FILE_INDEX.md`, `tasks/manifest.json`, and task-controller documentation.
+`swarm/README.md`, `swarm/manifest.json`, and task-controller documentation.
 
 ## Release-validation result classification
 
 | Observed message | Classification | Release disposition |
 | --- | --- | --- |
-| `.swarm/state.json` absent in Q004 | Expected for an ignored isolated/clean checkout; also evidence of RI-01 | Does not prove incomplete content; blocks a reproducible release pass until the gate is corrected. |
+| `.taskctl/state.json` absent in Q004 | Expected for an ignored isolated/clean checkout; also evidence of RI-01 | Does not prove incomplete content; blocks a reproducible release pass until the gate is corrected. |
 | `Q004, Q005` incomplete in primary state | Expected pre-integration state | Do not mark them done early. The Q005 circular ordering still requires RI-01 correction. |
-| `release/FINAL_INTEGRATION_REPORT.md` missing | Expected Q005-owned final artifact | Q005 must create it, then validate the exact integrated version. |
+| `swarm/reports/PHASE1_REPORT.md` missing | Expected Q005-owned final artifact | Q005 must create it, then validate the exact integrated version. |
 | Four `RELEASE_EDITOR.md -> <link>` errors | Actual candidate content defect | Correct under RI-02; normal CI cannot pass otherwise. |
 | `SOCIAL_KIT.md` placeholder match | Validator false positive on prose; corrected grammar finds 26 real publication tokens | Correct RI-04 and keep public promotion blocked until human substitution/click testing. |
 | `FIRST_PRACTICE_SESSION.md` placeholder match | Validator false positive on privacy-preserving prose | Correct the check, not the safe instruction. |
@@ -285,9 +285,9 @@ Output:
 
 ```text
 Validation failed:
-- Release validation requires .swarm/state.json
-- Release missing required artifact: release/FINAL_INTEGRATION_REPORT.md
-- Release placeholder found in content/launch/SOCIAL_KIT.md
+- Release validation requires .taskctl/state.json
+- Release missing required artifact: swarm/reports/PHASE1_REPORT.md
+- Release placeholder found in ops/outreach/SOCIAL_KIT.md
 - Release placeholder found in ops/FIRST_PRACTICE_SESSION.md
 ```
 
@@ -302,7 +302,7 @@ Output before the owned files existed:
 ```text
 Validation failed:
 - Task Q004 missing output reviews/REPOSITORY_INTEGRITY.md
-- Task Q004 missing output handoffs/Q004.md
+- Task Q004 missing output swarm/handoffs/Q004.md
 ```
 
 The final Q004 task result is recorded in the handoff after both files exist.
@@ -340,8 +340,8 @@ Validation failed:
 - Broken relative link: buzz/agents/RELEASE_EDITOR.md -> <link>
 - Broken relative link: buzz/agents/RELEASE_EDITOR.md -> <link>
 - Release has incomplete tasks: Q004, Q005
-- Release missing required artifact: release/FINAL_INTEGRATION_REPORT.md
-- Release placeholder found in content/launch/SOCIAL_KIT.md
+- Release missing required artifact: swarm/reports/PHASE1_REPORT.md
+- Release placeholder found in ops/outreach/SOCIAL_KIT.md
 - Release placeholder found in ops/FIRST_PRACTICE_SESSION.md
 ```
 
@@ -359,7 +359,7 @@ Validation failed:
 | TODO/TBD/placeholders | No unfinished public scaffold is misclassified | No `TODO`, `TBD`, or `LOREM IPSUM` token in public Markdown. Two prose `placeholder` matches are false positives. The corrected optional-prefix grammar finds 26 actual publication tokens in the social kit; template-style examples also occur in agent profiles and templates. | **FAIL** for release-validator accuracy; **HOLD** for publishing social copy; no generic repository-template failure. |
 | Secret/credential patterns | No committed credential or private key | Known-format scan found no AWS/GitHub/OpenAI/Slack token or PEM private-key header. Assignment heuristic found only documented `BUZZ_PRIVATE_KEY='local-identity-key'` in `buzz/BOOTSTRAP_RUNBOOK.md`; it is an explicit example value. `.env.example` leaves secret fields empty, and `.env` is ignored. | **PASS** for the bounded current-tree pattern scan. This is not proof against every possible secret format or Git history. |
 | Committed-candidate whitespace | No whitespace errors in the integrated range or candidate commit | `git diff --check b02c696e020796b890ecb9ae691893b66dae4291..0ec7ad9e6ad1b152a68e2b7f53fa12dbcecf7ccf` and `git show --check --oneline 0ec7ad9e6ad1b152a68e2b7f53fa12dbcecf7ccf` produced no output. | **PASS** for that exact pre-review candidate. Final Q004 and Q005 commits require their own checks. |
-| Existing independent review gates | Blocking findings remain visible | `reviews/EDITORIAL_REVIEW.md` says not ready for publication; `reviews/ONBOARDING_DRY_RUN.md` says revision needed before public invitation promotion; L008 keeps every owner gate and three operating holds open. | **FAIL/HOLD** for public launch. Q004 does not re-adjudicate or silently clear those owners' findings. |
+| Existing independent review gates | Blocking findings remain visible | `reviews/EDITORIAL_REVIEW.md` says not ready for publication; `reviews/ONBOARDING_DRY_RUN_PHASE1.md` says revision needed before public invitation promotion; L008 keeps every owner gate and three operating holds open. | **FAIL/HOLD** for public launch. Q004 does not re-adjudicate or silently clear those owners' findings. |
 
 ## Reproducibility appendix for bounded checks
 
@@ -426,7 +426,7 @@ Command:
             f"broken={broken}"
         )
 
-    manifest = json.loads(blob("tasks/manifest.json"))
+    manifest = json.loads(blob("swarm/manifest.json"))
     inputs = [path for task in manifest["tasks"] for path in task["inputs"]]
     specs = [task["spec"] for task in manifest["tasks"]]
     community = json.loads(blob("buzz/community.json"))
@@ -466,7 +466,7 @@ Command:
 
     source = "0ec7ad9e6ad1b152a68e2b7f53fa12dbcecf7ccf"
     manifest = json.loads(subprocess.check_output(
-        ["git", "show", f"{source}:tasks/manifest.json"], text=True
+        ["git", "show", f"{source}:swarm/manifest.json"], text=True
     ))
     tasks = {task["id"]: task for task in manifest["tasks"]}
     state = json.loads(
@@ -830,7 +830,7 @@ Public-root placeholder command:
 Output:
 
     ops/FIRST_PRACTICE_SESSION.md:106:   Practitioner may replace every real detail with a category or placeholder.
-    content/launch/SOCIAL_KIT.md:5:format. Replace every bracketed placeholder before publishing.
+    ops/outreach/SOCIAL_KIT.md:5:format. Replace every bracketed placeholder before publishing.
 
 Publication-token command:
 
@@ -845,7 +845,7 @@ Publication-token command:
     ).splitlines()
     roots = (
         "docs/", "community/", "guides/", "practices/", "labs/",
-        "stories/", "content/", "ops/", "release/", "brand/"
+        "stories/", "content/", "ops/", "release/", "docs/style/"
     )
     token_re = re.compile(r"\[[@#]?[A-Z][A-Z0-9_ -]*\](?!\()")
     tokens = collections.Counter()
@@ -864,7 +864,7 @@ Publication-token command:
 
 Output:
 
-    publication_token_occurrences=27 files={'content/launch/SOCIAL_KIT.md': 26, 'practices/001-context-pack.md': 1}
+    publication_token_occurrences=27 files={'ops/outreach/SOCIAL_KIT.md': 26, 'practices/001-context-pack.md': 1}
 
 The social publication hold covers its 26 occurrences. The other raw occurrence
 is the fenced date example in the context-pack record template; corrected
@@ -897,7 +897,7 @@ Command:
         ["git", "ls-tree", "-r", "--name-only", source], text=True
     ).splitlines())
     index = subprocess.check_output(
-        ["git", "show", f"{source}:FILE_INDEX.md"], text=True
+        ["git", "show", f"{source}:swarm/README.md"], text=True
     )
     tick = chr(96)
     listed = {

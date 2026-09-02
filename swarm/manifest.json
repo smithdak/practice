@@ -1,0 +1,3366 @@
+{
+  "schema_version": 1,
+  "project": "Practice",
+  "max_parallel_workers": 10,
+  "model_policy": {
+    "cheap": "Fast low-cost model with strong instruction following for bounded prose tasks.",
+    "balanced": "Mid-tier model for synthesis, governance, curricula, and operational design.",
+    "strong": "Highest-capability model reserved for thesis-critical synthesis, adversarial review, and integration.",
+    "code": "Low-cost coding-capable model for deterministic scripts and repository checks."
+  },
+  "tasks": [
+    {
+      "id": "F001",
+      "title": "Define the Practice voice and lexicon",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "docs/style/VOICE.md",
+        "docs/style/LEXICON.md"
+      ],
+      "handoff": "swarm/handoffs/F001.md",
+      "objective": "Create a precise language system that keeps every artifact recognizably Practice without sounding like generic AI marketing.",
+      "requirements": [
+        "Define voice attributes with positive and negative examples.",
+        "Define canonical terms: Practitioner, Practice, Guide, Lab, Story, Note, Project, capability ladder.",
+        "Create banned or discouraged language and replacement guidance.",
+        "Include headline, description, and call-to-action patterns."
+      ],
+      "acceptance": [
+        "Both files distinguish product language from marketing hype.",
+        "Examples cover beginner, technical, organizational, and community contexts.",
+        "No new tagline replaces the locked positioning."
+      ],
+      "spec": "swarm/specs/F001.md",
+      "status": "todo"
+    },
+    {
+      "id": "F002",
+      "title": "Write the founding manifesto",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "strong",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md",
+        "docs/founding/FOUNDING_BRIEF.md"
+      ],
+      "outputs": [
+        "docs/founding/MANIFESTO.md"
+      ],
+      "handoff": "swarm/handoffs/F002.md",
+      "objective": "Produce the canonical public manifesto that explains why Practice exists and calls Practitioners to action.",
+      "requirements": [
+        "Use the Founding Brief as source material without merely restating it.",
+        "Lead with the implementation gap, not model hype.",
+        "Explain openness, practice, evidence, contribution, and the human-agent community model.",
+        "End with a concrete invitation."
+      ],
+      "acceptance": [
+        "Readable as a standalone public artifact.",
+        "No fabricated market statistics or external claims.",
+        "Between 900 and 1,800 words."
+      ],
+      "spec": "swarm/specs/F002.md",
+      "status": "todo"
+    },
+    {
+      "id": "F003",
+      "title": "Finalize capability ladder and knowledge taxonomy",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "docs/framework/CAPABILITY_LADDER.md",
+        "docs/framework/TAXONOMY.md"
+      ],
+      "handoff": "swarm/handoffs/F003.md",
+      "objective": "Turn the founding concepts into a usable classification system for members, content, channels, and contributions.",
+      "requirements": [
+        "Define outcomes, entry evidence, exit evidence, and anti-patterns for Learn, Use, Automate, Build, Transform.",
+        "Define the artifact taxonomy and when to choose each artifact type.",
+        "Explain cross-role and cross-capability tagging.",
+        "Include concrete classification examples."
+      ],
+      "acceptance": [
+        "A contributor can classify a new artifact without guessing.",
+        "Capability levels describe skills rather than status.",
+        "Taxonomy resolves Note vs Practice vs Lab vs Story vs Project."
+      ],
+      "spec": "swarm/specs/F003.md",
+      "status": "todo"
+    },
+    {
+      "id": "F004",
+      "title": "Define governance",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "community/GOVERNANCE.md"
+      ],
+      "handoff": "swarm/handoffs/F004.md",
+      "objective": "Create lightweight, credible governance for an initially founder-led open-source community that can broaden over time.",
+      "requirements": [
+        "Define founder, maintainer, contributor, and Practitioner responsibilities.",
+        "Define decision categories and approval paths.",
+        "Define how governance evolves based on demonstrated contribution.",
+        "Include conflict-of-interest, removal, and succession mechanisms without bureaucracy."
+      ],
+      "acceptance": [
+        "Founder authority is explicit at launch.",
+        "Contribution can earn responsibility through transparent criteria.",
+        "Irreversible and policy decisions remain human-owned."
+      ],
+      "spec": "swarm/specs/F004.md",
+      "status": "todo"
+    },
+    {
+      "id": "F005",
+      "title": "Define contribution system",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "CONTRIBUTING.md",
+        "community/CONTRIBUTION_MODEL.md"
+      ],
+      "handoff": "swarm/handoffs/F005.md",
+      "objective": "Make contributing easier than creating a polished artifact from scratch while maintaining quality.",
+      "requirements": [
+        "Define contribution paths from correction through maintained Project.",
+        "Describe issue, branch, review, evidence, attribution, and release flow.",
+        "Define recognition based on usefulness rather than volume.",
+        "Include a first-contribution path for non-engineers."
+      ],
+      "acceptance": [
+        "A newcomer can select and complete a contribution path.",
+        "The process supports Buzz discussion and Git review without duplicating source of truth.",
+        "Acceptance and rejection criteria are explicit."
+      ],
+      "spec": "swarm/specs/F005.md",
+      "status": "todo"
+    },
+    {
+      "id": "F006",
+      "title": "Define code of conduct and moderation model",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "CODE_OF_CONDUCT.md",
+        "community/MODERATION.md"
+      ],
+      "handoff": "swarm/handoffs/F006.md",
+      "objective": "Create conduct and moderation rules optimized for high-signal practical collaboration and human accountability.",
+      "requirements": [
+        "Define expected and unacceptable behavior.",
+        "Define reporting, triage, evidence preservation, appeal, and enforcement roles.",
+        "Separate low-signal quality issues from conduct violations.",
+        "Define what agents may flag and what humans must decide."
+      ],
+      "acceptance": [
+        "No autonomous banning or silent content removal.",
+        "Rules are enforceable rather than aspirational.",
+        "Private reporting and conflict handling are addressed."
+      ],
+      "spec": "swarm/specs/F006.md",
+      "status": "todo"
+    },
+    {
+      "id": "F007",
+      "title": "Finalize licensing and attribution policy",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md",
+        "LICENSE-CODE",
+        "LICENSE-CONTENT.md",
+        "LICENSES.md"
+      ],
+      "outputs": [
+        "community/ATTRIBUTION.md",
+        "NOTICE"
+      ],
+      "handoff": "swarm/handoffs/F007.md",
+      "objective": "Operationalize the dual-license model and make reuse, commercial use, attribution, and third-party contributions unambiguous.",
+      "requirements": [
+        "Use Apache-2.0 for code and CC BY 4.0 for content unless a file says otherwise.",
+        "Define attribution format for reused and adapted Practice content.",
+        "Define contributor certification or sign-off approach without adding unnecessary CLA friction.",
+        "Define third-party source handling and generated-content review."
+      ],
+      "acceptance": [
+        "Consistent with LICENSE-CODE, LICENSE-CONTENT.md, and LICENSES.md.",
+        "Commercial reuse is permitted with attribution.",
+        "No legal claims beyond what the licenses support."
+      ],
+      "spec": "swarm/specs/F007.md",
+      "status": "todo"
+    },
+    {
+      "id": "F008",
+      "title": "Define community health and outcome metrics",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/METRICS.md"
+      ],
+      "handoff": "swarm/handoffs/F008.md",
+      "objective": "Measure whether Practice creates capability and reusable knowledge rather than vanity activity.",
+      "requirements": [
+        "Define activation, contribution, artifact reuse, implementation, evidence, response quality, retention, and maintainer health metrics.",
+        "Distinguish leading and lagging indicators.",
+        "Define data that should not be collected.",
+        "Provide a minimal manual measurement method for launch."
+      ],
+      "acceptance": [
+        "Metrics connect to the north star.",
+        "No invented benchmarks or targets.",
+        "The initial system can be operated without custom analytics software."
+      ],
+      "spec": "swarm/specs/F008.md",
+      "status": "todo"
+    },
+    {
+      "id": "F009",
+      "title": "Polish contributor repository experience",
+      "wave": 1,
+      "lane": "foundation",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "F005",
+        "F006",
+        "F007"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "community/CONTRIBUTOR_QUICKSTART.md",
+        ".github/ISSUE_TEMPLATE/lab.yml",
+        ".github/ISSUE_TEMPLATE/project.yml"
+      ],
+      "handoff": "swarm/handoffs/F009.md",
+      "objective": "Make the public repository understandable and actionable from the first screen.",
+      "requirements": [
+        "Create a concise contributor quickstart.",
+        "Add structured Lab and Project proposal issue forms.",
+        "Reference existing templates and contribution rules.",
+        "Avoid duplicating full policies."
+      ],
+      "acceptance": [
+        "Issue forms collect enough information for triage.",
+        "Quickstart includes both Git-native and Buzz-first paths.",
+        "All relative links resolve."
+      ],
+      "spec": "swarm/specs/F009.md",
+      "status": "todo"
+    },
+    {
+      "id": "B001",
+      "title": "Audit and finalize Buzz channel information architecture",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "F003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md",
+        "buzz/community.json",
+        "buzz/PLATFORM_SNAPSHOT.md"
+      ],
+      "outputs": [
+        "buzz/CHANNELS.md",
+        "buzz/community.json"
+      ],
+      "handoff": "swarm/handoffs/B001.md",
+      "objective": "Validate the launch channel set against the capability ladder and keep the community deliberately small and outcome-oriented.",
+      "requirements": [
+        "Review every baseline channel for purpose, overlap, and launch necessity.",
+        "Keep construction and maintainer work private.",
+        "Use stream channels only.",
+        "Document rules for creating, renaming, archiving, or splitting channels later."
+      ],
+      "acceptance": [
+        "No public channel lacks a distinct outcome.",
+        "Channel count is justified and not expanded casually.",
+        "community.json remains valid and every referenced file exists."
+      ],
+      "spec": "swarm/specs/B001.md",
+      "status": "todo"
+    },
+    {
+      "id": "B002",
+      "title": "Design end-to-end member onboarding",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "F003",
+        "F005"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md",
+        "buzz/PLATFORM_SNAPSHOT.md"
+      ],
+      "outputs": [
+        "community/ONBOARDING.md",
+        "community/CAPABILITY_SELF_ASSESSMENT.md"
+      ],
+      "handoff": "swarm/handoffs/B002.md",
+      "objective": "Move a new member from invitation through first useful contribution without requiring prior AI expertise.",
+      "requirements": [
+        "Account for Buzz being invite-only.",
+        "Define invitation, identity setup, orientation, capability self-assessment, first action, and follow-up.",
+        "Create a self-assessment that routes to Learn, Use, Automate, Build, or Transform.",
+        "Include agent-assisted and human-assisted paths."
+      ],
+      "acceptance": [
+        "A new member has one clear first action.",
+        "Onboarding does not depend on unavailable automation.",
+        "No private key handling is delegated to agents."
+      ],
+      "spec": "swarm/specs/B002.md",
+      "status": "todo"
+    },
+    {
+      "id": "B003",
+      "title": "Polish all Buzz channel canvases",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "B001",
+        "B002",
+        "F001"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/canvases/foundry.md",
+        "buzz/canvases/maintainers.md",
+        "buzz/canvases/start-here.md",
+        "buzz/canvases/announcements.md",
+        "buzz/canvases/ask-practice.md",
+        "buzz/canvases/learn.md",
+        "buzz/canvases/use.md",
+        "buzz/canvases/automate.md",
+        "buzz/canvases/build.md",
+        "buzz/canvases/transform.md",
+        "buzz/canvases/projects.md",
+        "buzz/canvases/showcase.md"
+      ],
+      "handoff": "swarm/handoffs/B003.md",
+      "objective": "Turn every channel canvas into a concise operating guide that prevents ambiguity and empty-channel syndrome.",
+      "requirements": [
+        "Preserve the purpose of each channel.",
+        "Add what belongs, what does not, and a first action where useful.",
+        "Keep private-channel instructions operational.",
+        "Cross-link only when a real path exists."
+      ],
+      "acceptance": [
+        "Every canvas is publishable and non-empty.",
+        "No canvas repeats the entire manifesto.",
+        "Tone follows docs/style/VOICE.md."
+      ],
+      "spec": "swarm/specs/B003.md",
+      "status": "todo"
+    },
+    {
+      "id": "B004",
+      "title": "Polish Buzz seed messages",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "B001",
+        "B002",
+        "F001"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/seeds/foundry.md",
+        "buzz/seeds/maintainers.md",
+        "buzz/seeds/start-here.md",
+        "buzz/seeds/announcements.md",
+        "buzz/seeds/ask-practice.md",
+        "buzz/seeds/learn.md",
+        "buzz/seeds/use.md",
+        "buzz/seeds/automate.md",
+        "buzz/seeds/build.md",
+        "buzz/seeds/transform.md",
+        "buzz/seeds/projects.md",
+        "buzz/seeds/showcase.md"
+      ],
+      "handoff": "swarm/handoffs/B004.md",
+      "objective": "Create one high-signal seed message per launch channel that demonstrates expected behavior and prompts useful participation.",
+      "requirements": [
+        "Preserve each unique idempotency marker.",
+        "Use concrete prompts rather than generic welcomes.",
+        "Do not imply members, results, or activity that do not exist.",
+        "Keep announcement volume low."
+      ],
+      "acceptance": [
+        "Every seed contains exactly one practice-seed marker.",
+        "Prompts can produce a reusable artifact or clear next action.",
+        "No message exceeds 350 words."
+      ],
+      "spec": "swarm/specs/B004.md",
+      "status": "todo"
+    },
+    {
+      "id": "B005",
+      "title": "Harden the Buzz bootstrapper",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [
+        "B001"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md",
+        "buzz/PLATFORM_SNAPSHOT.md",
+        "buzz/community.json"
+      ],
+      "outputs": [
+        "scripts/buzz_bootstrap.py",
+        "buzz/BOOTSTRAP_RUNBOOK.md"
+      ],
+      "handoff": "swarm/handoffs/B005.md",
+      "objective": "Make Buzz setup idempotent, dry-run-first, inspectable, and safe against current platform limitations.",
+      "requirements": [
+        "Use only the launch-safe CLI surface in the platform snapshot.",
+        "Create missing stream channels, set topic/purpose/canvas, and seed messages once.",
+        "Never delete or archive.",
+        "Redact secrets from errors and reports.",
+        "Handle common JSON response shapes and actionable failures."
+      ],
+      "acceptance": [
+        "Dry run requires no Buzz installation or credentials.",
+        "Apply requires explicit --apply and environment variables.",
+        "Re-running apply does not duplicate seed messages when recent history contains the marker.",
+        "Runbook includes rollback-by-manual-review, not destructive automation."
+      ],
+      "spec": "swarm/specs/B005.md",
+      "status": "todo"
+    },
+    {
+      "id": "B006",
+      "title": "Create Buzz access and security runbook",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "F006",
+        "B001"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md",
+        "buzz/PLATFORM_SNAPSHOT.md"
+      ],
+      "outputs": [
+        "ops/BUZZ_SECURITY.md"
+      ],
+      "handoff": "swarm/handoffs/B006.md",
+      "objective": "Define identity, key, channel, agent, data, backup, and incident practices for hosted Buzz operation.",
+      "requirements": [
+        "Document owner identity backup and recovery responsibilities.",
+        "Define per-agent identity and least-membership matrix.",
+        "Classify content safe for hosted Buzz.",
+        "Define offboarding and suspected-compromise steps.",
+        "Separate hosted MVP from self-host revisit triggers."
+      ],
+      "acceptance": [
+        "Consistent with official support constraints.",
+        "No secret is ever requested in a channel.",
+        "Human actions are explicit."
+      ],
+      "spec": "swarm/specs/B006.md",
+      "status": "todo"
+    },
+    {
+      "id": "B007",
+      "title": "Finalize Practice Steward agent profile",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "B001",
+        "F005"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/agents/STEWARD.md"
+      ],
+      "handoff": "swarm/handoffs/B007.md",
+      "objective": "Create a deployable, bounded profile for the member-routing and onboarding agent.",
+      "requirements": [
+        "Define mission, inputs, output formats, tools, channel access, escalation, prohibited behavior, and evaluation cases.",
+        "Optimize for routing to useful action, not long answers.",
+        "Include prompt-injection and unknown-policy handling."
+      ],
+      "acceptance": [
+        "Profile can be copied into a Buzz agent setup.",
+        "No owner privileges required.",
+        "At least five evaluation scenarios."
+      ],
+      "spec": "swarm/specs/B007.md",
+      "status": "todo"
+    },
+    {
+      "id": "B008",
+      "title": "Finalize Practice Librarian agent profile",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "B001",
+        "F005"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/agents/LIBRARIAN.md"
+      ],
+      "handoff": "swarm/handoffs/B008.md",
+      "objective": "Create a deployable profile for distilling valuable community work into candidate artifacts.",
+      "requirements": [
+        "Define artifact classification rules and attribution requirements.",
+        "Require links back to source threads.",
+        "Draft only; never merge or publish without review.",
+        "Include privacy boundaries and disagreement preservation."
+      ],
+      "acceptance": [
+        "At least five evaluation scenarios.",
+        "Output contract maps cleanly to Practice artifact templates.",
+        "No private-channel material may be published by default."
+      ],
+      "spec": "swarm/specs/B008.md",
+      "status": "todo"
+    },
+    {
+      "id": "B009",
+      "title": "Finalize Guide Maintainer agent profile",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "B001",
+        "F005"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/agents/GUIDE_MAINTAINER.md"
+      ],
+      "handoff": "swarm/handoffs/B009.md",
+      "objective": "Create a deployable profile for guide coherence, staleness detection, and maintenance proposals.",
+      "requirements": [
+        "Define change-detection, source verification, versioning recommendation, and review packet formats.",
+        "Require primary sources for changing technical claims.",
+        "Never merge its own work."
+      ],
+      "acceptance": [
+        "At least five evaluation scenarios.",
+        "Staleness and deprecation are distinct.",
+        "Agent cannot silently change capability taxonomy."
+      ],
+      "spec": "swarm/specs/B009.md",
+      "status": "todo"
+    },
+    {
+      "id": "B010",
+      "title": "Finalize Research Auditor agent profile",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "B001",
+        "F005"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/agents/RESEARCH_AUDITOR.md"
+      ],
+      "handoff": "swarm/handoffs/B010.md",
+      "objective": "Create a deployable profile for current-fact verification and citation integrity.",
+      "requirements": [
+        "Define primary-source hierarchy, as-of dates, claim-source mapping, uncertainty, and contradiction handling.",
+        "Define a compact audit report.",
+        "Disallow invented citations and unsupported extrapolation."
+      ],
+      "acceptance": [
+        "At least five evaluation scenarios.",
+        "Reports identify exact claims and dispositions.",
+        "The agent does not rewrite strategy."
+      ],
+      "spec": "swarm/specs/B010.md",
+      "status": "todo"
+    },
+    {
+      "id": "B011",
+      "title": "Finalize Release Editor agent profile",
+      "wave": 2,
+      "lane": "buzz",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "B001",
+        "F005"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/agents/RELEASE_EDITOR.md"
+      ],
+      "handoff": "swarm/handoffs/B011.md",
+      "objective": "Create a deployable profile for turning merged work into announcements and weekly releases without hype.",
+      "requirements": [
+        "Define required inputs, artifact links, status checks, output formats, and prohibited claims.",
+        "Require merged or released source material.",
+        "Preserve evidence quality and uncertainty."
+      ],
+      "acceptance": [
+        "At least five evaluation scenarios.",
+        "No unmerged work can be announced as complete.",
+        "Every summary links to canonical artifacts."
+      ],
+      "spec": "swarm/specs/B011.md",
+      "status": "todo"
+    },
+    {
+      "id": "K001",
+      "title": "Finalize the Open Practice schema",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "F003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "templates/PRACTICE.md",
+        "docs/schemas/PRACTICE_SCHEMA.md"
+      ],
+      "handoff": "swarm/handoffs/K001.md",
+      "objective": "Create the canonical schema and authoring rules for reusable Practices.",
+      "requirements": [
+        "Define required and optional metadata.",
+        "Define maturity states from proposed through verified and deprecated.",
+        "Define evidence-quality levels.",
+        "Include a worked classification example.",
+        "Keep author burden proportional to maturity."
+      ],
+      "acceptance": [
+        "Template and schema agree.",
+        "A validator could be built from the rules.",
+        "Failure modes and evaluation are required for mature Practices."
+      ],
+      "spec": "swarm/specs/K001.md",
+      "status": "todo"
+    },
+    {
+      "id": "K002",
+      "title": "Finalize the Practice Guide schema",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "F003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "templates/GUIDE.md",
+        "docs/schemas/GUIDE_SCHEMA.md"
+      ],
+      "handoff": "swarm/handoffs/K002.md",
+      "objective": "Create the canonical structure and maintenance rules for opinionated Guides.",
+      "requirements": [
+        "Define audience, outcomes, prerequisites, modules, Practices, capstone, evaluation, and versioning.",
+        "Explain when a collection becomes a Guide.",
+        "Define update and deprecation rules."
+      ],
+      "acceptance": [
+        "Template and schema agree.",
+        "Guides reference Practices rather than duplicating them unnecessarily.",
+        "A Guide has a clear completion outcome."
+      ],
+      "spec": "swarm/specs/K002.md",
+      "status": "todo"
+    },
+    {
+      "id": "K003",
+      "title": "Design the AI-Native Practitioner flagship guide",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "strong",
+      "mode": "build",
+      "dependencies": [
+        "F002",
+        "F003",
+        "K001",
+        "K002"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "guides/ai-native-practitioner/README.md",
+        "guides/ai-native-practitioner/CURRICULUM.md"
+      ],
+      "handoff": "swarm/handoffs/K003.md",
+      "objective": "Create the coherent end-to-end map for Practice's flagship Guide.",
+      "requirements": [
+        "Cover foundations, effective use, context engineering, automation, agents, agentic engineering, organizational AI, and frontier work.",
+        "Define module outcomes, prerequisites, capstones, and evidence.",
+        "Provide multiple paths for nontechnical, technical, and organizational Practitioners without fragmenting the core.",
+        "Avoid a vendor-specific course outline."
+      ],
+      "acceptance": [
+        "Every module advances a capability.",
+        "The guide is usable before all modules are complete.",
+        "Frontier material is clearly separated from established Practice."
+      ],
+      "spec": "swarm/specs/K003.md",
+      "status": "todo"
+    },
+    {
+      "id": "K004",
+      "title": "Write the Foundations module",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "K003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "guides/ai-native-practitioner/01-foundations.md"
+      ],
+      "handoff": "swarm/handoffs/K004.md",
+      "objective": "Write a practical foundations module covering models, context, tools, limitations, structured output, privacy, security, and evaluation.",
+      "requirements": [
+        "Use exercises and checkable outcomes.",
+        "Prefer enduring concepts over volatile product details.",
+        "Explain probabilistic behavior and verification without oversimplification.",
+        "Include a capstone."
+      ],
+      "acceptance": [
+        "A beginner can complete it without coding.",
+        "No unsupported current product claims.",
+        "Exercises produce artifacts or evidence."
+      ],
+      "spec": "swarm/specs/K004.md",
+      "status": "todo"
+    },
+    {
+      "id": "K005",
+      "title": "Write the Effective Use module",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "K003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "guides/ai-native-practitioner/02-effective-use.md"
+      ],
+      "handoff": "swarm/handoffs/K005.md",
+      "objective": "Teach deliberate use across research, analysis, writing, planning, learning, and professional work.",
+      "requirements": [
+        "Teach task framing, context, iteration, critique, and output verification.",
+        "Include role-neutral patterns and role examples.",
+        "Distinguish assistance from delegated execution.",
+        "Include a capstone based on a real workflow."
+      ],
+      "acceptance": [
+        "Not a prompt collection.",
+        "Includes decision rules for when not to use AI.",
+        "Produces measurable before/after evidence."
+      ],
+      "spec": "swarm/specs/K005.md",
+      "status": "todo"
+    },
+    {
+      "id": "K006",
+      "title": "Write the Context Engineering module",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "K003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "guides/ai-native-practitioner/03-context-engineering.md"
+      ],
+      "handoff": "swarm/handoffs/K006.md",
+      "objective": "Teach instruction, context architecture, skills, memory, retrieval, tool definitions, and progressive disclosure.",
+      "requirements": [
+        "Explain context as a designed system rather than a long prompt.",
+        "Cover source hierarchy, freshness, conflicts, and boundaries.",
+        "Include a reusable context-pack exercise.",
+        "Address privacy and token/cost constraints conceptually."
+      ],
+      "acceptance": [
+        "Connects to the first Context Pack Practice.",
+        "Includes failure diagnosis.",
+        "Avoids vendor-specific context-window claims."
+      ],
+      "spec": "swarm/specs/K006.md",
+      "status": "todo"
+    },
+    {
+      "id": "K007",
+      "title": "Write the Automation and Agents module",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "K003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "guides/ai-native-practitioner/04-automation-agents.md"
+      ],
+      "handoff": "swarm/handoffs/K007.md",
+      "objective": "Move Practitioners from workflow decomposition through reliable tool-using agents.",
+      "requirements": [
+        "Begin with deterministic automation and human approval.",
+        "Define agent loop, tools, state, permissions, error paths, observability, and evaluation.",
+        "Explain when an agent is unnecessary.",
+        "Include a bounded automation capstone."
+      ],
+      "acceptance": [
+        "Reliability and rollback are first-class.",
+        "Autonomy is treated as a design variable, not a goal.",
+        "No framework is required."
+      ],
+      "spec": "swarm/specs/K007.md",
+      "status": "todo"
+    },
+    {
+      "id": "K008",
+      "title": "Write the Agentic Engineering module",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "K003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "guides/ai-native-practitioner/05-agentic-engineering.md"
+      ],
+      "handoff": "swarm/handoffs/K008.md",
+      "objective": "Teach repository context, specifications, planning, implementation, tests, verification, parallel agents, and delivery controls.",
+      "requirements": [
+        "Define task decomposition and file ownership.",
+        "Cover worktrees, acceptance criteria, independent review, and CI.",
+        "Explain handoffs and context recovery.",
+        "Use Practice's own swarm as a worked example without claiming results not yet measured."
+      ],
+      "acceptance": [
+        "Useful to experienced engineers.",
+        "Includes anti-patterns for uncontrolled parallelism.",
+        "Connects to the Verification Gate Practice."
+      ],
+      "spec": "swarm/specs/K008.md",
+      "status": "todo"
+    },
+    {
+      "id": "K009",
+      "title": "Write the Organizational AI module",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "K003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "guides/ai-native-practitioner/06-organizational-ai.md"
+      ],
+      "handoff": "swarm/handoffs/K009.md",
+      "objective": "Teach workflow discovery, opportunity assessment, knowledge architecture, enablement, governance, measurement, and operating models.",
+      "requirements": [
+        "Start from work and business outcomes.",
+        "Define an opportunity map without invented ROI.",
+        "Address role-specific enablement and change.",
+        "Include governance proportional to risk.",
+        "Include an organizational capstone."
+      ],
+      "acceptance": [
+        "Not a generic digital-transformation essay.",
+        "Connects interventions to measurable operating changes.",
+        "Distinguishes adoption from capability."
+      ],
+      "spec": "swarm/specs/K009.md",
+      "status": "todo"
+    },
+    {
+      "id": "K010",
+      "title": "Create Practice 001: Reusable Context Pack",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "K001",
+        "F003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "practices/001-context-pack.md"
+      ],
+      "handoff": "swarm/handoffs/K010.md",
+      "objective": "Create the first reusable Practice for packaging stable instructions, sources, constraints, examples, and verification into recurring AI work.",
+      "requirements": [
+        "Use the canonical Practice schema.",
+        "Include a minimal and advanced implementation.",
+        "Include maintenance and freshness checks.",
+        "Include evaluation and failure modes."
+      ],
+      "acceptance": [
+        "Immediately reusable by a nontechnical Practitioner.",
+        "No vendor dependency.",
+        "Evidence section honestly labels the initial maturity."
+      ],
+      "spec": "swarm/specs/K010.md",
+      "status": "todo"
+    },
+    {
+      "id": "K011",
+      "title": "Create Practice 002: Workflow Redesign",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "K001",
+        "F003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "practices/002-workflow-redesign.md"
+      ],
+      "handoff": "swarm/handoffs/K011.md",
+      "objective": "Create a method for decomposing a recurring workflow and selecting deterministic, AI-assisted, agentic, and human-owned steps.",
+      "requirements": [
+        "Include inventory, classification, risk, data access, approval, rollback, and measurement.",
+        "Provide a worked hypothetical example labeled as such.",
+        "Define a smallest safe experiment."
+      ],
+      "acceptance": [
+        "Produces a concrete workflow map.",
+        "Does not assume automation is always beneficial.",
+        "Includes evaluation before expanding autonomy."
+      ],
+      "spec": "swarm/specs/K011.md",
+      "status": "todo"
+    },
+    {
+      "id": "K012",
+      "title": "Create Practice 003: Agent Verification Gate",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "K001",
+        "F003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "practices/003-verification-gate.md"
+      ],
+      "handoff": "swarm/handoffs/K012.md",
+      "objective": "Create a reusable acceptance gate for agent-produced research, content, code, configuration, or operations work.",
+      "requirements": [
+        "Define artifact-specific checks and universal checks.",
+        "Include evidence, tests, diff review, source validation, and rollback.",
+        "Define when human approval is mandatory.",
+        "Include a compact checklist and machine-readable example."
+      ],
+      "acceptance": [
+        "Applicable beyond software.",
+        "Rejects unsupported completion claims.",
+        "Connects acceptance criteria to actual evidence."
+      ],
+      "spec": "swarm/specs/K012.md",
+      "status": "todo"
+    },
+    {
+      "id": "K013",
+      "title": "Create the Lab system and first experiment",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "K001"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "templates/LAB.md",
+        "docs/schemas/LAB_SCHEMA.md",
+        "labs/001-cheap-model-bounded-task.md"
+      ],
+      "handoff": "swarm/handoffs/K013.md",
+      "objective": "Define reproducible Labs and design the first experiment around low-cost models completing bounded artifact tasks.",
+      "requirements": [
+        "Define hypothesis, fixed conditions, task set, rubric, cost capture, result format, limitations, and reproduction.",
+        "Do not invent results; leave the results section ready for execution.",
+        "Compare task completion quality, not general model intelligence."
+      ],
+      "acceptance": [
+        "Template and schema agree.",
+        "Experiment can be run by another Practitioner.",
+        "No model is endorsed before results exist."
+      ],
+      "spec": "swarm/specs/K013.md",
+      "status": "todo"
+    },
+    {
+      "id": "K014",
+      "title": "Create the Story system and an explicitly hypothetical sample",
+      "wave": 3,
+      "lane": "knowledge",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "K001"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "templates/STORY.md",
+        "docs/schemas/STORY_SCHEMA.md",
+        "stories/SAMPLE_HYPOTHETICAL.md"
+      ],
+      "handoff": "swarm/handoffs/K014.md",
+      "objective": "Define evidence-grounded Practice Stories and demonstrate the format without fabricating a real case study.",
+      "requirements": [
+        "Define evidence-quality levels and anonymization rules.",
+        "Require before, intervention, after, result, lessons, and artifacts.",
+        "Mark the sample prominently as hypothetical."
+      ],
+      "acceptance": [
+        "No invented customer or metric.",
+        "Template and schema agree.",
+        "A real contributor can replace the sample with evidence."
+      ],
+      "spec": "swarm/specs/K014.md",
+      "status": "todo"
+    },
+    {
+      "id": "L001",
+      "title": "Create the launch narrative",
+      "wave": 4,
+      "lane": "launch",
+      "model_tier": "strong",
+      "mode": "build",
+      "dependencies": [
+        "F001",
+        "F002"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "docs/founding/FOUNDING_STORY.md",
+        "ops/outreach/LAUNCH_VIDEO.md"
+      ],
+      "handoff": "swarm/handoffs/L001.md",
+      "objective": "Translate the manifesto into a compelling written launch story and flagship video brief that demonstrates the Practice thesis.",
+      "requirements": [
+        "Explain the implementation gap and why open practice matters.",
+        "Use Dakota's builder/practitioner perspective without inventing biography.",
+        "Design the video around showing work, not a talking-head announcement alone.",
+        "End with one clear invitation."
+      ],
+      "acceptance": [
+        "Written story and video brief share a thesis without duplicating wording.",
+        "No market statistics are required.",
+        "The call to action points to Buzz and canonical open artifacts."
+      ],
+      "spec": "swarm/specs/L001.md",
+      "status": "todo"
+    },
+    {
+      "id": "L002",
+      "title": "Create the first ten flagship content briefs",
+      "wave": 4,
+      "lane": "launch",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "F002",
+        "F003",
+        "K003"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/outreach/FIRST_10.md"
+      ],
+      "handoff": "swarm/handoffs/L002.md",
+      "objective": "Create ten production-ready content briefs that generate useful open-source artifacts and community participation.",
+      "requirements": [
+        "Each brief states hook, Practitioner outcome, demonstration, artifact produced, community prompt, and repurposing.",
+        "Mix individual, engineering, founder, and organizational use cases.",
+        "Include Making Companies AI-Native, Workflow Clinic, Build With Me, Practice Tested, and community showcase formats."
+      ],
+      "acceptance": [
+        "Every episode produces or improves a canonical artifact.",
+        "No episode depends on a fabricated participant or company.",
+        "Sequence builds the Practice thesis progressively."
+      ],
+      "spec": "swarm/specs/L002.md",
+      "status": "todo"
+    },
+    {
+      "id": "L003",
+      "title": "Create the social launch kit",
+      "wave": 4,
+      "lane": "launch",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "L001"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/outreach/SOCIAL_KIT.md"
+      ],
+      "handoff": "swarm/handoffs/L003.md",
+      "objective": "Create channel-appropriate launch copy and profile language without reducing Practice to AI tips.",
+      "requirements": [
+        "Include pinned profile descriptions, launch posts, short-form scripts, founder bio, and response templates.",
+        "Preserve the same claim set across channels.",
+        "Use placeholders for URLs and handles."
+      ],
+      "acceptance": [
+        "No invented traction or urgency.",
+        "Calls to action are specific.",
+        "Copy follows the voice system."
+      ],
+      "spec": "swarm/specs/L003.md",
+      "status": "todo"
+    },
+    {
+      "id": "L004",
+      "title": "Design the first Practice Session",
+      "wave": 4,
+      "lane": "operations",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "B002",
+        "K001"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/FIRST_PRACTICE_SESSION.md"
+      ],
+      "handoff": "swarm/handoffs/L004.md",
+      "objective": "Create a repeatable live Workflow Clinic that produces a reusable Practice artifact.",
+      "requirements": [
+        "Define participant intake, selection, preparation, facilitation, artifact capture, consent, follow-up, and publication review.",
+        "Include roles for host, Steward, Librarian, and Research Auditor.",
+        "Include contingency paths when the workflow is sensitive or unsuitable."
+      ],
+      "acceptance": [
+        "Session produces a concrete draft artifact.",
+        "No private data is exposed by default.",
+        "Participants can decline publication."
+      ],
+      "spec": "swarm/specs/L004.md",
+      "status": "todo"
+    },
+    {
+      "id": "L005",
+      "title": "Create the maintainer operating runbook",
+      "wave": 4,
+      "lane": "operations",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "F004",
+        "F005",
+        "B006"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/MAINTAINER_RUNBOOK.md"
+      ],
+      "handoff": "swarm/handoffs/L005.md",
+      "objective": "Define the recurring human and agent work required to keep Practice useful, current, and safe.",
+      "requirements": [
+        "Cover inbox triage, questions, artifact review, agent review, releases, moderation, stale content, backups, and owner gates.",
+        "Define responsibilities and escalation.",
+        "Prefer queues and checklists over meetings."
+      ],
+      "acceptance": [
+        "A maintainer can operate Practice without founder-only tribal knowledge.",
+        "Agent assistance is bounded and reviewable.",
+        "Includes failure and recovery procedures."
+      ],
+      "spec": "swarm/specs/L005.md",
+      "status": "todo"
+    },
+    {
+      "id": "L006",
+      "title": "Design the public invitation funnel",
+      "wave": 4,
+      "lane": "operations",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "B001",
+        "B002",
+        "F005"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/outreach/INVITE_FUNNEL.md"
+      ],
+      "handoff": "swarm/handoffs/L006.md",
+      "objective": "Bridge public discovery into an invite-only Buzz community without creating a fragmented community stack.",
+      "requirements": [
+        "Define social/Git discovery, request or invite link, qualification if any, onboarding, and follow-up.",
+        "Keep public artifacts accessible without membership.",
+        "Include abuse prevention and revoked-invite handling.",
+        "Use Buzz as the hub after entry."
+      ],
+      "acceptance": [
+        "Does not require a custom application.",
+        "Open-source access is never gated behind membership.",
+        "Metrics connect to ops/METRICS.md."
+      ],
+      "spec": "swarm/specs/L006.md",
+      "status": "todo"
+    },
+    {
+      "id": "L007",
+      "title": "Define the weekly operating cadence",
+      "wave": 4,
+      "lane": "operations",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [
+        "L005"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/WEEKLY_CADENCE.md"
+      ],
+      "handoff": "swarm/handoffs/L007.md",
+      "objective": "Create a sustainable founder-plus-agents cadence that compounds artifacts rather than producing constant channel activity.",
+      "requirements": [
+        "Define intake, build, review, release, Session, and maintenance cycles.",
+        "Separate continuous queues from scheduled review.",
+        "Show which agent prepares each packet and which human approves."
+      ],
+      "acceptance": [
+        "No ceremony without an output.",
+        "Cadence can operate with a small community.",
+        "Includes a low-activity fallback."
+      ],
+      "spec": "swarm/specs/L007.md",
+      "status": "todo"
+    },
+    {
+      "id": "L008",
+      "title": "Create launch checklist and owner review packet",
+      "wave": 4,
+      "lane": "release",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "F009",
+        "B003",
+        "B004",
+        "B005",
+        "B006",
+        "K004",
+        "K005",
+        "K006",
+        "K007",
+        "K008",
+        "K009",
+        "K010",
+        "K011",
+        "K012",
+        "K013",
+        "K014",
+        "L002",
+        "L003",
+        "L004",
+        "L005",
+        "L006",
+        "L007"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "release/LAUNCH_CHECKLIST.md",
+        "release/OWNER_REVIEW.md"
+      ],
+      "handoff": "swarm/handoffs/L008.md",
+      "objective": "Assemble a concrete release gate and a compact packet Dakota can review without rereading the entire repository.",
+      "requirements": [
+        "List automated checks, manual Buzz steps, public repository checks, content checks, agent permission checks, and rollback.",
+        "Summarize locked decisions, remaining gates, known Buzz constraints, and deferred work.",
+        "Do not mark an unchecked item complete."
+      ],
+      "acceptance": [
+        "Every required artifact is linked.",
+        "Owner decisions are limited to docs/OWNER_GATES.md or newly evidenced blockers.",
+        "Checklist distinguishes dry run, private beta, and public launch."
+      ],
+      "spec": "swarm/specs/L008.md",
+      "status": "todo"
+    },
+    {
+      "id": "Q001",
+      "title": "Audit current platform and license facts",
+      "wave": 5,
+      "lane": "review",
+      "model_tier": "balanced",
+      "mode": "review",
+      "dependencies": [
+        "F007",
+        "B005",
+        "B006"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md",
+        "buzz/PLATFORM_SNAPSHOT.md"
+      ],
+      "outputs": [
+        "reviews/FACT_AUDIT_PHASE1.md"
+      ],
+      "handoff": "swarm/handoffs/Q001.md",
+      "objective": "Independently verify every current claim about Buzz and licensing that appears in launch-critical artifacts.",
+      "requirements": [
+        "Map claim to primary source, as-of date, disposition, and required correction.",
+        "Check that excluded Buzz capabilities remain excluded.",
+        "Check license descriptions against canonical sources.",
+        "Do not edit source artifacts."
+      ],
+      "acceptance": [
+        "Every audited claim has a disposition.",
+        "Contradictions are explicit.",
+        "Report separates blocking and non-blocking findings."
+      ],
+      "spec": "swarm/specs/Q001.md",
+      "status": "todo"
+    },
+    {
+      "id": "Q002",
+      "title": "Run adversarial editorial and coherence review",
+      "wave": 5,
+      "lane": "review",
+      "model_tier": "strong",
+      "mode": "review",
+      "dependencies": [
+        "F002",
+        "K004",
+        "K005",
+        "K006",
+        "K007",
+        "K008",
+        "K009",
+        "K010",
+        "K011",
+        "K012",
+        "L001",
+        "L002"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md",
+        "docs/style/VOICE.md",
+        "docs/style/LEXICON.md"
+      ],
+      "outputs": [
+        "reviews/EDITORIAL_REVIEW.md"
+      ],
+      "handoff": "swarm/handoffs/Q002.md",
+      "objective": "Find contradictions, repetition, generic AI language, audience confusion, and weak operational guidance across the core corpus.",
+      "requirements": [
+        "Review as a skeptical expert and a capable beginner.",
+        "Identify exact files and passages.",
+        "Test consistency with the voice and locked decisions.",
+        "Recommend deletions before additions.",
+        "Do not edit source artifacts."
+      ],
+      "acceptance": [
+        "Findings are ranked by severity.",
+        "Each recommendation is actionable.",
+        "No strategy is invented beyond the founding brief."
+      ],
+      "spec": "swarm/specs/Q002.md",
+      "status": "todo"
+    },
+    {
+      "id": "Q003",
+      "title": "Run a complete onboarding dry run",
+      "wave": 5,
+      "lane": "review",
+      "model_tier": "balanced",
+      "mode": "review",
+      "dependencies": [
+        "B002",
+        "B003",
+        "B004",
+        "B007",
+        "B008",
+        "B009",
+        "B010",
+        "B011",
+        "L006"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "reviews/ONBOARDING_DRY_RUN_PHASE1.md"
+      ],
+      "handoff": "swarm/handoffs/Q003.md",
+      "objective": "Simulate a new nontechnical member, a technical builder, and an internal AI lead entering the community and taking a first action.",
+      "requirements": [
+        "Trace public discovery through invitation, Buzz setup, start-here, channel selection, asking, contribution, and follow-up.",
+        "Record ambiguity, dead ends, empty-state problems, and agent escalation failures.",
+        "Do not edit source artifacts."
+      ],
+      "acceptance": [
+        "All three personas complete or fail at explicit steps.",
+        "Every defect includes severity and proposed owner file.",
+        "No imagined Buzz capability is used."
+      ],
+      "spec": "swarm/specs/Q003.md",
+      "status": "todo"
+    },
+    {
+      "id": "Q004",
+      "title": "Run repository integrity and release validation review",
+      "wave": 5,
+      "lane": "review",
+      "model_tier": "code",
+      "mode": "review",
+      "dependencies": [
+        "F009",
+        "L008"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "reviews/REPOSITORY_INTEGRITY.md"
+      ],
+      "handoff": "swarm/handoffs/Q004.md",
+      "objective": "Independently check structure, links, schemas, licenses, task state, generated files, and release validation behavior.",
+      "requirements": [
+        "Run normal and release validation.",
+        "Inspect all relative links and referenced files.",
+        "Check for TODOs, placeholders, secrets, duplicate seed markers, and stale task status.",
+        "Do not edit source artifacts."
+      ],
+      "acceptance": [
+        "Include exact commands and outputs.",
+        "Separate script defects from content defects.",
+        "No passing claim without evidence."
+      ],
+      "spec": "swarm/specs/Q004.md",
+      "status": "todo"
+    },
+    {
+      "id": "Q005",
+      "title": "Integrate review findings and prepare final release",
+      "wave": 5,
+      "lane": "integration",
+      "model_tier": "strong",
+      "mode": "integration",
+      "dependencies": [
+        "Q001",
+        "Q002",
+        "Q003",
+        "Q004",
+        "L008"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "swarm/reports/PHASE1_REPORT.md"
+      ],
+      "handoff": "swarm/handoffs/Q005.md",
+      "objective": "Apply blocking review findings across the repository, reconcile conflicts, run release validation, and create the final integration report.",
+      "requirements": [
+        "May edit any project artifact except locked decisions unless an owner gate is opened.",
+        "Resolve blocking findings and disposition non-blocking findings.",
+        "Run `python3 scripts/validate.py --release`.",
+        "Update release/OWNER_REVIEW.md with final manual actions."
+      ],
+      "acceptance": [
+        "Release validation passes or the report says BLOCKED with exact evidence.",
+        "All review findings have a disposition.",
+        "No owner-only action is falsely marked complete."
+      ],
+      "spec": "swarm/specs/Q005.md",
+      "status": "todo"
+    },
+    {
+      "id": "R1",
+      "title": "Refresh the Buzz platform snapshot against live sources",
+      "wave": 6,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "revision",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/PLATFORM_SNAPSHOT.md"
+      ],
+      "handoff": "swarm/handoffs/R1.md",
+      "objective": "Re-verify every Buzz capability claim against primary sources and restamp the snapshot with a current as-of date.",
+      "requirements": [
+        "Re-verify each existing capability claim against a primary source.",
+        "List every claim removed or corrected and why.",
+        "Do not assert a new capability without a source URL.",
+        "Restamp the as-of date to the verification date."
+      ],
+      "acceptance": [
+        "Every capability claim carries a primary source and a verification date.",
+        "Removed or corrected claims are listed explicitly.",
+        "No new capability is asserted without a source URL."
+      ],
+      "spec": "swarm/specs/R1.md",
+      "status": "todo"
+    },
+    {
+      "id": "R2",
+      "title": "Currency audit of guide modules and Practices",
+      "wave": 6,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "review",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "reviews/GUIDE_CURRENCY_AUDIT.md"
+      ],
+      "handoff": "swarm/handoffs/R2.md",
+      "objective": "Identify stale, unsourced, or drifted claims across the guide modules and method candidates, and propose corrections for G1 to apply.",
+      "requirements": [
+        "Produce a per-module table of stale or unsourced claims.",
+        "Propose a specific correction for each finding.",
+        "Do not edit guide prose; G1 owns the edits."
+      ],
+      "acceptance": [
+        "Every finding names a file, a location, and a proposed correction.",
+        "No guide prose is edited by this task.",
+        "Findings separate factual staleness from stylistic drift."
+      ],
+      "spec": "swarm/specs/R2.md",
+      "status": "todo"
+    },
+    {
+      "id": "R3",
+      "title": "Adjacent-community landscape scan",
+      "wave": 6,
+      "lane": "knowledge",
+      "model_tier": "cheap",
+      "mode": "review",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "docs/founding/COMMUNITY_LANDSCAPE.md"
+      ],
+      "handoff": "swarm/handoffs/R3.md",
+      "objective": "Scan what practitioner communities already offer and record where Practice is genuinely differentiated.",
+      "requirements": [
+        "Record only factually verifiable observations about each community.",
+        "Do not fabricate user counts, revenue, or engagement figures.",
+        "Label every example or hypothetical explicitly."
+      ],
+      "acceptance": [
+        "No fabricated metrics appear anywhere in the scan.",
+        "Every example and hypothetical is labeled as such.",
+        "Positioning gaps are stated as observations, not as strategy decisions."
+      ],
+      "spec": "swarm/specs/R3.md",
+      "status": "todo"
+    },
+    {
+      "id": "R4",
+      "title": "License, attribution, and claim re-audit of publishable artifacts",
+      "wave": 6,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "review",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "reviews/CLAIM_AUDIT.md"
+      ],
+      "handoff": "swarm/handoffs/R4.md",
+      "objective": "Re-audit every publishable artifact for unlicensed content, missing attribution, and unsupported claims.",
+      "requirements": [
+        "Sweep all publishable artifacts for license and attribution defects.",
+        "Record findings as a checklist, not as prose.",
+        "Name the exact file and location for each finding."
+      ],
+      "acceptance": [
+        "Zero unlicensed or unattributed items remain unrecorded.",
+        "Findings are a checklist a human can work through item by item.",
+        "Each item states the file, the defect class, and the correction."
+      ],
+      "spec": "swarm/specs/R4.md",
+      "status": "todo"
+    },
+    {
+      "id": "A1",
+      "title": "Schema-aware artifact validators",
+      "wave": 6,
+      "lane": "foundation",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "scripts/validate_artifacts.py",
+        "tests/test_validate_artifacts.py"
+      ],
+      "handoff": "swarm/handoffs/A1.md",
+      "objective": "Mechanize the Practice, Guide, Lab, and Story front-matter schemas and the maturity/evidence invariants.",
+      "requirements": [
+        "Validate front matter for every artifact type against its schema.",
+        "Flag any artifact claiming `maturity: tested` without a linked trial record.",
+        "Run offline and deterministically; fail with actionable messages.",
+        "Ship unit tests covering each invariant."
+      ],
+      "acceptance": [
+        "A tested-maturity artifact with no linked trial record fails validation.",
+        "The validator runs offline and exits non-zero with an actionable message.",
+        "Unit tests cover every enforced invariant."
+      ],
+      "spec": "swarm/specs/A1.md",
+      "status": "todo"
+    },
+    {
+      "id": "A2",
+      "title": "Link checker and as-of-date linter",
+      "wave": 6,
+      "lane": "foundation",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "scripts/check_links.py",
+        "tests/test_check_links.py"
+      ],
+      "handoff": "swarm/handoffs/A2.md",
+      "objective": "Detect broken relative links and stale as-of dates across all committed markdown.",
+      "requirements": [
+        "Resolve every relative markdown link and report broken targets.",
+        "Report as-of dates older than the current snapshot date.",
+        "Run offline and deterministically; make no network requests.",
+        "Ship unit tests for both check classes."
+      ],
+      "acceptance": [
+        "Broken links and stale as-of dates are both reported with file and line.",
+        "The checker makes no network requests.",
+        "Unit tests cover both check classes."
+      ],
+      "spec": "swarm/specs/A2.md",
+      "status": "todo"
+    },
+    {
+      "id": "A3",
+      "title": "IA to community.json parity test",
+      "wave": 6,
+      "lane": "buzz",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "tests/test_buzz_parity.py"
+      ],
+      "handoff": "swarm/handoffs/A3.md",
+      "objective": "Prevent drift between the documented Buzz information architecture and the idempotent community specification.",
+      "requirements": [
+        "Compare every channel and canvas in the IA document with `buzz/community.json`.",
+        "Fail with the exact drifted entries named.",
+        "Run offline against committed files only."
+      ],
+      "acceptance": [
+        "A channel present in one source and absent from the other fails the test.",
+        "The failure message names the drifted entries.",
+        "The test runs offline."
+      ],
+      "spec": "swarm/specs/A3.md",
+      "status": "todo"
+    },
+    {
+      "id": "A4",
+      "title": "GitHub CI wiring",
+      "wave": 6,
+      "lane": "foundation",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        ".github/workflows/ci.yml"
+      ],
+      "handoff": "swarm/handoffs/A4.md",
+      "objective": "Run the unit tests, release validation, and link check on every pull request.",
+      "requirements": [
+        "Run `python3 -m unittest discover -s tests`.",
+        "Run `python3 scripts/validate.py --release`.",
+        "Run the link checker.",
+        "Pin the runner and Python version explicitly."
+      ],
+      "acceptance": [
+        "All three checks run on pull request and on pushes to the default branch.",
+        "The workflow fails the build when any check fails.",
+        "No secret is required for the workflow to run."
+      ],
+      "spec": "swarm/specs/A4.md",
+      "status": "todo"
+    },
+    {
+      "id": "A5",
+      "title": "Reusable non-secret release-evidence record template",
+      "wave": 6,
+      "lane": "release",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "templates/RELEASE_EVIDENCE.md"
+      ],
+      "handoff": "swarm/handoffs/A5.md",
+      "objective": "Give a human a fillable, non-secret record for the evidence gathered at each release.",
+      "requirements": [
+        "Provide fields for command, output, date, and operator.",
+        "Contain no secrets, credentials, or participant data.",
+        "State explicitly what must never be recorded in it."
+      ],
+      "acceptance": [
+        "The template is fillable without any tooling.",
+        "It names the categories of material that must never be pasted into it.",
+        "It carries no placeholder that could be published unfilled."
+      ],
+      "spec": "swarm/specs/A5.md",
+      "status": "todo"
+    },
+    {
+      "id": "E1",
+      "title": "Trial Practice 001 (context pack) and record a Lab",
+      "wave": 7,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "A1"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "labs/002-context-pack-trial.md"
+      ],
+      "handoff": "swarm/handoffs/E1.md",
+      "objective": "Apply the context-pack method to a real recurring task inside this repository and record the result as a Lab.",
+      "requirements": [
+        "Run the trial on this repository's own work so the evidence is real and reproducible.",
+        "Use the LAB schema.",
+        "Record what the run actually shows; do not round a partial result up.",
+        "Do not change the method's `maturity` or `evidence_quality`."
+      ],
+      "acceptance": [
+        "The Lab validates against the LAB schema.",
+        "Every claimed outcome is traceable to a recorded command or artifact.",
+        "No maturity or evidence-quality field is changed by this task."
+      ],
+      "spec": "swarm/specs/E1.md",
+      "status": "todo"
+    },
+    {
+      "id": "E2",
+      "title": "Trial Practice 002 (workflow redesign) and record a Lab",
+      "wave": 7,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "A1"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "labs/003-workflow-redesign-trial.md"
+      ],
+      "handoff": "swarm/handoffs/E2.md",
+      "objective": "Redesign one safe, owned repository workflow using the method and record the result as a Lab.",
+      "requirements": [
+        "Redesign a real repository workflow, not a hypothetical one.",
+        "Use the LAB schema.",
+        "State plainly which steps of the method were executed and which were not.",
+        "Do not change the method's `maturity` or `evidence_quality`."
+      ],
+      "acceptance": [
+        "The Lab validates against the LAB schema.",
+        "Unexecuted steps of the method are named explicitly.",
+        "No maturity or evidence-quality field is changed by this task."
+      ],
+      "spec": "swarm/specs/E2.md",
+      "status": "todo"
+    },
+    {
+      "id": "E3",
+      "title": "Trial Practice 003 (verification gate) with a rollback rehearsal",
+      "wave": 7,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "A1"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "labs/004-verification-gate-trial.md"
+      ],
+      "handoff": "swarm/handoffs/E3.md",
+      "objective": "Apply the verification gate to a real repository change, rehearse the rollback, and record the result as a Lab.",
+      "requirements": [
+        "Apply the gate to a real merge and predeclare the checks before running them.",
+        "Include one rollback rehearsal.",
+        "Record any bar the Practice sets for itself that this trial did not meet.",
+        "Do not change the method's `maturity` or `evidence_quality`."
+      ],
+      "acceptance": [
+        "The Lab validates against the LAB schema.",
+        "The rollback rehearsal is recorded with its outcome.",
+        "Unmet self-imposed bars are stated in the record."
+      ],
+      "spec": "swarm/specs/E3.md",
+      "status": "todo"
+    },
+    {
+      "id": "E4",
+      "title": "Run the five Practice-core skill evals and record results",
+      "wave": 7,
+      "lane": "foundation",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "skills/evals/results/build-context-pack.md",
+        "skills/evals/results/contribute-to-practice.md",
+        "skills/evals/results/redesign-ai-workflow.md",
+        "skills/evals/results/review-practice-artifact.md",
+        "skills/evals/results/verify-agent-output.md",
+        "skills/evals/EVAL_REPORT.md"
+      ],
+      "handoff": "swarm/handoffs/E4.md",
+      "objective": "Execute the defined eval cases for the five Practice-core skills and record per-criterion results.",
+      "requirements": [
+        "Execute every defined case and grade it per criterion.",
+        "Record the model family and whether grading was self-administered.",
+        "State the report's own limits: what a passing score does and does not establish.",
+        "Record forbidden-behavior violations separately from criterion failures."
+      ],
+      "acceptance": [
+        "Every defined case has a recorded per-criterion result.",
+        "The report states the operator class and grading method.",
+        "The report states explicitly that it does not count toward Practice promotion."
+      ],
+      "spec": "swarm/specs/E4.md",
+      "status": "todo"
+    },
+    {
+      "id": "E5",
+      "title": "Assemble per-candidate promotion packets",
+      "wave": 7,
+      "lane": "release",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "E1",
+        "E2",
+        "E3",
+        "E4"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "release/PROMOTION_PACKETS.md"
+      ],
+      "handoff": "swarm/handoffs/E5.md",
+      "objective": "Package the trial evidence, reviewer notes, and the exact human decision for each method candidate.",
+      "requirements": [
+        "Give each candidate a criteria checklist scored against its schema.",
+        "State the residual risks and the exact decision question per candidate.",
+        "List the exact edits a promotion would require.",
+        "Never flip `maturity` or `evidence_quality`; package the decision only."
+      ],
+      "acceptance": [
+        "Each packet states its decision question and the edits a promotion requires.",
+        "Agent recommendations are labeled non-binding.",
+        "No maturity or evidence-quality field is changed by this task."
+      ],
+      "spec": "swarm/specs/E5.md",
+      "status": "todo"
+    },
+    {
+      "id": "G1",
+      "title": "End-to-end guide review and correction pass",
+      "wave": 7,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "revision",
+      "dependencies": [
+        "R2",
+        "R4"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "guides/ai-native-practitioner/README.md",
+        "guides/ai-native-practitioner/CURRICULUM.md",
+        "guides/ai-native-practitioner/01-foundations.md",
+        "guides/ai-native-practitioner/02-effective-use.md",
+        "guides/ai-native-practitioner/03-context-engineering.md",
+        "guides/ai-native-practitioner/04-automation-agents.md",
+        "guides/ai-native-practitioner/05-agentic-engineering.md",
+        "guides/ai-native-practitioner/06-organizational-ai.md"
+      ],
+      "handoff": "swarm/handoffs/G1.md",
+      "objective": "Apply the R2 currency corrections and R4 claim findings to the guide, fix links, and cross-link canonical method candidates.",
+      "requirements": [
+        "Apply every R2 correction accepted for the guide.",
+        "Apply R4 findings that fall inside the guide.",
+        "Fix broken links and add canonical cross-links to the method candidates.",
+        "Do not introduce a claim that R2 or R4 did not source."
+      ],
+      "acceptance": [
+        "Every accepted R2 and R4 finding inside the guide is applied or explicitly declined with a reason.",
+        "The link checker passes over the guide.",
+        "No unsourced claim is introduced."
+      ],
+      "spec": "swarm/specs/G1.md",
+      "status": "todo",
+      "scope_rule": "This task revises artifacts K003 created. It owns the guide-module edits; it must not rewrite the research reports it applies."
+    },
+    {
+      "id": "G2",
+      "title": "Note, Project, and Issue schemas and templates",
+      "wave": 7,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "docs/schemas/NOTE_SCHEMA.md",
+        "docs/schemas/PROJECT_SCHEMA.md",
+        "templates/NOTE.md",
+        "templates/PROJECT.md"
+      ],
+      "handoff": "swarm/handoffs/G2.md",
+      "objective": "Complete the artifact taxonomy with schemas and fillable templates for Notes and Projects.",
+      "requirements": [
+        "Match the structure and strictness of the existing Practice, Guide, Lab, and Story schemas.",
+        "Give each schema a fillable template.",
+        "State the maturity path from a Note to a Practice candidate."
+      ],
+      "acceptance": [
+        "Both schemas match the existing schema house style.",
+        "Each schema has a matching fillable template.",
+        "The Note-to-Practice maturity path is stated."
+      ],
+      "spec": "swarm/specs/G2.md",
+      "status": "todo"
+    },
+    {
+      "id": "G3",
+      "title": "Scope Practices 004-006 from demonstrated needs",
+      "wave": 7,
+      "lane": "knowledge",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "practices/004-issue-triage.md",
+        "practices/005-release-notes.md",
+        "practices/006-feedback-instrument.md"
+      ],
+      "handoff": "swarm/handoffs/G3.md",
+      "objective": "Scope three further method candidates from needs this repository has actually demonstrated.",
+      "requirements": [
+        "Ground each candidate in a demonstrated need, not a hypothetical one.",
+        "Set `maturity: proposed` and `evidence_quality: none` on all three.",
+        "State the trial each candidate would need for promotion."
+      ],
+      "acceptance": [
+        "All three files carry `maturity: proposed` and `evidence_quality: none`.",
+        "Each candidate names the demonstrated need it comes from.",
+        "Each candidate states the trial required for promotion."
+      ],
+      "spec": "swarm/specs/G3.md",
+      "status": "todo"
+    },
+    {
+      "id": "G4",
+      "title": "Contributor intake, consent, and redaction templates",
+      "wave": 7,
+      "lane": "community",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "templates/INTAKE_CONSENT.md",
+        "templates/REDACTION_CHECKLIST.md"
+      ],
+      "handoff": "swarm/handoffs/G4.md",
+      "objective": "Give Story and Workflow Clinic contributors a consent record and a redaction checklist before anything is published.",
+      "requirements": [
+        "Record informed consent for publication, including what the contributor is consenting to.",
+        "Cover confidential material, personal data, client identity, and unlicensed content.",
+        "Keep both templates usable without any tooling."
+      ],
+      "acceptance": [
+        "The consent record states exactly what is being consented to and by whom.",
+        "The redaction checklist covers every category of restricted material.",
+        "Neither template asks for material that must not be stored in Git."
+      ],
+      "spec": "swarm/specs/G4.md",
+      "status": "todo"
+    },
+    {
+      "id": "O1",
+      "title": "Evidence packet per open owner gate",
+      "wave": 8,
+      "lane": "release",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "E5"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "release/GATE_EVIDENCE.md"
+      ],
+      "handoff": "swarm/handoffs/O1.md",
+      "objective": "Give each open owner gate and operating hold a packet stating what to review, the evidence available, and the exact human action.",
+      "requirements": [
+        "Cover every gate in docs/OWNER_GATES.md and every evidenced operating hold.",
+        "State what is still missing and why for each.",
+        "Never assert that a gate is cleared.",
+        "Do not rewrite release/OWNER_REVIEW.md; Q-INT applies accepted updates."
+      ],
+      "acceptance": [
+        "Every gate and hold has a packet with a human action checklist.",
+        "No packet asserts a gate is cleared.",
+        "release/OWNER_REVIEW.md is not edited by this task."
+      ],
+      "spec": "swarm/specs/O1.md",
+      "status": "todo"
+    },
+    {
+      "id": "O2",
+      "title": "Steward escalation readiness checker",
+      "wave": 8,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "scripts/steward_readiness_check.py"
+      ],
+      "handoff": "swarm/handoffs/O2.md",
+      "objective": "Let a human verify, before enabling the Steward, that a member-actionable human escalation route is configured.",
+      "requirements": [
+        "Check configuration only; never contact a relay or send a message.",
+        "Fail closed when the escalation reference is missing or unusable.",
+        "Report each prerequisite separately with an actionable message."
+      ],
+      "acceptance": [
+        "The checker exits non-zero when any prerequisite is unmet.",
+        "It performs no network access.",
+        "Each unmet prerequisite is reported with the action that would satisfy it."
+      ],
+      "spec": "swarm/specs/O2.md",
+      "status": "todo"
+    },
+    {
+      "id": "O3",
+      "title": "Hosted-surface inspection checklist",
+      "wave": 8,
+      "lane": "release",
+      "model_tier": "cheap",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "release/HOSTED_INSPECTION.md"
+      ],
+      "handoff": "swarm/handoffs/O3.md",
+      "objective": "Give the owner a fillable record for manually inspecting the hosted Buzz surface after the owner-operated apply.",
+      "requirements": [
+        "Cover channels, canvases, seeds, membership visibility, and the start-here path.",
+        "Record only non-secret evidence.",
+        "State that an agent may not perform the apply or the inspection."
+      ],
+      "acceptance": [
+        "Every member-visible surface has an inspection line.",
+        "The record asks for no secret or participant data.",
+        "The owner-only boundary is stated in the document."
+      ],
+      "spec": "swarm/specs/O3.md",
+      "status": "todo"
+    },
+    {
+      "id": "O4",
+      "title": "Re-run the onboarding simulation over Phase 2 artifacts",
+      "wave": 8,
+      "lane": "community",
+      "model_tier": "balanced",
+      "mode": "review",
+      "dependencies": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "A1",
+        "A2"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "reviews/ONBOARDING_DRY_RUN_PHASE2.md"
+      ],
+      "handoff": "swarm/handoffs/O4.md",
+      "objective": "Walk the current entry path as distinct personas and record where a newcomer stalls.",
+      "requirements": [
+        "Walk from the repository README through the quickstart, onboarding, and first contribution.",
+        "Label every persona reaction as simulation, never as user research.",
+        "Disposition each finding from the original dry run.",
+        "Do not edit the artifacts under review."
+      ],
+      "acceptance": [
+        "Every persona reaction is labeled as simulated.",
+        "Each original dry-run finding has a current disposition.",
+        "Findings are ranked with the smallest correction named for each."
+      ],
+      "spec": "swarm/specs/O4.md",
+      "status": "todo"
+    },
+    {
+      "id": "O5",
+      "title": "Private-beta ops kit and issue triage policy",
+      "wave": 8,
+      "lane": "operations",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/BETA_OPS.md",
+        ".github/TRIAGE_POLICY.md"
+      ],
+      "handoff": "swarm/handoffs/O5.md",
+      "objective": "Prepare the facilitation backlog scaffold and the issue triage labels and response guide for a private beta.",
+      "requirements": [
+        "Scaffold the facilitation prompt backlog without inventing member questions.",
+        "Define triage labels and the response guide for each.",
+        "Keep every human-owned decision human-owned."
+      ],
+      "acceptance": [
+        "No fabricated member question or quotation appears in the kit.",
+        "Each triage label has a defined entry condition and response.",
+        "Human-only decisions are named as such."
+      ],
+      "spec": "swarm/specs/O5.md",
+      "status": "todo"
+    },
+    {
+      "id": "Q6",
+      "title": "Adversarial review of all Wave E evidence",
+      "wave": 9,
+      "lane": "review",
+      "model_tier": "strong",
+      "mode": "review",
+      "dependencies": [
+        "E1",
+        "E2",
+        "E3",
+        "E4",
+        "E5"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "reviews/EVIDENCE_REVIEW.md"
+      ],
+      "handoff": "swarm/handoffs/Q6.md",
+      "objective": "Attempt to break every claim in the Wave E trial records and promotion packets, and list the wording changes required before a human reads them.",
+      "requirements": [
+        "Test each claim for overreach against what the record actually shows.",
+        "Distinguish a real result from a self-graded or one-sided one.",
+        "List required wording changes as exact replacements with file and line.",
+        "Do not edit the artifacts under review."
+      ],
+      "acceptance": [
+        "Every overreaching claim is named with its file and location.",
+        "Required wording changes are exact enough to apply verbatim.",
+        "No artifact under review is edited by this task."
+      ],
+      "spec": "swarm/specs/Q6.md",
+      "status": "todo"
+    },
+    {
+      "id": "Q7",
+      "title": "Fact and currency re-audit of research outputs",
+      "wave": 9,
+      "lane": "review",
+      "model_tier": "balanced",
+      "mode": "review",
+      "dependencies": [
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "G1"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "reviews/FACT_AUDIT_PHASE2.md"
+      ],
+      "handoff": "swarm/handoffs/Q7.md",
+      "objective": "Re-verify the research outputs against primary sources and list every stale date and missing as-of stamp.",
+      "requirements": [
+        "Re-verify each sourced claim against its primary source.",
+        "List every stale date and every undated review file.",
+        "Distinguish snapshot-derived dates from independently dated ones.",
+        "Do not edit the artifacts under review."
+      ],
+      "acceptance": [
+        "Every stale date is listed with its file and line.",
+        "Snapshot-derived and independent dates are distinguished.",
+        "No artifact under review is edited by this task."
+      ],
+      "spec": "swarm/specs/Q7.md",
+      "status": "todo"
+    },
+    {
+      "id": "Q-INT",
+      "title": "Integrate accepted Phase 2 findings and re-run release validation",
+      "wave": 9,
+      "lane": "integration",
+      "model_tier": "strong",
+      "mode": "integration",
+      "dependencies": [
+        "Q6",
+        "Q7",
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "swarm/reports/PHASE2_REPORT.md"
+      ],
+      "handoff": "swarm/handoffs/Q-INT.md",
+      "objective": "Apply every accepted review correction across the repository, update the owner review evidence rows, and record the validation evidence.",
+      "requirements": [
+        "Apply accepted findings without reopening settled strategy.",
+        "Update release/OWNER_REVIEW.md gate and hold rows to point at their Phase 2 evidence packets.",
+        "Never assert an owner gate is cleared and never change a `maturity` or `evidence_quality` field.",
+        "Run release validation, the unit tests, the link checker, and artifact validation."
+      ],
+      "acceptance": [
+        "Every accepted finding is applied or explicitly declined with a reason.",
+        "All gate and hold statuses remain OPEN.",
+        "All four validation commands pass and their output is recorded."
+      ],
+      "spec": "swarm/specs/Q-INT.md",
+      "status": "todo"
+    },
+    {
+      "id": "S1",
+      "title": "Machine-readable agent registry and boundary validator",
+      "wave": 10,
+      "lane": "buzz",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/agents/registry.yaml",
+        "scripts/validate_agents.py",
+        "tests/test_validate_agents.py"
+      ],
+      "handoff": "swarm/handoffs/S1.md",
+      "objective": "Declare each agent profile's identity, channel scope, guardrails, escalation route, and enablement prerequisites in a form a validator can check.",
+      "requirements": [
+        "Derive every registry entry from its profile text; never grant scope a profile does not state.",
+        "Fail when a declared channel is absent from `buzz/community.json`.",
+        "Fail when a guardrail list drops a locked non-negotiable, or an escalation route names a person rather than a role.",
+        "Fail when an entry claims enabled while owner gate 6 reads OPEN, and fail closed if that gate cannot be anchored."
+      ],
+      "acceptance": [
+        "Every profile has an entry and every entry names an existing profile.",
+        "No agent declares an unattended autonomy level; every status reads not_enabled.",
+        "Unit tests cover every enforced failure mode."
+      ],
+      "spec": "swarm/specs/S1.md",
+      "status": "todo"
+    },
+    {
+      "id": "S2",
+      "title": "Agent output packet contract",
+      "wave": 10,
+      "lane": "operations",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "docs/schemas/AGENT_PACKET_SCHEMA.md",
+        "templates/AGENT_PACKET.md",
+        "scripts/validate_packet.py",
+        "tests/test_validate_packet.py"
+      ],
+      "handoff": "swarm/handoffs/S2.md",
+      "objective": "Turn the bounded packet every agent profile promises into a schema a validator can check.",
+      "requirements": [
+        "Record provenance and a trust level for every input.",
+        "Require a pointer or a dated source on every evidence claim.",
+        "Require a refusals section and fix `human_decision_required` true.",
+        "Constrain `decision_owner` to a controlled role vocabulary so a personal name cannot be recorded."
+      ],
+      "acceptance": [
+        "A packet asserting a promotion, a maturity change, or a cleared gate fails validation.",
+        "The worked example is labeled hypothetical and validates against its own rules.",
+        "Unit tests cover every rejection path."
+      ],
+      "spec": "swarm/specs/S2.md",
+      "status": "todo"
+    },
+    {
+      "id": "S3",
+      "title": "Autonomy ladder and policy test",
+      "wave": 11,
+      "lane": "operations",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "S1",
+        "S2"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "docs/framework/AUTONOMY_LADDER.md",
+        "tests/test_autonomy_policy.py"
+      ],
+      "handoff": "swarm/handoffs/S3.md",
+      "objective": "Define what each autonomy level means, what evidence raises one, what demotes one, and which operations may never be automated.",
+      "requirements": [
+        "Reuse the vocabulary the registry and the packet schema already spell.",
+        "State demotion triggers as observable events, never judgment calls.",
+        "List every operation permanently ineligible for unattended action with the decision that makes it so.",
+        "Map every registered agent and every cadence operation to a level."
+      ],
+      "acceptance": [
+        "Nothing in the repository is mapped to the unattended level.",
+        "Adding an agent or a cadence pass without updating the mapping fails the test.",
+        "The parser fails loudly on a missing section rather than passing vacuously."
+      ],
+      "spec": "swarm/specs/S3.md",
+      "status": "todo"
+    },
+    {
+      "id": "T1",
+      "title": "Cadence and queue runner",
+      "wave": 10,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/cadence.yaml",
+        "scripts/cadence.py",
+        "tests/test_cadence.py"
+      ],
+      "handoff": "swarm/handoffs/T1.md",
+      "objective": "Compute the state of the operating loop the weekly cadence defines, instead of leaving a maintainer to derive it by hand.",
+      "requirements": [
+        "Encode only the passes and queues `ops/WEEKLY_CADENCE.md` defines, citing the section each came from.",
+        "Report due passes, blocked handoffs, open gates and holds, and stale as-of dates.",
+        "Reuse the staleness rule in `scripts/check_links.py` rather than restating it.",
+        "Degrade to a stated unknown outside a git checkout."
+      ],
+      "acceptance": [
+        "The report exits 0 regardless of what it finds; only a configuration or usage error exits non-zero.",
+        "The report states that it reads Git and knows nothing about Buzz activity.",
+        "Unit tests cover the due rules, each queue, and the no-git path."
+      ],
+      "spec": "swarm/specs/T1.md",
+      "status": "todo"
+    },
+    {
+      "id": "T2",
+      "title": "Metrics collector",
+      "wave": 10,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "scripts/collect_metrics.py",
+        "tests/test_collect_metrics.py",
+        "ops/metrics/README.md"
+      ],
+      "handoff": "swarm/handoffs/T2.md",
+      "objective": "Count the part of the measurement contract that committed Git evidence can support, with denominators and coverage.",
+      "requirements": [
+        "Implement only the metrics `ops/METRICS.md` says are countable from committed evidence.",
+        "Print every remaining metric as needing the human route, never as a zero.",
+        "Enforce the data-not-to-collect rules in code, not only in prose.",
+        "Produce identical bytes across two runs on the same tree."
+      ],
+      "acceptance": [
+        "A measured zero is distinguishable from a metric that was not collected.",
+        "The collector reads no path outside its root and makes no network call.",
+        "Unit tests cover each counting rule and the privacy constraints."
+      ],
+      "spec": "swarm/specs/T2.md",
+      "status": "todo"
+    },
+    {
+      "id": "T3",
+      "title": "Release brief generator",
+      "wave": 10,
+      "lane": "release",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "scripts/release_brief.py",
+        "tests/test_release_brief.py",
+        "release/briefs/README.md",
+        "release/briefs/2026-09-02-phase-2.md"
+      ],
+      "handoff": "swarm/handoffs/T3.md",
+      "objective": "Implement the pointer-checked draft method from Practice 005 as a generator over a commit range.",
+      "requirements": [
+        "Carry a repository path or a commit hash on every shipped line; omit anything unbacked.",
+        "Read files with `git show` at the range head so a rerun reproduces the brief.",
+        "Mark output a draft requiring human approval; never assert a maturity change or a cleared gate.",
+        "Check generated text against the release token rules before writing it."
+      ],
+      "acceptance": [
+        "The committed Phase 2 brief matches a fresh run of the generator.",
+        "An unknown revision or a non-checkout exits 1 and writes no partial file.",
+        "Unit tests cover pointer-backing, omission, determinism, and every error path."
+      ],
+      "spec": "swarm/specs/T3.md",
+      "status": "todo"
+    },
+    {
+      "id": "T4",
+      "title": "Issue triage state machine",
+      "wave": 10,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "scripts/triage.py",
+        "tests/test_triage.py",
+        "ops/triage/README.md",
+        "ops/triage/SAMPLE_triage_record.md"
+      ],
+      "handoff": "swarm/handoffs/T4.md",
+      "objective": "Enforce the states, transitions, and evidence requirements Practice 004 and the triage policy already specify.",
+      "requirements": [
+        "Implement exactly the documented states and transitions; invent no new state.",
+        "Refuse a record whose last actor is an agent sitting in a human-owned state.",
+        "Route safety, privacy, access, conduct, and legal categories to a human in every state.",
+        "Apply a field allowlist and scan for identity and credential leakage."
+      ],
+      "acceptance": [
+        "An agent cannot move a record into a human-owned state.",
+        "A state missing its required evidence fails with the file, field, and fix named.",
+        "The committed sample record is hypothetical and validates."
+      ],
+      "spec": "swarm/specs/T4.md",
+      "status": "todo"
+    },
+    {
+      "id": "V1",
+      "title": "Community-agent eval suites with adversarial cases",
+      "wave": 11,
+      "lane": "buzz",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [
+        "S1",
+        "S2"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "buzz/agents/evals/README.md",
+        "buzz/agents/evals/steward.yaml",
+        "buzz/agents/evals/librarian.yaml",
+        "buzz/agents/evals/release-editor.yaml",
+        "buzz/agents/evals/research-auditor.yaml",
+        "buzz/agents/evals/guide-maintainer.yaml",
+        "scripts/validate_agent_evals.py",
+        "tests/test_validate_agent_evals.py"
+      ],
+      "handoff": "swarm/handoffs/V1.md",
+      "objective": "Give every agent guardrail an observable case, including the untrusted-input claim every profile makes and none of them tested.",
+      "requirements": [
+        "Follow the `skills/evals` conventions rather than inventing a second dialect.",
+        "Cover injection, key requests, publication, maturity change, removal, participation-as-evidence, and vendor endorsement per agent.",
+        "Give every case an id, input, expected, forbidden, and severity.",
+        "Record no results and state that a defined case is not evidence of a pass."
+      ],
+      "acceptance": [
+        "Every registered agent has a suite and every suite names a registered agent.",
+        "Dropping a required adversarial topic fails validation.",
+        "No case contains a credential, an address, a handle, or a real person's name."
+      ],
+      "spec": "swarm/specs/V1.md",
+      "status": "todo"
+    },
+    {
+      "id": "W1",
+      "title": "Wire the loop, extend CI, and record the phase",
+      "wave": 12,
+      "lane": "integration",
+      "model_tier": "strong",
+      "mode": "integration",
+      "dependencies": [
+        "S1",
+        "S2",
+        "S3",
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "V1"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/OPERATING_LOOP.md",
+        "tests/test_contract_integration.py",
+        "swarm/reports/PHASE3_REPORT.md"
+      ],
+      "handoff": "swarm/handoffs/W1.md",
+      "objective": "Join the contracts and runners into one operating procedure, enforce the cross-contract invariants no single task owns, and record what the phase did and did not change.",
+      "requirements": [
+        "Reject a packet declaring more autonomy than the registry grants its agent.",
+        "Fail when a repository check runs nowhere and carries no recorded exemption.",
+        "Run the new validators in CI and expose them as make targets.",
+        "Change no owner gate, operating hold, `maturity`, or `evidence_quality` value."
+      ],
+      "acceptance": [
+        "Every gate and hold still reads OPEN and no agent is enabled.",
+        "All repository checks pass and run in CI or carry a stated exemption.",
+        "The phase report separates what was built from what it does not establish."
+      ],
+      "spec": "swarm/specs/W1.md",
+      "status": "todo"
+    },
+    {
+      "id": "X1",
+      "title": "Action ledger schema, validator, and sample",
+      "wave": 13,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "docs/schemas/ACTION_LEDGER_SCHEMA.md",
+        "ops/ledger/README.md",
+        "ops/ledger/SAMPLE_run.md",
+        "scripts/ledger.py",
+        "tests/test_ledger.py"
+      ],
+      "handoff": "swarm/handoffs/X1.md",
+      "objective": "Give an unattended run a record that says what it read, every path it wrote, and how to reverse it.",
+      "requirements": [
+        "Record enough for the demotion checker to evaluate the ladder's observable triggers.",
+        "Reject an entry that omits its reversal or records no preconditions.",
+        "Keep the ledger append-only: a correction supersedes an earlier entry, never edits it.",
+        "State that a valid entry is a record, not an authorization."
+      ],
+      "acceptance": [
+        "An entry missing its reversal fails validation.",
+        "The committed sample is hypothetical and depicts no promoted run.",
+        "The append interface round-trips and refuses to overwrite."
+      ],
+      "spec": "swarm/specs/X1.md",
+      "status": "todo"
+    },
+    {
+      "id": "X2",
+      "title": "Operation catalog, promotion record, and fail-closed guard",
+      "wave": 13,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/autonomy/operations.yaml",
+        "ops/autonomy/promotions.yaml",
+        "ops/autonomy/README.md",
+        "scripts/autonomy_guard.py",
+        "tests/test_autonomy_guard.py"
+      ],
+      "handoff": "swarm/handoffs/X2.md",
+      "objective": "Make unattended eligibility a record a validator checks, and refuse by default when it does not hold.",
+      "requirements": [
+        "Catalog only operations the repository already implements; derive each command from its script.",
+        "Ship the promotion record empty with the kill switch engaged.",
+        "Refuse on missing, malformed, or disagreeing records; never default to permitted.",
+        "Refuse a write scope that could reach a file governing the agent's own bounds."
+      ],
+      "acceptance": [
+        "With the shipped records every catalogued operation is refused.",
+        "A promotion alone, or a released kill switch alone, is still refused.",
+        "A catalog entry may not declare A3, so one file can never promote."
+      ],
+      "spec": "swarm/specs/X2.md",
+      "status": "todo"
+    },
+    {
+      "id": "X3",
+      "title": "Unattended runner with bounded writes",
+      "wave": 14,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [
+        "X1",
+        "X2"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "scripts/run_unattended.py",
+        "tests/test_run_unattended.py"
+      ],
+      "handoff": "swarm/handoffs/X3.md",
+      "objective": "Execute a permitted operation inside its declared write scope and record what it did.",
+      "requirements": [
+        "Call the guard first and stop on refusal; do not reimplement a precondition.",
+        "Treat the operation's command as untrusted with respect to its own bound.",
+        "Write nothing at all under --dry-run.",
+        "Append exactly one valid ledger entry per non-dry run, including refusals."
+      ],
+      "acceptance": [
+        "A command writing outside its scope leaves nothing behind.",
+        "All five catalogued operations refuse against the shipped records.",
+        "The containment mechanism's limits are stated rather than overclaimed."
+      ],
+      "spec": "swarm/specs/X3.md",
+      "status": "todo"
+    },
+    {
+      "id": "X4",
+      "title": "Demotion trigger detection",
+      "wave": 14,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [
+        "X1",
+        "X2"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "scripts/demotion_check.py",
+        "tests/test_demotion_check.py"
+      ],
+      "handoff": "swarm/handoffs/X4.md",
+      "objective": "Evaluate the autonomy ladder's observable demotion triggers so a level can go down as well as up.",
+      "requirements": [
+        "Parse the triggers from the ladder rather than transcribing a copy that will drift.",
+        "Classify every trigger as evaluable here or not, with a stated reason.",
+        "Detect and report only; removing a promotion stays a human act.",
+        "Fail loudly when the ladder's trigger section is missing rather than reporting zero triggers."
+      ],
+      "acceptance": [
+        "Drift in either direction between the ladder and the classifications fails loudly.",
+        "An empty ledger exits 0 for the right reason, not a vacuous one.",
+        "A refused or dry run fires no trigger."
+      ],
+      "spec": "swarm/specs/X4.md",
+      "status": "todo"
+    },
+    {
+      "id": "X5",
+      "title": "Scheduled workflow that opens a pull request",
+      "wave": 15,
+      "lane": "operations",
+      "model_tier": "code",
+      "mode": "build",
+      "dependencies": [
+        "X3"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        ".github/workflows/unattended.yml",
+        "ops/autonomy/PR_REVIEW_CONTRACT.md"
+      ],
+      "handoff": "swarm/handoffs/X5.md",
+      "objective": "Fire a permitted operation on a schedule and deliver its result as a reviewable pull request.",
+      "requirements": [
+        "Run the guard first and exit cleanly when nothing is promoted.",
+        "Never push to the default branch and never force-push.",
+        "Discover operations from the catalog rather than hardcoding a list.",
+        "Request the minimum permissions that can open a pull request, and implement no auto-merge."
+      ],
+      "acceptance": [
+        "The writing job does not start while nothing is permitted.",
+        "A refusal is the expected outcome today and does not look like a broken build.",
+        "The review contract states that merging accepts the content, not the process."
+      ],
+      "spec": "swarm/specs/X5.md",
+      "status": "todo"
+    },
+    {
+      "id": "X6",
+      "title": "Promotion proposal and candidate dossiers",
+      "wave": 13,
+      "lane": "operations",
+      "model_tier": "balanced",
+      "mode": "build",
+      "dependencies": [],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "ops/autonomy/PROMOTION_PROPOSAL.md",
+        "ops/autonomy/CANDIDATES.md"
+      ],
+      "handoff": "swarm/handoffs/X6.md",
+      "objective": "Make an A3 promotion recordable and well-informed without making it easier to approve.",
+      "requirements": [
+        "Require a reversal that has been executed rather than asserted.",
+        "State the evidence that does not exist as well as the evidence that does.",
+        "Ground every dossier claim in the script that implements the operation.",
+        "Recommend no promotion; say plainly where a candidate should stay where it is."
+      ],
+      "acceptance": [
+        "Every candidate dossier states write scope, reversal, blast radius, and how it could go wrong.",
+        "Neither document contains a filled-in signature or implies a decision was made.",
+        "A candidate unsuitable for unattended running is identified as such."
+      ],
+      "spec": "swarm/specs/X6.md",
+      "status": "todo"
+    },
+    {
+      "id": "W2",
+      "title": "Wire the A3 substrate, apply amendment 001, and record the phase",
+      "wave": 15,
+      "lane": "integration",
+      "model_tier": "strong",
+      "mode": "integration",
+      "dependencies": [
+        "X1",
+        "X2",
+        "X3",
+        "X4",
+        "X5",
+        "X6"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md"
+      ],
+      "outputs": [
+        "community/AMENDMENTS.md",
+        "swarm/reports/PHASE4_REPORT.md"
+      ],
+      "handoff": "swarm/handoffs/W2.md",
+      "objective": "Join the substrate into the operating procedure, carry the founder's governance amendment into the ladder and the tooling, and record what the phase did and did not change.",
+      "requirements": [
+        "Record the amendment before changing any list it governs.",
+        "Keep the guard's ineligible list and the ladder in agreement, deliberately.",
+        "Tighten write-scope matching where it was wider than it read.",
+        "Change no owner gate, operating hold, maturity, or evidence_quality value, and promote nothing."
+      ],
+      "acceptance": [
+        "Every gate and hold still reads OPEN, and nothing is promoted.",
+        "All repository checks pass and run in CI or carry a stated exemption.",
+        "The phase report separates what was built from what it does not establish."
+      ],
+      "spec": "swarm/specs/W2.md",
+      "status": "todo"
+    }
+  ]
+}

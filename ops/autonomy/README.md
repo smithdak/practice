@@ -96,8 +96,8 @@ write scope covering `ops/autonomy/`, the ladder, the guard, the scheduled
 workflow, or another governance record, because an operation that can widen its
 own bound has no bound. And the seven operations the ladder marks permanently
 ineligible stay refused whatever a promotion says; changing that list is a
-governance amendment to [locked decisions](../../DECISIONS.md) and
-[non-goals](../../NON_GOALS.md), not a tooling change.
+governance amendment to [locked decisions](../../docs/DECISIONS.md) and
+[non-goals](../../docs/NON_GOALS.md), not a tooling change.
 
 ## How a promotion would be made
 
@@ -162,7 +162,7 @@ In the order a person would use it under pressure:
   ineligible for A3.
 - [Governance model](../../community/GOVERNANCE.md) — the reserved-decision path
   a promotion is made through.
-- [Running Practice on the loop](../AUTONOMOUS_OPERATION.md) — what runs without
+- [Running Practice on the loop](../OPERATING_LOOP.md) — what runs without
   a person today and what requires one.
 - [Private beta operating kit](../BETA_OPS.md) — the operating roles a signature
   must name.

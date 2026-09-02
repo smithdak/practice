@@ -125,7 +125,7 @@ def minimal_config(**overrides) -> dict:
             "repo_check": "open_owner_gates",
         },
         "checks": {
-            "blocked_handoffs": {"scans": "handoffs/*.md"},
+            "blocked_handoffs": {"scans": "swarm/handoffs/*.md"},
             "open_owner_gates": {"scans": "release/OWNER_REVIEW.md"},
             "stale_as_of": {"scans": "**/*.md"},
         },
@@ -152,7 +152,7 @@ def build_fixture(root: Path, config: dict | None = None) -> Path:
     write(root, "practices/001-context-pack.md", "# Practice\n")
     write(root, "reviews/EVIDENCE_REVIEW.md", "# Review\n")
     write(root, "release/OWNER_REVIEW.md", OWNER_REVIEW)
-    write(root, "handoffs/A1.md", "# A1 Handoff\n\n## Status\n\nCOMPLETE\n")
+    write(root, "swarm/handoffs/A1.md", "# A1 Handoff\n\n## Status\n\nCOMPLETE\n")
     return root
 
 
@@ -250,10 +250,10 @@ class EvidenceTests(FixtureCase):
 
 class BlockedHandoffQueueTests(FixtureCase):
     def test_blocked_handoff_is_listed(self):
-        write(self.root, "handoffs/B2.md", "# B2 Handoff\n\n## Status\n\nBLOCKED\n")
+        write(self.root, "swarm/handoffs/B2.md", "# B2 Handoff\n\n## Status\n\nBLOCKED\n")
         report = self.report()
         blocked = report["checks"]["blocked_handoffs"]
-        self.assertEqual([record["path"] for record in blocked["blocked"]], ["handoffs/B2.md"])
+        self.assertEqual([record["path"] for record in blocked["blocked"]], ["swarm/handoffs/B2.md"])
         self.assertEqual(report["summary"]["blocked_handoffs"], 1)
 
     def test_complete_handoff_is_not_listed(self):
@@ -262,16 +262,16 @@ class BlockedHandoffQueueTests(FixtureCase):
         self.assertEqual(report["checks"]["blocked_handoffs"]["records"], 1)
 
     def test_unreadable_status_is_reported_separately(self):
-        write(self.root, "handoffs/C3.md", "# C3 Handoff\n\n## Status\n\nmostly done\n")
+        write(self.root, "swarm/handoffs/C3.md", "# C3 Handoff\n\n## Status\n\nmostly done\n")
         blocked = self.report()["checks"]["blocked_handoffs"]
-        self.assertEqual(blocked["unreadable_status"], ["handoffs/C3.md"])
+        self.assertEqual(blocked["unreadable_status"], ["swarm/handoffs/C3.md"])
         self.assertEqual(blocked["blocked"], [])
 
     def test_text_report_names_the_blocked_record(self):
-        write(self.root, "handoffs/B2.md", "# B2 Handoff\n\n## Status\n\nBLOCKED\n")
+        write(self.root, "swarm/handoffs/B2.md", "# B2 Handoff\n\n## Status\n\nBLOCKED\n")
         code, out, _ = run_main(["--root", str(self.root), "--as-of", "2026-09-02"])
         self.assertEqual(code, 0)
-        self.assertIn("BLOCKED  handoffs/B2.md", out)
+        self.assertIn("BLOCKED  swarm/handoffs/B2.md", out)
 
 
 class OwnerGateQueueTests(FixtureCase):
@@ -451,7 +451,7 @@ class NoGitDegradationTests(FixtureCase):
         self.assertEqual(report["summary"]["passes_with_elapsed_window"], 0)
 
     def test_queue_checks_still_run_without_git(self):
-        write(self.root, "handoffs/B2.md", "# B2 Handoff\n\n## Status\n\nBLOCKED\n")
+        write(self.root, "swarm/handoffs/B2.md", "# B2 Handoff\n\n## Status\n\nBLOCKED\n")
         report = self.report()
         self.assertEqual(report["summary"]["blocked_handoffs"], 1)
         self.assertEqual(report["summary"]["open_owner_gates"], 1)

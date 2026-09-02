@@ -213,7 +213,7 @@ class OperatingDocumentTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.text = (REPOSITORY_ROOT / "ops" / "AUTONOMOUS_OPERATION.md").read_text(encoding="utf-8")
+        cls.text = (REPOSITORY_ROOT / "ops" / "OPERATING_LOOP.md").read_text(encoding="utf-8")
 
     def test_it_links_every_contract_and_runner(self):
         for relative in (
@@ -230,7 +230,7 @@ class OperatingDocumentTests(unittest.TestCase):
             with self.subTest(target=relative):
                 self.assertTrue(
                     Path(relative).name in self.text,
-                    f"ops/AUTONOMOUS_OPERATION.md does not name {relative}; "
+                    f"ops/OPERATING_LOOP.md does not name {relative}; "
                     "the operating procedure should route to every contract and runner",
                 )
 
@@ -340,7 +340,7 @@ class ContainmentTests(unittest.TestCase):
     def test_no_catalogued_scope_admits_a_governing_file(self):
         catalog = yaml.safe_load((REPOSITORY_ROOT / "ops" / "autonomy" / "operations.yaml").read_text())
         scopes = [p for op in catalog["operations"] for p in (op.get("write_scope") or [])]
-        for governed in ("DECISIONS.md", "NON_GOALS.md", "community/GOVERNANCE.md",
+        for governed in ("docs/DECISIONS.md", "docs/NON_GOALS.md", "community/GOVERNANCE.md",
                          "community/AMENDMENTS.md", LADDER_RELATIVE,
                          "ops/autonomy/promotions.yaml", ".github/workflows/ci.yml"):
             with self.subTest(path=governed):

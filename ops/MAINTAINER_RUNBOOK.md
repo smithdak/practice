@@ -8,7 +8,7 @@ new governance policy. The controlling rules remain the
 [governance model](../community/GOVERNANCE.md),
 [contribution model](../community/CONTRIBUTION_MODEL.md),
 [moderation model](../community/MODERATION.md), and
-[Owner Gates](../OWNER_GATES.md).
+[Owner Gates](../docs/OWNER_GATES.md).
 
 Buzz is the place for working conversation and routing. Git is the durable
 record for issues, pull requests, accepted artifacts, decisions, and releases.
@@ -321,7 +321,7 @@ but must create an `AWAITING-HUMAN` item rather than imply the gate is cleared.
 Never delegate creating or recovering the owner Buzz identity, storing or
 entering the owner private key, final moderation action, license or governance
 acceptance, final launch publication, or adding billing credentials or provider
-secrets. The authoritative list is [Owner Gates](../OWNER_GATES.md).
+secrets. The authoritative list is [Owner Gates](../docs/OWNER_GATES.md).
 
 ## Failure and recovery table
 

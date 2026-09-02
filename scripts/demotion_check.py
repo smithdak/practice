@@ -338,7 +338,7 @@ CLASSIFICATIONS: tuple[Classification, ...] = (
             "field that does not exist. The second half, 'without a renewal record', has no record "
             "to read: this repository defines no renewal artifact, so even a recorded date would "
             "leave the trigger unevaluable. Both gaps are recorded for the Director in "
-            "handoffs/X4.md."
+            "swarm/handoffs/X4.md."
         ),
     ),
     Classification(

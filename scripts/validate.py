@@ -16,7 +16,7 @@ PUBLICATION_TOKEN_RE = re.compile(r"\[[@#]?[A-Z][A-Z0-9_ -]*\](?!\()")
 FENCED_CODE_RE = re.compile(r"```.*?```", re.DOTALL)
 INLINE_CODE_RE = re.compile(r"`[^`\n]*`")
 REUSABLE_PUBLICATION_TEMPLATES = {
-    "content/launch/SOCIAL_KIT.md",
+    "ops/outreach/SOCIAL_KIT.md",
 }
 
 
@@ -33,7 +33,7 @@ def load_json(path: Path, errors: list[str]):
 
 
 def validate_manifest(root: Path, errors: list[str]) -> dict | None:
-    path = root / "tasks" / "manifest.json"
+    path = root / "swarm" / "manifest.json"
     manifest = load_json(path, errors)
     if not manifest:
         return None
@@ -108,7 +108,7 @@ def validate_buzz(root: Path, errors: list[str]) -> None:
 
 
 def validate_links(root: Path, errors: list[str]) -> None:
-    ignored = {'.worktrees', '.swarm', '.git'}
+    ignored = {'.worktrees', '.taskctl', '.git'}
     for p in root.rglob("*.md"):
         relative = p.relative_to(root)
         if any(part in ignored for part in relative.parts):
@@ -180,12 +180,12 @@ def validate_release(root: Path, manifest: dict, errors: list[str]) -> None:
         'guides/ai-native-practitioner/CURRICULUM.md',
         'practices/001-context-pack.md', 'practices/002-workflow-redesign.md',
         'practices/003-verification-gate.md', 'release/OWNER_REVIEW.md',
-        'release/FINAL_INTEGRATION_REPORT.md',
+        'swarm/reports/PHASE1_REPORT.md',
     ]
     for rel in required:
         if not (root / rel).exists():
             fail(errors, f"Release missing required artifact: {rel}")
-    public_roots = ['docs','community','guides','practices','labs','stories','content','ops','release','brand']
+    public_roots = ['docs','community','guides','practices','labs','stories','notes','projects','ops','release']
     for base in public_roots:
         d = root / base
         if not d.exists():
@@ -206,7 +206,7 @@ def main() -> None:
     args = parser.parse_args()
     root = Path(args.root).resolve()
     errors: list[str] = []
-    required = ['README.md','AGENTS.md','CONTEXT.md','DECISIONS.md','SWARM_PLAN.md','tasks/manifest.json','buzz/community.json']
+    required = ['README.md','AGENTS.md','docs/CONTEXT.md','docs/DECISIONS.md','swarm/plans/PHASE1_PLAN.md','swarm/manifest.json','buzz/community.json']
     for rel in required:
         if not (root / rel).exists():
             fail(errors, f"Missing required file: {rel}")

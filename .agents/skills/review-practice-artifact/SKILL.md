@@ -7,7 +7,7 @@ description: Review a Practice community artifact or repository change for usefu
 
 ## Source of truth
 
-Read [QUALITY_BAR.md](../../../QUALITY_BAR.md), [DECISIONS.md](../../../DECISIONS.md), [NON_GOALS.md](../../../NON_GOALS.md), and the [artifact taxonomy](../../../docs/framework/TAXONOMY.md) before reviewing. Read the applicable repository template for a [Practice](../../../templates/PRACTICE.md), [Guide](../../../templates/GUIDE.md), [Lab](../../../templates/LAB.md), or [Story](../../../templates/STORY.md). For code or infrastructure, apply the Project definition in the taxonomy and the project's local checks.
+Read [docs/QUALITY_BAR.md](../../../docs/QUALITY_BAR.md), [docs/DECISIONS.md](../../../docs/DECISIONS.md), [docs/NON_GOALS.md](../../../docs/NON_GOALS.md), and the [artifact taxonomy](../../../docs/framework/TAXONOMY.md) before reviewing. Read the applicable repository template for a [Practice](../../../templates/PRACTICE.md), [Guide](../../../templates/GUIDE.md), [Lab](../../../templates/LAB.md), or [Story](../../../templates/STORY.md). For code or infrastructure, apply the Project definition in the taxonomy and the project's local checks.
 
 Report findings only unless the user explicitly requests fixes. An agent recommends; a human maintainer makes acceptance, merge, governance, access, licensing, and moderation decisions.
 

@@ -27,14 +27,14 @@ intentionally proposed through the governance path:
 - Default licenses are Apache License 2.0 for code and CC BY 4.0 for content;
   a text-only wordmark is the launch default.
 
-Sources: [locked decisions](../DECISIONS.md), [non-goals](../NON_GOALS.md),
-[Buzz architecture](../buzz/INFORMATION_ARCHITECTURE.md), and
-[platform snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md) (reviewed
+Sources: [locked decisions](../docs/DECISIONS.md), [non-goals](../docs/NON_GOALS.md),
+[Buzz architecture](../buzz/CHANNELS.md), and
+[platform snapshot](../buzz/PLATFORM_SNAPSHOT.md) (reviewed
 2026-09-01).
 
 ## Owner gates — all open until Dakota records approval
 
-These are the complete owner decisions from [OWNER_GATES.md](../OWNER_GATES.md).
+These are the complete owner decisions from [docs/OWNER_GATES.md](../docs/OWNER_GATES.md).
 Each row's evidence column names its Phase 2 evidence packet in
 [GATE_EVIDENCE.md](GATE_EVIDENCE.md); every status below remains **OPEN** until
 a human records approval. The status reflects this packet only; it does not
@@ -42,14 +42,14 @@ assert whether an action has already been done outside the repository.
 
 | Gate | Evidence to review | Human action | Status |
 | --- | --- | --- | --- |
-| Buzz community address and relay URL | [Phase 2 packet](GATE_EVIDENCE.md) (gate 1): [bootstrap dry-run plan](../buzz/BOOTSTRAP_RUNBOOK.md), channel map, and platform facts re-verified 2026-09-01 in the [snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md). | Create or confirm the Block-hosted community, verify the address/relay, and authorize an owner-operated apply. | **OPEN** |
+| Buzz community address and relay URL | [Phase 2 packet](GATE_EVIDENCE.md) (gate 1): [bootstrap dry-run plan](../buzz/BOOTSTRAP_RUNBOOK.md), channel map, and platform facts re-verified 2026-09-01 in the [snapshot](../buzz/PLATFORM_SNAPSHOT.md). | Create or confirm the Block-hosted community, verify the address/relay, and authorize an owner-operated apply. | **OPEN** |
 | Owner identity backup | [Phase 2 packet](GATE_EVIDENCE.md) (gate 2): [security recovery procedure](../ops/BUZZ_SECURITY.md). | Keep an encrypted offline backup separate from the working device; name a human recovery custodian privately. Never transmit identity material. | **OPEN** |
-| GitHub destination | [Phase 2 packet](GATE_EVIDENCE.md) (gate 3): [repository entry point](../README.md), launch checklist, and the operator-facing-README finding in [ONBOARDING_DRY_RUN_V2](../reviews/ONBOARDING_DRY_RUN_V2.md) (N6, corrected at integration). | Confirm `smithdak/practice` if available, or record the chosen canonical public destination. | **OPEN** |
+| GitHub destination | [Phase 2 packet](GATE_EVIDENCE.md) (gate 3): [repository entry point](../README.md), launch checklist, and the operator-facing-README finding in [ONBOARDING_DRY_RUN_PHASE2](../reviews/ONBOARDING_DRY_RUN_PHASE2.md) (N6, corrected at integration). | Confirm `smithdak/practice` if available, or record the chosen canonical public destination. | **OPEN** |
 | License confirmation | [Phase 2 packet](GATE_EVIDENCE.md) (gate 4): [license inventory](../LICENSES.md) and the mechanized license-front-matter check in [PROMOTION_PACKETS](PROMOTION_PACKETS.md) Packet 2. | Confirm Apache-2.0 for code and CC BY 4.0 for content, or make an explicit governance decision before publication. | **OPEN** |
-| Public invitation path | [Phase 2 packet](GATE_EVIDENCE.md) (gate 5): [invitation funnel](../ops/INVITE_FUNNEL.md), [social kit](../content/launch/SOCIAL_KIT.md), and the persisting blocker recorded in [ONBOARDING_DRY_RUN_V2](../reviews/ONBOARDING_DRY_RUN_V2.md). | Approve the public route to request Buzz access after the route has been established and tested by a human. | **OPEN** |
+| Public invitation path | [Phase 2 packet](GATE_EVIDENCE.md) (gate 5): [invitation funnel](../ops/outreach/INVITE_FUNNEL.md), [social kit](../ops/outreach/SOCIAL_KIT.md), and the persisting blocker recorded in [ONBOARDING_DRY_RUN_PHASE2](../reviews/ONBOARDING_DRY_RUN_PHASE2.md). | Approve the public route to request Buzz access after the route has been established and tested by a human. | **OPEN** |
 | Initial community-agent providers | [Phase 2 packet](GATE_EVIDENCE.md) (gate 6): [security membership model](../ops/BUZZ_SECURITY.md) and [agent profiles](../buzz/agents/). | Select the first three agents/providers manually; add billing credentials or provider secrets only in approved private systems. | **OPEN** |
 | Launch date | [Phase 2 packet](GATE_EVIDENCE.md) (gate 7): release-validation evidence, this packet, and the human decisions packaged in [PROMOTION_PACKETS](PROMOTION_PACKETS.md). | Set a public date only after final release validation and required human owners are named. | **OPEN** |
-| Brand mark | [Phase 2 packet](GATE_EVIDENCE.md) (gate 8): [launch materials](../content/launch/SOCIAL_KIT.md). | Use the default text-only wordmark, or explicitly approve a mark before it is used publicly. | **OPEN** |
+| Brand mark | [Phase 2 packet](GATE_EVIDENCE.md) (gate 8): [launch materials](../ops/outreach/SOCIAL_KIT.md). | Use the default text-only wordmark, or explicitly approve a mark before it is used publicly. | **OPEN** |
 
 ## Evidenced operating holds
 
@@ -59,18 +59,18 @@ an unchecked checklist as a human owner.
 
 | Hold | Evidence | Minimum clearance evidence | Status |
 | --- | --- | --- | --- |
-| Public invitation promotion | [Phase 2 packet](GATE_EVIDENCE.md) (hold 1): the [invitation funnel](../ops/INVITE_FUNNEL.md) says broad promotion remains paused until a private, human-monitored request route is named and tested, and the blocker persists per [ONBOARDING_DRY_RUN_V2](../reviews/ONBOARDING_DRY_RUN_V2.md). | A human establishes and tests the route; responsible humans know the authorized inviters, private intake ledger, and escalation owner; the issuer verifies current invitation/revocation controls or records the official-support fallback; then insert only approved public wording. | **OPEN — blocks public launch** |
+| Public invitation promotion | [Phase 2 packet](GATE_EVIDENCE.md) (hold 1): the [invitation funnel](../ops/outreach/INVITE_FUNNEL.md) says broad promotion remains paused until a private, human-monitored request route is named and tested, and the blocker persists per [ONBOARDING_DRY_RUN_PHASE2](../reviews/ONBOARDING_DRY_RUN_PHASE2.md). | A human establishes and tests the route; responsible humans know the authorized inviters, private intake ledger, and escalation owner; the issuer verifies current invitation/revocation controls or records the official-support fallback; then insert only approved public wording. | **OPEN — blocks public launch** |
 | Human operating coverage | [Phase 2 packet](GATE_EVIDENCE.md) (hold 2): the [maintainer runbook](../ops/MAINTAINER_RUNBOOK.md), [moderation model](../community/MODERATION.md), and [weekly cadence](../ops/WEEKLY_CADENCE.md) require named human ownership for release, announcement, moderation/private reporting, and continuity. | Record eligible humans and escalation/recusal route in the appropriate safe private or Git record; confirm a release owner opens the `RELEASE` item. | **OPEN — blocks public launch** |
 | Evidence-ready launch measurement | [Phase 2 packet](GATE_EVIDENCE.md) (hold 3): [metrics](../ops/METRICS.md) requires evidenced Activation and Response quality, with data minimization. | Name the human and private, access-controlled recording setup; use the stated evidence and sampling rules, retain unknowns, and do not track joins, views, or private behavior. | **OPEN — blocks public launch** |
 | Tested-Practice evidence | [Phase 2 packet](GATE_EVIDENCE.md) (hold 4): the [method index](../practices/README.md) and all six candidate files disclose `maturity: proposed` and `evidence_quality: none`; the first three have recorded trials and per-candidate decision packets in [PROMOTION_PACKETS.md](PROMOTION_PACKETS.md). | Run and retain the method-specific trial evidence, obtain human review, and record an explicit promotion decision before calling a candidate a tested Practice. Until then, public copy must say proposed method or Practice candidate. | **OPEN — blocks public launch under the current release scope** |
-| Hosted member-visible surface | [Phase 2 packet](GATE_EVIDENCE.md) (hold 5): the [onboarding dry run](../reviews/ONBOARDING_DRY_RUN.md) found configuration but no sanitized evidence that the hosted channels, canvases, seeds, membership visibility, or `start-here` path exist; the fillable inspection record is [HOSTED_INSPECTION.md](HOSTED_INSPECTION.md). | An authorized human performs the owner-operated apply and manual inspection, retaining only non-secret channel/seed evidence. | **OPEN — blocks public launch** |
+| Hosted member-visible surface | [Phase 2 packet](GATE_EVIDENCE.md) (hold 5): the [onboarding dry run](../reviews/ONBOARDING_DRY_RUN_PHASE1.md) found configuration but no sanitized evidence that the hosted channels, canvases, seeds, membership visibility, or `start-here` path exist; the fillable inspection record is [HOSTED_INSPECTION.md](HOSTED_INSPECTION.md). | An authorized human performs the owner-operated apply and manual inspection, retaining only non-secret channel/seed evidence. | **OPEN — blocks public launch** |
 | Steward escalation readiness | [Phase 2 packet](GATE_EVIDENCE.md) (hold 6): the [Steward profile](../buzz/agents/STEWARD.md) fails closed unless a member-actionable, human-owned escalation reference is configured and tested; the configuration-only readiness checker is `scripts/steward_readiness_check.py`. | Privately name the sponsor, configure a visible route/label that members can actually use, test human receipt, and enable the Steward only after the prerequisite passes. | **OPEN — blocks enabling the Steward for launch** |
-| Publication destinations | [Phase 2 packet](GATE_EVIDENCE.md) (hold 7): the reusable [social kit](../content/launch/SOCIAL_KIT.md) intentionally retains 26 bracketed destination/handle tokens and is the sole whole-file publication-template exception in release validation. | For each selected post, a human replaces every token with an approved repository/Buzz/channel/issue destination or handle, click-tests it, and retains a non-secret check record. Do not use a reusable invitation link. | **OPEN — blocks public promotion** |
+| Publication destinations | [Phase 2 packet](GATE_EVIDENCE.md) (hold 7): the reusable [social kit](../ops/outreach/SOCIAL_KIT.md) intentionally retains 26 bracketed destination/handle tokens and is the sole whole-file publication-template exception in release validation. | For each selected post, a human replaces every token with an approved repository/Buzz/channel/issue destination or handle, click-tests it, and retains a non-secret check record. Do not use a reusable invitation link. | **OPEN — blocks public promotion** |
 
 ## Buzz constraints to accept operationally
 
 The following constraints are verified in the
-[Buzz Platform Snapshot](../research/BUZZ_PLATFORM_SNAPSHOT.md), reviewed
+[Buzz Platform Snapshot](../buzz/PLATFORM_SNAPSHOT.md), reviewed
 2026-09-01. They constrain launch operations; they do not request a new product
 decision.
 
@@ -97,8 +97,8 @@ decision.
   the standard-library regression suite and the Practice core-skills validator.
 - Content evidence: [curriculum](../guides/ai-native-practitioner/CURRICULUM.md),
   [proposed method candidates](../practices/README.md),
-  [first-ten briefs](../content/launch/FIRST_10.md), and
-  [social kit](../content/launch/SOCIAL_KIT.md); [Lab schema](../docs/schemas/LAB_SCHEMA.md),
+  [first-ten briefs](../ops/outreach/FIRST_10.md), and
+  [social kit](../ops/outreach/SOCIAL_KIT.md); [Lab schema](../docs/schemas/LAB_SCHEMA.md),
   [Story schema](../docs/schemas/STORY_SCHEMA.md), [Lab issue form](../.github/ISSUE_TEMPLATE/lab.yml),
   and [Project issue form](../.github/ISSUE_TEMPLATE/project.yml) resolve;
   proposed or hypothetical material stays labeled and no real result is invented.

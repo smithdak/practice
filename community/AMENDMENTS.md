@@ -17,8 +17,8 @@ is that record. An amendment is in force only once it appears here.
 - **Effective:** 2026-09-02, as an eligibility change only. No operation is
   promoted by this amendment, and none runs unattended because of it.
 - **Amends:** [the autonomy ladder](../docs/framework/AUTONOMY_LADDER.md)
-  permanently-ineligible list, and [locked decisions](../DECISIONS.md).
-- **Does not amend:** [non-goals](../NON_GOALS.md), which names autonomous
+  permanently-ineligible list, and [locked decisions](../docs/DECISIONS.md).
+- **Does not amend:** [non-goals](../docs/NON_GOALS.md), which names autonomous
   moderation, banning, and content deletion, and scheduled Buzz workflows as a
   launch dependency. Both remain non-goals and neither is affected.
 
@@ -68,8 +68,8 @@ delivering approved content are different acts that were fused into one word:
 two above.**
 
 No unattended run may create, change, merge, or deliver a change to any file
-that governs its own bounds. At minimum: `DECISIONS.md`, `NON_GOALS.md`,
-`OWNER_GATES.md`, `community/GOVERNANCE.md`, this file,
+that governs its own bounds. At minimum: `docs/DECISIONS.md`, `docs/NON_GOALS.md`,
+`docs/OWNER_GATES.md`, `community/GOVERNANCE.md`, this file,
 `docs/framework/AUTONOMY_LADDER.md`, anything under `ops/autonomy/`, and
 anything under `.github/`. An agent that can widen its own bounds has no bounds,
 so this exclusion is not itself waivable by a promotion.
@@ -103,7 +103,7 @@ reader will otherwise assume they were never raised.
   about itself.
 - **`moderation-and-removal` — declined.** It is the one category here that acts
   on people rather than files, it is not reversible the way a file write is, and
-  it is named in [non-goals](../NON_GOALS.md) and built around in [the
+  it is named in [non-goals](../docs/NON_GOALS.md) and built around in [the
   moderation model](MODERATION.md).
 - **`owner-identity-and-keys` — not proposed.** There is no legitimate form of an
   agent holding owner identity material. This is a security boundary rather than
