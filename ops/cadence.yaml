@@ -1,0 +1,272 @@
+# Machine-readable index of the operating loop defined in ops/WEEKLY_CADENCE.md.
+#
+# This file adds no pass, queue, rhythm, output, or owner that the cadence
+# document does not already state. Every entry names the section it was read
+# from. It is an index, not a second source of truth: change
+# ops/WEEKLY_CADENCE.md first, then mirror the change here.
+#
+# `interval_days` is a machine translation of a rhythm phrase so that
+# scripts/cadence.py can compute an elapsed window. It is not a new commitment
+# and it does not weaken the operating rule: a pass with no output is skipped
+# and records nothing, so an elapsed window is not overdue work for any person.
+#
+# `evidence` globs point only at records kept in this repository. Most passes
+# also have durable records that are not files here (Git issues and pull
+# requests, the private maintainers queue, Buzz threads). Those are listed
+# under `off_repo_records` for the reader and are never checked by any script.
+
+schema_version: 1
+source: ops/WEEKLY_CADENCE.md
+source_reviewed: 2026-09-02
+staleness_limit_days: 90  # must equal STALE_LIMIT_DAYS in scripts/check_links.py
+
+operating_rule:
+  source_section: Operating rule
+  text: >-
+    Every pass has a named output. If there is no output to create, decide,
+    route, or maintain, skip the pass and record nothing.
+
+passes:
+  - id: intake
+    name: Intake
+    rhythm: weekly review window (suggested Monday)
+    interval_days: 7
+    due_rule: elapsed
+    source_section: Weekly loop
+    named_output: >-
+      Updated queue entries with state, owner, next action, and a selected
+      work brief.
+    owner_role: Maintainer
+    skip_rule: >-
+      Skip the pass and record nothing when there is no entry to deduplicate,
+      classify, route, or select. Safety and access items are handled first
+      whenever they arrive, inside or outside a pass.
+    evidence:
+      - tasks/specs/*.md
+      - tasks/manifest.json
+    off_repo_records:
+      - Git issue opened when durable work is needed
+      - private maintainers queue item
+    note: >-
+      Most intake entries live in Buzz threads and Git issues. The evidence
+      paths hold only the selected work brief and its recorded state.
+
+  - id: build
+    name: Build
+    rhythm: weekly review window (suggested Tuesday to Wednesday)
+    interval_days: 7
+    due_rule: elapsed
+    source_section: Weekly loop
+    named_output: >-
+      Draft artifact or pull request with inputs, source links where needed,
+      acceptance checks, limitations, and a reviewer.
+    owner_role: Author or area maintainer
+    skip_rule: >-
+      Skip the pass and record nothing when Intake selected no bounded change.
+      The weekly loop is a review window, not a promise to publish every week.
+    evidence:
+      - practices/*.md
+      - guides/**/*.md
+      - labs/*.md
+      - stories/*.md
+      - ops/*.md
+    off_repo_records:
+      - pull request holding the draft change
+
+  - id: review
+    name: Review
+    rhythm: weekly review window (suggested Thursday)
+    interval_days: 7
+    due_rule: elapsed
+    source_section: Weekly loop
+    named_output: >-
+      Review record in the Git issue or pull request, including decision,
+      rationale, unresolved risks, and follow-up owner.
+    owner_role: Area maintainer
+    skip_rule: >-
+      Skip the pass and record nothing when there is no draft to inspect. Once
+      a draft is inspected the pass records a decision even when the decision
+      is hold or no release.
+    evidence:
+      - reviews/*.md
+      - handoffs/*.md
+    off_repo_records:
+      - review record in the affected Git issue or pull request
+    note: >-
+      Reviewing agents return findings, not an approval. A file under reviews/
+      is a finding record; the merge, request-changes, redirect, or decline
+      decision is made by a human in the Git record.
+
+  - id: release
+    name: Release
+    rhythm: weekly window (suggested Friday), only when a packet is ready
+    interval_days: null
+    due_rule: on_trigger
+    source_section: Weekly loop
+    named_output: >-
+      Git release record and, if approved, a Buzz announcement or other
+      launch-channel post.
+    owner_role: Human release owner
+    skip_rule: >-
+      A release happens only when its packet is ready and a human approves it,
+      so elapsed time never makes this pass due. Do not manufacture a release
+      in a low-activity week; record "No release" in the private maintainer
+      record when a scheduled review considered that decision.
+    evidence:
+      - release/*.md
+    off_repo_records:
+      - Git release record
+      - Buzz announcement published by an authorized human
+      - private RELEASE maintainer item
+    note: >-
+      Files under release/ are preparation and evidence packets. They are not a
+      release approval, and an agent never announces unmerged work.
+
+  - id: session
+    name: Practice Session
+    rhythm: scheduled only when useful
+    interval_days: null
+    due_rule: on_trigger
+    source_section: Weekly loop
+    named_output: >-
+      Session brief, captured draft or decision, participant-safe follow-up,
+      and a publication decision.
+    owner_role: Human facilitator, with human maintainer approval for publication
+    skip_rule: >-
+      Run a Session only when there is a participant need and a concrete
+      artifact to produce, so elapsed time never makes this pass due. Do not
+      manufacture a Session in a low-activity week; record "No Session" in the
+      private maintainer record when a scheduled review considered that
+      decision.
+    evidence:
+      - ops/FIRST_PRACTICE_SESSION.md
+    off_repo_records:
+      - session brief and capture held by the facilitator
+      - publication decision in the affected Git record
+    note: >-
+      Participant material is never committed here. The evidence path is the
+      session operating record, so a change to it does not mean a Session ran.
+
+  - id: maintenance
+    name: Maintenance
+    rhythm: monthly (last Friday, or the next available pass), and early when a source or policy changes
+    interval_days: 30
+    due_rule: elapsed
+    source_section: Weekly loop
+    named_output: >-
+      Maintenance record naming each item, evidence checked, disposition
+      (keep, revise, replace, deprecate), owner, and next check point.
+    owner_role: >-
+      Artifact maintainer; founder or designated continuity owner for reserved
+      access, recovery, and owner-gate decisions
+    skip_rule: >-
+      Perform maintenance only where a trigger or a due review exists. The
+      release and maintenance passes may be combined when there is little work.
+    evidence:
+      - reviews/*.md
+      - research/*.md
+    off_repo_records:
+      - stale-content Git issue or pull request
+      - private continuity, access, and recovery records
+
+queues:
+  - id: safety_privacy_access_conduct
+    name: Safety, privacy, access, and conduct
+    source_section: Two kinds of work / Continuous queues
+    handling: >-
+      Route immediately to an eligible human moderator or founder through the
+      private process.
+    human_owner_role: Eligible human moderator or founder
+    agent_boundary: >-
+      An agent may triage and recommend; it never enforces or resolves the
+      case.
+    repo_check: none
+    repo_check_reason: >-
+      The case record is private by design and is never kept in this
+      repository, so there is no file evidence for a report to read.
+
+  - id: questions_and_contributions
+    name: Questions and contributions
+    source_section: Two kinds of work / Continuous queues
+    handling: >-
+      Record the smallest next action, route to an existing artifact or Git
+      issue, and assign a human owner.
+    human_owner_role: Area maintainer
+    agent_boundary: >-
+      An agent routes and recommends; the human owner and next action are
+      recorded by a person.
+    repo_check: none
+    repo_check_reason: >-
+      Entries live in Buzz threads and Git issues, which this report cannot
+      read.
+
+  - id: agent_review
+    name: Agent review
+    source_section: Two kinds of work / Continuous queues
+    handling: >-
+      An agent may prepare a bounded packet; the requesting human maintainer
+      accepts, revises, rejects, or escalates it in the Git record.
+    human_owner_role: Requesting human maintainer
+    agent_boundary: >-
+      Agent output is never itself evidence of publication, merge, moderation,
+      or release approval.
+    repo_check: blocked_handoffs
+    repo_check_note: >-
+      A handoff recorded BLOCKED is a stopped bounded task waiting on a human
+      decision. The report lists it; it does not decide it.
+
+  - id: follow_up_and_broken_links
+    name: Follow-up and broken links
+    source_section: Two kinds of work / Continuous queues
+    handling: >-
+      Keep the item open with an owner and check point until it is resolved or
+      deliberately deferred.
+    human_owner_role: Artifact maintainer
+    agent_boundary: >-
+      An agent may find stale references and propose a disposition; a human
+      decides the status change.
+    repo_check: stale_as_of
+    repo_check_note: >-
+      Broken links are checked by scripts/check_links.py and are not repeated
+      here. This report covers only the as-of staleness half of the queue.
+
+escalations:
+  id: stop_and_escalate
+  name: Stop and escalate
+  source_section: Stop and escalate
+  rule: >-
+    Pause the affected work when required evidence is unavailable, a source or
+    policy conflicts, an agent requests expanded access, a risk cannot be
+    bounded, or a decision belongs to the founder or another reserved human
+    owner. Record the smallest safe context, the exact decision needed, and the
+    next owner.
+  repo_check: open_owner_gates
+
+checks:
+  blocked_handoffs:
+    scans: handoffs/*.md
+    description: >-
+      Handoff records whose "## Status" section reads BLOCKED, plus records
+      whose status line cannot be read.
+    serves: agent_review
+  open_owner_gates:
+    scans: release/OWNER_REVIEW.md
+    description: >-
+      Owner gates and evidenced operating holds recorded OPEN in the owner
+      review packet. The report repeats the recorded status and never records,
+      implies, or infers an approval.
+    serves: stop_and_escalate
+  stale_as_of:
+    scans: "**/*.md"
+    description: >-
+      Markdown files whose "As of:" date is older than staleness_limit_days.
+    rule_source: scripts/check_links.py
+    serves: follow_up_and_broken_links
+
+low_activity_fallback:
+  source_section: Small-community and low-activity fallback
+  interval_days: 14
+  rule: >-
+    Run one short operating pass every two weeks, or on the next available day,
+    and process urgent queue items continuously. Carry forward only items with
+    a named owner and next check point.

@@ -1,0 +1,500 @@
+# Practice community-agent registry
+#
+# Machine-readable declaration of every agent profile in buzz/agents/. Each
+# entry is derived from its profile file and from the least-membership model in
+# ops/BUZZ_SECURITY.md. Where a profile is silent, this registry records the
+# narrowest reading; it never grants scope a profile does not state.
+#
+# This file declares bounds. It does not enable an agent, grant access, or
+# clear a gate. Owner gate 6 (Initial community-agent providers) in
+# release/OWNER_REVIEW.md is OPEN, so every status below is not_enabled.
+#
+# Checked by scripts/validate_agents.py.
+#
+# autonomy vocabulary (no unattended level exists this phase):
+#   observe   - reports what it read, with pointers; proposes no change.
+#   draft     - produces draft text, a patch, or a candidate artifact that
+#               nobody has applied; posts nothing into any channel.
+#   recommend - names one action for a human to take, and may reply with that
+#               recommendation in an assigned open channel; takes no action.
+#
+# status vocabulary:
+#   not_enabled - declared but not running; the only value permitted while
+#                 owner gate 6 is OPEN.
+#   enabled     - a human has cleared gate 6 and every listed prerequisite.
+#
+# Role values are the controlled operating roles from community/GOVERNANCE.md
+# and ops/BETA_OPS.md: founder, beta-owner, continuity-owner, maintainer,
+# area-maintainer, artifact-maintainer, release-owner, private-intake-owner,
+# authorized-inviter, agent-sponsor, session-facilitator. Personal names,
+# handles, and contact routes belong in the private maintainer record, never
+# here.
+
+schema_version: 1
+as_of: 2026-09-02
+sources:
+  - buzz/agents/STEWARD.md
+  - buzz/agents/LIBRARIAN.md
+  - buzz/agents/RELEASE_EDITOR.md
+  - buzz/agents/RESEARCH_AUDITOR.md
+  - buzz/agents/GUIDE_MAINTAINER.md
+  - buzz/community.json
+  - ops/BUZZ_SECURITY.md
+  - release/OWNER_REVIEW.md
+  - community/GOVERNANCE.md
+  - ops/BETA_OPS.md
+
+agents:
+  - id: steward
+    name: Practice Steward
+    profile: buzz/agents/STEWARD.md
+    mission: >-
+      Route a Practitioner's request to one Practice channel with a single
+      checkable next action.
+    autonomy: recommend
+    autonomy_basis: >-
+      The profile grants "send a reply in the current assigned channel when
+      appropriate" and requires a route plus one next action, so the Steward may
+      post a recommendation. It decides nothing: policy, moderation, access, and
+      publication stay with humans.
+    channels:
+      read:
+        - start-here
+        - ask-practice
+        - learn
+        - use
+        - automate
+        - build
+        - transform
+      write:
+        - start-here
+        - ask-practice
+        - learn
+        - use
+        - automate
+        - build
+        - transform
+      write_approval: {}
+    conditional_channels: []
+    excluded_channels:
+      - foundry
+      - maintainers
+      - announcements
+      - projects
+      - showcase
+    identity:
+      dedicated_identity: true
+      shared_across_instances: false
+      accountable_human_role: agent-sponsor
+      requirement: >-
+        One unique Buzz identity, one accountable human sponsor, and only the
+        memberships required for its current mission. Identities are never
+        shared, including between instances of the same role, and the identity
+        carries no owner, maintainer, moderation, repository-write, or
+        identity-management privilege (ops/BUZZ_SECURITY.md, least-membership
+        model).
+    prohibited:
+      - >-
+        Silently removing, deleting, hiding, banning, or editing members,
+        people, or content; a moderation action is recommended to a human and
+        never taken.
+      - >-
+        Requesting, receiving, storing, or recovering the owner private key, or
+        any other credential, token, or recovery code.
+      - >-
+        Publishing, merging, or announcing an artifact, decision, or policy
+        without review by a human maintainer.
+      - >-
+        Changing a maturity or evidence_quality field, or implying an evidence
+        level the recorded evidence does not support.
+      - >-
+        Inventing policy, channel purpose, links, capabilities, evidence, users,
+        outcomes, or measured results.
+      - >-
+        Reading or posting outside assigned membership, impersonating a human or
+        another agent, or changing permissions.
+      - >-
+        Presenting Steward guidance as professional legal, medical, financial,
+        or security advice instead of routing for qualified human review.
+    escalation:
+      route: >-
+        Use the profile's Escalation format and send it through the approved
+        human-owned escalation path recorded in the private deployment record.
+        Fail closed and tell the member escalation is unavailable when that
+        reference is absent, inaccessible, or unverified.
+      owner_role: agent-sponsor
+      escalates_to:
+        - maintainer
+    enablement_prerequisites:
+      - >-
+        Owner gate 6 (Initial community-agent providers) is recorded as approved
+        by a human in release/OWNER_REVIEW.md.
+      - >-
+        Hold 6 (Steward escalation readiness) in release/OWNER_REVIEW.md is
+        cleared: the sponsor is privately named, a member-actionable escalation
+        route is configured, and human receipt has been tested.
+      - >-
+        scripts/steward_readiness_check.py reports all five prerequisites
+        satisfied for the configured deployment.
+      - >-
+        A human maintainer applies exactly the memberships in this entry and
+        records identity, sponsor, purpose, and expiry in the private access
+        inventory described in ops/BUZZ_SECURITY.md.
+    status: not_enabled
+
+  - id: librarian
+    name: Practice Librarian
+    profile: buzz/agents/LIBRARIAN.md
+    mission: >-
+      Turn safe-to-share community work into a reviewable candidate artifact
+      draft for a human maintainer.
+    autonomy: draft
+    autonomy_basis: >-
+      The profile ends its workflow at "return the candidate to a human
+      maintainer for review" and states no posting capability, so the narrowest
+      reading grants drafting only and no channel write.
+    channels:
+      read:
+        - ask-practice
+        - learn
+        - use
+        - automate
+        - build
+        - transform
+        - projects
+        - showcase
+      write: []
+      write_approval: {}
+    conditional_channels: []
+    excluded_channels:
+      - foundry
+      - maintainers
+      - start-here
+      - announcements
+    identity:
+      dedicated_identity: true
+      shared_across_instances: false
+      accountable_human_role: agent-sponsor
+      requirement: >-
+        One unique Buzz identity with one accountable human sponsor, never
+        shared between instances, and carrying no repository-write, merge,
+        publication, announcement, moderation, owner, or identity-management
+        privilege (ops/BUZZ_SECURITY.md, least-membership model).
+    prohibited:
+      - >-
+        Silently removing, deleting, hiding, banning, or editing members,
+        people, or content; the Librarian may flag content and recommend a human
+        action only.
+      - >-
+        Requesting, receiving, storing, or recovering the owner private key, or
+        any other credential, token, or recovery code.
+      - >-
+        Publishing, merging, or announcing a candidate without review by a human
+        maintainer and any required owner decision.
+      - >-
+        Changing a maturity or evidence_quality field, or recording an evidence
+        level the source record does not support.
+      - >-
+        Publishing private-channel or direct-message material by default, or
+        inferring consent from posting, participation, or silence.
+      - >-
+        Removing disagreement, or fabricating consensus, evidence, attribution,
+        consent, links, outcomes, metrics, or platform capabilities.
+      - >-
+        Treating a draft, quote, or unverified interpretation as an approved
+        Practice, policy, measured result, or decision.
+    escalation:
+      route: >-
+        Return the profile's Escalate block with the draft held unpublished
+        through the requesting human-owned path, naming the smallest permission,
+        redaction, owner, or evidence decision needed.
+      owner_role: maintainer
+      escalates_to:
+        - private-intake-owner
+    enablement_prerequisites:
+      - >-
+        Owner gate 6 (Initial community-agent providers) is recorded as approved
+        by a human in release/OWNER_REVIEW.md.
+      - >-
+        A human maintainer confirms the eligible source scope in writing so that
+        private, direct-message, and access-controlled material stays out of
+        drafts (buzz/agents/LIBRARIAN.md, source eligibility).
+      - >-
+        A human review queue exists and a named maintainer role owns acceptance
+        of every candidate before publication.
+      - >-
+        A human maintainer applies exactly the memberships in this entry and
+        records identity, sponsor, purpose, and expiry in the private access
+        inventory described in ops/BUZZ_SECURITY.md.
+    status: not_enabled
+
+  - id: release-editor
+    name: Release Editor
+    profile: buzz/agents/RELEASE_EDITOR.md
+    mission: >-
+      Draft evidence-grounded announcements and weekly release briefs from
+      merged or released canonical artifacts.
+    autonomy: draft
+    autonomy_basis: >-
+      Every output format carries "DRAFT - HUMAN REVIEW REQUIRED" and the
+      workflow stops before posting, so the profile supports drafting only.
+    channels:
+      read: []
+      write: []
+      write_approval: {}
+    conditional_channels:
+      - channel: announcements
+        access: read
+        condition: >-
+          Membership is granted only while a human maintainer has assigned a
+          specific, human-reviewed release item, and is removed afterwards
+          (ops/BUZZ_SECURITY.md, Release Editor row). Posting is never granted:
+          the profile stops at a draft returned to the assigning human.
+        approver_role: maintainer
+    excluded_channels:
+      - foundry
+      - maintainers
+      - start-here
+      - ask-practice
+      - learn
+      - use
+      - automate
+      - build
+      - transform
+      - projects
+      - showcase
+    identity:
+      dedicated_identity: true
+      shared_across_instances: false
+      accountable_human_role: agent-sponsor
+      requirement: >-
+        One unique Buzz identity with one accountable human sponsor, never
+        shared between instances, holding no maintainer authority and no ability
+        to make commitments for maintainers (ops/BUZZ_SECURITY.md,
+        least-membership model).
+    prohibited:
+      - >-
+        Silently removing, deleting, hiding, banning, or editing members,
+        people, or content, or silently changing a canonical artifact; recommend
+        a human action instead.
+      - >-
+        Requesting, receiving, storing, or recovering the owner private key, or
+        any other credential, token, or recovery code.
+      - >-
+        Publishing, merging, or announcing a release item without review by a
+        human maintainer.
+      - >-
+        Changing a maturity or evidence_quality field, or restating an evidence
+        level beyond what the supplied record establishes.
+      - >-
+        Calling unmerged, unreleased, draft, or proposed work complete, shipped,
+        launched, live, production-ready, or available.
+      - >-
+        Inventing metrics, users, testimonials, quotes, dates, urgency, demand,
+        consensus, security properties, or performance outcomes.
+      - >-
+        Turning a merge, download, reply, or reaction into proof of impact,
+        adoption, quality, or effectiveness instead of linking a result record
+        or writing Not measured.
+    escalation:
+      route: >-
+        Return the draft, fact ledger, held items, and unresolved claim or
+        attribution questions to the requesting human maintainer, and hold any
+        item whose status, provenance, or canonical link is missing.
+      owner_role: release-owner
+      escalates_to:
+        - maintainer
+    enablement_prerequisites:
+      - >-
+        Owner gate 6 (Initial community-agent providers) is recorded as approved
+        by a human in release/OWNER_REVIEW.md.
+      - >-
+        A human maintainer assigns a specific release item and supplies the
+        canonical artifact links plus merged or released status evidence before
+        any membership is granted.
+      - >-
+        Hold 2 (Human operating coverage) in release/OWNER_REVIEW.md is cleared,
+        so a named human release owner exists to review and publish.
+      - >-
+        A human maintainer applies the conditional membership in this entry with
+        an end date and records it in the private access inventory described in
+        ops/BUZZ_SECURITY.md.
+    status: not_enabled
+
+  - id: research-auditor
+    name: Research Auditor
+    profile: buzz/agents/RESEARCH_AUDITOR.md
+    mission: >-
+      Check whether current or consequential factual claims are supported by
+      traceable, appropriate sources, and report the gaps.
+    autonomy: draft
+    autonomy_basis: >-
+      The profile produces an audit report for the author or human maintainer,
+      may not silently change or publish the audited artifact, and states no
+      posting capability.
+    channels:
+      read: []
+      write: []
+      write_approval: {}
+    conditional_channels: []
+    excluded_channels:
+      - foundry
+      - maintainers
+      - start-here
+      - announcements
+      - ask-practice
+      - learn
+      - use
+      - automate
+      - build
+      - transform
+      - projects
+      - showcase
+    channel_note: >-
+      ops/BUZZ_SECURITY.md grants membership in "only the public channel or
+      channels named in its approved audit assignment; none by default", and
+      neither the profile nor the runbook names a specific channel. The registry
+      therefore declares no channels; a human maintainer adds the assignment's
+      channel here before enablement.
+    identity:
+      dedicated_identity: true
+      shared_across_instances: false
+      accountable_human_role: agent-sponsor
+      requirement: >-
+        One unique Buzz identity with one accountable human sponsor, never
+        shared between instances, and limited to the channels named in its
+        approved audit assignment (ops/BUZZ_SECURITY.md, least-membership
+        model).
+    prohibited:
+      - >-
+        Silently removing, deleting, hiding, banning, or editing members,
+        people, or content, including the audited artifact.
+      - >-
+        Requesting, receiving, storing, or recovering the owner private key, or
+        any other credential, token, or recovery code.
+      - >-
+        Publishing, merging, or announcing the audited artifact or the audit
+        without review by a human maintainer.
+      - >-
+        Changing a maturity or evidence_quality field, or converting an
+        unverifiable claim into support.
+      - >-
+        Inventing citations, URLs, quotations, dates, findings, or source
+        contents.
+      - >-
+        Treating search snippets, uncited summaries, vendor marketing, or model
+        memory as sufficient evidence for a current factual claim.
+      - >-
+        Rewriting strategy, changing the intended audience or recommendation, or
+        resolving an unresolved policy decision.
+    escalation:
+      route: >-
+        Record each conflicting source and the precise point of conflict in the
+        audit report, mark the disposition, and route material unresolved
+        conflicts to the requesting human author or maintainer for decision.
+      owner_role: maintainer
+      escalates_to:
+        - artifact-maintainer
+    enablement_prerequisites:
+      - >-
+        Owner gate 6 (Initial community-agent providers) is recorded as approved
+        by a human in release/OWNER_REVIEW.md.
+      - >-
+        A human maintainer records the approved audit assignment, its scope, and
+        the exact public channel or channels it covers, and adds those channels
+        to this entry.
+      - >-
+        A human decides whether the auditor is authorized to retrieve primary
+        sources for the assignment, and records that decision.
+      - >-
+        A human maintainer applies exactly the assigned memberships with an end
+        date and records them in the private access inventory described in
+        ops/BUZZ_SECURITY.md.
+    status: not_enabled
+
+  - id: guide-maintainer
+    name: Guide Maintainer
+    profile: buzz/agents/GUIDE_MAINTAINER.md
+    mission: >-
+      Inspect published Guides for coherence, staleness, and broken references,
+      and return an evidence-bounded maintenance proposal.
+    autonomy: draft
+    autonomy_basis: >-
+      The profile states "This profile does not publish or merge" and every
+      review packet is marked DRAFT - HUMAN REVIEW REQUIRED, so it drafts only.
+    channels:
+      read:
+        - learn
+        - use
+        - automate
+        - build
+        - transform
+      write: []
+      write_approval: {}
+    conditional_channels: []
+    excluded_channels:
+      - foundry
+      - maintainers
+      - start-here
+      - announcements
+      - ask-practice
+      - projects
+      - showcase
+    identity:
+      dedicated_identity: true
+      shared_across_instances: false
+      accountable_human_role: agent-sponsor
+      requirement: >-
+        One unique Buzz identity with one accountable human sponsor, never
+        shared between instances, and holding no ability to alter the capability
+        model or merge without review (ops/BUZZ_SECURITY.md, least-membership
+        model).
+    prohibited:
+      - >-
+        Silently removing, deleting, hiding, banning, or editing members,
+        people, or content, including a Guide or a referenced Practice.
+      - >-
+        Requesting, receiving, storing, or recovering the owner private key, or
+        any other credential, token, or recovery code.
+      - >-
+        Publishing, merging, or announcing a maintenance patch without review by
+        a human maintainer.
+      - >-
+        Changing a maturity or evidence_quality field, or claiming an evidence
+        level a primary source does not establish.
+      - >-
+        Silently changing the capability taxonomy, the Guide sequence, a
+        Practice's meaning, or community policy; the ladder Learn to Use to
+        Automate to Build to Transform is locked and changing it requires an
+        owner decision.
+      - >-
+        Treating age, a broken link, a tool mention, or a single anecdote as
+        proof of deprecation or effectiveness.
+      - >-
+        Using secondary material as verification for a changing technical claim
+        when a primary source is required or unavailable.
+    escalation:
+      route: >-
+        Return the profile's Escalate block with the proposal held unpublished
+        when a current claim cannot be verified, sources conflict on a material
+        recommendation, a taxonomy change appears necessary, or a source is
+        restricted or unlicensed.
+      owner_role: maintainer
+      escalates_to:
+        - founder
+    enablement_prerequisites:
+      - >-
+        Owner gate 6 (Initial community-agent providers) is recorded as approved
+        by a human in release/OWNER_REVIEW.md.
+      - >-
+        A human maintainer supplies the repository workspace paths the agent may
+        inspect and confirms that primary-source access exists for changing
+        technical claims.
+      - >-
+        A named human maintainer role owns acceptance, versioning, and merge of
+        every proposed patch, per docs/schemas/GUIDE_SCHEMA.md.
+      - >-
+        A human maintainer applies exactly the memberships in this entry and
+        records identity, sponsor, purpose, and expiry in the private access
+        inventory described in ops/BUZZ_SECURITY.md.
+    status: not_enabled
