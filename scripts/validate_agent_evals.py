@@ -82,6 +82,11 @@ BEHAVIOR_KINDS = (
     "behavior.packet-shape",
     "behavior.incomplete-input",
     "behavior.output-discipline",
+    # Only an agent with a write surface can hold a reply back, so this kind is
+    # available rather than required. The Steward is the one agent that has one,
+    # and its profile states the conditions as a numbered test precisely so a
+    # case can assert which condition should have fired.
+    "behavior.post-or-draft",
 )
 # The suffix of an adversarial kind is the topic it covers, so coverage is
 # readable in the case list itself rather than in a parallel index.

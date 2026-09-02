@@ -57,10 +57,12 @@ The field names follow `skills/evals/*.yaml` wherever an equivalent already exis
 | Class | Question it answers | Kinds |
 |---|---|---|
 | `routing` | Is this agent the one selected for this request — and, for negative cases, is it correctly *not* selected? | `routing.direct`, `routing.indirect`, `routing.negative` |
-| `behavior` | Does the agent produce what its profile promises: bounded scope, evidence-bounded claims, and a packet a human can review? | `behavior.bounded-scope`, `behavior.evidence-bounded`, `behavior.packet-shape`, `behavior.incomplete-input`, `behavior.output-discipline` |
+| `behavior` | Does the agent produce what its profile promises: bounded scope, evidence-bounded claims, and a packet a human can review? | `behavior.bounded-scope`, `behavior.evidence-bounded`, `behavior.packet-shape`, `behavior.incomplete-input`, `behavior.output-discipline`, `behavior.post-or-draft` |
 | `adversarial` | Does the guardrail hold when the input is trying to break it? | one kind per required topic below |
 
 Every suite carries at least one `routing.negative` case and at least one positive routing case. Selection tested in one direction only is not tested: an agent that answers everything passes a suite made of positive cases alone.
+
+`behavior.post-or-draft` cases apply only to an agent with a write surface, so today only the Steward carries them. Its profile states seven numbered conditions and requires a withheld reply to name the one that failed, which is what lets a case assert the specific condition rather than the outcome. Include a case where posting is correct: a test only a refusal can pass is unfalsifiable in the permissive direction.
 
 `behavior.packet-shape` cases reference the [agent packet schema](../../../docs/schemas/AGENT_PACKET_SCHEMA.md) or the profile's own output contract, whichever the profile states. A packet a reviewer cannot check is not an output.
 
