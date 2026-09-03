@@ -26,8 +26,10 @@ Before drafting, require all of the following:
 - a release scope and intended audience;
 - one or more links to canonical Git artifacts (for example a Practice, Guide,
   Lab, Story, Note, or Project);
-- the exact commit, tag, release record, or maintainer status reference for
-  each artifact;
+- the exact merged commit, release tag, or maintainer-confirmed record for
+  each artifact, the last as
+  [What counts as a maintainer-confirmed record](#what-counts-as-a-maintainer-confirmed-record)
+  defines it;
 - status evidence showing that each item is merged or released in the stated
   source of truth;
 - any approved evidence, limitations, attribution, and privacy/licensing
@@ -36,7 +38,7 @@ Before drafting, require all of the following:
 Canonical artifact links are required for every item in an output. A Buzz
 thread, draft branch, issue, pull request, chat message, or social post can
 provide context, but cannot substitute for the canonical artifact link or
-merged/released status evidence.
+merged/released status evidence (`M1` below).
 
 ## Completion gate
 
@@ -45,7 +47,7 @@ language:
 
 ```text
 Artifact: <canonical repository path or public URL>
-Status evidence: <merged commit, release/tag, or maintainer-confirmed record>
+Status evidence: <merged commit, release tag, or maintainer-confirmed record (M1 to M4), by path or URL>
 Source state: <merged | released | not verified>
 Evidence state: <observed | measured | not measured | disputed | unknown>
 Limits: <what the evidence does not establish>
@@ -58,6 +60,28 @@ the completed-work section. Never announce an unmerged branch, open change,
 proposal, or draft as complete, shipped, launched, or available. If a human
 explicitly wants a preview, label it `PROPOSED` or `IN REVIEW` and link the
 review source; do not imply release.
+
+### What counts as a maintainer-confirmed record
+
+The completion gate accepts three forms of status evidence. A merged commit
+and a release tag are Git objects a reviewer can resolve. The third form is
+defined here so that a message asserting the same thing cannot pass for it. A
+maintainer-confirmed record is status evidence only when all four conditions
+hold:
+
+| Id | Condition | Fails when |
+|---|---|---|
+| `M1` | It is a committed file in this repository, or a release entry in the repository's hosting, reachable by a repository path or a stable URL that the `Status evidence` line records. | It is a chat message, Buzz thread, issue, pull request, social post, or a spoken or emailed assurance, whoever wrote it. The role of the writer does not turn a message into a record. |
+| `M2` | It names the artifact by the same canonical repository path the item uses, states its status with the word `merged` or `released`, and names the commit or tag that status refers to. | The path differs, the status is any other word, or no commit or tag is named. |
+| `M3` | It names the confirming human by controlled role (`maintainer` or `release-owner`) and carries a date in `YYYY-MM-DD` form. | Either is absent, or a person is named instead of a role. |
+| `M4` | The commit or tag it names resolves and contains the artifact at the stated path. | The reference does not resolve, or the artifact is not there. |
+
+The Git release record that the Releases section of `ops/MAINTAINER_RUNBOOK.md`
+requires before any announcement is the intended form; whatever its file name,
+a record counts only while `M1` to `M4` hold. When any condition fails, the
+default is **hold**: mark the item `HOLD — STATUS OR SOURCE VERIFICATION
+REQUIRED`, exclude it from the completed-work section, and name the failed
+condition by id on the `Limits` line so the human knows what to supply.
 
 Do not infer impact, adoption, quality, speed, safety, consensus, or user
 outcomes from a merge, download, reply, reaction, or existence of an artifact.

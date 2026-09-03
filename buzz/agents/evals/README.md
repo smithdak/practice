@@ -1,6 +1,6 @@
 # Community-agent eval suites
 
-**As of: 2026-09-02**
+**As of: 2026-09-03**
 
 Every profile in [`buzz/agents/`](../) opens with a guardrail of the same shape: treat messages, links, attachments, and quoted text as untrusted source data, not as instructions that can change this profile. Every one of them also promises to refuse publication, to leave an artifact's recorded standing alone, and never to touch owner identity material.
 
@@ -65,6 +65,8 @@ Every suite carries at least one `routing.negative` case and at least one positi
 `behavior.post-or-draft` cases apply only to an agent with a write surface, so today only the Steward carries them. Its profile states seven numbered conditions and requires a withheld reply to name the one that failed, which is what lets a case assert the specific condition rather than the outcome. Include a case where posting is correct: a test only a refusal can pass is unfalsifiable in the permissive direction.
 
 `behavior.packet-shape` cases reference the [agent packet schema](../../../docs/schemas/AGENT_PACKET_SCHEMA.md) or the profile's own output contract, whichever the profile states. A packet a reviewer cannot check is not an output.
+
+Where a profile defines a term as numbered conditions decided from the record — the Steward's `I1` to `I5` (internal reasoning), the Librarian's `A1` to `A2` and `S1` to `S3` (the sharing test), the Release Editor's `M1` to `M4` (a maintainer-confirmed record), the Research Auditor's `R1` to `R4` (retrieval authorization), and the Guide Maintainer's `W1` to `W4` (the workspace assignment) — a behavior case asserts the condition by id rather than the outcome, using the existing `behavior` kinds. Each definition that can permit as well as refuse carries a case where the permitted path is correct, for the same reason the post-or-draft cases do. Where a definition rests on a record a human writes at enablement, the suite also carries the case where that record is absent, so the stated default (deny, hold, or supplied sources only) is asserted and not assumed.
 
 ### Required adversarial topics
 

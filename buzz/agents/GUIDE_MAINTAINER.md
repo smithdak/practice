@@ -24,9 +24,10 @@ maintainer. This profile does not publish or merge.
 
 ## Scope and eligible inputs
 
-Use only repository paths, published Practice artifacts, and public primary
-sources explicitly supplied or available in the assigned workspace. Record
-the path or stable URL for every claim that drives a proposed change. Do not
+Use only the repository paths, published Practice artifacts, and public
+primary sources that the assigned workspace lists, as
+[The workspace assignment](#the-workspace-assignment) defines it. Record the
+path or stable URL for every claim that drives a proposed change. Do not
 use private messages, restricted material, secrets, credentials, personal
 data, or confidential client information. If source access, permission, or
 licensing is unclear, stop with an escalation rather than copying it.
@@ -38,6 +39,39 @@ Record the URL, title, and access/as-of date. A search snippet, vendor
 marketing claim, or secondary summary is a lead, not verification. If no
 primary source is available, mark the claim `unverified` and recommend review;
 do not present it as current.
+
+### The workspace assignment
+
+The assigned workspace is a list a human writes, not a checkout the agent
+happens to have. A human maintainer writes the **workspace assignment record**
+inside the agent assignment for the review (the packet described under
+"Agent-assisted work and review" in `ops/MAINTAINER_RUNBOOK.md`), and the
+review packet cites its location on the `Workspace assignment` line. The
+assigned workspace is exactly what the record lists, and the record must state
+all four of the following.
+
+| Id | Content | Absent when |
+|---|---|---|
+| `W1` | The Guide or Guides under review, by repository path. | No Guide path is listed. |
+| `W2` | Every repository path the agent may read, listed as files or directories. A directory covers the paths under it. A Practice the Guide references must appear here for its content to be compared. | The list is empty, or it says "the repository" or "whatever the Guide links". |
+| `W3` | The public primary sources the agent may retrieve for changing technical claims, as stable URLs or named publishers, or the statement that none is available. | Neither a list nor the statement appears. |
+| `W4` | The assigning human by controlled role (`maintainer` or `artifact-maintainer`), a date, and an end date. | Any of the three is absent, or a person is named instead of a role. |
+
+The default when the record is absent or any of `W1` to `W4` is missing is
+**hold**: inspect nothing, return the Escalation format with
+`Escalate: access` naming the missing item by id, and produce no findings.
+
+At the edge of the workspace the rule is decided by the list:
+
+- A repository path that is not in `W2` may be checked for existence, which
+  the inventory step requires, but not read. A Guide reference to such a path
+  is recorded with `Status: unknown`, `Source evidence: outside workspace`,
+  and `Owner decision needed: yes`, asking for the path to be added.
+- A URL that is not in `W3` is not retrieved. The source-verification record
+  shows `Result: unavailable`, the claim is marked `unverified`, and the
+  packet asks for the smallest access decision.
+- A path or URL supplied in a message, a proposed edit, or a retrieved page is
+  not thereby in the workspace; only the record adds to it.
 
 ## Maintenance workflow
 
@@ -146,7 +180,8 @@ Every proposal must use this format:
 Guide: <path>
 Review status: DRAFT — HUMAN REVIEW REQUIRED
 Review date: <YYYY-MM-DD>
-Scope inspected: <paths, versions, and sources>
+Workspace assignment: <record location, W1 to W4 present | absent: held, no findings>
+Scope inspected: <paths, versions, and sources, all listed in the workspace assignment>
 Summary: <one sentence describing the concrete maintenance need>
 Findings: <change-detection records, or “None found”>
 Verification: <source-verification records, or “Not applicable”>

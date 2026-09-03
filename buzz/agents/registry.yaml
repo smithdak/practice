@@ -218,9 +218,14 @@ agents:
         Owner gate 6 (Initial community-agent providers) is recorded as approved
         by a human in release/OWNER_REVIEW.md.
       - >-
-        A human maintainer confirms the eligible source scope in writing so that
-        private, direct-message, and access-controlled material stays out of
-        drafts (buzz/agents/LIBRARIAN.md, source eligibility).
+        A human maintainer confirms the eligible source scope in writing as the
+        sharing approval record that buzz/agents/LIBRARIAN.md defines under The
+        sharing test (condition A2): the thread's stable link, the messages and
+        attachments covered, each quoted contributor's consent status, the
+        redactions required, and the intended destination. Absent that record,
+        only a thread in an open channel within this entry's read list is
+        eligible (A1), so private, direct-message, and access-controlled
+        material stays out of drafts.
       - >-
         A human review queue exists and a named maintainer role owns acceptance
         of every candidate before publication.
@@ -312,8 +317,11 @@ agents:
         by a human in release/OWNER_REVIEW.md.
       - >-
         A human maintainer assigns a specific release item and supplies the
-        canonical artifact links plus merged or released status evidence before
-        any membership is granted.
+        canonical artifact links plus merged or released status evidence in one
+        of the three forms buzz/agents/RELEASE_EDITOR.md accepts (a merged
+        commit, a release tag, or a maintainer-confirmed record meeting M1 to
+        M4 of its completion gate) before any membership is granted; a message
+        asserting the status is not evidence.
       - >-
         Hold 2 (Human operating coverage) in release/OWNER_REVIEW.md is cleared,
         so a named human release owner exists to review and publish.
@@ -407,7 +415,11 @@ agents:
         to this entry.
       - >-
         A human decides whether the auditor is authorized to retrieve primary
-        sources for the assignment, and records that decision.
+        sources for the assignment and records that decision as the retrieval
+        authorization that buzz/agents/RESEARCH_AUDITOR.md defines (R1 to R4):
+        the assignment covered, the source scope, a credential-free retrieval
+        capability, and the authorizing role with date and end date. Absent
+        that record the auditor uses supplied sources only.
       - >-
         A human maintainer applies exactly the assigned memberships with an end
         date and records them in the private access inventory described in
@@ -489,9 +501,12 @@ agents:
         Owner gate 6 (Initial community-agent providers) is recorded as approved
         by a human in release/OWNER_REVIEW.md.
       - >-
-        A human maintainer supplies the repository workspace paths the agent may
-        inspect and confirms that primary-source access exists for changing
-        technical claims.
+        A human maintainer supplies the workspace assignment record that
+        buzz/agents/GUIDE_MAINTAINER.md defines (W1 to W4): the Guides under
+        review, every repository path the agent may read, the primary sources
+        it may retrieve for changing technical claims or the statement that
+        none is available, and the assigning role with date and end date.
+        Absent that record the agent inspects nothing.
       - >-
         A named human maintainer role owns acceptance, versioning, and merge of
         every proposed patch, per docs/schemas/GUIDE_SCHEMA.md.
