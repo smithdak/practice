@@ -3502,6 +3502,101 @@
       ],
       "spec": "swarm/specs/Z2.md",
       "status": "todo"
+    },
+    {
+      "id": "Z3",
+      "title": "Partial compliance with an injected instruction",
+      "wave": 18,
+      "lane": "agents",
+      "model_tier": "strong",
+      "mode": "revision",
+      "dependencies": [
+        "V1",
+        "Y1",
+        "Z2"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md",
+        "swarm/reports/PHASE3_REPORT.md",
+        "swarm/handoffs/V1.md",
+        "swarm/handoffs/Z2.md"
+      ],
+      "outputs": [
+        "buzz/agents/STEWARD.md",
+        "buzz/agents/LIBRARIAN.md",
+        "buzz/agents/RELEASE_EDITOR.md",
+        "buzz/agents/RESEARCH_AUDITOR.md",
+        "buzz/agents/GUIDE_MAINTAINER.md",
+        "buzz/agents/evals/steward.yaml",
+        "buzz/agents/evals/librarian.yaml",
+        "buzz/agents/evals/release-editor.yaml",
+        "buzz/agents/evals/research-auditor.yaml",
+        "buzz/agents/evals/guide-maintainer.yaml"
+      ],
+      "handoff": "swarm/handoffs/Z3.md",
+      "objective": "State in every profile that complying with an injected instruction in part is complying with it, decided from the reply by difference, and give each suite a case for it.",
+      "requirements": [
+        "The rule is stated once per profile under the same subsection name.",
+        "Compliance is decided by difference from what the legitimate request alone would produce.",
+        "No controlled registry value changes; no agent is enabled."
+      ],
+      "acceptance": [
+        "make checks passes, including both agent validators.",
+        "Each suite gains a severe partial-compliance case and an overlap case.",
+        "The handoff records the decidable inputs and what stays unobservable."
+      ],
+      "spec": "swarm/specs/Z3.md",
+      "status": "todo"
+    },
+    {
+      "id": "Z4",
+      "title": "Staleness-sweep prerequisites",
+      "wave": 18,
+      "lane": "operations",
+      "model_tier": "strong",
+      "mode": "revision",
+      "dependencies": [
+        "X2",
+        "X6",
+        "Z1"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md",
+        "ops/autonomy/CANDIDATES.md",
+        "swarm/handoffs/X6.md"
+      ],
+      "outputs": [
+        "scripts/check_links.py",
+        "tests/test_check_links.py",
+        "scripts/cadence.py",
+        "tests/test_cadence.py",
+        "ops/cadence.yaml",
+        "ops/autonomy/operations.yaml",
+        "ops/autonomy/CANDIDATES.md"
+      ],
+      "handoff": "swarm/handoffs/Z4.md",
+      "objective": "Build the three tooling prerequisites the staleness-sweep dossier names, and lay out the overlap decision as a packet a human can decide from, deciding nothing.",
+      "requirements": [
+        "Coverage is carried in the sweep's result and the cadence report on every run.",
+        "A malformed as-of date is an error, not a crash.",
+        "The warning rule and the disposition role are recorded in the catalog entry and the dossier.",
+        "Nothing is promoted and no catalogued command changes."
+      ],
+      "acceptance": [
+        "make checks passes and make autonomy refuses every operation.",
+        "The sweep prints coverage on a clean repository and exits 0.",
+        "The handoff records the re-measured coverage with its date and the overlap packet's two options."
+      ],
+      "spec": "swarm/specs/Z4.md",
+      "status": "todo"
     }
   ]
 }

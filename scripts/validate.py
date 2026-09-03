@@ -44,9 +44,12 @@ def validate_manifest(root: Path, errors: list[str]) -> dict | None:
     known = set(ids)
     # Exclusive path ownership is enforced within a mode, not across modes: a
     # `build` task creates an artifact, and a later-phase `revision` task may be
-    # the sole owner of edits to that same artifact. Two tasks of the same mode
-    # may never own one path.
-    owners: dict[str, dict[str, str]] = {"build": {}, "revision": {}}
+    # the sole owner of edits to that same artifact. Two `build` tasks may never
+    # own one path. Two `revision` tasks may never own one path in the same
+    # wave; revisions of one file in different waves are sequential corrections,
+    # each recorded in its own handoff, not a race for the working tree.
+    owners: dict[str, dict[str, str]] = {"build": {}}
+    revision_owners: dict[object, dict[str, str]] = {}
     for t in tasks:
         for dep in t.get("dependencies", []):
             if dep not in known:
@@ -55,11 +58,16 @@ def validate_manifest(root: Path, errors: list[str]) -> dict | None:
         if not spec.exists():
             fail(errors, f"Missing task spec for {t['id']}: {spec}")
         mode = t.get("mode")
+        bucket = None
         if mode in owners:
+            bucket = owners[mode]
+        elif mode == "revision":
+            bucket = revision_owners.setdefault(t.get("wave"), {})
+        if bucket is not None:
             for out in t.get("outputs", []):
-                if out in owners[mode]:
-                    fail(errors, f"Output collision: {out} owned by {owners[mode][out]} and {t['id']}")
-                owners[mode][out] = t["id"]
+                if out in bucket:
+                    fail(errors, f"Output collision: {out} owned by {bucket[out]} and {t['id']}")
+                bucket[out] = t["id"]
     # Cycle check
     graph = {t["id"]: t.get("dependencies", []) for t in tasks}
     visiting, visited = set(), set()

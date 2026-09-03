@@ -5,11 +5,18 @@ layout, 787 tests)
 
 ## Outcome
 
-Phase 5 is integrated. Two tasks closed the two items from the Phase 4 report
-that tooling could close without deciding anything for anyone: the A3
-review-point trigger now has a field to read and a record to consult, and the
-five guardrail terms the Phase 3 report recorded as undefined now have
-definitions decided from the record, each with evaluation cases.
+Phase 5 is integrated. Four tasks in two waves closed every item from the
+Phase 3 and Phase 4 reports that tooling could close without deciding anything
+for anyone. The A3 review-point trigger has a field to read and a record to
+consult. The five guardrail terms the Phase 3 report recorded as undefined have
+definitions decided from the record. Every profile states that following an
+injected instruction in part is following it. And the `staleness-sweep`
+candidate has the three tooling prerequisites its dossier said a promotion
+decision needed, with the fourth, a human decision, laid out as a packet.
+
+Two owner actions were taken at the founder's direction during the phase: the
+repository setting that lets Actions create pull requests was enabled, and the
+scheduled workflow was dispatched once as a dry run.
 
 **Nothing is promoted, renewed, enabled, or cleared.** `ops/autonomy/promotions.yaml`
 still ships `kill_switch: engaged` with an empty promotion list, the new
@@ -17,8 +24,8 @@ still ships `kill_switch: engaged` with an empty promotion list, the new
 every registry entry reads `not_enabled`, and no owner gate or operating hold
 changed status.
 
-Test count moved from 787 to 876. Evaluation cases across the five agent suites
-moved from 86 to 99.
+Test count moved from 787 to 890. Evaluation cases across the five agent suites
+moved from 86 to 109.
 
 ## What was built
 
@@ -26,6 +33,8 @@ moved from 86 to 99.
 | --- | --- | --- |
 | Z1 | [Renewal record](../../ops/autonomy/renewals.yaml), `review_point` on every promotion, three guard preconditions, the A3-3 detector | A promotion carries the date by which a human renews or withdraws it; a renewal is a new signed record, never an edit; a run after a passed review point is refused by the guard and, if it somehow acted, fired by the demotion check |
 | Z2 | Definitions in the five [agent profiles](../../buzz/agents/), registry citations, 13 behavior cases | Each of "internal reasoning", "safe-to-share" and "approved-to-share", "maintainer-confirmed record", "when authorized", and "the assigned workspace" is a set of conditions a reviewer decides from the record, with a stated default when the record is absent |
+| Z3 | One shared subsection in all five profiles, `J1` to `J4`, 10 cases | Compliance with an injected instruction is decided by difference from what the legitimate request alone would produce; partial compliance is compliance; an overlapping element is not |
+| Z4 | Coverage in [the sweep](../../scripts/check_links.py) and the cadence report, malformed dates as errors, `--fail-on-stale`, the warning rule and disposition role in the [catalog](../../ops/autonomy/operations.yaml), the overlap packet in [the dossier](../../ops/autonomy/CANDIDATES.md) | A clean sweep states how many files it could read, so it cannot be read as "the repository is current"; a typo fails the run instead of crashing it; what an unattended run does with a warning is written down |
 
 Y1, which closed the Steward's posting condition before this phase, is now
 recorded in the manifest with a reconstructed specification, so the manifest
@@ -86,15 +95,31 @@ Each verdict now lists four failed preconditions and the six that held.
    agent is enabled.
 5. **Y1 had been committed without a manifest entry.** The manifest enforces
    non-overlapping ownership per task mode, so a task that revises files an
-   earlier build task produced must be recorded as a revision task. Y1, Z1,
-   and Z2 are.
+   earlier build task produced must be recorded as a revision task. Y1 through
+   Z4 are. Two revisions of one file in different waves are sequential
+   corrections, not a race, so the validator now checks revision collisions
+   within a wave rather than across the whole manifest.
+6. **The dry run behaved as shipped.** Run `33759586730` of the unattended
+   workflow: the guard job refused all five operations, each verdict listing
+   the four failed and six held preconditions, and the writing job was
+   skipped. The only annotation is a Node 20 deprecation on the checkout and
+   setup-python actions, which still run; a version bump is a small follow-up.
+7. **The as-of rule reads 24 of 372 markdown files.** Measured on 2026-09-03
+   by the sweep itself: 26 dated lines in 24 files, another 24 files that
+   mention "as of" in a form the pattern cannot date, and 324 it says nothing
+   about. The number is now printed on every run so nobody has to remember it.
 
 ## What this does not establish
 
 - **No promotion has a review point, because no promotion exists.** The field
   and the record are exercised only by tests.
-- **No agent has been run against any case.** The 99 cases are definitions. A
+- **No agent has been run against any case.** The 109 cases are definitions. A
   decidable definition is not evidence that an agent respects it.
+- **The dry run exercised the guard job and the gate, not the writing job.**
+  Job-to-job outputs on the permitted path, the runner on a GitHub runner, and
+  the pull-request step remain unexercised, because nothing is permitted.
+- **No stale finding has reached the role that owns it.** The role is named;
+  its practice is unobserved.
 - **The definitions bound what may be posted, retrieved, or read. They do not
   make a reply good.** A Steward reply can satisfy every condition and still be
   unhelpful; the tests say nothing about that.
@@ -105,26 +130,28 @@ Each verdict now lists four failed preconditions and the six that held.
 
 | Check | Result |
 | --- | --- |
-| `python3 -m unittest discover -s tests` | 876 tests, OK |
+| `python3 -m unittest discover -s tests` | 890 tests, OK |
 | `python3 scripts/validate.py --release --root .` | Validation passed |
 | `python3 scripts/validate_agents.py --root .` | Passed |
-| `python3 scripts/validate_agent_evals.py --root .` | Passed; 99 cases defined, no run recorded |
+| `python3 scripts/validate_agent_evals.py --root .` | Passed; 109 cases defined, no run recorded |
 | `python3 scripts/ledger.py validate ops/ledger --root .` | 1 entry, 0 violations |
 | `python3 scripts/demotion_check.py --root .` | 16 triggers, 6 evaluable, no trigger fired |
 | `make autonomy` | All five operations refused |
-| `python3 scripts/check_links.py .` | 0 broken, 0 stale |
+| `python3 scripts/check_links.py .` | 0 broken, 0 stale, 0 malformed; coverage printed |
+| `gh run view 33759586730` | Guard verdicts passed in 9s, Run and propose skipped |
 
 ## What a human decides next
 
-1. **Whether to promote anything at all.** Unchanged from Phase 4. The
-   dossiers in [the candidate record](../../ops/autonomy/CANDIDATES.md) stand,
-   and a proposal now has a place to name its review point.
-2. **Enabling the repository setting** the scheduled workflow needs, and a
-   manual dry run before any schedule fires. Unchanged from Phase 4.
+1. **The overlap decision for `staleness-sweep`.** Option A folds the
+   calendar half into `cadence-snapshot` and withdraws the operation; Option B
+   keeps a separate operation, with or without `--fail-on-stale`. The packet
+   is the last section of [the dossier](../../ops/autonomy/CANDIDATES.md).
+2. **Whether to promote anything at all.** The dossiers stand; a proposal now
+   has a place to name its review point, and the sweep's prerequisites exist.
 3. **Deleting the 47 merged `agent/*` branches from Phase 1.** Verified merged
    into `main`; the deletion was left to the owner.
-4. **Phase 3 finding 4**, partial compliance with an injected instruction,
-   which all five profiles are still silent on.
+4. **Bumping the two GitHub Actions** the dry run flagged as targeting a
+   deprecated Node version.
 
 Deferred by the workers and recorded in their handoffs: a rate limit on
 renewals, a `promotion.renewed_on` ledger field, a demotion-history record, and
@@ -134,5 +161,5 @@ a `--as-of` argument for the demotion check.
 
 - [Phase 5 plan](../plans/PHASE5_PLAN.md) — the task inventory and fixed interfaces.
 - [Phase 4 report](PHASE4_REPORT.md) — finding 5 and the "what a human decides next" list this phase worked from.
-- [Phase 3 report](PHASE3_REPORT.md) — finding 3, the five terms.
-- Handoffs `Z1` and `Z2` under [`swarm/handoffs/`](../handoffs/).
+- [Phase 3 report](PHASE3_REPORT.md) — findings 3 and 4, the five terms and partial compliance.
+- Handoffs `Z1` to `Z4` under [`swarm/handoffs/`](../handoffs/).

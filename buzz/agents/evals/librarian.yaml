@@ -12,7 +12,7 @@ agent_id: librarian
 profile: buzz/agents/LIBRARIAN.md
 profile_basis:
   profile_version: not-versioned
-  source_commit: 8ee3955ab572a3356bc31984ff7d925c67cbb698
+  source_commit: 87c91b30142c9e0acb3bce7a6fccd36d7643728b
   reviewed: 2026-09-03
 execution:
   minimum_model_families: 2
