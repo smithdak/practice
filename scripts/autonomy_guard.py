@@ -17,13 +17,22 @@ Two independent records must both change before the answer is yes:
 
 1. ``ops/autonomy/promotions.yaml`` carries a promotion for the operation at A3,
    signed by a role that holds reserved decisions, dated, backed by evidence
-   paths that exist, naming its demotion triggers, and declaring the same write
-   scope as the catalog entry.
+   paths that exist, naming its demotion triggers, declaring the same write
+   scope as the catalog entry, and recording a review point after its signing
+   date.
 2. The same file records ``kill_switch: released``.
 
 Editing one of those two records is not enough, and neither is editing the
 catalog: ``ops/autonomy/operations.yaml`` may not declare A3 for anything, so it
 cannot promote an operation on its own.
+
+A promotion also expires. The ladder requires a review point at which the bound
+is renewed or withdrawn, and says silence is not renewal. The guard refuses a
+run dated after the effective review point: the promotion's own, or the review
+point of the latest entry in ``ops/autonomy/renewals.yaml`` for that promotion
+whose ``renewed_on`` is on or before the date being checked. A renewal is a new
+record there, never an edit to the promotion, and a renewal record that is
+missing, unreadable, or malformed refuses every operation.
 
 The guard reads files only. It never writes, never runs an operation's command,
 never changes a level, never records a signature, and never asserts that an
@@ -42,7 +51,7 @@ import argparse
 import re
 import sys
 from dataclasses import dataclass, field
-from datetime import date
+from datetime import date, datetime
 from fnmatch import fnmatchcase
 from pathlib import Path
 
@@ -59,6 +68,7 @@ DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 
 CATALOG_PATH = "ops/autonomy/operations.yaml"
 PROMOTIONS_PATH = "ops/autonomy/promotions.yaml"
+RENEWALS_PATH = "ops/autonomy/renewals.yaml"
 LADDER_PATH = "docs/framework/AUTONOMY_LADDER.md"
 
 SUPPORTED_SCHEMA_VERSIONS = (1,)
@@ -133,6 +143,21 @@ REQUIRED_PROMOTION_FIELDS = (
     "demotion_triggers",
     "signed_by",
     "signed_on",
+    "review_point",
+)
+
+# A renewal is a new record, never an edit to a promotion. Each entry names the
+# promotion it renews by (operation, promotion_signed_on), carries its own date
+# and its own review point, and is signed by a reserved-decision role. The
+# record ships as `schema_version: 1` and `renewals: []`.
+RENEWALS_TOP_LEVEL_FIELDS = ("schema_version", "renewals")
+RENEWAL_FIELDS = (
+    "operation",
+    "promotion_signed_on",
+    "renewed_on",
+    "review_point",
+    "signed_by",
+    "reviewed",
 )
 
 ID_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
@@ -147,6 +172,7 @@ SHELL_METACHARACTER_RE = re.compile(r"[;&|<>$`\n\r\\\"']")
 GOVERNED_PATHS = (
     "ops/autonomy/operations.yaml",
     "ops/autonomy/promotions.yaml",
+    "ops/autonomy/renewals.yaml",
     "ops/autonomy/README.md",
     "docs/framework/AUTONOMY_LADDER.md",
     "release/OWNER_REVIEW.md",
@@ -195,6 +221,12 @@ class Decision:
     write_scope: list[str] | None = None
     signed_by: str | None = None
     signed_on: str | None = None
+    # The effective review point the guard compared the as-of date against: the
+    # promotion's own, or the review point of the latest covering renewal. A
+    # runner records this value, not the raw promotion field. ``None`` when no
+    # usable review point was found.
+    review_point: str | None = None
+    review_point_basis: str | None = None
 
     def refuse(self, precondition: str, message: str) -> None:
         self.permitted = False
@@ -233,10 +265,15 @@ def load_yaml_mapping(path: Path, relative: str, precondition: str, decision: De
         )
         return None
     if not isinstance(value, dict):
+        expected = {
+            CATALOG_PATH: CATALOG_TOP_LEVEL_FIELDS,
+            PROMOTIONS_PATH: PROMOTIONS_TOP_LEVEL_FIELDS,
+            RENEWALS_PATH: RENEWALS_TOP_LEVEL_FIELDS,
+        }.get(relative, PROMOTIONS_TOP_LEVEL_FIELDS)
         decision.refuse(
             precondition,
             f"{relative} is not a YAML mapping. It must be a mapping with "
-            f"{', '.join(repr(f) for f in (CATALOG_TOP_LEVEL_FIELDS if relative == CATALOG_PATH else PROMOTIONS_TOP_LEVEL_FIELDS))}.",
+            f"{', '.join(repr(f) for f in expected)}.",
         )
         return None
     return value
@@ -554,8 +591,14 @@ def read_ineligible_operations(root: Path, decision: Decision) -> set[str] | Non
     return found | set(INELIGIBLE_OPERATIONS)
 
 
-def normalize_signed_on(value) -> tuple[date | None, str]:
-    """Return ``(date, rendered)`` for a YAML date or ISO string."""
+def normalize_date(value) -> tuple[date | None, str]:
+    """Return ``(date, rendered)`` for a YAML date or ISO string.
+
+    A ``datetime`` is not accepted: the records carry calendar dates, and a
+    timestamp would let a review point be a moment nobody can read off a page.
+    """
+    if isinstance(value, datetime):
+        return None, repr(value)
     if isinstance(value, date):
         return value, value.isoformat()
     if isinstance(value, str) and ISO_DATE_RE.match(value.strip()):
@@ -564,6 +607,22 @@ def normalize_signed_on(value) -> tuple[date | None, str]:
         except ValueError:
             return None, value.strip()
     return None, repr(value)
+
+
+# The name earlier callers used; the check is the same for every dated field.
+normalize_signed_on = normalize_date
+
+
+def is_repository_path(value: str) -> bool:
+    """True for a plain repository-relative path with no escape and no pattern."""
+    text = value.strip()
+    if not text or text != value:
+        return False
+    if text.startswith("/") or text.startswith("~") or "\\" in text:
+        return False
+    if ".." in text.split("/"):
+        return False
+    return not any(character in text for character in "*?[]")
 
 
 def check_promotion_shape(entry, index: int, decision: Decision) -> str | None:
@@ -605,8 +664,12 @@ def check_promotion(
     root: Path,
     as_of: date,
     decision: Decision,
-) -> None:
-    """Check the promotion that names ``operation`` against the catalog and the ladder."""
+) -> date | None:
+    """Check the promotion that names ``operation`` against the catalog and the ladder.
+
+    Returns the promotion's own review point when ``review-point-recorded``
+    held, so the caller can compute the effective one; ``None`` otherwise.
+    """
     where = f"{PROMOTIONS_PATH}: promotion for '{operation}'"
 
     level = promotion.get("level")
@@ -696,7 +759,7 @@ def check_promotion(
             decision.passed("signature-authority")
             decision.signed_by = role
 
-        signed_date, rendered = normalize_signed_on(signed_on)
+        signed_date, rendered = normalize_date(signed_on)
         if signed_date is None:
             decision.refuse(
                 "signature-date",
@@ -712,6 +775,344 @@ def check_promotion(
         else:
             decision.passed("signature-date")
             decision.signed_on = rendered
+
+    # The review point: the date by which a human renews the bound or withdraws
+    # it. A promotion without one has no end, and the ladder requires one.
+    signed_date, _ = normalize_date(signed_on) if signed_on is not None else (None, "")
+    review_point = promotion.get("review_point")
+    if review_point is None:
+        decision.refuse(
+            "review-point-recorded",
+            f"{where} records no 'review_point'. docs/framework/AUTONOMY_LADDER.md requires a "
+            "review point at which the bound is renewed or withdrawn; a promotion without one "
+            "never expires, so it is refused.",
+        )
+        return None
+    review_date, rendered = normalize_date(review_point)
+    if review_date is None:
+        decision.refuse(
+            "review-point-recorded",
+            f"{where}: 'review_point' is {rendered}; it must be an ISO date such as "
+            "2026-12-02, strictly after 'signed_on'.",
+        )
+        return None
+    if signed_date is None:
+        decision.refuse(
+            "review-point-recorded",
+            f"{where}: 'review_point' is {rendered}, but 'signed_on' is not a readable date, "
+            "so the guard cannot confirm the review point follows the signature. It refuses "
+            "rather than assume the order.",
+        )
+        return None
+    if review_date <= signed_date:
+        decision.refuse(
+            "review-point-recorded",
+            f"{where}: 'review_point' is {rendered}, which is not after 'signed_on' "
+            f"({signed_date.isoformat()}). A review point is the date the bound is next "
+            "reviewed, so it must be strictly after the date the bound was signed.",
+        )
+        return None
+    decision.passed("review-point-recorded")
+    return review_date
+
+
+def load_renewals(
+    root: Path,
+    promotion_index: dict[tuple[str, str], int],
+    as_of: date,
+    decision: Decision,
+) -> list[dict] | None:
+    """Read and validate ``renewals.yaml``; return its entries, or ``None`` after refusing.
+
+    Every entry is checked, not only the ones naming the operation being asked
+    about: a renewal record that cannot be trusted in part is not trusted in
+    whole, exactly as the promotion record is treated. Every problem is recorded
+    under ``renewal-record-readable`` so the ledger can name the precondition.
+    """
+    precondition = "renewal-record-readable"
+    record = load_yaml_mapping(root / RENEWALS_PATH, RENEWALS_PATH, precondition, decision)
+    if record is None:
+        return None
+    check_schema_version(record, RENEWALS_PATH, precondition, decision)
+    check_top_level_fields(record, RENEWALS_PATH, RENEWALS_TOP_LEVEL_FIELDS, precondition, decision)
+    for missing in [name for name in RENEWALS_TOP_LEVEL_FIELDS if name not in record]:
+        decision.refuse(
+            precondition,
+            f"{RENEWALS_PATH} is missing top-level field '{missing}'. The record ships as "
+            "'schema_version: 1' and 'renewals: []'; restore both fields.",
+        )
+    renewals = record.get("renewals")
+    if renewals is None:
+        renewals = []
+    if not isinstance(renewals, list):
+        decision.refuse(
+            precondition,
+            f"{RENEWALS_PATH}: 'renewals' must be a list. Use '[]' to record that nothing has "
+            "been renewed.",
+        )
+        return None
+
+    usable: list[dict] = []
+    seen: dict[tuple[str, str, str], int] = {}
+    for index, item in enumerate(renewals):
+        where = f"{RENEWALS_PATH}: renewals[{index}]"
+        if not isinstance(item, dict):
+            decision.refuse(precondition, f"{where} must be a mapping with {', '.join(RENEWAL_FIELDS)}.")
+            continue
+        entry_ok = True
+        for missing in [name for name in RENEWAL_FIELDS if name not in item]:
+            decision.refuse(
+                precondition,
+                f"{where} is missing required field '{missing}'. A renewal records the whole "
+                f"decision: {', '.join(RENEWAL_FIELDS)}.",
+            )
+            entry_ok = False
+        unknown = sorted(set(item) - set(RENEWAL_FIELDS))
+        if unknown:
+            decision.refuse(
+                precondition,
+                f"{where} has unrecognized field(s) {', '.join(unknown)}. Allowed fields are "
+                f"{', '.join(RENEWAL_FIELDS)}; a misspelled field silently drops part of the "
+                "decision.",
+            )
+            entry_ok = False
+
+        operation = item.get("operation")
+        if is_nonempty_str(operation) and ID_RE.match(operation.strip()):
+            operation = operation.strip()
+        else:
+            decision.refuse(
+                precondition,
+                f"{where}: 'operation' must be the lowercase id of an operation that has a "
+                f"promotion in {PROMOTIONS_PATH}.",
+            )
+            operation = None
+            entry_ok = False
+
+        promotion_signed, promotion_rendered = normalize_date(item.get("promotion_signed_on"))
+        if promotion_signed is None:
+            decision.refuse(
+                precondition,
+                f"{where}: 'promotion_signed_on' is {promotion_rendered}; it must be the ISO "
+                "'signed_on' date of the promotion this renewal renews.",
+            )
+            entry_ok = False
+        elif operation is not None and (operation, promotion_signed.isoformat()) not in promotion_index:
+            decision.refuse(
+                precondition,
+                f"{where} renews a promotion for '{operation}' signed on "
+                f"{promotion_signed.isoformat()}, and {PROMOTIONS_PATH} carries no such "
+                "promotion. A renewal of a promotion that does not exist is not a record of "
+                "anything; remove it, or correct the pair that identifies the promotion.",
+            )
+            entry_ok = False
+
+        renewed_on, renewed_rendered = normalize_date(item.get("renewed_on"))
+        if renewed_on is None:
+            decision.refuse(
+                precondition,
+                f"{where}: 'renewed_on' is {renewed_rendered}; it must be an ISO date such as "
+                "2026-12-01.",
+            )
+            entry_ok = False
+        else:
+            if renewed_on > as_of:
+                decision.refuse(
+                    precondition,
+                    f"{where}: 'renewed_on' is {renewed_rendered}, which is after the date being "
+                    f"checked ({as_of.isoformat()}). A renewal cannot be signed in the future.",
+                )
+                entry_ok = False
+            if promotion_signed is not None and renewed_on < promotion_signed:
+                decision.refuse(
+                    precondition,
+                    f"{where}: 'renewed_on' is {renewed_rendered}, which is before the promotion "
+                    f"was signed ({promotion_signed.isoformat()}). Nothing can be renewed before "
+                    "it exists.",
+                )
+                entry_ok = False
+
+        review_point, review_rendered = normalize_date(item.get("review_point"))
+        if review_point is None:
+            decision.refuse(
+                precondition,
+                f"{where}: 'review_point' is {review_rendered}; it must be an ISO date strictly "
+                "after 'renewed_on'.",
+            )
+            entry_ok = False
+        elif renewed_on is not None and review_point <= renewed_on:
+            decision.refuse(
+                precondition,
+                f"{where}: 'review_point' is {review_rendered}, which is not after 'renewed_on' "
+                f"({renewed_on.isoformat()}). A renewal sets the next review point, so it must "
+                "be strictly after the date of the renewal.",
+            )
+            entry_ok = False
+
+        signed_by = item.get("signed_by")
+        if not is_nonempty_str(signed_by):
+            decision.refuse(
+                precondition,
+                f"{where}: 'signed_by' must name the role that made the renewal decision.",
+            )
+            entry_ok = False
+        elif signed_by.strip() not in ROLE_VOCABULARY:
+            decision.refuse(
+                precondition,
+                f"{where}: 'signed_by' is {signed_by.strip()!r}, which is not a controlled "
+                f"operating role. Use one of: {', '.join(ROLE_VOCABULARY)}. Personal names, "
+                "handles, and contact routes stay in the private maintainer record.",
+            )
+            entry_ok = False
+        elif signed_by.strip() not in RESERVED_DECISION_ROLES:
+            decision.refuse(
+                precondition,
+                f"{where}: 'signed_by' is {signed_by.strip()!r}. Renewing an {UNATTENDED_LEVEL} "
+                "bound is the same reserved decision as making it, so only "
+                f"{', '.join(RESERVED_DECISION_ROLES)} may sign a renewal.",
+            )
+            entry_ok = False
+
+        reviewed = item.get("reviewed")
+        if not is_str_list(reviewed) or not reviewed:
+            decision.refuse(
+                precondition,
+                f"{where}: 'reviewed' must be a non-empty list of repository paths the reviewer "
+                "opened - the ledger entries, the pull requests, the evidence gaps. A renewal "
+                "that reviewed nothing is silence with a date on it.",
+            )
+            entry_ok = False
+        else:
+            for position, path in enumerate(reviewed):
+                if not is_repository_path(path):
+                    decision.refuse(
+                        precondition,
+                        f"{where}: 'reviewed[{position}]' is {path!r}; it must be a plain "
+                        "repository-relative path, not an absolute path, a pattern, or one "
+                        "that leaves the repository.",
+                    )
+                    entry_ok = False
+                elif not (root / path).exists():
+                    decision.refuse(
+                        precondition,
+                        f"{where}: 'reviewed[{position}]' names {path}, which does not exist "
+                        "under the root being checked. A review of something nobody can open "
+                        "cannot be checked.",
+                    )
+                    entry_ok = False
+
+        if operation is not None and promotion_signed is not None and renewed_on is not None:
+            key = (operation, promotion_signed.isoformat(), renewed_on.isoformat())
+            if key in seen:
+                decision.refuse(
+                    precondition,
+                    f"{where} renews the same promotion on the same day as renewals[{seen[key]}]. "
+                    "Two renewals dated the same day for one promotion make the effective "
+                    "review point ambiguous, so the guard refuses until one remains.",
+                )
+                entry_ok = False
+            else:
+                seen[key] = index
+
+        if entry_ok and operation is not None and promotion_signed is not None:
+            usable.append(
+                {
+                    "index": index,
+                    "operation": operation,
+                    "promotion_signed_on": promotion_signed,
+                    "renewed_on": renewed_on,
+                    "review_point": review_point,
+                    "signed_by": signed_by.strip(),
+                }
+            )
+
+    if any(refusal.precondition == precondition for refusal in decision.refusals):
+        return None
+    decision.passed(precondition)
+    return usable
+
+
+def effective_review_point(
+    own: date, renewals: list[dict], operation: str, signed_on: date, as_of: date
+) -> tuple[date, str, int]:
+    """Return ``(review point, basis, ignored)`` for a promotion on ``as_of``.
+
+    The effective review point is the promotion's own, or the review point of
+    the latest renewal for that promotion whose ``renewed_on`` is on or before
+    ``as_of``. A renewal dated after ``as_of`` is ignored for that date, and
+    ``ignored`` counts how many were.
+    """
+    covering = [
+        item
+        for item in renewals
+        if item["operation"] == operation
+        and item["promotion_signed_on"] == signed_on
+        and item["renewed_on"] <= as_of
+    ]
+    ignored = sum(
+        1
+        for item in renewals
+        if item["operation"] == operation
+        and item["promotion_signed_on"] == signed_on
+        and item["renewed_on"] > as_of
+    )
+    if not covering:
+        return own, f"the promotion's own review point in {PROMOTIONS_PATH}", ignored
+    latest = max(covering, key=lambda item: item["renewed_on"])
+    return (
+        latest["review_point"],
+        f"renewed on {latest['renewed_on'].isoformat()} by {latest['signed_by']} in "
+        f"{RENEWALS_PATH} (renewals[{latest['index']}])",
+        ignored,
+    )
+
+
+def check_review_point_not_passed(
+    operation: str,
+    own: date | None,
+    signed_on: date | None,
+    renewals: list[dict] | None,
+    as_of: date,
+    decision: Decision,
+) -> None:
+    """Refuse unless the as-of date is on or before the effective review point."""
+    precondition = "review-point-not-passed"
+    where = f"{PROMOTIONS_PATH}: promotion for '{operation}'"
+    if own is None or signed_on is None:
+        decision.refuse(
+            precondition,
+            f"{where} records no usable review point, so the guard cannot confirm the review "
+            "point has not passed, and refuses. Silence is not renewal.",
+        )
+        return
+    if renewals is None:
+        decision.refuse(
+            precondition,
+            f"{where}: the effective review point cannot be computed because {RENEWALS_PATH} "
+            "could not be read. A renewal the guard cannot read is not a renewal, so the run is "
+            "refused. Silence is not renewal.",
+        )
+        return
+    effective, basis, ignored = effective_review_point(own, renewals, operation, signed_on, as_of)
+    decision.review_point = effective.isoformat()
+    decision.review_point_basis = basis
+    if as_of > effective:
+        note = ""
+        if ignored:
+            note = (
+                f" {ignored} renewal(s) for this promotion are dated after {as_of.isoformat()} "
+                "and do not count on that date."
+            )
+        decision.refuse(
+            precondition,
+            f"{where}: the review point {effective.isoformat()} ({basis}) has passed as of "
+            f"{as_of.isoformat()}. Silence is not renewal: the bound ends at its review point "
+            f"unless a human records a renewal in {RENEWALS_PATH}, as a new entry with its "
+            "own date, review point, and signing role, or withdraws the promotion. Nothing runs "
+            f"until one of those is recorded.{note}",
+        )
+        return
+    decision.passed(precondition)
 
 
 def evaluate(root: Path, operation: str, as_of: date | None = None) -> Decision:
@@ -796,10 +1197,16 @@ def evaluate(root: Path, operation: str, as_of: date | None = None) -> Decision:
         return decision
 
     named: list[tuple[int, dict]] = []
+    # Every promotion a renewal could name, keyed by the pair that identifies
+    # it. A promotion whose signing date is unreadable cannot be renewed.
+    promotion_index: dict[tuple[str, str], int] = {}
     for index, item in enumerate(promotions):
         promoted_operation = check_promotion_shape(item, index, decision)
         if promoted_operation is None:
             continue
+        signed_date, _ = normalize_date(item.get("signed_on"))
+        if signed_date is not None:
+            promotion_index.setdefault((promoted_operation, signed_date.isoformat()), index)
         if ineligible is not None and promoted_operation in ineligible:
             decision.refuse(
                 "operation-eligible",
@@ -820,6 +1227,11 @@ def evaluate(root: Path, operation: str, as_of: date | None = None) -> Decision:
         if promoted_operation == operation and isinstance(item, dict):
             named.append((index, item))
 
+    # The renewal record is read whether or not this operation is promoted: a
+    # malformed renewal for any promotion refuses everything, as a malformed
+    # promotion does, and the shipped empty record is checked on every run.
+    renewals = load_renewals(root, promotion_index, as_of, decision)
+
     if entry is not None:
         if not named:
             decision.refuse(
@@ -830,6 +1242,22 @@ def evaluate(root: Path, operation: str, as_of: date | None = None) -> Decision:
                 "through the reserved-decision path in community/GOVERNANCE.md; it is not "
                 "something this guard, a runner, or an agent can record.",
             )
+            # With no promotion there is no review point to be inside of. Both
+            # review-point preconditions fail rather than go unevaluated, so the
+            # verdict names every check the ladder's A3 section requires.
+            decision.refuse(
+                "review-point-recorded",
+                f"{PROMOTIONS_PATH} records no review point for '{operation}', because it "
+                "records no promotion for it. A review point is a field of a signed promotion; "
+                "there is nothing here to review or renew.",
+            )
+            decision.refuse(
+                "review-point-not-passed",
+                f"'{operation}' has no effective review point to be on or before, because no "
+                f"promotion for it is recorded in {PROMOTIONS_PATH}, and {RENEWALS_PATH} can "
+                "renew only a promotion that exists. Silence is not renewal, and the absence "
+                "of a bound is not a bound.",
+            )
         elif len(named) > 1:
             positions = ", ".join(str(index) for index, _ in named)
             decision.refuse(
@@ -838,9 +1266,24 @@ def evaluate(root: Path, operation: str, as_of: date | None = None) -> Decision:
                 f"(entries {positions}). Two bounds for one operation are ambiguous, so the "
                 "guard refuses until exactly one remains.",
             )
+            decision.refuse(
+                "review-point-recorded",
+                f"{PROMOTIONS_PATH} carries {len(named)} promotions for '{operation}', so the "
+                "guard cannot say which review point is the operation's. Reduce the record to "
+                "one promotion.",
+            )
+            decision.refuse(
+                "review-point-not-passed",
+                f"'{operation}' has no single effective review point while {len(named)} "
+                f"promotions name it in {PROMOTIONS_PATH}. Silence is not renewal, and an "
+                "ambiguous record is not a renewal either.",
+            )
         else:
             decision.passed("promotion-signed")
-            check_promotion(named[0][1], operation, entry, root, as_of, decision)
+            promotion = named[0][1]
+            own = check_promotion(promotion, operation, entry, root, as_of, decision)
+            signed_date, _ = normalize_date(promotion.get("signed_on"))
+            check_review_point_not_passed(operation, own, signed_date, renewals, as_of, decision)
 
     decision.permitted = not decision.refusals
     return decision
@@ -858,6 +1301,10 @@ def render(decision: Decision) -> str:
         scope = decision.write_scope if decision.write_scope is not None else []
         lines.append(f"  write_scope: {', '.join(scope) if scope else '(writes nothing)'}")
         lines.append(f"  signed_by: {decision.signed_by} on {decision.signed_on}")
+        lines.append(
+            f"  review_point: {decision.review_point} ({decision.review_point_basis}); "
+            "silence is not renewal"
+        )
         lines.append(f"  preconditions held: {', '.join(decision.checked)}")
         lines.append(
             "This permits one bounded run of this operation. It is not an approval of any "
@@ -868,6 +1315,8 @@ def render(decision: Decision) -> str:
     lines.append(f"REFUSED: '{decision.operation}' may not run unattended.")
     for refusal in decision.refusals:
         lines.append(f"  [{refusal.precondition}] {refusal.message}")
+    if decision.checked:
+        lines.append(f"  preconditions held: {', '.join(decision.checked)}")
     lines.append(
         f"{len(decision.refusals)} precondition(s) failed. Refusal is the default: the guard "
         "permits a run only when every precondition holds."

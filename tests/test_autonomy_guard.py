@@ -63,6 +63,8 @@ CATALOG_ENTRY = {
     "level": "A1",
 }
 
+REVIEW_POINT = "2026-12-02"
+
 PROMOTION = {
     "operation": "cadence-snapshot",
     "level": "A3",
@@ -71,6 +73,22 @@ PROMOTION = {
     "demotion_triggers": ["wrote outside write_scope", "guard precondition failed"],
     "signed_by": "founder",
     "signed_on": AS_OF,
+    "review_point": REVIEW_POINT,
+}
+
+# A renewal signed before the promotion's own review point, moving it out to
+# the following spring. Checked on a date inside the new window, it permits.
+RENEWED_ON = "2026-11-20"
+RENEWED_REVIEW_POINT = "2027-03-01"
+INSIDE_RENEWED_WINDOW = "2027-01-15"
+
+RENEWAL = {
+    "operation": "cadence-snapshot",
+    "promotion_signed_on": AS_OF,
+    "renewed_on": RENEWED_ON,
+    "review_point": RENEWED_REVIEW_POINT,
+    "signed_by": "founder",
+    "reviewed": ["evidence/renewal-review.md"],
 }
 
 LADDER_HEADER = """# Autonomy Ladder (fixture)
@@ -103,10 +121,18 @@ def promotions(kill_switch: str = "released", entries=None, schema_version: int 
     }
 
 
+def renewals(entries=None, schema_version: int = 1) -> dict:
+    """The renewal record; empty by default, as it ships."""
+    return {
+        "schema_version": schema_version,
+        "renewals": copy.deepcopy(entries) if entries is not None else [],
+    }
+
+
 class GuardTestCase(unittest.TestCase):
     """Shared fixture builder: a repository root with exactly one thing wrong."""
 
-    def build(self, *, catalog_record=None, promotions_record=None, ladder=None) -> Path:
+    def build(self, *, catalog_record=None, promotions_record=None, renewals_record=None, ladder=None) -> Path:
         directory = tempfile.TemporaryDirectory()
         self.addCleanup(directory.cleanup)
         root = Path(directory.name)
@@ -116,6 +142,7 @@ class GuardTestCase(unittest.TestCase):
         (root / "evidence").mkdir(parents=True)
         (root / "scripts" / "cadence.py").write_text("print('fixture')\n", encoding="utf-8")
         (root / "evidence" / "promotion-record.md").write_text("# Fixture evidence\n", encoding="utf-8")
+        (root / "evidence" / "renewal-review.md").write_text("# Fixture renewal review\n", encoding="utf-8")
         (root / "docs" / "framework" / "AUTONOMY_LADDER.md").write_text(
             ladder_text() if ladder is None else ladder, encoding="utf-8"
         )
@@ -123,6 +150,10 @@ class GuardTestCase(unittest.TestCase):
         self.write_yaml(
             root / "ops" / "autonomy" / "promotions.yaml",
             promotions() if promotions_record is None else promotions_record,
+        )
+        self.write_yaml(
+            root / "ops" / "autonomy" / "renewals.yaml",
+            renewals() if renewals_record is None else renewals_record,
         )
         return root
 
@@ -165,11 +196,38 @@ class SafetyInvariantTest(GuardTestCase):
                 self.assertIn("[kill-switch-released]", output)
                 self.assertIn("[promotion-signed]", output)
 
+    def test_every_shipped_verdict_names_the_review_point_preconditions(self):
+        """Each verdict lists the three review-point checks as held or failed."""
+        for operation in CATALOGUED_OPERATIONS:
+            with self.subTest(operation=operation):
+                decision = guard.evaluate(REPOSITORY_ROOT, operation)
+                failed = {refusal.precondition for refusal in decision.refusals}
+                self.assertIn("renewal-record-readable", decision.checked)
+                self.assertIn("review-point-recorded", failed)
+                self.assertIn("review-point-not-passed", failed)
+                output = guard.render(decision)
+                self.assertIn("[review-point-recorded]", output)
+                self.assertIn("[review-point-not-passed]", output)
+                self.assertIn("renewal-record-readable", output)
+                self.assertIn("Silence is not renewal", output)
+
     def test_shipped_promotion_record_is_empty_with_the_switch_engaged(self):
         record = yaml.safe_load((REPOSITORY_ROOT / guard.PROMOTIONS_PATH).read_text(encoding="utf-8"))
         self.assertEqual(record["schema_version"], 1)
         self.assertEqual(record["kill_switch"], "engaged")
         self.assertEqual(record["promotions"], [])
+
+    def test_shipped_renewal_record_is_empty(self):
+        record = yaml.safe_load((REPOSITORY_ROOT / guard.RENEWALS_PATH).read_text(encoding="utf-8"))
+        self.assertEqual(sorted(record), ["renewals", "schema_version"])
+        self.assertEqual(record["schema_version"], 1)
+        self.assertEqual(record["renewals"], [])
+
+    def test_shipped_promotion_header_lists_the_review_point_and_names_the_renewal_record(self):
+        text = (REPOSITORY_ROOT / guard.PROMOTIONS_PATH).read_text(encoding="utf-8")
+        self.assertIn("review_point", text)
+        self.assertIn("ops/autonomy/renewals.yaml", text)
+        self.assertIn("not a renewal", text)
 
     def test_shipped_catalog_holds_the_five_operations_at_attended_levels(self):
         record = yaml.safe_load((REPOSITORY_ROOT / guard.CATALOG_PATH).read_text(encoding="utf-8"))
@@ -181,11 +239,22 @@ class SafetyInvariantTest(GuardTestCase):
                 self.assertNotIn(entry["id"], guard.INELIGIBLE_OPERATIONS)
 
     def test_shipped_catalog_passes_its_own_structural_checks(self):
+        # The four failures are the two records that must change and the two
+        # review-point checks that fail closed while no promotion exists. No
+        # structural check on the catalog, the ladder, or the renewal record fails.
         for operation in CATALOGUED_OPERATIONS:
             with self.subTest(operation=operation):
                 decision = guard.evaluate(REPOSITORY_ROOT, operation)
                 named = {refusal.precondition for refusal in decision.refusals}
-                self.assertEqual(named, {"kill-switch-released", "promotion-signed"})
+                self.assertEqual(
+                    named,
+                    {
+                        "kill-switch-released",
+                        "promotion-signed",
+                        "review-point-recorded",
+                        "review-point-not-passed",
+                    },
+                )
 
     def test_shipped_ladder_still_carries_the_ineligible_list(self):
         decision = guard.Decision(operation="probe")
@@ -205,6 +274,17 @@ class TwoRecordsTest(GuardTestCase):
         self.assertIn("python3 scripts/cadence.py --root .", output)
         self.assertIn("ops/status/*.md", output)
         self.assertIn("founder", output)
+        self.assertIn(f"review_point: {REVIEW_POINT}", output)
+        for precondition in ("review-point-recorded", "renewal-record-readable", "review-point-not-passed"):
+            self.assertIn(precondition, output)
+
+    def test_a_refusal_lists_the_preconditions_that_held(self):
+        root = self.build(promotions_record=promotions(kill_switch="engaged"))
+        output = self.assertRefused(root, "kill-switch-released")
+        self.assertIn("preconditions held:", output)
+        self.assertIn("renewal-record-readable", output)
+        self.assertIn("review-point-recorded", output)
+        self.assertIn("review-point-not-passed", output)
 
     def test_promotion_without_a_released_kill_switch_is_refused(self):
         root = self.build(promotions_record=promotions(kill_switch="engaged"))
@@ -430,6 +510,298 @@ class SignatureTest(GuardTestCase):
         promotion = dict(PROMOTION, signed_on=date(2026, 9, 1))
         code, output = self.run_guard(self.build(promotions_record=promotions(entries=[promotion])))
         self.assertEqual(code, 0, msg=output)
+
+
+class ReviewPointTest(GuardTestCase):
+    """A promotion ends at its review point unless a human records a renewal."""
+
+    def test_missing_review_point_is_refused(self):
+        promotion = dict(PROMOTION)
+        del promotion["review_point"]
+        output = self.assertRefused(
+            self.build(promotions_record=promotions(entries=[promotion])), "review-point-recorded"
+        )
+        self.assertIn("[promotions-record]", output)
+        self.assertIn("[review-point-not-passed]", output)
+
+    def test_unreadable_review_point_is_refused(self):
+        promotion = dict(PROMOTION, review_point="next quarter")
+        self.assertRefused(self.build(promotions_record=promotions(entries=[promotion])), "review-point-recorded")
+
+    def test_review_point_on_the_signing_date_is_refused(self):
+        promotion = dict(PROMOTION, review_point=AS_OF)
+        self.assertRefused(self.build(promotions_record=promotions(entries=[promotion])), "review-point-recorded")
+
+    def test_review_point_before_the_signing_date_is_refused(self):
+        promotion = dict(PROMOTION, review_point="2026-08-01")
+        output = self.assertRefused(
+            self.build(promotions_record=promotions(entries=[promotion])), "review-point-recorded"
+        )
+        self.assertIn("strictly after", output)
+
+    def test_review_point_with_an_unreadable_signing_date_is_refused(self):
+        promotion = dict(PROMOTION, signed_on="soon")
+        output = self.assertRefused(
+            self.build(promotions_record=promotions(entries=[promotion])), "signature-date"
+        )
+        self.assertIn("[review-point-recorded]", output)
+
+    def test_yaml_date_review_point_is_accepted(self):
+        from datetime import date
+
+        promotion = dict(PROMOTION, review_point=date(2026, 12, 2))
+        code, output = self.run_guard(self.build(promotions_record=promotions(entries=[promotion])))
+        self.assertEqual(code, 0, msg=output)
+
+    def test_a_timestamp_review_point_is_refused(self):
+        root = self.build(
+            promotions_record=(
+                "schema_version: 1\nkill_switch: released\npromotions:\n"
+                "  - operation: cadence-snapshot\n    level: A3\n    write_scope: ['ops/status/*.md']\n"
+                "    evidence: ['evidence/promotion-record.md']\n    demotion_triggers: ['a trigger']\n"
+                f"    signed_by: founder\n    signed_on: {AS_OF}\n    review_point: 2026-12-02T09:00:00\n"
+            )
+        )
+        self.assertRefused(root, "review-point-recorded")
+
+    def test_past_review_point_is_refused_and_says_silence_is_not_renewal(self):
+        output = self.assertRefused(self.build(), "review-point-not-passed", as_of="2026-12-03")
+        self.assertIn("Silence is not renewal", output)
+        self.assertIn(REVIEW_POINT, output)
+        self.assertIn("ops/autonomy/renewals.yaml", output)
+
+    def test_the_review_point_date_itself_is_still_inside_the_bound(self):
+        code, output = self.run_guard(self.build(), as_of=REVIEW_POINT)
+        self.assertEqual(code, 0, msg=output)
+
+    def test_renewed_on_time_and_checked_inside_the_new_window_is_permitted(self):
+        root = self.build(renewals_record=renewals([RENEWAL]))
+        code, output = self.run_guard(root, as_of=INSIDE_RENEWED_WINDOW)
+        self.assertEqual(code, 0, msg=output)
+        self.assertIn(f"review_point: {RENEWED_REVIEW_POINT}", output)
+        self.assertIn(f"renewed on {RENEWED_ON}", output)
+        self.assertIn("renewals[0]", output)
+
+    def test_the_renewal_is_reported_even_before_the_original_review_point(self):
+        """Once signed, the latest renewal's review point is the effective one."""
+        root = self.build(renewals_record=renewals([RENEWAL]))
+        code, output = self.run_guard(root, as_of="2026-11-25")
+        self.assertEqual(code, 0, msg=output)
+        self.assertIn(f"review_point: {RENEWED_REVIEW_POINT}", output)
+
+    def test_a_renewal_dated_after_the_as_of_date_never_extends_the_bound(self):
+        root = self.build(renewals_record=renewals([RENEWAL]))
+        # The renewal is signed on 2026-11-20. Asked about 2026-11-10, the guard
+        # does not let it count: the record is refused as signed in the future,
+        # and the effective review point stays uncomputed rather than extended.
+        output = self.assertRefused(root, "renewal-record-readable", as_of="2026-11-10")
+        self.assertNotIn(f"review_point: {RENEWED_REVIEW_POINT}", output)
+        self.assertIn("[review-point-not-passed]", output)
+
+    def test_a_renewal_dated_after_the_as_of_date_does_not_rescue_a_passed_review_point(self):
+        late = dict(RENEWAL, renewed_on="2026-12-10", review_point="2027-03-01")
+        root = self.build(renewals_record=renewals([late]))
+        # Asked about 2026-12-05, the original review point has passed and the
+        # renewal is five days away. The effective-review-point rule ignores a
+        # renewal dated after the as-of date; the guard goes one step further,
+        # because to it the as-of date is today, and a renewal signed in the
+        # future is a record defect that refuses everything.
+        output = self.assertRefused(root, "renewal-record-readable", as_of="2026-12-05")
+        self.assertIn("in the future", output)
+        self.assertIn("[review-point-not-passed]", output)
+
+    def test_the_effective_review_point_ignores_a_renewal_dated_after_the_as_of_date(self):
+        from datetime import date
+
+        own = date(2026, 12, 2)
+        signed = date(2026, 9, 2)
+        later = {
+            "index": 0,
+            "operation": "cadence-snapshot",
+            "promotion_signed_on": signed,
+            "renewed_on": date(2026, 12, 10),
+            "review_point": date(2027, 3, 1),
+            "signed_by": "founder",
+        }
+        effective, basis, ignored = guard.effective_review_point(
+            own, [later], "cadence-snapshot", signed, date(2026, 12, 5)
+        )
+        self.assertEqual(effective, own)
+        self.assertIn("promotion's own", basis)
+        self.assertEqual(ignored, 1)
+        effective, basis, ignored = guard.effective_review_point(
+            own, [later], "cadence-snapshot", signed, date(2026, 12, 10)
+        )
+        self.assertEqual(effective, date(2027, 3, 1))
+        self.assertIn("renewed on 2026-12-10", basis)
+        self.assertEqual(ignored, 0)
+
+    def test_a_renewal_whose_own_review_point_has_passed_is_refused(self):
+        root = self.build(renewals_record=renewals([RENEWAL]))
+        output = self.assertRefused(root, "review-point-not-passed", as_of="2027-03-02")
+        self.assertIn(RENEWED_REVIEW_POINT, output)
+        self.assertIn("Silence is not renewal", output)
+
+    def test_the_latest_renewal_is_the_effective_one(self):
+        earlier = dict(RENEWAL, renewed_on="2026-10-01", review_point="2027-06-01")
+        later = dict(RENEWAL, renewed_on="2026-11-01", review_point="2026-11-15")
+        root = self.build(renewals_record=renewals([earlier, later]))
+        output = self.assertRefused(root, "review-point-not-passed", as_of="2026-12-01")
+        self.assertIn("2026-11-15", output)
+        self.assertIn("renewed on 2026-11-01", output)
+
+    def test_a_renewal_for_another_promotion_does_not_extend_this_one(self):
+        other_entry = dict(CATALOG_ENTRY, id="metrics-snapshot", summary="Count things.")
+        other_promotion = dict(PROMOTION, operation="metrics-snapshot")
+        other_renewal = dict(RENEWAL, operation="metrics-snapshot")
+        root = self.build(
+            catalog_record=catalog([copy.deepcopy(CATALOG_ENTRY), other_entry]),
+            promotions_record=promotions(entries=[copy.deepcopy(PROMOTION), other_promotion]),
+            renewals_record=renewals([other_renewal]),
+        )
+        self.assertRefused(root, "review-point-not-passed", as_of=INSIDE_RENEWED_WINDOW)
+        code, output = self.run_guard(root, operation="metrics-snapshot", as_of=INSIDE_RENEWED_WINDOW)
+        self.assertEqual(code, 0, msg=output)
+
+    def test_a_renewal_naming_a_different_signing_date_does_not_extend_this_one(self):
+        mismatched = dict(RENEWAL, promotion_signed_on="2026-09-01")
+        root = self.build(renewals_record=renewals([mismatched]))
+        # The pair (operation, promotion_signed_on) identifies the promotion;
+        # a renewal that names no existing promotion refuses the whole record.
+        output = self.assertRefused(root, "renewal-record-readable", as_of=INSIDE_RENEWED_WINDOW)
+        self.assertIn("no such promotion", output)
+
+
+class RenewalRecordTest(GuardTestCase):
+    """A renewal record that cannot be read or trusted refuses every operation."""
+
+    def test_missing_renewal_record_is_refused(self):
+        root = self.build()
+        (root / guard.RENEWALS_PATH).unlink()
+        output = self.assertRefused(root, "renewal-record-readable")
+        self.assertIn("[review-point-not-passed]", output)
+
+    def test_unparsable_renewal_record_is_refused(self):
+        self.assertRefused(self.build(renewals_record="renewals: [oops\n"), "renewal-record-readable")
+
+    def test_renewal_record_that_is_not_a_mapping_is_refused(self):
+        self.assertRefused(self.build(renewals_record="- one\n- two\n"), "renewal-record-readable")
+
+    def test_unexpected_renewal_schema_version_is_refused(self):
+        self.assertRefused(self.build(renewals_record=renewals(schema_version=2)), "renewal-record-readable")
+
+    def test_unknown_top_level_renewal_field_is_refused(self):
+        record = renewals()
+        record["kill_switch"] = "released"
+        self.assertRefused(self.build(renewals_record=record), "renewal-record-readable")
+
+    def test_missing_top_level_renewal_field_is_refused(self):
+        self.assertRefused(self.build(renewals_record="schema_version: 1\n"), "renewal-record-readable")
+
+    def test_renewals_that_is_not_a_list_is_refused(self):
+        self.assertRefused(
+            self.build(renewals_record="schema_version: 1\nrenewals: yes\n"), "renewal-record-readable"
+        )
+
+    def test_renewal_entry_that_is_not_a_mapping_is_refused(self):
+        self.assertRefused(self.build(renewals_record=renewals(["renewed"])), "renewal-record-readable")
+
+    def test_unknown_renewal_field_is_refused(self):
+        entry = dict(RENEWAL, approved=True)
+        self.assertRefused(self.build(renewals_record=renewals([entry])), "renewal-record-readable")
+
+    def test_missing_renewal_field_is_refused(self):
+        for name in guard.RENEWAL_FIELDS:
+            with self.subTest(field=name):
+                entry = dict(RENEWAL)
+                del entry[name]
+                output = self.assertRefused(self.build(renewals_record=renewals([entry])), "renewal-record-readable")
+                self.assertIn(f"missing required field '{name}'", output)
+
+    def test_renewal_naming_no_promotion_is_refused(self):
+        entry = dict(RENEWAL, operation="metrics-snapshot")
+        output = self.assertRefused(self.build(renewals_record=renewals([entry])), "renewal-record-readable")
+        self.assertIn("no such promotion", output)
+
+    def test_renewal_with_a_malformed_operation_id_is_refused(self):
+        entry = dict(RENEWAL, operation="Cadence Snapshot")
+        self.assertRefused(self.build(renewals_record=renewals([entry])), "renewal-record-readable")
+
+    def test_renewal_review_point_not_after_renewed_on_is_refused(self):
+        for review_point in (RENEWED_ON, "2026-11-01"):
+            with self.subTest(review_point=review_point):
+                entry = dict(RENEWAL, review_point=review_point)
+                output = self.assertRefused(self.build(renewals_record=renewals([entry])), "renewal-record-readable")
+                self.assertIn("not after 'renewed_on'", output)
+
+    def test_renewal_with_an_unreadable_date_is_refused(self):
+        for name in ("promotion_signed_on", "renewed_on", "review_point"):
+            with self.subTest(field=name):
+                entry = dict(RENEWAL, **{name: "soon"})
+                self.assertRefused(self.build(renewals_record=renewals([entry])), "renewal-record-readable")
+
+    def test_future_renewed_on_is_refused(self):
+        entry = dict(RENEWAL, renewed_on="2026-12-01", review_point="2027-03-01")
+        output = self.assertRefused(self.build(renewals_record=renewals([entry])), "renewal-record-readable", as_of="2026-11-30")
+        self.assertIn("in the future", output)
+
+    def test_renewed_on_before_the_promotion_was_signed_is_refused(self):
+        entry = dict(RENEWAL, renewed_on="2026-08-01")
+        output = self.assertRefused(self.build(renewals_record=renewals([entry])), "renewal-record-readable")
+        self.assertIn("before the promotion was signed", output)
+
+    def test_renewal_signed_by_a_person_is_refused(self):
+        entry = dict(RENEWAL, signed_by="dakota")
+        output = self.assertRefused(self.build(renewals_record=renewals([entry])), "renewal-record-readable")
+        self.assertIn("controlled operating role", output)
+
+    def test_renewal_signed_by_a_role_without_reserved_authority_is_refused(self):
+        entry = dict(RENEWAL, signed_by="maintainer")
+        output = self.assertRefused(self.build(renewals_record=renewals([entry])), "renewal-record-readable")
+        self.assertIn("reserved decision", output)
+
+    def test_renewal_reviewed_path_that_does_not_exist_is_refused(self):
+        entry = dict(RENEWAL, reviewed=["evidence/absent.md"])
+        output = self.assertRefused(self.build(renewals_record=renewals([entry])), "renewal-record-readable")
+        self.assertIn("does not exist", output)
+
+    def test_renewal_that_reviewed_nothing_is_refused(self):
+        entry = dict(RENEWAL, reviewed=[])
+        self.assertRefused(self.build(renewals_record=renewals([entry])), "renewal-record-readable")
+
+    def test_renewal_reviewed_path_that_leaves_the_repository_is_refused(self):
+        for bad in ("/etc/passwd", "../elsewhere.md", "evidence/*.md"):
+            with self.subTest(path=bad):
+                entry = dict(RENEWAL, reviewed=[bad])
+                self.assertRefused(self.build(renewals_record=renewals([entry])), "renewal-record-readable")
+
+    def test_two_renewals_on_the_same_day_for_one_promotion_are_refused(self):
+        twice = [dict(RENEWAL), dict(RENEWAL, review_point="2027-04-01")]
+        output = self.assertRefused(self.build(renewals_record=renewals(twice)), "renewal-record-readable")
+        self.assertIn("same day", output)
+
+    def test_a_malformed_renewal_for_another_promotion_refuses_this_operation(self):
+        other_entry = dict(CATALOG_ENTRY, id="metrics-snapshot", summary="Count things.")
+        other_promotion = dict(PROMOTION, operation="metrics-snapshot")
+        broken = dict(RENEWAL, operation="metrics-snapshot", reviewed=["evidence/absent.md"])
+        root = self.build(
+            catalog_record=catalog([copy.deepcopy(CATALOG_ENTRY), other_entry]),
+            promotions_record=promotions(entries=[copy.deepcopy(PROMOTION), other_promotion]),
+            renewals_record=renewals([broken]),
+        )
+        self.assertRefused(root, "renewal-record-readable", operation="cadence-snapshot")
+
+    def test_an_empty_renewal_record_holds(self):
+        from datetime import date
+
+        decision = guard.evaluate(self.build(), "cadence-snapshot", date.fromisoformat(AS_OF))
+        self.assertIn("renewal-record-readable", decision.checked)
+        self.assertTrue(decision.permitted, msg=guard.render(decision))
+
+    def test_a_write_scope_reaching_the_renewal_record_is_refused(self):
+        self.assertIsNotNone(guard.glob_reaches_governed_path("ops/autonomy/renewals.yaml"))
+        entry = dict(CATALOG_ENTRY, write_scope=["ops/autonomy/renewals.yaml"])
+        self.assertRefused(self.build(catalog_record=catalog([entry])), "catalog-write-scope")
 
 
 class LadderTest(GuardTestCase):

@@ -71,8 +71,12 @@ CATALOG = {
 }
 
 PROMOTIONS = {"schema_version": 1, "kill_switch": "engaged", "promotions": []}
+RENEWALS = {"schema_version": 1, "renewals": []}
 
 WRITTEN_PATH = "ops/status/2026-09-02-cadence.md"
+
+SIGNED_ON = "2026-09-02"
+REVIEW_POINT = "2026-12-02"
 
 # A complete, well-behaved record of a run that stayed inside its bound. Every
 # detector must stay silent on it, so each firing test below is a one-field edit
@@ -86,7 +90,12 @@ CLEAN_ENTRY = {
     "claimed_level": "A3",
     "trigger": "schedule",
     "kill_switch": "released",
-    "promotion": {"level": "A3", "signed_by": "founder", "signed_on": "2026-09-02"},
+    "promotion": {
+        "level": "A3",
+        "signed_by": "founder",
+        "signed_on": SIGNED_ON,
+        "review_point": REVIEW_POINT,
+    },
     "preconditions": [
         {
             "check": "promotion-signed",
@@ -121,6 +130,7 @@ class FixtureRepository:
         (self.root / "ops" / "autonomy" / "promotions.yaml").write_text(
             yaml.safe_dump(PROMOTIONS, sort_keys=False), encoding="utf-8"
         )
+        self.write_renewals(RENEWALS["renewals"])
         (self.root / "ops" / "ledger").mkdir(parents=True)
         (self.root / "ops" / "status").mkdir(parents=True)
         self.write_output(WRITTEN_PATH, "# Cadence snapshot\n\nNo maturity field here.\n")
@@ -129,6 +139,15 @@ class FixtureRepository:
         (self.root / "ops" / "autonomy" / "operations.yaml").write_text(
             yaml.safe_dump(catalog, sort_keys=False), encoding="utf-8"
         )
+
+    def write_renewals(self, entries: list) -> None:
+        payload = {"schema_version": 1, "renewals": copy.deepcopy(entries)}
+        (self.root / "ops" / "autonomy" / "renewals.yaml").write_text(
+            yaml.safe_dump(payload, sort_keys=False), encoding="utf-8"
+        )
+
+    def write_raw_renewals(self, text: str) -> None:
+        (self.root / "ops" / "autonomy" / "renewals.yaml").write_text(text, encoding="utf-8")
 
     def write_output(self, relative: str, text: str) -> None:
         path = self.root / relative
@@ -209,14 +228,22 @@ class TriggerEnumerationTests(unittest.TestCase):
                 else:
                     self.assertIsNone(item.classification.detector)
 
-    def test_the_review_point_trigger_is_classified_not_evaluable(self):
-        """X1's flagged gap: no promotion record can name a review point."""
+    def test_the_review_point_trigger_is_evaluated_here(self):
+        """The gap X1 and X4 flagged is closed: a review point and a renewal record exist."""
         paired = check.classify_triggers(check.parse_ladder_triggers(REPOSITORY_ROOT))
         item = next(x for x in paired if x.classification.key == "acted-after-review-point")
-        self.assertFalse(item.classification.evaluable)
-        self.assertEqual(item.classification.basis, check.BASIS_MISSING_FIELD)
+        self.assertTrue(item.classification.evaluable)
+        self.assertEqual(item.classification.basis, check.BASIS_EVALUATED)
+        self.assertEqual(item.classification.detector, "acted_after_review_point")
+        self.assertEqual(item.trigger.trigger_id, "A3-3")
         self.assertIn("review_point", item.classification.reason)
-        self.assertIn("renewal", item.classification.reason)
+        self.assertIn(check.RENEWALS_PATH, item.classification.reason)
+        self.assertIn("unjudged", item.classification.reason)
+
+    def test_the_ladder_states_sixteen_triggers_and_six_are_evaluable(self):
+        paired = check.classify_triggers(check.parse_ladder_triggers(REPOSITORY_ROOT))
+        self.assertEqual(len(paired), 16)
+        self.assertEqual(sum(1 for item in paired if item.classification.evaluable), 6)
 
 
 class LadderDriftTests(unittest.TestCase):
@@ -509,6 +536,189 @@ class IneligibleOperationTests(FixtureCase):
         self.assertIn(LADDER_RELATIVE, finding.entry)
 
 
+class ReviewPointTests(FixtureCase):
+    """A3: an action taken after the review point passed without a renewal record."""
+
+    AFTER = "2026-12-05"
+    KEY = "acted-after-review-point"
+
+    def renewal(self, **overrides) -> dict:
+        record = {
+            "operation": "cadence-snapshot",
+            "promotion_signed_on": SIGNED_ON,
+            "renewed_on": "2026-11-20",
+            "review_point": "2027-03-01",
+            "signed_by": "founder",
+            "reviewed": ["ops/ledger/README.md"],
+        }
+        record.update(overrides)
+        return record
+
+    def acting_after(self, **overrides) -> dict:
+        return entry(run_id="cadence-snapshot-002", run_date=self.AFTER, **overrides)
+
+    def test_a_run_after_the_review_point_with_no_renewal_fires(self):
+        self.repo.add_entry(self.acting_after())
+        report = self.repo.evaluate()
+        self.assertIn(self.KEY, self.fired_keys(report))
+        self.assertEqual(report.exit_code, 1)
+        finding = next(f for f in report.findings if f.trigger_key == self.KEY)
+        self.assertEqual(finding.kind, check.KIND_TRIGGER)
+        self.assertEqual(finding.trigger_id, "A3-3")
+        self.assertIn(self.AFTER, finding.observed)
+        self.assertIn(REVIEW_POINT, finding.observed)
+        self.assertIn("Silence is not renewal", finding.declared)
+        self.assertEqual(finding.demoted_to, "A2")
+        self.assertIn(check.RENEWALS_PATH, finding.next_step)
+
+    def test_a_run_on_the_review_point_date_does_not_fire(self):
+        self.repo.add_entry(entry(run_date=REVIEW_POINT))
+        self.assertNotIn(self.KEY, self.fired_keys(self.repo.evaluate()))
+
+    def test_a_run_before_the_review_point_does_not_fire(self):
+        self.repo.add_entry(entry())
+        report = self.repo.evaluate()
+        self.assertEqual(report.findings, [])
+
+    def test_a_covering_renewal_makes_it_a_record_disagreement(self):
+        """The run recorded a stale review point; the renewal covers the date."""
+        self.repo.write_renewals([self.renewal()])
+        self.repo.add_entry(self.acting_after())
+        report = self.repo.evaluate()
+        self.assertEqual(self.fired_keys(report), [], "a covered run is not a fired trigger")
+        self.assertIn(check.KIND_DISAGREEMENT, self.kinds(report))
+        self.assertEqual(report.exit_code, 1)
+        finding = next(f for f in report.findings if f.kind == check.KIND_DISAGREEMENT)
+        self.assertEqual(finding.trigger_key, "review-point-disagreement")
+        self.assertIn("stale review point", finding.observed)
+        self.assertIn("renewals[0]", finding.declared)
+        self.assertIn("2027-03-01", finding.declared)
+        text = check.render(report)
+        self.assertIn("DISAGREEMENT", text)
+        self.assertNotIn("FIRED", text)
+
+    def test_a_renewal_dated_after_the_run_does_not_cover_it(self):
+        self.repo.write_renewals([self.renewal(renewed_on="2026-12-10", review_point="2027-03-01")])
+        self.repo.add_entry(self.acting_after())
+        report = self.repo.evaluate()
+        self.assertIn(self.KEY, self.fired_keys(report))
+        self.assertNotIn(check.KIND_DISAGREEMENT, self.kinds(report))
+
+    def test_a_renewal_whose_review_point_is_before_the_run_does_not_cover_it(self):
+        self.repo.write_renewals([self.renewal(renewed_on="2026-11-01", review_point="2026-12-04")])
+        self.repo.add_entry(self.acting_after())
+        self.assertIn(self.KEY, self.fired_keys(self.repo.evaluate()))
+
+    def test_a_renewal_whose_review_point_is_the_run_date_covers_it(self):
+        self.repo.write_renewals([self.renewal(renewed_on="2026-11-01", review_point=self.AFTER)])
+        self.repo.add_entry(self.acting_after())
+        report = self.repo.evaluate()
+        self.assertNotIn(self.KEY, self.fired_keys(report))
+        self.assertIn(check.KIND_DISAGREEMENT, self.kinds(report))
+
+    def test_a_renewal_for_another_operation_does_not_cover_it(self):
+        self.repo.write_renewals([self.renewal(operation="metrics-snapshot")])
+        self.repo.add_entry(self.acting_after())
+        self.assertIn(self.KEY, self.fired_keys(self.repo.evaluate()))
+
+    def test_a_renewal_for_another_promotion_of_the_same_operation_does_not_cover_it(self):
+        self.repo.write_renewals([self.renewal(promotion_signed_on="2026-08-01")])
+        self.repo.add_entry(self.acting_after())
+        self.assertIn(self.KEY, self.fired_keys(self.repo.evaluate()))
+
+    def test_the_latest_covering_renewal_is_the_one_named(self):
+        self.repo.write_renewals(
+            [
+                self.renewal(renewed_on="2026-10-01", review_point="2027-01-01"),
+                self.renewal(renewed_on="2026-11-01", review_point="2027-02-01"),
+            ]
+        )
+        self.repo.add_entry(self.acting_after())
+        finding = next(f for f in self.repo.evaluate().findings if f.kind == check.KIND_DISAGREEMENT)
+        self.assertIn("renewals[1]", finding.declared)
+        self.assertIn("2026-11-01", finding.declared)
+
+    def test_a_missing_renewal_record_excuses_nothing(self):
+        (self.repo.root / "ops" / "autonomy" / "renewals.yaml").unlink()
+        self.repo.add_entry(self.acting_after())
+        report = self.repo.evaluate()
+        self.assertIn(self.KEY, self.fired_keys(report))
+        finding = next(f for f in report.findings if f.trigger_key == self.KEY)
+        self.assertIn("could not be read", finding.observed)
+        self.assertTrue(any("does not exist" in note for note in report.notes))
+
+    def test_an_unreadable_renewal_record_excuses_nothing(self):
+        self.repo.write_raw_renewals("renewals: [unclosed\n")
+        self.repo.add_entry(self.acting_after())
+        report = self.repo.evaluate()
+        self.assertIn(self.KEY, self.fired_keys(report))
+        self.assertTrue(any("could not be read" in note for note in report.notes))
+
+    def test_a_renewal_entry_that_cannot_be_dated_covers_nothing(self):
+        self.repo.write_renewals([self.renewal(renewed_on="soon")])
+        self.repo.add_entry(self.acting_after())
+        report = self.repo.evaluate()
+        self.assertIn(self.KEY, self.fired_keys(report))
+        self.assertTrue(any("cover nothing" in note for note in report.notes))
+
+    def test_an_acting_a3_entry_with_no_review_point_is_unjudged(self):
+        promotion = {"level": "A3", "signed_by": "founder", "signed_on": SIGNED_ON}
+        self.repo.add_entry(entry(promotion=promotion))
+        report = self.repo.evaluate()
+        self.assertEqual(self.fired_keys(report), [])
+        self.assertIn(check.KIND_UNJUDGED, self.kinds(report))
+        self.assertEqual(report.exit_code, 1)
+        finding = next(f for f in report.findings if f.kind == check.KIND_UNJUDGED)
+        self.assertEqual(finding.trigger_key, self.KEY)
+        self.assertEqual(finding.trigger_id, "A3-3")
+        self.assertIn("no promotion.review_point", finding.observed)
+        self.assertIn("never clear", finding.next_step)
+        text = check.render(report)
+        self.assertIn("UNJUDGED", text)
+
+    def test_an_acting_entry_with_an_unreadable_review_point_is_unjudged(self):
+        promotion = dict(CLEAN_ENTRY["promotion"], review_point="next quarter")
+        self.repo.add_entry(entry(promotion=promotion))
+        report = self.repo.evaluate()
+        self.assertIn(check.KIND_UNJUDGED, self.kinds(report))
+        finding = next(f for f in report.findings if f.kind == check.KIND_UNJUDGED)
+        self.assertIn("next quarter", finding.observed)
+
+    def test_a_refused_run_with_no_review_point_is_not_unjudged(self):
+        """A run that did not act has nothing to judge against a review point."""
+        self.repo.add_entry(
+            entry(
+                promotion={"level": "A3", "signed_by": "founder", "signed_on": SIGNED_ON},
+                outcome="refused",
+                paths_written=[],
+                reversal="Nothing was written, so there is nothing to undo.",
+                preconditions=[
+                    {
+                        "check": "review-point-recorded",
+                        "result": "fail",
+                        "detail": "The promotion records no review point.",
+                    }
+                ],
+            )
+        )
+        report = self.repo.evaluate()
+        self.assertEqual(report.findings, [])
+
+    def test_a_run_with_no_promotion_is_the_bound_trigger_not_this_one(self):
+        self.repo.add_entry(self.acting_after(promotion="none"))
+        report = self.repo.evaluate()
+        self.assertIn("acted-outside-recorded-bound", self.fired_keys(report))
+        self.assertNotIn(self.KEY, self.fired_keys(report))
+        self.assertNotIn(check.KIND_UNJUDGED, self.kinds(report))
+
+    def test_a_yaml_date_review_point_is_read(self):
+        from datetime import date
+
+        promotion = dict(CLEAN_ENTRY["promotion"], review_point=date(2026, 12, 2), signed_on=date(2026, 9, 2))
+        self.repo.add_entry(entry(run_id="cadence-snapshot-002", promotion=promotion, run_date=date(2026, 12, 5)))
+        self.assertIn(self.KEY, self.fired_keys(self.repo.evaluate()))
+
+
 class SupersedesTests(FixtureCase):
     """A correction is a new entry, and the superseding entry is authoritative."""
 
@@ -761,6 +971,27 @@ class ShippedRepositoryTests(unittest.TestCase):
         self.assertGreaterEqual(payload["trigger_counts"]["evaluable_here"], 1)
         self.assertEqual(payload["ledger"]["runs_evaluated"], [])
         self.assertEqual(payload["ledger"]["samples_skipped"], ["ops/ledger/SAMPLE_run.md"])
+
+    def test_the_shipped_tree_reports_sixteen_triggers_with_six_evaluable(self):
+        result = subprocess.run(
+            [sys.executable, str(SCRIPT), "--root", str(REPOSITORY_ROOT), "--json"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["trigger_counts"], {"total": 16, "evaluable_here": 6, "not_evaluable_here": 10})
+        review = next(item for item in payload["triggers"] if item["id"] == "A3-3")
+        self.assertEqual(review["key"], "acted-after-review-point")
+        self.assertEqual(review["basis"], "evaluated-here")
+        self.assertTrue(review["evaluable_here"])
+        self.assertIn("16 (6 evaluable here, 10 not)", check.render(check.evaluate(REPOSITORY_ROOT)))
+
+    def test_the_shipped_renewal_record_is_empty_and_readable(self):
+        report = check.evaluate(REPOSITORY_ROOT)
+        self.assertFalse(any(check.RENEWALS_PATH in note for note in report.notes), report.notes)
+        record = yaml.safe_load((REPOSITORY_ROOT / check.RENEWALS_PATH).read_text(encoding="utf-8"))
+        self.assertEqual(record, {"schema_version": 1, "renewals": []})
 
     def test_the_shipped_report_says_no_run_has_left_a_record(self):
         report = check.evaluate(REPOSITORY_ROOT)

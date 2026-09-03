@@ -1,6 +1,6 @@
 # Reviewing a pull request opened by an unattended run
 
-**As of:** 2026-09-02
+**As of:** 2026-09-03
 
 ## No such pull request can exist today
 
@@ -33,8 +33,11 @@ recorded, reversible, and still describe the wrong week.
 Three things you are specifically not agreeing to:
 
 - **Not that the operation should keep running.** Merging one pull request is not
-  a renewal of the promotion. The promotion's own review point, recorded in
-  `promotions.yaml`, is where that decision is made.
+  a renewal of the promotion. That decision is made at the review point — the
+  promotion's own `review_point` in `promotions.yaml`, or the review point of
+  the latest renewal in `renewals.yaml` — and a renewal is a new entry in
+  `renewals.yaml` with its own date, review point, signing role, and list of
+  what was reviewed. Nothing you do on a pull request writes one.
 - **Not that the substrate is working.** A run that produced a clean diff is not
   evidence about the ninety-nine cases that did not occur.
 - **Not that anything in the diff is evidence for a maturity or gate change.** No
@@ -52,6 +55,7 @@ exists, and the ledger entry in the pull request body records each result.
 | The operation is not on the permanently ineligible list | `scripts/autonomy_guard.py` | The `operation-eligible` precondition |
 | The promotion's write scope equals the catalog entry's, and its evidence paths exist | `scripts/autonomy_guard.py` | The `promotion-write-scope` and `promotion-evidence` preconditions |
 | The signature names a real operating role and is not dated in the future | `scripts/autonomy_guard.py` | The `signature-role`, `signature-authority`, and `signature-date` preconditions |
+| The promotion records a review point, the renewal record is readable, and the run date is on or before the review point in force — the promotion's own or the latest renewal's in `renewals.yaml` | `scripts/autonomy_guard.py` | The `review-point-recorded`, `renewal-record-readable`, and `review-point-not-passed` preconditions, and `promotion.review_point` in the front matter, which records the review point in force on the run date |
 | Every path the command created or changed is inside the declared write scope | `scripts/run_unattended.py`, which executes in a staging copy and applies nothing from a run that left its bound | The `write-scope-enforced` precondition, and `paths_written` |
 | Nothing was deleted, and no symlink was changed | `scripts/run_unattended.py` | The same precondition; a violation records the run as `failed` and applies nothing |
 | The run changed no file that governs its own bounds | The workflow's self-modification backstop, per [amendment 001](../../community/AMENDMENTS.md) | The workflow log; the step fails and no pull request is opened |
@@ -68,9 +72,11 @@ request.
 
 1. **The promotion is still the one you think it is.** Open `promotions.yaml` at
    the base branch. Does it carry a signed promotion for every operation named in
-   the pull request body, at A3, with the switch released? If a promotion was
-   withdrawn or the switch was re-engaged after the run started, the run is
-   stale — close it.
+   the pull request body, at A3, with the switch released, and is today on or
+   before its review point — or, if that has passed, does `renewals.yaml` carry
+   a renewal for it whose review point has not? If a promotion was withdrawn,
+   the switch was re-engaged, or the review point passed unrenewed after the run
+   started, the run is stale — close it.
 2. **The diff is only what the write scope allows, plus one ledger entry per
    run.** Read the file list, not the summary. Every path must match the
    operation's `write_scope` in `operations.yaml`, except entries under
@@ -157,8 +163,8 @@ operation can be pulled back without an argument about whether it deserved to be
 
 - [The scheduled workflow](../../.github/workflows/unattended.yml) — what opens
   the pull request, and what it refuses to open.
-- [Unattended action: the two records and the guard](README.md) — the catalog,
-  the promotion record, and why there are two.
+- [Unattended action: the records and the guard](README.md) — the catalog,
+  the promotion record, the renewal record, and why they are separate files.
 - [Action ledger schema](../../docs/schemas/ACTION_LEDGER_SCHEMA.md) — the fields
   in the entry carried by the pull request body.
 - [Autonomy ladder](../../docs/framework/AUTONOMY_LADDER.md) — A3, its evidence

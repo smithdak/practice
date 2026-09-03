@@ -27,6 +27,15 @@
 #   demotion_triggers  the observable conditions that end this promotion
 #   signed_by          founder, beta-owner, or continuity-owner
 #   signed_on          ISO date the decision was made, not in the future
+#   review_point       ISO date strictly after signed_on, by which a human
+#                      renews the bound or withdraws it; the guard refuses a
+#                      run dated after it, and silence is not renewal
+#
+# A renewal is a separate record: a new entry in ops/autonomy/renewals.yaml
+# naming this promotion by operation and signed_on, with its own date, its own
+# review point, and its own signing role. Editing a promotion's review_point
+# after it was signed is not a renewal; it rewrites the decision instead of
+# recording a new one, and leaves no trace of the review the ladder requires.
 #
 # Reversal, in the order a human would use it under pressure: set kill_switch
 # back to engaged (one edit, stops everything), then delete the promotion entry.

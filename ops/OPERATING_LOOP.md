@@ -1,6 +1,6 @@
 # Running Practice on the loop
 
-**As of:** 2026-09-02
+**As of:** 2026-09-03
 
 ## Outcome and boundary
 
@@ -86,8 +86,9 @@ nothing is promoted, and the kill switch is engaged.
 | Piece | File | What it guarantees |
 |---|---|---|
 | Operation catalog | [`ops/autonomy/operations.yaml`](autonomy/operations.yaml) | Every operation that could one day run unattended, with the narrow path glob it may write and the command that reverses it |
-| Promotion record | [`ops/autonomy/promotions.yaml`](autonomy/promotions.yaml) | The signed decisions. Ships empty, with `kill_switch: engaged` |
-| Guard | `scripts/autonomy_guard.py` | Refuses by default. Twenty-four preconditions; missing or malformed input refuses rather than defaulting to permitted |
+| Promotion record | [`ops/autonomy/promotions.yaml`](autonomy/promotions.yaml) | The signed decisions, each with the review point at which its bound is renewed or withdrawn. Ships empty, with `kill_switch: engaged` |
+| Renewal record | [`ops/autonomy/renewals.yaml`](autonomy/renewals.yaml) | One entry per decision to keep a promotion past its review point: a new record with its own date, review point, signing role, and what was reviewed — never an edit to the promotion. Ships empty; silence is not renewal |
+| Guard | `scripts/autonomy_guard.py` | Refuses by default. Twenty-seven preconditions; missing or malformed input refuses rather than defaulting to permitted, and a run dated after the review point in force is refused |
 | Runner | `scripts/run_unattended.py` | Executes in a staging copy, so a write outside the declared scope is never applied rather than applied and undone |
 | Ledger | [`ops/ledger/`](ledger/README.md) | Append-only record of what a run read, wrote, and how to reverse it |
 | Demotion check | `scripts/demotion_check.py` | Evaluates the ladder's observable triggers. Detects and reports; removing a promotion stays a human act |

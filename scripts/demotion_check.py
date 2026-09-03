@@ -38,6 +38,7 @@ import re
 import sys
 import textwrap
 from dataclasses import dataclass, field
+from datetime import date, datetime
 from pathlib import Path
 
 import yaml
@@ -49,7 +50,10 @@ LADDER_PATH = "docs/framework/AUTONOMY_LADDER.md"
 LEDGER_DIR = "ops/ledger"
 CATALOG_PATH = "ops/autonomy/operations.yaml"
 PROMOTIONS_PATH = "ops/autonomy/promotions.yaml"
+RENEWALS_PATH = "ops/autonomy/renewals.yaml"
 SCHEMA_PATH = "docs/schemas/ACTION_LEDGER_SCHEMA.md"
+
+ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 INELIGIBLE_HEADING = "## Permanently ineligible for A3"
 
@@ -328,17 +332,19 @@ CLASSIFICATIONS: tuple[Classification, ...] = (
         key="acted-after-review-point",
         level="A3",
         tokens=("review point",),
-        evaluable=False,
-        basis=BASIS_MISSING_FIELD,
+        evaluable=True,
+        basis=BASIS_EVALUATED,
+        detector="acted_after_review_point",
         reason=(
-            f"Two records are missing, not one. {PROMOTIONS_PATH} has no `review_point` field - the "
-            "promotion fields the guard requires are operation, level, write_scope, evidence, "
-            "demotion_triggers, signed_by and signed_on - so no signed promotion can name a review "
-            "point, and the ledger's optional promotion.review_point can only ever be copied from a "
-            "field that does not exist. The second half, 'without a renewal record', has no record "
-            "to read: this repository defines no renewal artifact, so even a recorded date would "
-            "leave the trigger unevaluable. Both gaps are recorded for the Director in "
-            "swarm/handoffs/X4.md."
+            "Fires when an entry records that the run acted and its run_date is after the "
+            "promotion.review_point the run recorded - the review point in force on the run "
+            f"date, as the guard computed it - unless {RENEWALS_PATH} carries a renewal for that "
+            "promotion (same operation, same promotion signing date) with renewed_on on or before "
+            "the run date and review_point on or after it. A covering renewal turns the finding "
+            "into a record disagreement instead: the run recorded a stale review point. An acting "
+            "entry that claims A3 and records no review_point, or one that cannot be read as a "
+            "date, is reported as unjudged and never counted as clear. A renewal record that is "
+            "missing or unreadable excuses nothing: silence is not renewal."
         ),
     ),
     Classification(
@@ -629,6 +635,15 @@ class Record:
         return isinstance(self.data.get("promotion"), dict)
 
     @property
+    def promotion(self) -> dict:
+        value = self.data.get("promotion")
+        return value if isinstance(value, dict) else {}
+
+    @property
+    def run_date(self) -> date | None:
+        return parse_date(self.data.get("run_date"))
+
+    @property
     def acted(self) -> bool:
         return self.outcome in ACTING_OUTCOMES or bool(self.paths_written)
 
@@ -639,6 +654,29 @@ class Record:
 
 def text_of(value) -> str:
     return value.strip() if isinstance(value, str) else ""
+
+
+def rendered_date(value) -> str:
+    """The date as the record wrote it, for a finding a human reads."""
+    if isinstance(value, datetime):
+        return value.date().isoformat()
+    if isinstance(value, date):
+        return value.isoformat()
+    return text_of(value) if isinstance(value, str) else repr(value)
+
+
+def parse_date(value) -> date | None:
+    """Read a front-matter date: a YAML date, or an ISO string. Anything else is None."""
+    if isinstance(value, datetime):
+        return value.date()
+    if isinstance(value, date):
+        return value
+    if isinstance(value, str) and ISO_DATE_RE.match(value.strip()):
+        try:
+            return date.fromisoformat(value.strip())
+        except ValueError:
+            return None
+    return None
 
 
 def string_list(value) -> list[str]:
@@ -719,6 +757,9 @@ class Context:
     ineligible: set[str] | None
     catalog: dict[str, dict] | None
     promoted_operations: set[str]
+    # Renewals read from RENEWALS_PATH, each with its dates parsed. ``None``
+    # when the record is missing or unreadable, which excuses nothing.
+    renewals: list[dict] | None = None
     notes: list[str] = field(default_factory=list)
     limits: list[str] = field(default_factory=list)
 
@@ -951,12 +992,150 @@ def detect_operation_since_made_ineligible(
     ]
 
 
+def covering_renewal(ctx: Context, record: Record, run_date: date) -> dict | None:
+    """The latest renewal that covers ``run_date`` for the promotion the run recorded.
+
+    A renewal covers a run when it names the same operation and the same
+    promotion signing date, was signed on or before the run date, and sets a
+    review point on or after it. A renewal record that could not be read is
+    treated as empty: an unreadable renewal is not a renewal.
+    """
+    if not ctx.renewals:
+        return None
+    operation = text_of(record.data.get("operation"))
+    signed_on = parse_date(record.promotion.get("signed_on"))
+    matching = [
+        item
+        for item in ctx.renewals
+        if item["operation"] == operation
+        and signed_on is not None
+        and item["promotion_signed_on"] == signed_on
+        and item["renewed_on"] <= run_date <= item["review_point"]
+    ]
+    if not matching:
+        return None
+    return max(matching, key=lambda item: item["renewed_on"])
+
+
+def detect_acted_after_review_point(
+    ctx: Context, record: Record, item: ClassifiedTrigger
+) -> list[Finding]:
+    if not record.acted:
+        return []
+    common = dict(
+        trigger_id=item.trigger.trigger_id,
+        trigger_key=item.classification.key,
+        level=item.trigger.level,
+        clause=item.trigger.clause,
+        entry=record.relative,
+        run_id=record.run_id,
+        operation=record.operation,
+        claimed_level=record.claimed_level or "(not recorded)",
+        demoted_to=record.demoted_to,
+    )
+    if not record.promotion_observed:
+        # No promotion means no review point to be after; the bound trigger
+        # (acted outside the recorded bound) is the one that fires for that.
+        return []
+    raw_review_point = record.promotion.get("review_point")
+    review_point = parse_date(raw_review_point)
+    run_date = record.run_date
+    if review_point is None or run_date is None:
+        if raw_review_point is None:
+            observed = (
+                "the run acted with a promotion recorded and no promotion.review_point, so "
+                "there is no date to judge the run against"
+            )
+        elif review_point is None:
+            observed = (
+                f"promotion.review_point is {rendered_date(raw_review_point)!r}, which is not "
+                "a date this check can read"
+            )
+        else:
+            observed = (
+                f"run_date is {rendered_date(record.data.get('run_date'))!r}, which is not a "
+                "date this check can read"
+            )
+        return [
+            Finding(
+                kind=KIND_UNJUDGED,
+                declared=(
+                    "An acting run records the review point in force on its run date, as "
+                    f"{SCHEMA_PATH} requires, so this trigger can be judged from the entry."
+                ),
+                observed=observed,
+                next_step=(
+                    f"Open {record.relative} and the promotion it ran under, establish the "
+                    "review point that was in force, and correct the record forward with a new "
+                    "entry naming this one in `supersedes`. Until then the run is unjudged, "
+                    "never clear. " + promotion_sentence(ctx, record.operation)
+                ),
+                **common,
+            )
+        ]
+    if run_date <= review_point:
+        return []
+    renewal = covering_renewal(ctx, record, run_date)
+    if renewal is not None:
+        return [
+            Finding(
+                kind=KIND_DISAGREEMENT,
+                declared=(
+                    f"{RENEWALS_PATH} (renewals[{renewal['index']}]) renews this promotion on "
+                    f"{renewal['renewed_on'].isoformat()} with review point "
+                    f"{renewal['review_point'].isoformat()}, which covers the run date."
+                ),
+                observed=(
+                    f"the entry records promotion.review_point {review_point.isoformat()} and "
+                    f"run_date {run_date.isoformat()}: a stale review point, recorded after the "
+                    "renewal that superseded it"
+                ),
+                next_step=(
+                    f"Compare {record.relative} with {RENEWALS_PATH} in Git history: either the "
+                    "renewal was recorded after the run and back-dated, or the runner recorded "
+                    "the promotion's own review point instead of the effective one. The trigger "
+                    "did not fire because the renewal covers the run, but a record that "
+                    "disagrees with the renewal record needs a human to say why."
+                ),
+                **dict(common, trigger_id="-", trigger_key="review-point-disagreement"),
+            )
+        ]
+    if ctx.renewals is None:
+        renewal_state = f"{RENEWALS_PATH} could not be read, and an unreadable renewal is not a renewal"
+    else:
+        renewal_state = (
+            f"{RENEWALS_PATH} carries no renewal for this promotion that was signed on or "
+            "before the run date and sets a review point on or after it"
+        )
+    return [
+        Finding(
+            kind=KIND_TRIGGER,
+            declared=(
+                "A bound ends at its review point unless a human records a renewal. Silence "
+                "is not renewal."
+            ),
+            observed=(
+                f"the run acted (outcome: {record.outcome or '(not recorded)'}, paths_written: "
+                f"{len(record.paths_written)}) on {run_date.isoformat()}, after the recorded "
+                f"review point {review_point.isoformat()}; {renewal_state}"
+            ),
+            next_step=(
+                f"Reverse the run using the reversal in {record.relative}. Renewing the bound is "
+                f"a new entry in {RENEWALS_PATH}; withdrawing it is an edit to {PROMOTIONS_PATH}. "
+                "Both are human acts. " + promotion_sentence(ctx, record.operation)
+            ),
+            **common,
+        )
+    ]
+
+
 DETECTORS = {
     "write_outside_scope": detect_write_outside_scope,
     "maturity_or_evidence_write": detect_maturity_or_evidence_write,
     "acted_outside_recorded_bound": detect_acted_outside_recorded_bound,
     "no_reversal_recorded": detect_no_reversal_recorded,
     "operation_since_made_ineligible": detect_operation_since_made_ineligible,
+    "acted_after_review_point": detect_acted_after_review_point,
 }
 
 
@@ -1074,6 +1253,73 @@ def load_catalog(root: Path, notes: list[str]) -> dict[str, dict] | None:
     return catalog
 
 
+def load_renewals(root: Path, notes: list[str]) -> list[dict] | None:
+    """Read the renewal record as it stands, with each entry's dates parsed.
+
+    This check reads the record leniently: an entry it can date is a renewal
+    that may cover a run, and an entry it cannot is noted and covers nothing.
+    Whether the record is well-formed is `scripts/autonomy_guard.py`'s
+    question, and a malformed record refuses every run there. A missing or
+    unreadable file returns ``None``, and the caller treats that as no renewal
+    at all.
+    """
+    path = root / RENEWALS_PATH
+    if not path.is_file():
+        notes.append(
+            f"{RENEWALS_PATH} does not exist, so no renewal can excuse a run after its review "
+            "point. The guard refuses every operation without that file, so nothing can have "
+            "run under it."
+        )
+        return None
+    try:
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except (OSError, yaml.YAMLError) as exc:
+        notes.append(
+            f"{RENEWALS_PATH} could not be read ({str(exc).splitlines()[0]}), so no renewal can "
+            "excuse a run after its review point. An unreadable renewal is not a renewal."
+        )
+        return None
+    renewals = data.get("renewals") if isinstance(data, dict) else None
+    if renewals is None:
+        renewals = []
+    if not isinstance(renewals, list):
+        notes.append(
+            f"{RENEWALS_PATH} carries no `renewals` list, so no renewal can excuse a run after "
+            "its review point."
+        )
+        return None
+    usable: list[dict] = []
+    skipped = 0
+    for index, item in enumerate(renewals):
+        if not isinstance(item, dict):
+            skipped += 1
+            continue
+        operation = text_of(item.get("operation"))
+        promotion_signed_on = parse_date(item.get("promotion_signed_on"))
+        renewed_on = parse_date(item.get("renewed_on"))
+        review_point = parse_date(item.get("review_point"))
+        if not operation or None in (promotion_signed_on, renewed_on, review_point):
+            skipped += 1
+            continue
+        usable.append(
+            {
+                "index": index,
+                "operation": operation,
+                "promotion_signed_on": promotion_signed_on,
+                "renewed_on": renewed_on,
+                "review_point": review_point,
+            }
+        )
+    if skipped:
+        notes.append(
+            f"{RENEWALS_PATH}: {skipped} renewal entry(s) could not be read as a renewal (no "
+            "operation, or a date that is not a date) and cover nothing. Run "
+            "`python3 scripts/autonomy_guard.py --operation <id> --root .` for the field-level "
+            "refusal."
+        )
+    return usable
+
+
 def load_promoted_operations(root: Path, notes: list[str]) -> set[str]:
     path = root / PROMOTIONS_PATH
     if not path.is_file():
@@ -1176,6 +1422,7 @@ def evaluate(root: Path) -> Report:
         ineligible=ineligible,
         catalog=catalog,
         promoted_operations=load_promoted_operations(root, notes),
+        renewals=load_renewals(root, notes),
         notes=notes,
     )
 
@@ -1399,9 +1646,9 @@ def render(report: Report) -> str:
                     field_lines(
                         "note:",
                         "Not a ladder trigger. A record disagreement demotes nothing by itself; "
-                        "it means the two records changed relative to each other, and until a "
-                        "human says which is right the scope trigger cannot be judged for this "
-                        "run.",
+                        "it means two records changed relative to each other, and until a "
+                        "human says which is right the trigger that reads them cannot be "
+                        "judged for this run.",
                     )
                 )
             else:

@@ -350,36 +350,60 @@ class PromotionTests(unittest.TestCase):
             root = build_root(directory)
             self.assertEqual(violations(root, write_entry(root, promotion="none")), [])
 
-    def test_a_promotion_mapping_needs_level_signer_and_date(self):
+    def test_a_promotion_mapping_needs_level_signer_date_and_review_point(self):
         with tempfile.TemporaryDirectory() as directory:
             root = build_root(directory)
             path = write_entry(root, promotion={"level": "A3"})
             found = violations(root, path)
             self.assertTrue(any("promotion.signed_by" in message for message in found))
             self.assertTrue(any("promotion.signed_on" in message for message in found))
+            self.assertTrue(any("promotion.review_point" in message for message in found))
+
+    def test_a_promotion_without_a_review_point_is_rejected(self):
+        """The ladder's review-point trigger is checkable only from the entry."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = build_root(directory)
+            promotion = dict(COMPLETED_OVERRIDES["promotion"])
+            del promotion["review_point"]
+            path = write_entry(root, **dict(COMPLETED_OVERRIDES, promotion=promotion))
+            found = violations(root, path)
+            self.assertTrue(any("promotion.review_point" in message and "is missing" in message for message in found))
+            self.assertEqual([m for m in found if "promotion.review_point" not in m], [])
+
+    def test_the_review_point_is_required_by_the_schema_constants(self):
+        self.assertIn("review_point", ledger.PROMOTION_REQUIRED)
+        self.assertEqual(ledger.PROMOTION_OPTIONAL, ())
+
+    def test_promotion_none_needs_no_review_point(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = build_root(directory)
+            self.assertEqual(violations(root, write_entry(root, promotion="none")), [])
 
     def test_a_promotion_level_outside_the_ladder_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             root = build_root(directory)
             path = write_entry(
                 root,
-                promotion={"level": "A9", "signed_by": "founder", "signed_on": "2026-09-02"},
+                promotion=dict(COMPLETED_OVERRIDES["promotion"], level="A9"),
             )
-            self.assertTrue(any("promotion.level" in message for message in violations(root, path)))
+            found = violations(root, path)
+            self.assertTrue(any("promotion.level" in message for message in found))
+            self.assertEqual([m for m in found if "promotion.level" not in m], [])
 
     def test_an_unknown_promotion_field_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             root = build_root(directory)
             path = write_entry(
                 root,
-                promotion={
-                    "level": "A3",
-                    "signed_by": "founder",
-                    "signed_on": "2026-09-02",
-                    "approved": True,
-                },
+                promotion=dict(COMPLETED_OVERRIDES["promotion"], approved=True),
             )
-            self.assertTrue(any("promotion.approved" in message for message in violations(root, path)))
+            found = violations(root, path)
+            self.assertTrue(any("promotion.approved" in message for message in found))
+            self.assertEqual([m for m in found if "promotion.approved" not in m], [])
+
+    def test_the_default_body_names_the_review_point_of_a_recorded_promotion(self):
+        text = ledger.default_body(build_entry(**COMPLETED_OVERRIDES))
+        self.assertIn("review point 2026-12-02", text)
 
     def test_a_review_point_must_be_a_date(self):
         with tempfile.TemporaryDirectory() as directory:

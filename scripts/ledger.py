@@ -11,6 +11,8 @@ the run ended. The shape is defined in ``docs/schemas/ACTION_LEDGER_SCHEMA.md``.
 ``validate`` checks one or more entries or directories of them:
 
 - every required field is present and uses its controlled vocabulary;
+- a recorded promotion names its level, its signing role, its signing date, and
+  the review point in force at run time; ``promotion: none`` needs none of them;
 - the reversal is recorded and is not a placeholder;
 - the claimed level is one the autonomy ladder defines;
 - at least one precondition is recorded, and a refused run names the
@@ -146,8 +148,11 @@ FIELD_HELP = {
     "supersedes": "the run_id of the entry this one corrects",
 }
 
-PROMOTION_REQUIRED = ("level", "signed_by", "signed_on")
-PROMOTION_OPTIONAL = ("review_point",)
+# A recorded promotion carries its review point: the ladder demotes on an
+# action taken after the review point passed without a renewal record, and
+# that is checkable only from the entry. `promotion: none` needs no such field.
+PROMOTION_REQUIRED = ("level", "signed_by", "signed_on", "review_point")
+PROMOTION_OPTIONAL: tuple[str, ...] = ()
 PROMOTION_FIELDS = PROMOTION_REQUIRED + PROMOTION_OPTIONAL
 PRECONDITION_REQUIRED = ("check", "result", "detail")
 PRECONDITION_FIELDS = PRECONDITION_REQUIRED
@@ -928,7 +933,8 @@ def default_body(entry: dict) -> str:
         promotion_line = (
             f"{as_text(promotion.get('level', '')).strip()} signed by "
             f"{as_text(promotion.get('signed_by', '')).strip()} on "
-            f"{as_text(promotion.get('signed_on', '')).strip()}"
+            f"{as_text(promotion.get('signed_on', '')).strip()}, review point "
+            f"{as_text(promotion.get('review_point', '')).strip() or '(not recorded)'}"
         ).strip()
     else:
         promotion_line = "none"

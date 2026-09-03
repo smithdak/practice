@@ -102,7 +102,7 @@ the promotion record the run read:
 | `level` | Yes | The level the promotion grants: `A0`, `A1`, `A2`, or `A3`. |
 | `signed_by` | Yes | The role that signed it, as a slug from the operating role vocabulary. A role, never a person. |
 | `signed_on` | Yes | ISO date the promotion was signed. |
-| `review_point` | No | ISO date the bound is renewed or withdrawn. Record it whenever the promotion names one: the ladder demotes on an action taken after the review point passed without a renewal record, and that is checkable only from the entry. |
+| `review_point` | Yes | ISO date the bound is next renewed or withdrawn, as in force on the run date: the promotion's own `review_point`, or the `review_point` of the latest renewal in `ops/autonomy/renewals.yaml` for that promotion whose `renewed_on` is on or before the run date. `scripts/run_unattended.py` records the value `scripts/autonomy_guard.py` computed, not the raw promotion field. The ladder demotes on an action taken after the review point passed without a renewal record, and that is checkable only from the entry. |
 
 ### Preconditions
 
@@ -150,8 +150,9 @@ file, the field, the problem, and the fix. It checks:
    their controlled vocabularies.
 5. `operation` and `actor` are slugs, and `operation` appears in the operation
    catalog when the catalog can be read.
-6. `promotion` is `none` or a mapping carrying `level`, `signed_by`, and
-   `signed_on`, with dates that parse.
+6. `promotion` is `none` or a mapping carrying `level`, `signed_by`,
+   `signed_on`, and `review_point`, with dates that parse. An entry recording
+   `promotion: none` carries no review point, because there is none to record.
 7. `preconditions` is non-empty, each item names a `check`, a `result`, and a
    `detail` that is not a placeholder, and no check id repeats.
 8. `reversal` is present, at least 8 characters, and not a placeholder such as
@@ -327,14 +328,17 @@ anyone:
 |---|---|
 | An action taken outside the recorded bound | `paths_written` against `write_scope`, both recorded in the entry; and `paths_read` against a read scope when the operation's record carries one |
 | An action taken with no reversal path recorded | `reversal`, which the validator already refuses to leave blank |
-| An action taken after the review point passed without a renewal record | `run_date` against `promotion.review_point` |
+| An action taken after the review point passed without a renewal record | `run_date` against `promotion.review_point`; when the run date is later, `ops/autonomy/renewals.yaml` is read for a renewal of that promotion (same `operation`, `promotion_signed_on` equal to `promotion.signed_on`) with `renewed_on` on or before the run date and `review_point` on or after it. None: the trigger fires. One: the finding is a record disagreement, because the run recorded a stale review point. An acting entry claiming A3 with no readable `promotion.review_point` is reported as unjudged, never as clear. |
 | An action on an operation since added to the permanently ineligible list | `operation` against the ladder's ineligible list |
 | An action taken with no bound recorded in advance | `promotion` and `kill_switch`, both recorded as the run observed them |
 
 Because those fields are recorded as the run observed them, the check reads the
 entry rather than the current state of the governance records, which may have
-changed since. Deciding what to do about a fired trigger stays with a human; the
-demotion itself is automatic.
+changed since. The one record it reads live is the renewal record, because a
+renewal is by design added after the promotion and may be added after a run;
+a renewal record that is missing or unreadable excuses nothing. Deciding what
+to do about a fired trigger stays with a human; the demotion itself is
+automatic.
 
 ## Related documents
 
@@ -346,9 +350,10 @@ demotion itself is automatic.
 
 ## Sources
 
-As of: 2026-09-02.
+As of: 2026-09-03.
 
 - [docs/framework/AUTONOMY_LADDER.md](../framework/AUTONOMY_LADDER.md) — A3's "recorded when it runs" clause and the demotion triggers this schema makes checkable.
+- [ops/autonomy/README.md](../../ops/autonomy/README.md) — the promotion record that carries `review_point`, the renewal record `ops/autonomy/renewals.yaml`, and the guard preconditions that read both.
 - [docs/schemas/AGENT_PACKET_SCHEMA.md](AGENT_PACKET_SCHEMA.md) — the front-matter conventions, the role vocabulary, and the forbidden-assertion boundary reused here.
 - [ops/OPERATING_LOOP.md](../../ops/OPERATING_LOOP.md) — what runs without a person and what does not.
 - [docs/DECISIONS.md](../DECISIONS.md) and [docs/NON_GOALS.md](../NON_GOALS.md) — the locked decisions behind the operations no entry may ever record.

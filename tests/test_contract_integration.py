@@ -342,9 +342,86 @@ class ContainmentTests(unittest.TestCase):
         scopes = [p for op in catalog["operations"] for p in (op.get("write_scope") or [])]
         for governed in ("docs/DECISIONS.md", "docs/NON_GOALS.md", "community/GOVERNANCE.md",
                          "community/AMENDMENTS.md", LADDER_RELATIVE,
-                         "ops/autonomy/promotions.yaml", ".github/workflows/ci.yml"):
+                         "ops/autonomy/promotions.yaml", "ops/autonomy/renewals.yaml",
+                         ".github/workflows/ci.yml"):
             with self.subTest(path=governed):
                 self.assertFalse(self.runner.matches_scope(governed, scopes))
+
+    def test_the_renewal_record_is_a_governed_path_for_the_guard(self):
+        self.assertIsNotNone(self.guard.glob_reaches_governed_path("ops/autonomy/renewals.yaml"))
+        self.assertIn("ops/autonomy/renewals.yaml", self.guard.GOVERNED_PATHS)
+
+
+class ReviewPointContractTests(unittest.TestCase):
+    """The guard, the ledger, the runner, and the demotion check agree on the review point.
+
+    The guard requires it on a promotion, the ledger requires it on a recorded
+    promotion, the runner records the effective value, and the demotion check
+    reads it back. Each has its own tests; this is the join.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        sys.path.insert(0, str(REPOSITORY_ROOT / "scripts"))
+        import autonomy_guard  # noqa: E402
+        import demotion_check  # noqa: E402
+        import ledger  # noqa: E402
+        import run_unattended  # noqa: E402
+
+        cls.guard = autonomy_guard
+        cls.check = demotion_check
+        cls.ledger = ledger
+        cls.runner = run_unattended
+
+    def test_the_guard_requires_a_review_point_on_every_promotion(self):
+        self.assertIn("review_point", self.guard.REQUIRED_PROMOTION_FIELDS)
+
+    def test_the_ledger_requires_a_review_point_on_every_recorded_promotion(self):
+        self.assertIn("review_point", self.ledger.PROMOTION_REQUIRED)
+        self.assertNotIn("review_point", self.ledger.PROMOTION_OPTIONAL)
+
+    def test_the_runner_records_exactly_the_ledger_promotion_fields(self):
+        self.assertEqual(sorted(self.runner.RECORDED_PROMOTION_KEYS), sorted(self.ledger.PROMOTION_FIELDS))
+
+    def test_every_ledger_promotion_field_is_a_guard_promotion_field(self):
+        """What the runner copies out of a promotion, the guard must have required."""
+        self.assertLessEqual(set(self.ledger.PROMOTION_FIELDS), set(self.guard.REQUIRED_PROMOTION_FIELDS))
+
+    def test_the_four_scripts_name_the_same_renewal_record(self):
+        self.assertEqual(self.guard.RENEWALS_PATH, "ops/autonomy/renewals.yaml")
+        self.assertEqual(self.runner.RENEWALS_PATH, self.guard.RENEWALS_PATH)
+        self.assertEqual(self.check.RENEWALS_PATH, self.guard.RENEWALS_PATH)
+        self.assertIn(self.guard.RENEWALS_PATH, self.runner.GUARD_INPUTS)
+
+    def test_the_shipped_renewal_record_matches_the_guard_schema(self):
+        record = yaml.safe_load((REPOSITORY_ROOT / self.guard.RENEWALS_PATH).read_text(encoding="utf-8"))
+        self.assertEqual(sorted(record), sorted(self.guard.RENEWALS_TOP_LEVEL_FIELDS))
+        self.assertIn(record["schema_version"], self.guard.SUPPORTED_SCHEMA_VERSIONS)
+        self.assertEqual(record["renewals"], [])
+
+    def test_the_shipped_promotion_record_is_unchanged_in_state(self):
+        record = yaml.safe_load((REPOSITORY_ROOT / self.guard.PROMOTIONS_PATH).read_text(encoding="utf-8"))
+        self.assertEqual(record["kill_switch"], "engaged")
+        self.assertEqual(record["promotions"], [])
+
+    def test_the_guard_names_the_three_review_point_preconditions_the_check_can_read(self):
+        decision = self.guard.evaluate(REPOSITORY_ROOT, "cadence-snapshot")
+        named = set(decision.checked) | {refusal.precondition for refusal in decision.refusals}
+        for precondition in ("review-point-recorded", "renewal-record-readable", "review-point-not-passed"):
+            with self.subTest(precondition=precondition):
+                self.assertIn(precondition, named)
+                self.assertRegex(precondition, self.ledger.SLUG_RE)
+
+    def test_the_schema_and_the_records_readme_describe_the_renewal_record(self):
+        schema = (REPOSITORY_ROOT / "docs" / "schemas" / "ACTION_LEDGER_SCHEMA.md").read_text(encoding="utf-8")
+        readme = (REPOSITORY_ROOT / "ops" / "autonomy" / "README.md").read_text(encoding="utf-8")
+        loop = (REPOSITORY_ROOT / "ops" / "OPERATING_LOOP.md").read_text(encoding="utf-8")
+        for text, name in ((schema, "schema"), (readme, "README"), (loop, "operating loop")):
+            with self.subTest(document=name):
+                self.assertIn("renewals.yaml", text)
+        for precondition in ("review-point-recorded", "renewal-record-readable", "review-point-not-passed"):
+            with self.subTest(precondition=precondition):
+                self.assertIn(f"`{precondition}`", readme)
 
 
 class LedgerIdentityTests(unittest.TestCase):

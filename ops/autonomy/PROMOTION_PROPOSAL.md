@@ -1,6 +1,6 @@
 # A3 promotion proposal
 
-**As of:** 2026-09-02
+**As of:** 2026-09-03
 
 ## The problem this record closes
 
@@ -54,7 +54,7 @@ to stop rather than to record an exception.
   [the operation catalog](operations.yaml) with an id, a command, a write
   scope, a reversal, and a blast radius. An operation invented in the proposal
   itself has no catalog entry to check the write scope against.
-- **It is not on the permanently ineligible list.** The seven rows under
+- **It is not on the permanently ineligible list.** The six rows under
   [Permanently ineligible for A3](../../docs/framework/AUTONOMY_LADDER.md#permanently-ineligible-for-a3)
   may never run unattended, and the ladder's near-neighbour rule applies: an
   operation adjacent to one of those rows is treated as that row until a human
@@ -262,16 +262,35 @@ zero cost, which is why the shape was chosen.
 
 ### 9. Review point and renewal
 
-- Review point: `<YYYY-MM-DD>` — no more than `<n>` days from the first run.
+- Review point: `<YYYY-MM-DD>` — no more than `<n>` days from the first run,
+  and strictly after the signing date in section 11. This date is transcribed
+  into the signed entry as `review_point`; the guard refuses a promotion
+  without one, and refuses every run dated after it.
 - Who holds it: `<role>`
 - What is reviewed: `<the ledger entries, the merged and closed pull requests,
   and the evidence gaps from section 7>`
 - What happens if the review point passes with no renewal record: the operation
   is demoted automatically by the ladder's A3 trigger, and the next run is
-  refused.
+  refused. `scripts/demotion_check.py` reports any run that acted after the
+  review point it recorded, unless a renewal in the file below covers that date.
 
 **Silence is not renewal.** A renewal is a new record with its own date and
-signing role.
+signing role: one entry in [the renewal record](renewals.yaml), never an edit to
+the promotion's own `review_point`. Each entry carries exactly these fields:
+
+| Field | What it records |
+| --- | --- |
+| `operation` | The operation id, which must have a promotion in [`promotions.yaml`](promotions.yaml). |
+| `promotion_signed_on` | The `signed_on` of the promotion being renewed. The pair identifies the promotion. |
+| `renewed_on` | The ISO date of the renewal decision: not in the future, not before the promotion's `signed_on`. |
+| `review_point` | The next review point, strictly after `renewed_on`. |
+| `signed_by` | `founder`, `beta-owner`, or `continuity-owner` — the same roles that may sign the promotion. |
+| `reviewed` | Repository paths the reviewer opened, from the "What is reviewed" line above. Each must exist. |
+
+On any date, the effective review point is the promotion's own `review_point`
+or the `review_point` of the latest renewal whose `renewed_on` is on or before
+that date. A renewal that fails any field rule refuses every operation, not only
+the one it names.
 
 ### 10. Reasons to decline
 
@@ -328,16 +347,17 @@ A signature on a document is not a change in behaviour. A human performs both of
 the following; no script does either.
 
 1. **Transcribe the entry.** Add one entry to `promotions` in
-   [the promotion record](promotions.yaml), matching the shape fixed by the
-   phase plan:
+   [the promotion record](promotions.yaml), matching the shape the guard
+   requires:
    `operation`, `level`, `write_scope`, `evidence`, `demotion_triggers`,
-   `signed_by`, `signed_on`. The `write_scope` must equal the catalog entry's
-   scope exactly — the guard rejects a promotion whose scope disagrees with its
-   catalog entry, which is the mechanical check that a transcription error cannot
-   widen a bound. `level` is `A3` and nothing else; `signed_by` is `founder`,
-   `beta-owner`, or `continuity-owner`; `signed_on` is an ISO date that is not in
-   the future; and every path in `evidence` must exist, so put the path of the
-   signed proposal there and commit it first.
+   `signed_by`, `signed_on`, `review_point`. The `write_scope` must equal the
+   catalog entry's scope exactly — the guard rejects a promotion whose scope
+   disagrees with its catalog entry, which is the mechanical check that a
+   transcription error cannot widen a bound. `level` is `A3` and nothing else;
+   `signed_by` is `founder`, `beta-owner`, or `continuity-owner`; `signed_on` is
+   an ISO date that is not in the future; `review_point` is the date from
+   section 9, strictly after `signed_on`; and every path in `evidence` must
+   exist, so put the path of the signed proposal there and commit it first.
 2. **Decide the kill switch separately.** The switch stays `engaged` until a
    human changes it in its own edit, with its own reason. Nothing about signing a
    proposal implies that change, and the two are deliberately not one edit. In
@@ -363,17 +383,19 @@ useful state to sit in, not a misconfiguration.
 
 ## Sources
 
-As of: 2026-09-02.
+As of: 2026-09-03.
 
 - [docs/framework/AUTONOMY_LADDER.md](../../docs/framework/AUTONOMY_LADDER.md) —
-  the A3 clauses, the R4 evidence set, the demotion triggers, and the seven
+  the A3 clauses, the R4 evidence set, the demotion triggers, and the six
   permanently ineligible operations.
 - [ops/autonomy/CANDIDATES.md](CANDIDATES.md) — the dossier a proposal is filled
   in against.
 - [ops/autonomy/operations.yaml](operations.yaml),
-  [ops/autonomy/promotions.yaml](promotions.yaml), and
+  [ops/autonomy/promotions.yaml](promotions.yaml),
+  [ops/autonomy/renewals.yaml](renewals.yaml), and
   [ops/autonomy/README.md](README.md), with `scripts/autonomy_guard.py` — the
-  catalog, the promotion record, and the guard that refuses by default.
+  catalog, the promotion record, the renewal record, and the guard that refuses
+  by default.
 - [community/GOVERNANCE.md](../../community/GOVERNANCE.md) — the reserved-decision
   path a promotion travels, and the roles that may sign one.
 - [ops/BETA_OPS.md](../BETA_OPS.md) — the operating role vocabulary used in the

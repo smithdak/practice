@@ -10,10 +10,13 @@ its own bound would be trusting exactly the thing the bound exists to constrain.
 This script does three things in order and stops at the first refusal:
 
 1. **Asks the guard.** ``scripts/autonomy_guard.py`` decides whether the
-   operation may run at all. Not one of its twenty-four preconditions is
+   operation may run at all. Not one of its twenty-seven preconditions is
    reimplemented here; its decision and its message are the runner's. A refusal
    ends the run and is still recorded, because an unrecorded refusal is
-   indistinguishable from a run that never happened.
+   indistinguishable from a run that never happened. The review point the
+   guard computed - the promotion's own, or the latest covering renewal's from
+   ``ops/autonomy/renewals.yaml`` - is what the entry records as
+   ``promotion.review_point``, never the raw promotion field.
 2. **Executes inside a bound.** The command runs against a private copy of the
    repository, never against the repository itself. Only files the copy gained or
    changed that match the operation's ``write_scope`` are copied back.
@@ -126,6 +129,7 @@ DEFAULT_ROOT = SCRIPTS_DIR.parent
 
 CATALOG_PATH = "ops/autonomy/operations.yaml"
 PROMOTIONS_PATH = "ops/autonomy/promotions.yaml"
+RENEWALS_PATH = "ops/autonomy/renewals.yaml"
 LADDER_PATH = "docs/framework/AUTONOMY_LADDER.md"
 SCHEMA_REF = "docs/schemas/ACTION_LEDGER_SCHEMA.md"
 
@@ -134,7 +138,12 @@ DEFAULT_LEDGER_DIR = ("ops", "ledger")
 # The paths the guard reads to reach its decision. They are what this runner can
 # honestly claim to have read; what the operation's own command reads is not
 # observable from here and is not recorded.
-GUARD_INPUTS = (CATALOG_PATH, PROMOTIONS_PATH, LADDER_PATH)
+GUARD_INPUTS = (CATALOG_PATH, PROMOTIONS_PATH, RENEWALS_PATH, LADDER_PATH)
+
+# The promotion keys an entry records, in the ledger schema's order. Every one
+# is required by scripts/ledger.py when a promotion is recorded, so a promotion
+# missing any of them is recorded as `none` and the guard's refusal says why.
+RECORDED_PROMOTION_KEYS = ("level", "signed_by", "signed_on", "review_point")
 
 LEDGER_SCHEMA_VERSION = 1
 
@@ -253,16 +262,23 @@ def read_governance_state(root: Path, operation: str) -> tuple[str, object]:
         if not isinstance(item, dict) or str(item.get("operation", "")).strip() != operation:
             continue
         observed = {}
-        for key in ("level", "signed_by", "signed_on", "review_point"):
+        for key in RECORDED_PROMOTION_KEYS:
             value = item.get(key)
             if value is None:
                 continue
-            observed[key] = value if key.endswith("_on") or key.endswith("_point") else one_line(value)
-        if all(key in observed for key in ("level", "signed_by", "signed_on")):
+            if key.endswith("_on") or key.endswith("_point"):
+                rendered = value.isoformat() if isinstance(value, date) else str(value).strip()
+                if not ISO_DATE_RE.match(rendered):
+                    continue
+                observed[key] = rendered
+            else:
+                observed[key] = one_line(value)
+        if all(key in observed for key in RECORDED_PROMOTION_KEYS):
             return state, observed
-        # A promotion too malformed to record as a mapping would fail ledger
-        # validation and lose the whole entry, so it is recorded as no promotion.
-        # The guard refuses such a record, and its refusal is in `preconditions`.
+        # A promotion too malformed to record as a mapping - a field missing, or
+        # a date that is not a date - would fail ledger validation and lose the
+        # whole entry, so it is recorded as no promotion. The guard refuses such
+        # a record, and its refusal is in `preconditions`.
         return state, "none"
     return state, "none"
 
@@ -665,6 +681,13 @@ def run(
         guard_message = guard.render(decision)
         permitted = bool(decision.permitted)
         preconditions = merge_preconditions(decision)
+        # The entry records the review point in force on the run date - the
+        # promotion's own, or the latest covering renewal's - as the guard
+        # computed it. The raw promotion field is what a reviewer would have to
+        # correct by hand; the effective value is what the run was bound by.
+        effective_review_point = getattr(decision, "review_point", None)
+        if isinstance(promotion, dict) and isinstance(effective_review_point, str):
+            promotion = dict(promotion, review_point=effective_review_point)
     except Exception as error:  # pragma: no cover - a guard fault is a refusal, not a run
         permitted = False
         guard_message = (

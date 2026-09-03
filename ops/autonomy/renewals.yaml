@@ -1,0 +1,50 @@
+# The renewal record for unattended action. Nothing is promoted, so nothing
+# here is renewed.
+#
+# Every promotion in ops/autonomy/promotions.yaml carries a review_point: the
+# date by which a human either renews the bound or withdraws it. The autonomy
+# ladder (docs/framework/AUTONOMY_LADDER.md, A3) says silence is not renewal,
+# and demotes an operation that acts after its review point passed without a
+# renewal record. This file is that record.
+#
+# A renewal is a new entry here, never an edit. Changing a promotion's own
+# review_point after it was signed is not a renewal: it rewrites the decision
+# that was made instead of recording a new one, and leaves no trace of the
+# review the ladder requires. scripts/autonomy_guard.py reads this file before
+# any operation acts; scripts/demotion_check.py reads it when it judges a
+# recorded run against its review point.
+#
+# Shipped state, 2026-09-03: the list is empty. With no promotion signed there
+# is nothing to renew, and the guard refuses every catalogued operation.
+#
+# Writing an entry here is a reserved decision under community/GOVERNANCE.md,
+# made by a human through the reserved-decision path. No agent, runner,
+# validator, or guard may add one. A missing, unreadable, or malformed renewal
+# record refuses every operation, exactly as the promotion record does.
+#
+# A renewal entry has exactly these fields:
+#
+#   operation             id of an operation with a promotion in promotions.yaml
+#   promotion_signed_on   the signed_on of the promotion this renews; the pair
+#                         (operation, promotion_signed_on) identifies it
+#   renewed_on            ISO date the renewal was decided, not in the future and
+#                         not before the promotion's signed_on
+#   review_point          ISO date strictly after renewed_on; the new date by
+#                         which the bound is renewed again or withdrawn
+#   signed_by             founder, beta-owner, or continuity-owner
+#   reviewed              repository paths the reviewer opened - the ledger
+#                         entries, the merged and closed pull requests, and the
+#                         evidence gaps from the proposal; each must exist
+#
+# The effective review point of a promotion, on any given date, is the
+# promotion's own review_point or the review_point of the latest renewal here
+# whose renewed_on is on or before that date. A renewal dated after the date
+# being checked is ignored for that date.
+#
+# Reversal: withdrawing a promotion is done in promotions.yaml - set
+# kill_switch back to engaged, then delete the promotion entry. A renewal
+# entry for a deleted promotion refuses every operation until it is removed
+# too, so remove it in the same change.
+
+schema_version: 1
+renewals: []

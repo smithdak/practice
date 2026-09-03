@@ -78,6 +78,8 @@ CATALOG_ENTRY = {
     "level": "A1",
 }
 
+REVIEW_POINT = "2026-12-02"
+
 PROMOTION = {
     "operation": OPERATION,
     "level": "A3",
@@ -86,6 +88,22 @@ PROMOTION = {
     "demotion_triggers": ["wrote outside write_scope", "guard precondition failed"],
     "signed_by": "founder",
     "signed_on": AS_OF,
+    "review_point": REVIEW_POINT,
+}
+
+# A renewal signed before the promotion's own review point. A run dated inside
+# the renewed window is bound by the renewal's review point, not the original.
+RENEWED_ON = "2026-11-20"
+RENEWED_REVIEW_POINT = "2027-03-01"
+INSIDE_RENEWED_WINDOW = "2027-01-15"
+
+RENEWAL = {
+    "operation": OPERATION,
+    "promotion_signed_on": AS_OF,
+    "renewed_on": RENEWED_ON,
+    "review_point": RENEWED_REVIEW_POINT,
+    "signed_by": "founder",
+    "reviewed": ["evidence/renewal-review.md"],
 }
 
 # A command that writes one file inside the declared scope and nothing else.
@@ -171,6 +189,11 @@ def promotions(kill_switch: str = "released", entries=None) -> dict:
     }
 
 
+def renewals(entries=None) -> dict:
+    """The renewal record; empty by default, as it ships."""
+    return {"schema_version": 1, "renewals": copy.deepcopy(entries) if entries is not None else []}
+
+
 def tree_file_names(root: Path) -> set[str]:
     """Every file under ``root`` that a run could plausibly disturb.
 
@@ -197,19 +220,31 @@ class RunnerTestCase(unittest.TestCase):
         self.addCleanup(directory.cleanup)
         return Path(directory.name)
 
-    def build(self, *, catalog_record=None, promotions_record=None, command_source=IN_SCOPE_WRITER) -> Path:
+    def build(
+        self,
+        *,
+        catalog_record=None,
+        promotions_record=None,
+        renewals_record=None,
+        command_source=IN_SCOPE_WRITER,
+    ) -> Path:
         root = self.temporary_directory()
         (root / "ops" / "autonomy").mkdir(parents=True)
         (root / "docs" / "framework").mkdir(parents=True)
         (root / "scripts").mkdir(parents=True)
         (root / "evidence").mkdir(parents=True)
         (root / "evidence" / "promotion-record.md").write_text("# Fixture evidence\n", encoding="utf-8")
+        (root / "evidence" / "renewal-review.md").write_text("# Fixture renewal review\n", encoding="utf-8")
         (root / "scripts" / "operation.py").write_text(command_source, encoding="utf-8")
         (root / "docs" / "framework" / "AUTONOMY_LADDER.md").write_text(ladder_text(), encoding="utf-8")
         self.write_yaml(root / "ops" / "autonomy" / "operations.yaml", catalog() if catalog_record is None else catalog_record)
         self.write_yaml(
             root / "ops" / "autonomy" / "promotions.yaml",
             promotions() if promotions_record is None else promotions_record,
+        )
+        self.write_yaml(
+            root / "ops" / "autonomy" / "renewals.yaml",
+            renewals() if renewals_record is None else renewals_record,
         )
         return root
 
@@ -352,6 +387,7 @@ class GuardRefusalTest(RunnerTestCase):
         self.assertEqual(entry["promotion"]["level"], "A3")
         self.assertEqual(entry["promotion"]["signed_by"], "founder")
         self.assertEqual(str(entry["promotion"]["signed_on"]), AS_OF)
+        self.assertEqual(str(entry["promotion"]["review_point"]), REVIEW_POINT)
 
     def single_entry_after_run(self, root: Path):
         self.run_runner(root)
@@ -376,6 +412,90 @@ class GuardRefusalTest(RunnerTestCase):
         self.assertEqual(code, 1)
         self.assertIn("[operation-eligible]", out)
         self.assertFalse((root / "ops" / "status").exists())
+
+
+class ReviewPointTest(RunnerTestCase):
+    """A promotion ends at its review point, and the entry records the point in force."""
+
+    def test_a_completed_run_records_the_promotion_review_point(self):
+        root = self.build()
+        code, out, _ = self.run_runner(root)
+        self.assertEqual(code, 0, msg=out)
+        path, entry = self.single_entry(root / "ops" / "ledger")
+        self.assertEqual(str(entry["promotion"]["review_point"]), REVIEW_POINT)
+        self.assertIn("ops/autonomy/renewals.yaml", entry["paths_read"])
+        self.assertPrecondition(entry, "review-point-recorded", "pass")
+        self.assertPrecondition(entry, "renewal-record-readable", "pass")
+        self.assertPrecondition(entry, "review-point-not-passed", "pass")
+        self.assertEntryValidates(path, root)
+
+    def test_a_run_inside_a_renewed_window_records_the_renewal_review_point(self):
+        """The entry carries the effective review point, not the raw promotion field."""
+        root = self.build(renewals_record=renewals([RENEWAL]))
+        code, out, _ = self.run_runner(root, "--as-of", INSIDE_RENEWED_WINDOW)
+        self.assertEqual(code, 0, msg=out)
+        path, entry = self.single_entry(root / "ops" / "ledger")
+        self.assertEqual(entry["outcome"], "completed")
+        self.assertEqual(str(entry["promotion"]["review_point"]), RENEWED_REVIEW_POINT)
+        self.assertNotEqual(str(entry["promotion"]["review_point"]), REVIEW_POINT)
+        self.assertEqual(str(entry["run_date"]), INSIDE_RENEWED_WINDOW)
+        self.assertEntryValidates(path, root)
+
+    def test_a_run_after_the_review_point_is_refused_and_recorded(self):
+        root = self.build()
+        code, out, _ = self.run_runner(root, "--as-of", "2026-12-03")
+        self.assertEqual(code, 1, msg=out)
+        self.assertIn("[review-point-not-passed]", out)
+        self.assertIn("Silence is not renewal", out)
+        self.assertFalse((root / "ops" / "status").exists(), msg="the command ran despite the refusal")
+        path, entry = self.single_entry(root / "ops" / "ledger")
+        self.assertEqual(entry["outcome"], "refused")
+        self.assertEqual(entry["paths_written"], [])
+        self.assertEqual(str(entry["promotion"]["review_point"]), REVIEW_POINT)
+        detail = self.assertPrecondition(entry, "review-point-not-passed", "fail")["detail"]
+        self.assertIn("Silence is not renewal", detail)
+        self.assertEntryValidates(path, root)
+
+    def test_a_promotion_without_a_review_point_is_refused_and_recorded_as_none(self):
+        promotion = copy.deepcopy(PROMOTION)
+        del promotion["review_point"]
+        root = self.build(promotions_record=promotions(entries=[promotion]))
+        code, out, _ = self.run_runner(root)
+        self.assertEqual(code, 1, msg=out)
+        self.assertIn("[review-point-recorded]", out)
+        self.assertFalse((root / "ops" / "status").exists())
+        path, entry = self.single_entry(root / "ops" / "ledger")
+        self.assertEqual(entry["outcome"], "refused")
+        # The ledger requires a review point on a recorded promotion, so a
+        # promotion that has none is recorded as none; the refusal says why.
+        self.assertEqual(entry["promotion"], "none")
+        self.assertPrecondition(entry, "review-point-recorded", "fail")
+        self.assertEntryValidates(path, root)
+
+    def test_a_missing_renewal_record_refuses_and_is_recorded(self):
+        root = self.build()
+        (root / "ops" / "autonomy" / "renewals.yaml").unlink()
+        code, out, _ = self.run_runner(root)
+        self.assertEqual(code, 1, msg=out)
+        self.assertIn("[renewal-record-readable]", out)
+        self.assertFalse((root / "ops" / "status").exists())
+        path, entry = self.single_entry(root / "ops" / "ledger")
+        self.assertEqual(entry["outcome"], "refused")
+        self.assertPrecondition(entry, "renewal-record-readable", "fail")
+        self.assertEntryValidates(path, root)
+
+    def test_a_malformed_renewal_refuses_and_runs_no_command(self):
+        broken = dict(RENEWAL, reviewed=["evidence/absent.md"])
+        root = self.build(renewals_record=renewals([broken]))
+        code, out, _ = self.run_runner(root, "--as-of", INSIDE_RENEWED_WINDOW)
+        self.assertEqual(code, 1, msg=out)
+        self.assertIn("[renewal-record-readable]", out)
+        self.assertNotIn("Running:", out)
+        _, entry = self.single_entry(root / "ops" / "ledger")
+        self.assertEqual(entry["outcome"], "refused")
+
+    def test_the_recorded_promotion_keys_are_the_ledger_promotion_fields(self):
+        self.assertEqual(sorted(runner.RECORDED_PROMOTION_KEYS), sorted(ledger.PROMOTION_FIELDS))
 
 
 class WriteScopeTest(RunnerTestCase):
@@ -605,8 +725,10 @@ class LedgerEntryTest(RunnerTestCase):
         self.assertEqual(entry["kill_switch"], "released")
         self.assertIn("ops/autonomy/operations.yaml", entry["paths_read"])
         self.assertIn("ops/autonomy/promotions.yaml", entry["paths_read"])
+        self.assertIn("ops/autonomy/renewals.yaml", entry["paths_read"])
         self.assertIn("docs/framework/AUTONOMY_LADDER.md", entry["paths_read"])
         self.assertIn("scripts/operation.py", entry["paths_read"])
+        self.assertEqual(str(entry["promotion"]["review_point"]), REVIEW_POINT)
         self.assertIn(CATALOG_ENTRY["reversal"], entry["reversal"])
         self.assertIn("rm ops/status/2026-09-02-report.md", entry["reversal"])
         self.assertEqual(path.name, f"{AS_OF}-{entry['run_id']}.md")
