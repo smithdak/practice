@@ -101,7 +101,7 @@ jobs:
       permitted: ${{ steps.verdicts.outputs.permitted }}
       refused_count: ${{ steps.verdicts.outputs.refused_count }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # Full history. In a --depth 1 clone, scripts/cadence.py collapses all
           # six pass dates onto the clone's tip commit and prints no warning, so a
@@ -110,7 +110,7 @@ jobs:
           # the place not to buy it.
           fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
@@ -256,12 +256,12 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # See job 1: a shallow clone makes scripts/cadence.py silently wrong.
           fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 

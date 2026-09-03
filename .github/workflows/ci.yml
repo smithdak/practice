@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # Full history: tests/test_release_brief.py regenerates the committed
           # Phase 2 brief over a commit range and skips itself on a shallow
           # clone, which would silently drop the brief-versus-generator guard.
           fetch-depth: 0
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       # The eval validators, the agent registry, the packet contract, and the
