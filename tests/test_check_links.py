@@ -346,5 +346,156 @@ class MainTests(unittest.TestCase):
             self.assertIn("a.md:1: stale as-of date 2020-01-01", stdout.getvalue())
 
 
+class CoverageTests(unittest.TestCase):
+    """Every markdown file lands in exactly one bucket, and the counts say which."""
+
+    def test_dated_undatable_and_silent_files_are_counted_separately(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write(root, "dated.md", "As of: 2026-08-01\n\nAs of: 2026-08-15\n")
+            write(root, "undatable.md", "Current as of the last platform snapshot.\n")
+            write(root, "placeholder.md", "As of: YYYY-MM-DD\n")
+            write(root, "silent.md", "No currency claim here.\n")
+            errors, warnings, stats = check(root)
+            self.assertEqual(errors, [])
+            self.assertEqual(warnings, [])
+            self.assertEqual(stats["files"], 4)
+            self.assertEqual(stats["dated_files"], 1)
+            self.assertEqual(stats["dated_lines"], 2)
+            self.assertEqual(stats["undatable_files"], 2)
+            self.assertEqual(stats["stale_dates"], 0)
+            self.assertEqual(stats["malformed_dates"], 0)
+
+    def test_coverage_sentence_names_the_files_the_rule_cannot_see(self):
+        sentence = check_links.coverage_sentence(
+            {"files": 10, "dated_files": 2, "dated_lines": 3, "undatable_files": 1}
+        )
+        self.assertEqual(
+            sentence,
+            '2 of 10 markdown file(s) carry a dated As-of line the rule can read (3 line(s) read); '
+            '1 file(s) mention "as of" in a form the rule cannot date; the rule says nothing about '
+            "the remaining 7.",
+        )
+
+    def test_coverage_is_printed_on_a_clean_repository(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write(root, "a.md", "As of: 2026-08-20\n")
+            write(root, "b.md", "plain\n")
+            stdout = io.StringIO()
+            with contextlib.redirect_stdout(stdout):
+                code = check_links.main([str(root), "--as-of", AS_OF.isoformat()])
+            self.assertEqual(code, 0)
+            lines = stdout.getvalue().splitlines()
+            self.assertTrue(lines[0].startswith("As-of coverage: 1 of 2 markdown file(s)"), lines[0])
+            self.assertTrue(lines[-1].startswith("check_links_summary: "), lines[-1])
+
+    def test_as_of_mention_inside_code_is_not_a_currency_claim(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write(root, "a.md", "```\nAs of: 2020-01-01\n```\n")
+            _errors, _warnings, stats = check(root)
+            self.assertEqual(stats["dated_files"], 0)
+            self.assertEqual(stats["undatable_files"], 0)
+
+
+class MalformedDateTests(unittest.TestCase):
+    def test_non_calendar_date_is_an_error_with_path_and_line(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write(root, "a.md", "intro\n\nAs of: 2026-02-30\n")
+            errors, warnings, stats = check(root)
+            self.assertEqual(errors, ["a.md:3: malformed as-of date 2026-02-30 (not a calendar date)"])
+            self.assertEqual(warnings, [])
+            self.assertEqual(stats["malformed_dates"], 1)
+            self.assertEqual(stats["dated_lines"], 0)
+            self.assertEqual(stats["undatable_files"], 1)
+
+    def test_malformed_date_exits_one_without_a_traceback(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write(root, "a.md", "As of: 2026-13-01\n")
+            stdout, stderr = io.StringIO(), io.StringIO()
+            with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+                code = check_links.main([str(root), "--as-of", AS_OF.isoformat()])
+            self.assertEqual(code, 1)
+            self.assertEqual(stderr.getvalue(), "a.md:1: malformed as-of date 2026-13-01 (not a calendar date)\n")
+            self.assertIn("1 malformed as-of date(s)", stdout.getvalue())
+
+    def test_link_errors_precede_date_errors_within_a_file(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write(root, "a.md", "As of: 2026-02-30\n\n[x](missing.md)\n")
+            errors, _warnings, _stats = check(root)
+            self.assertEqual(
+                errors,
+                [
+                    "a.md:3: broken relative link: missing.md",
+                    "a.md:1: malformed as-of date 2026-02-30 (not a calendar date)",
+                ],
+            )
+
+
+class FailOnStaleTests(unittest.TestCase):
+    def run_main(self, root: Path, *flags: str) -> tuple[int, str]:
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            code = check_links.main([str(root), "--as-of", AS_OF.isoformat(), *flags])
+        return code, stdout.getvalue()
+
+    def test_flag_turns_a_stale_warning_into_exit_one(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write(root, "a.md", "As of: 2020-01-01\n")
+            self.assertEqual(self.run_main(root)[0], 0)
+            self.assertEqual(self.run_main(root, "--fail-on-stale")[0], 1)
+
+    def test_flag_changes_nothing_but_the_exit_code(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write(root, "a.md", "As of: 2020-01-01\n")
+            self.assertEqual(self.run_main(root)[1], self.run_main(root, "--fail-on-stale")[1])
+
+    def test_flag_is_inert_when_nothing_is_stale(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write(root, "a.md", "As of: 2026-08-20\n")
+            self.assertEqual(self.run_main(root, "--fail-on-stale")[0], 0)
+
+
+class SummaryLineTests(unittest.TestCase):
+    def test_summary_line_round_trips_through_parse(self):
+        stats = {
+            "files": 5, "dated_files": 2, "dated_lines": 3, "undatable_files": 1,
+            "stale_dates": 1, "broken_links": 0, "malformed_dates": 0, "links": 12, "limit_days": 90,
+        }
+        line = check_links.summary_line(stats)
+        self.assertEqual(
+            line,
+            "check_links_summary: files=5 dated_files=2 dated_lines=3 undatable_files=1 "
+            "stale_dates=1 broken_links=0 malformed_dates=0 links=12 limit_days=90",
+        )
+        self.assertEqual(check_links.parse_summary_line(line), stats)
+
+    def test_parse_rejects_lines_that_are_not_a_summary(self):
+        self.assertIsNone(check_links.parse_summary_line("Checked 3 markdown file(s)"))
+        self.assertIsNone(check_links.parse_summary_line("check_links_summary: files=3"))
+        self.assertIsNone(check_links.parse_summary_line("check_links_summary: files=3 bogus=1"))
+
+    def test_summary_line_is_the_last_line_of_output(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write(root, "a.md", "As of: 2020-01-01\n\n[x](b.md)\n")
+            write(root, "b.md", "ok\n")
+            stdout = io.StringIO()
+            with contextlib.redirect_stdout(stdout):
+                check_links.main([str(root), "--as-of", AS_OF.isoformat()])
+            last = stdout.getvalue().splitlines()[-1]
+            counts = check_links.parse_summary_line(last)
+            self.assertIsNotNone(counts)
+            self.assertEqual(counts["stale_dates"], 1)
+            self.assertEqual(counts["links"], 1)
+
+
 if __name__ == "__main__":
     unittest.main()

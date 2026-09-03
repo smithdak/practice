@@ -42,7 +42,7 @@ proposer reads together.
 | `cadence-snapshot` | One dated file under `ops/status/` | Delete the file, or close the pull request unmerged | In a shallow checkout every pass date collapses to the clone's tip commit, and the report says nothing about it |
 | `metrics-snapshot` | One dated file under `ops/status/`, in the same directory as the cadence snapshots | Delete the file, or close the pull request unmerged | The evidence-element heading map can drift from the schemas, and the README says coverage then falls silently |
 | `contract-drift-check` | Nothing. A ledger entry and a pull request | Close the pull request unmerged; nothing was written | The one command it runs is already a named CI step on every pull request and every push to `main` |
-| `staleness-sweep` | Nothing. A ledger entry and a pull request | Close the pull request unmerged; nothing was written | Stale as-of dates are warnings that never affect the exit code, and the rule can read a dated line in only 20 of 342 files |
+| `staleness-sweep` | Nothing. A ledger entry and a pull request | Close the pull request unmerged; nothing was written | Stale as-of dates are warnings that never affect the exit code unless a proposal adds `--fail-on-stale`, and the rule can read a dated line in 24 of 372 files (2026-09-03) |
 | `release-brief-draft` | One dated brief under `release/briefs/` | Delete the file, or close the pull request unmerged | The catalogued command is missing `--since` and `--as-of`, and there is no defensible unattended rule for either |
 
 The reversal column is nearly uniform because the design makes it so: an
@@ -412,10 +412,15 @@ be rewritten around that case.
 Run `python3 scripts/check_links.py .` on a schedule. The sweep scans every
 markdown file outside `.git`, `.worktrees`, and `__pycache__`, resolving each
 relative and repo-absolute link target and reading each `As of:` line. It reports
-two different kinds of thing with two different severities: a broken or escaping
-link is an **error** and sets the exit code to 1; an as-of date older than
+three kinds of thing with two severities: a broken or escaping link is an
+**error** and sets the exit code to 1; an `As of:` line whose date-shaped text
+is not a calendar date is an **error** reported with file and line, so a typo
+fails the run instead of crashing it; an as-of date older than
 `STALE_LIMIT_DAYS` (90) is a **warning** printed to standard output that never
-affects the exit code.
+affects the exit code unless the caller passes `--fail-on-stale`, which CI does
+not and the catalogued command does not. Every run ends with the coverage the
+as-of rule reached, as a sentence and as one `check_links_summary:` line of
+counts, whether or not anything is stale.
 
 [`ops/cadence.yaml`](../cadence.yaml) mirrors the limit, and `scripts/cadence.py`
 refuses to load a config whose `staleness_limit_days` disagrees with the
@@ -454,14 +459,40 @@ job stopped running" is whether an entry appeared.
 
 ### Evidence that exists today
 
-- 34 tests in `tests/test_check_links.py`, and 56 in `tests/test_cadence.py`
+- 47 tests in `tests/test_check_links.py`, and 57 in `tests/test_cadence.py`
   covering the same rule as the cadence report applies it.
-- The rule has one source. `scripts/cadence.py` raises a configuration error and
-  exits 1 rather than running with a limit that disagrees with
-  `scripts/check_links.py`.
+- The rule has one source. `scripts/cadence.py` computes its staleness section
+  through `scan_as_of` in `scripts/check_links.py`, so the stale list, the
+  malformed list, and the coverage counts in the cadence report are the sweep's
+  own numbers; and it raises a configuration error and exits 1 rather than
+  running with a limit that disagrees with `scripts/check_links.py`.
 - `scripts/check_links.py` is a named step in
   [the CI workflow](../../.github/workflows/ci.yml) and runs on every pull
   request and every push to `main`.
+- **Coverage is carried in the result.** Every run prints how many markdown
+  files were scanned, how many carry a dated `As of:` line the rule can read,
+  how many dated lines were read, and how many files mention "as of" in a form
+  the rule cannot date, then states that the rule says nothing about the rest.
+  Measured on 2026-09-03: 24 of 372 markdown files carry a dated line the rule
+  can read, 26 lines in all; another 24 files mention "as of" in a form the
+  pattern cannot date; the rule says nothing about the remaining 324. These
+  counts move as files are added; the sweep re-measures them on every run, so
+  cite the run, not this paragraph. What does not move is the shape: the covered
+  set is whatever matches one regular expression, and it is a small fraction of
+  the corpus.
+- **A malformed date is an error, not a crash.** A line such as
+  `As of: 2026-02-30` is reported with file and line and sets the exit code to
+  1, exactly as a broken link does.
+- **What an unattended run does with a warning is written down**, in the
+  catalog entry's `note`: under the command as catalogued, a run that finds only
+  stale dates exits 0, its ledger entry records `completed`, and the finding is
+  carried in the run's standard output, whose last line is the
+  `check_links_summary:` counts that the ledger's stdout excerpt and the pull
+  request body both show. A proposal that wants a stale date to fail the run
+  adds `--fail-on-stale` to the command; the flag changes the exit code alone.
+- **The disposition owner is named.** The artifact-maintainer role receives
+  every stale finding and owns its disposition, consistent with the
+  stale-content queue's `human_owner_role` in [`ops/cadence.yaml`](../cadence.yaml).
 - This is the one candidate whose result changes with the calendar rather than
   with a commit. A document goes stale on its ninety-first day whether or not
   anybody pushes, so a repository nobody touches for a quarter gets no CI run and
@@ -470,71 +501,84 @@ job stopped running" is whether an entry appeared.
 
 ### Evidence that does not exist
 
-- No evidence about coverage, because coverage has never been reported. Measured
-  directly on 2026-09-02: 20 of 342 markdown files carry a dated `As of:` line
-  the rule can read — 22 lines in total. Another 23 files mention "as of" in a
-  form the pattern cannot date, including [`ops/BUZZ_SECURITY.md`](../BUZZ_SECURITY.md), whose
-  currency claim reads "based on the verified platform snapshot as of
-  2026-09-01", and
-  [`reviews/GUIDE_CURRENCY_AUDIT.md`](../../reviews/GUIDE_CURRENCY_AUDIT.md),
-  which is itself the audit of claims that will rot. These counts move as files
-  are added; re-measure before citing them. What does not move is the shape: the
-  covered set is whatever matches one regular expression, and it is a small
-  fraction of the corpus.
 - No decision about the overlap with `cadence-snapshot`. The cadence report
   already contains the staleness half of this check, computed through the same
-  functions in `scripts/check_links.py`, and prints it as "Stale as-of dates
-  (limit 90d, rule from `scripts/check_links.py`; 22 date(s) checked)". Promoting
-  both puts two unattended runs on one fact.
-- No record of what a maintainer does with a stale finding. The ladder places the
-  `stale_as_of` check at A0 and notes that deciding staleness stays the artifact
-  maintainer's call; its raise column asks for R2 only if a human wants a drafted
-  disposition per stale file.
+  function in `scripts/check_links.py`, and prints it with the same coverage
+  sentence. Promoting both puts two unattended runs on one fact. The packet for
+  that decision is the last section of this dossier.
+- No record of what a maintainer has done with a stale finding, because no
+  stale finding has been produced by an unattended run. The role is named; its
+  practice is not yet observed.
 
 ### The specific way it goes wrong
 
-**The half that goes stale is the half that never fails.** The sweep's exit code
-is 1 only when a link is broken. Every as-of warning leaves the exit code at 0.
-An unattended run judged by its exit status therefore reports success on a day
-when every dated document in the repository is out of date, and the finding lives
-only in text somebody has to read. The link half, which does fail loudly, is
+**The half that goes stale is the half that never fails.** Under the catalogued
+command the sweep's exit code is 1 only for a broken link or a malformed date.
+Every as-of warning leaves the exit code at 0. An unattended run judged by its
+exit status therefore reports success on a day when every dated document in the
+repository is out of date, and the finding lives in the summary line and the
+warning lines somebody has to read. `--fail-on-stale` exists so a proposal can
+choose otherwise, and the choice is the proposal's to make: with the flag, one
+stale date fails the run and the pull request carries a red check; without it,
+a stale date is a line in a green run. The link half, which does fail loudly, is
 already covered by CI on every push.
 
-**A clean sweep reads as "the repository is current" when it has checked 22
-lines.** Coverage is defined by a regular expression, not by the set of documents
-whose currency matters.
-[`reviews/GUIDE_CURRENCY_AUDIT.md`](../../reviews/GUIDE_CURRENCY_AUDIT.md)
+**A clean sweep can no longer be read as "the repository is current", but it
+can still be misread.** The coverage sentence says the rule reads 24 files of
+372. [`reviews/GUIDE_CURRENCY_AUDIT.md`](../../reviews/GUIDE_CURRENCY_AUDIT.md)
 records six findings about claims that will "silently rot" — undated maturity
-restatements, a hard-coded task contract, channel membership claims — and not one
-of them is a dated `As of:` line the sweep can see. A weekly clean sweep is
-literally true and, read as a currency signal, badly misleading.
+restatements, a hard-coded task contract, channel membership claims — and not
+one of them is a dated `As of:` line the sweep can see. A weekly clean sweep is
+literally true about 24 files, and a reader who skips the coverage sentence will
+take it for a statement about all of them.
 
 That is the general hazard this phase should be most careful about, in its
 sharpest form: a stale artifact that looks maintained is worse than an obviously
-absent one, and an automated currency check that can read a dated line in 20 of
-342 files is a machine for making stale documents look maintained.
+absent one, and an automated currency check that can read a dated line in 24 of
+372 files is a machine for making stale documents look maintained unless every
+reader reads the coverage line.
 
-A third, narrower failure: the rule parses any regex-matching date with
-`date.fromisoformat`, so a line reading `As of: 2026-02-30` raises an uncaught
-`ValueError`. Verified. The sweep crashes rather than reporting a wrong answer,
-which is the right direction — but a scheduled job whose only failure signal is a
-red run in a log nobody opens has stopped quietly all the same.
+### The decision: fold into `cadence-snapshot`, or keep a separate operation
 
-### The decision, and what would have to exist first
+Three of the four things this dossier said would have to exist first now do:
+coverage in the result, the warning rule, and the disposition owner, each
+recorded above with where it lives. The fourth is a decision, not a build, and
+this section lays it out without making it. The question is whether the
+calendar-driven half of this check belongs in its own operation or in the
+cadence report that already computes it.
 
-The decision is whether the calendar-driven half of this check is worth a
-scheduled run, and if so whether it belongs in its own operation at all rather
-than in the cadence report that already computes it.
+**Option A — fold it in.** Withdraw `staleness-sweep` from the catalog and let
+`cadence-snapshot` carry the staleness section, as it already does.
 
-Before that decision could be made on facts: a coverage number carried in the
-result itself, so no reader mistakes a clean sweep for a current repository; a
-recorded decision on the overlap with `cadence-snapshot`, since two unattended
-runs reporting one fact is a governance problem rather than a tooling one; a
-statement of what an unattended run does with a warning that does not change the
-exit code, since the exit code is what a workflow reads; and a named role who
-receives a stale finding and owns the disposition, which
-[`ops/cadence.yaml`](../cadence.yaml) currently routes to the follow-up queue and
-a human.
+- *What one unattended run leaves behind:* one dated cadence status file under
+  `ops/status/`, whose staleness section carries the stale list, the malformed
+  list, and the coverage sentence.
+- *What a wrong output causes:* a wrong week's cadence report, which is
+  `cadence-snapshot`'s own finding; the staleness half inherits the shallow-clone
+  hazard recorded in that dossier, since the cadence report reads Git history
+  and the sweep does not.
+- *Facts that favour it:* one fact reported by one run; the coverage sentence
+  and the stale list are identical in both outputs by construction; the cadence
+  report is already the artifact the weekly operating loop reads; nothing is lost
+  that a reader of the cadence report would have seen.
+
+**Option B — keep a separate operation.** Leave `staleness-sweep` catalogued,
+with or without `--fail-on-stale`, as its own candidate.
+
+- *What one unattended run leaves behind:* nothing written; a ledger entry and a
+  pull request whose body carries the summary line.
+- *What a wrong output causes:* a green run on a stale repository if the flag is
+  absent, or a red run whose only content is a date somebody has to disposition
+  if it is present; in neither case is a file changed.
+- *Facts that favour it:* an empty write scope, so the run cannot manufacture
+  currency; a result that does not depend on Git history, so a shallow checkout
+  cannot corrupt it; an exit code a workflow can be made to read; and a
+  standalone signal on a quiet repository that gets no cadence run because no
+  pass evidence changed.
+
+Whichever is chosen is recorded through the reserved-decision path, and neither
+choice promotes anything: promotion stays a separate signed record with its own
+review point.
 
 ---
 

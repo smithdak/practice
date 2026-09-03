@@ -398,7 +398,10 @@ class JsonShapeTests(FixtureCase):
         self.assertEqual(
             sorted(report["summary"]),
             [
+                "as_of_dated_files",
+                "as_of_files_scanned",
                 "blocked_handoffs",
+                "malformed_as_of_dates",
                 "open_operating_holds",
                 "open_owner_gates",
                 "passes",
@@ -408,6 +411,20 @@ class JsonShapeTests(FixtureCase):
                 "stale_as_of_dates",
             ],
         )
+
+    def test_stale_check_carries_coverage_on_a_clean_report(self):
+        report = self.report()
+        stale = report["checks"]["stale_as_of"]
+        self.assertEqual(
+            sorted(stale["coverage"]), ["dated_files", "dated_lines", "files", "statement", "undatable_files"]
+        )
+        self.assertEqual(stale["coverage"]["dated_lines"], stale["dates_checked"])
+        self.assertGreaterEqual(stale["coverage"]["files"], stale["coverage"]["dated_files"] + stale["coverage"]["undatable_files"])
+        self.assertIn("the rule says nothing about the remaining", stale["coverage"]["statement"])
+        self.assertEqual(stale["malformed"], [])
+        self.assertEqual(report["summary"]["as_of_dated_files"], stale["coverage"]["dated_files"])
+        self.assertEqual(report["summary"]["as_of_files_scanned"], stale["coverage"]["files"])
+        self.assertEqual(report["summary"]["malformed_as_of_dates"], 0)
 
     def test_queues_carry_their_source_section_and_check(self):
         queues = {entry["id"]: entry for entry in self.report()["queues"]}

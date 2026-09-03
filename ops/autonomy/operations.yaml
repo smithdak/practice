@@ -95,24 +95,38 @@ operations:
 
   - id: staleness-sweep
     summary: >-
-      Scan every markdown file for broken relative links and As-of dates older
-      than the staleness limit, and report them.
+      Scan every markdown file for broken relative links, malformed As-of
+      dates, and As-of dates older than the staleness limit; report them with
+      the coverage the As-of rule reached.
     command: ["python3", "scripts/check_links.py", "."]
     write_scope: []
     reversal: >-
       Nothing to reverse: the sweep creates and changes no path. Close the pull
       request unmerged if the scheduled workflow opened one.
     blast_radius: >-
-      No file is created or changed. The sweep exits non-zero on a broken link,
-      which fails the run rather than fixing anything. No member contact.
+      No file is created or changed. The sweep exits non-zero on a broken link
+      or a malformed As-of date, which fails the run rather than fixing
+      anything. No member contact.
     level: A0
     level_basis: >-
       The `stale_as_of` check row in the ladder is A0, and its raise column asks
       for R2 only if a human wants a drafted disposition per stale file.
     note: >-
-      A stale As-of date is a warning, never an error, and deciding what to do
-      about one stays with the artifact maintainer. The sweep reports; it never
-      edits a date or a link.
+      A stale As-of date is a warning, never an error. Under the command as
+      catalogued, an unattended run that finds only stale dates exits 0 and its
+      ledger entry records the outcome as completed; the finding is carried in
+      the run's standard output, which ends with a `check_links_summary:` line
+      whose `stale_dates` count the ledger entry's stdout excerpt and the pull
+      request body both show, and by the coverage line printed on every run so
+      that a clean result reads as a statement about the files the rule could
+      read, never as "the repository is current". The exit code is what a
+      workflow reads, so a proposal that wants a stale date to fail the run
+      must add `--fail-on-stale` to this command; that flag changes the exit
+      code alone, CI does not pass it, and adding it is a change to this entry
+      that a promotion proposal names. The artifact-maintainer role receives
+      every stale finding and owns its disposition, as the stale-content queue
+      in ops/cadence.yaml records. The sweep reports; it never edits a date or
+      a link.
 
   - id: release-brief-draft
     summary: >-

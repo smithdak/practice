@@ -10,6 +10,14 @@ cadence document supports from repository evidence: handoffs recorded
 review packet, and markdown files whose ``As of:`` date is older than the
 staleness limit shared with ``scripts/check_links.py``.
 
+The staleness section is computed through ``scan_as_of`` in
+``scripts/check_links.py``, so it carries exactly what the sweep carries: the
+stale dates, any ``As of:`` line whose date is not a calendar date, and the
+coverage the rule reached -- how many markdown files it could read a dated
+line from, and how many mention "as of" in a form it cannot date. A report
+with no stale date is a statement about the files the rule could read, never a
+statement that the repository is current.
+
 Boundaries this report keeps:
 
 - It reads files in this repository only. It cannot see Buzz channel activity,
@@ -88,6 +96,9 @@ SCOPE_NOTE = (
     "Owner gates and operating holds are repeated exactly as the owner review packet "
     "records them. This report clears no gate and no hold, and it approves, merges, "
     "publishes, and moderates nothing.",
+    "The staleness check reads a date only where an \"As of:\" line matches its pattern. "
+    "The staleness section states how many files that is; a report with no stale date "
+    "describes those files and says nothing about the rest.",
 )
 
 
@@ -495,25 +506,27 @@ def check_open_owner_gates(root: Path, relative: str) -> dict:
 
 
 def check_stale_as_of(root: Path, as_of: date, limit_days: int, check_links) -> dict:
-    """Apply the as-of staleness rule from scripts/check_links.py."""
-    stale: list[dict] = []
-    dated = 0
-    for path in check_links.find_markdown_files(root):
-        relative = path.relative_to(root).as_posix()
-        masked = check_links.mask_code(path.read_text(encoding="utf-8", errors="replace"))
-        for line_no, iso_date in check_links.extract_as_of_dates(masked):
-            dated += 1
-            age_days = (as_of - date.fromisoformat(iso_date)).days
-            if age_days > limit_days:
-                stale.append(
-                    {"path": relative, "line": line_no, "as_of": iso_date, "age_days": age_days}
-                )
-    stale.sort(key=lambda item: (item["path"], item["line"]))
+    """Apply the as-of staleness rule and coverage count from scripts/check_links.py.
+
+    One function in ``check_links`` reads every ``As of:`` line for both the
+    sweep and this report, so the stale list, the malformed list, and the
+    coverage counts here are the sweep's own numbers.
+    """
+    scan = check_links.scan_as_of(root, as_of=as_of, limit_days=limit_days)
+    coverage = {
+        "files": scan["files"],
+        "dated_files": scan["dated_files"],
+        "dated_lines": scan["dated_lines"],
+        "undatable_files": scan["undatable_files"],
+    }
+    coverage["statement"] = check_links.coverage_sentence(coverage)
     return {
         "limit_days": limit_days,
         "rule_source": "scripts/check_links.py",
-        "dates_checked": dated,
-        "stale": stale,
+        "dates_checked": scan["dated_lines"],
+        "coverage": coverage,
+        "stale": scan["stale"],
+        "malformed": scan["malformed"],
     }
 
 
@@ -597,6 +610,9 @@ def build_report(root: Path, config_path: Path, config: dict, as_of: date, check
             "open_owner_gates": len(open_gates),
             "open_operating_holds": len(open_holds),
             "stale_as_of_dates": len(stale["stale"]),
+            "malformed_as_of_dates": len(stale["malformed"]),
+            "as_of_dated_files": stale["coverage"]["dated_files"],
+            "as_of_files_scanned": stale["coverage"]["files"],
         },
     }
 
@@ -700,6 +716,12 @@ def render_text(report: dict) -> str:
             )
     else:
         out.append("  none")
+    for record in stale["malformed"]:
+        out.append(
+            f"  {record['path']}:{record['line']}: as-of date {record['text']} is not a "
+            "calendar date (malformed; the sweep reports it as an error)"
+        )
+    out.extend(wrap(f"coverage: {stale['coverage']['statement']}", first="  ", rest="    "))
     out.append("")
     fallback = report["low_activity_fallback"]
     out.append("Low-activity fallback")
