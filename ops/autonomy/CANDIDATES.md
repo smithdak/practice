@@ -1,13 +1,17 @@
 # A3 candidate dossiers
 
-**As of:** 2026-09-02
+**As of:** 2026-09-03
 
 ## What these are
 
-Five operations are catalogued in [the operation catalog](operations.yaml) as
+Four operations are catalogued in [the operation catalog](operations.yaml) as
 things that *could* one day run unattended. None is promoted, and
 [the autonomy ladder](../../docs/framework/AUTONOMY_LADDER.md) records that no
-operation in this repository is at A3.
+operation in this repository is at A3. A fifth, `staleness-sweep`, was withdrawn
+on 2026-09-03 by [decision 001](DECISION_RECORD.md) and folded into
+`cadence-snapshot`; its dossier stays below as the record of why. The same
+decision declined to promote any of the four, for the reasons each dossier's
+last section gives.
 
 A dossier is what a human reads before deciding whether one of them should be.
 It states what the operation would do without a person, the paths it may write,
@@ -35,14 +39,13 @@ This is not the dialect used by the evidence globs in
 `*` stops at a slash. The same pattern means two different things in two files a
 proposer reads together.
 
-## The five at a glance
+## The four at a glance
 
 | Candidate | What one unattended run leaves behind | Reversal | The finding to weigh first |
 | --- | --- | --- | --- |
 | `cadence-snapshot` | One dated file under `ops/status/` | Delete the file, or close the pull request unmerged | In a shallow checkout every pass date collapses to the clone's tip commit, and the report says nothing about it |
 | `metrics-snapshot` | One dated file under `ops/status/`, in the same directory as the cadence snapshots | Delete the file, or close the pull request unmerged | The evidence-element heading map can drift from the schemas, and the README says coverage then falls silently |
 | `contract-drift-check` | Nothing. A ledger entry and a pull request | Close the pull request unmerged; nothing was written | The one command it runs is already a named CI step on every pull request and every push to `main` |
-| `staleness-sweep` | Nothing. A ledger entry and a pull request | Close the pull request unmerged; nothing was written | Stale as-of dates are warnings that never affect the exit code unless a proposal adds `--fail-on-stale`, and the rule can read a dated line in 24 of 372 files (2026-09-03) |
 | `release-brief-draft` | One dated brief under `release/briefs/` | Delete the file, or close the pull request unmerged | The catalogued command is missing `--since` and `--as-of`, and there is no defensible unattended rule for either |
 
 The reversal column is nearly uniform because the design makes it so: an
@@ -53,6 +56,11 @@ a wrong output causes before anybody closes anything.
 ---
 
 ## `cadence-snapshot`
+
+*Since [decision 001](DECISION_RECORD.md) this operation also carries the
+calendar-driven staleness check: the report's staleness section lists stale and
+malformed `As of:` dates and states the coverage the rule reached. The
+`staleness-sweep` dossier below records what that section can and cannot see.*
 
 ### What it would do unattended
 
@@ -407,6 +415,11 @@ be rewritten around that case.
 
 ## `staleness-sweep`
 
+*Withdrawn from the catalog on 2026-09-03 by [decision 001](DECISION_RECORD.md),
+Option A of the packet at the end of this section. The dossier is kept as the
+record of why, and because its findings about coverage now describe the
+staleness section of the cadence report that `cadence-snapshot` carries.*
+
 ### What it would do unattended
 
 Run `python3 scripts/check_links.py .` on a schedule. The sweep scans every
@@ -707,19 +720,20 @@ answer is a command in the Release pass, which is where
 
 ---
 
-## What all five have in common
+## What all four have in common
 
 Four things are true of every candidate here, and a proposer should not have to
 rediscover them one dossier at a time.
 
 **They are all reports, and a report can be wrong quietly for a long time.** None
-of the five performs an irreversible act; all five produce a description. That
+of the four performs an irreversible act; all four produce a description. That
 makes the reversal cheap and the wrongness cheap to miss. A wrong report does not
 crash, does not fail a check, and does not look different from a right one — it
 sits in the repository being cited. Each dossier names the specific form this
 takes: the shallow-clone flattening in `cadence-snapshot`, the silent coverage
-fall in `metrics-snapshot`, and the 20-of-342 coverage in `staleness-sweep` are
-one failure wearing three coats.
+fall in `metrics-snapshot`, and the as-of rule that reads a dated line in a
+small fraction of files, now carried by the cadence report's staleness section,
+are one failure wearing three coats.
 
 **A dated series looks like a maintained practice whether or not anyone reads
 it.** Recording a run on a schedule creates evidence that the loop is running.

@@ -37,9 +37,11 @@ Nothing is promoted. Every catalogued operation refuses today; run `make autonom
 | Path | What it holds |
 |---|---|
 | [autonomy/README.md](autonomy/README.md) | The two records, the guard that reads them, how a promotion would be made, and how to reverse one |
-| [autonomy/operations.yaml](autonomy/operations.yaml) | The catalog: five operations that could one day run unattended, each with its command, write scope, reversal, and current level. A catalog entry permits nothing |
+| [autonomy/operations.yaml](autonomy/operations.yaml) | The catalog: four operations that could one day run unattended, each with its command, write scope, reversal, and current level. A catalog entry permits nothing |
 | [autonomy/promotions.yaml](autonomy/promotions.yaml) | The governance record. Ships as `kill_switch: engaged` and `promotions: []` |
+| [autonomy/renewals.yaml](autonomy/renewals.yaml) | The renewal record: a promotion's review point is renewed only by a new signed entry here, never by editing the promotion. Ships empty |
 | [autonomy/CANDIDATES.md](autonomy/CANDIDATES.md) | One dossier per catalogued operation: the case for and against promoting it |
+| [autonomy/DECISION_RECORD.md](autonomy/DECISION_RECORD.md) | Human decisions about the catalog and promotions, newest first, including decisions not to promote. Decision 001 withdrew the staleness sweep and promoted nothing |
 | [autonomy/PROMOTION_PROPOSAL.md](autonomy/PROMOTION_PROPOSAL.md) | The form a human signs to promote an operation. None has been signed |
 | [autonomy/PR_REVIEW_CONTRACT.md](autonomy/PR_REVIEW_CONTRACT.md) | What a reviewer agrees to when merging a pull request opened by an unattended run |
 | [ledger/](ledger/README.md) | Append-only run records. Empty except one labeled hypothetical sample of a refused run |

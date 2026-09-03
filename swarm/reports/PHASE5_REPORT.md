@@ -140,18 +140,30 @@ Each verdict now lists four failed preconditions and the six that held.
 | `python3 scripts/check_links.py .` | 0 broken, 0 stale, 0 malformed; coverage printed |
 | `gh run view 33759586730` | Guard verdicts passed in 9s, Run and propose skipped |
 
+## Decisions recorded after integration
+
+Later on 2026-09-03 the four open items were put to the founder as questions.
+The answers, and what was done with them:
+
+1. **Option A.** `staleness-sweep` is withdrawn from the catalog and its
+   calendar-driven half is carried by `cadence-snapshot`'s staleness section.
+   Recorded as [decision 001](../../ops/autonomy/DECISION_RECORD.md); the
+   catalog now lists four operations, and the dossier stays as the record.
+2. **No promotion, on the Director's recommendation.** Each remaining candidate
+   is declined for the reason its dossier gives, with what would reopen it,
+   in the same decision record. Nothing in the promotion or renewal record
+   changed.
+3. **The 47 merged `agent/*` branches were deleted** with git's safe delete.
+4. **Both actions were bumped** to their current major versions, checkout v7
+   and setup-python v7, in both workflows, and the workflow was dispatched
+   once more as a dry run.
+
 ## What a human decides next
 
-1. **The overlap decision for `staleness-sweep`.** Option A folds the
-   calendar half into `cadence-snapshot` and withdraws the operation; Option B
-   keeps a separate operation, with or without `--fail-on-stale`. The packet
-   is the last section of [the dossier](../../ops/autonomy/CANDIDATES.md).
-2. **Whether to promote anything at all.** The dossiers stand; a proposal now
-   has a place to name its review point, and the sweep's prerequisites exist.
-3. **Deleting the 47 merged `agent/*` branches from Phase 1.** Verified merged
-   into `main`; the deletion was left to the owner.
-4. **Bumping the two GitHub Actions** the dry run flagged as targeting a
-   deprecated Node version.
+Nothing from this phase. What remains open is what was open before it: the
+eight owner gates and seven operating holds in
+[the owner review packet](../../release/OWNER_REVIEW.md), and the reopening
+conditions each candidate's dossier names.
 
 Deferred by the workers and recorded in their handoffs: a rate limit on
 renewals, a `promotion.renewed_on` ledger field, a demotion-history record, and

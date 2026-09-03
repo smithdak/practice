@@ -204,6 +204,8 @@ file. It is not the one to reach for under pressure.
   ineligible for A3.
 - [Governance model](../../community/GOVERNANCE.md) — the reserved-decision path
   a promotion is made through.
+- [Unattended-action decisions](DECISION_RECORD.md) — the decisions made under
+  that path so far, including the decision not to promote anything.
 - [Running Practice on the loop](../OPERATING_LOOP.md) — what runs without
   a person today and what requires one.
 - [Private beta operating kit](../BETA_OPS.md) — the operating roles a signature

@@ -6,7 +6,7 @@ it, applies nothing, and records what happened. Three things those fixtures
 cannot prove are tested separately:
 
 - the safety invariant, ``test_shipped_records_refuse_every_operation``: with the
-  records this repository actually ships, all five catalogued operations are
+  records this repository actually ships, all four catalogued operations are
   refused, no operation output is written, and the repository is left byte-for-
   byte as it was. That is the most important test in this file. Its refusal
   entries go to a temporary ledger directory, never to ``ops/ledger/``;
@@ -62,7 +62,6 @@ CATALOGUED_OPERATIONS = (
     "cadence-snapshot",
     "metrics-snapshot",
     "contract-drift-check",
-    "staleness-sweep",
     "release-brief-draft",
 )
 

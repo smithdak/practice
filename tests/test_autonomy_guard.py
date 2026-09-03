@@ -5,7 +5,7 @@ one precondition, and assert that the guard refuses and names it. Two things
 those fixtures cannot prove are tested against the real repository instead:
 
 - the safety invariant, ``test_shipped_records_refuse_every_operation``: with
-  the records this repository actually ships, all five catalogued operations are
+  the records this repository actually ships, all four catalogued operations are
   refused. That is the most important test in this file. A change that makes it
   pass silently would mean something in this repository can act on its own;
 - that the guard can permit at all. ``test_complete_bound_is_permitted`` builds
@@ -49,7 +49,6 @@ CATALOGUED_OPERATIONS = (
     "cadence-snapshot",
     "metrics-snapshot",
     "contract-drift-check",
-    "staleness-sweep",
     "release-brief-draft",
 )
 
@@ -229,7 +228,7 @@ class SafetyInvariantTest(GuardTestCase):
         self.assertIn("ops/autonomy/renewals.yaml", text)
         self.assertIn("not a renewal", text)
 
-    def test_shipped_catalog_holds_the_five_operations_at_attended_levels(self):
+    def test_shipped_catalog_holds_the_four_operations_at_attended_levels(self):
         record = yaml.safe_load((REPOSITORY_ROOT / guard.CATALOG_PATH).read_text(encoding="utf-8"))
         ids = [entry["id"] for entry in record["operations"]]
         self.assertEqual(sorted(ids), sorted(CATALOGUED_OPERATIONS))
