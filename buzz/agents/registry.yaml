@@ -58,7 +58,11 @@ agents:
       condition otherwise, so the Steward may post a recommendation inside a
       bound an observer can check. It decides nothing: policy, moderation,
       access, and publication stay with humans. P3 and P5 of that test are what
-      keep the write surface from carrying a decision.
+      keep the write surface from carrying a decision. P7 and the profile's rule
+      on following an injected instruction (J1 to J4) keep untrusted content
+      from steering what that surface carries: compliance, in whole or in part,
+      is decided from the reply by difference, so a half-followed instruction
+      is a followed one.
     channels:
       read:
         - start-here
