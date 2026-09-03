@@ -13,8 +13,8 @@ agent_id: research-auditor
 profile: buzz/agents/RESEARCH_AUDITOR.md
 profile_basis:
   profile_version: not-versioned
-  source_commit: 57f9dc74b39dbd71bd64d3a515492d5cf3cb53f9
-  reviewed: 2026-09-02
+  source_commit: 8ee3955ab572a3356bc31984ff7d925c67cbb698
+  reviewed: 2026-09-03
 execution:
   minimum_model_families: 2
   when_unavailable: record-limitation-and-do-not-count-as-pass

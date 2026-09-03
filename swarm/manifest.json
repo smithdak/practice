@@ -3361,6 +3361,147 @@
       ],
       "spec": "swarm/specs/W2.md",
       "status": "todo"
+    },
+    {
+      "id": "Y1",
+      "title": "Give the Steward a checkable posting condition",
+      "wave": 16,
+      "lane": "agents",
+      "model_tier": "strong",
+      "mode": "revision",
+      "dependencies": [
+        "S1",
+        "S3",
+        "V1",
+        "W2"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md",
+        "swarm/reports/PHASE3_REPORT.md"
+      ],
+      "outputs": [
+        "buzz/agents/evals/README.md",
+        "scripts/validate_agent_evals.py"
+      ],
+      "handoff": "swarm/handoffs/Y1.md",
+      "objective": "Replace the Steward's unobservable posting condition with a checkable one and give it evaluation cases.",
+      "requirements": [
+        "The condition is decided from the request and the reply, and a withheld reply names the failed condition by id.",
+        "A case where posting is correct is required alongside the refusal cases.",
+        "No agent is enabled; owner gate 6 remains open."
+      ],
+      "acceptance": [
+        "make checks passes.",
+        "The handoff records status, validation, decisions, risks, and deferred opportunities."
+      ],
+      "spec": "swarm/specs/Y1.md",
+      "status": "todo"
+    },
+    {
+      "id": "Z1",
+      "title": "Review point and renewal record",
+      "wave": 17,
+      "lane": "operations",
+      "model_tier": "strong",
+      "mode": "revision",
+      "dependencies": [
+        "X1",
+        "X2",
+        "X3",
+        "X4",
+        "W2"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md",
+        "docs/framework/AUTONOMY_LADDER.md",
+        "swarm/handoffs/X4.md"
+      ],
+      "outputs": [
+        "ops/autonomy/renewals.yaml",
+        "ops/autonomy/promotions.yaml",
+        "ops/autonomy/README.md",
+        "scripts/autonomy_guard.py",
+        "scripts/demotion_check.py",
+        "scripts/run_unattended.py",
+        "scripts/ledger.py",
+        "docs/schemas/ACTION_LEDGER_SCHEMA.md",
+        "tests/test_autonomy_guard.py",
+        "tests/test_demotion_check.py"
+      ],
+      "handoff": "swarm/handoffs/Z1.md",
+      "objective": "Make the ladder's A3 review-point trigger evaluable by requiring a review point on every promotion and recording renewal as a record of its own, while promoting nothing.",
+      "requirements": [
+        "review_point is a required promotion field; a renewal is a new signed record in ops/autonomy/renewals.yaml, never an edit.",
+        "The guard refuses a passed review point and any malformed renewal record.",
+        "The demotion check evaluates the A3 review-point trigger from the ledger and the renewal record.",
+        "kill_switch stays engaged, the promotion list stays empty, and the renewal record ships empty."
+      ],
+      "acceptance": [
+        "make checks passes and make autonomy refuses every catalogued operation.",
+        "demotion_check reports the A3 review-point trigger as evaluated here.",
+        "The handoff states that nothing is promoted and no run has occurred."
+      ],
+      "spec": "swarm/specs/Z1.md",
+      "status": "todo"
+    },
+    {
+      "id": "Z2",
+      "title": "Define the five undefined profile terms",
+      "wave": 17,
+      "lane": "agents",
+      "model_tier": "strong",
+      "mode": "revision",
+      "dependencies": [
+        "S1",
+        "S3",
+        "V1",
+        "Y1"
+      ],
+      "inputs": [
+        "AGENTS.md",
+        "docs/CONTEXT.md",
+        "docs/DECISIONS.md",
+        "docs/NON_GOALS.md",
+        "docs/QUALITY_BAR.md",
+        "swarm/reports/PHASE3_REPORT.md",
+        "swarm/handoffs/V1.md",
+        "swarm/handoffs/Y1.md"
+      ],
+      "outputs": [
+        "buzz/agents/STEWARD.md",
+        "buzz/agents/LIBRARIAN.md",
+        "buzz/agents/RELEASE_EDITOR.md",
+        "buzz/agents/RESEARCH_AUDITOR.md",
+        "buzz/agents/GUIDE_MAINTAINER.md",
+        "buzz/agents/registry.yaml",
+        "buzz/agents/evals/steward.yaml",
+        "buzz/agents/evals/librarian.yaml",
+        "buzz/agents/evals/release-editor.yaml",
+        "buzz/agents/evals/research-auditor.yaml",
+        "buzz/agents/evals/guide-maintainer.yaml"
+      ],
+      "handoff": "swarm/handoffs/Z2.md",
+      "objective": "Replace five guardrail terms that have no observable definition with definitions decidable from the record, each with a checkable evaluation case.",
+      "requirements": [
+        "Each definition is at least as restrictive as the current prose read conservatively.",
+        "Where a definition rests on a human-supplied record, its required contents and the default when absent are stated.",
+        "No controlled registry value changes; no agent is enabled."
+      ],
+      "acceptance": [
+        "make checks passes, including both agent validators.",
+        "Each suite gains at least one behavior case tied to its definition.",
+        "The handoff records, per term, the decidable inputs, the default when absent, the cases, and what stays unobservable."
+      ],
+      "spec": "swarm/specs/Z2.md",
+      "status": "todo"
     }
   ]
 }

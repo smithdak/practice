@@ -20,8 +20,8 @@ are in [prompts/ORCHESTRATOR.md](prompts/ORCHESTRATOR.md).
 | [specs/](specs/) | One specification per manifest task: objective, files to read, owned outputs, scope rule, requirements, acceptance, stop conditions. | Before starting or reviewing a task. |
 | [handoffs/](handoffs/) | One committed handoff per task in the shape of [templates/HANDOFF.md](../templates/HANDOFF.md): status, files changed, validation, decisions, risks, deferred opportunities. | To learn what a task did and what it left unresolved. |
 | [prompts/](prompts/) | Role prompts: `ORCHESTRATOR.md` (the Director), `WORKER.md` (prepended to every generated task prompt), `REVIEWER.md`, `INTEGRATOR.md`, `BUZZ_PROVISIONER.md`. | When you run one of those roles. |
-| [plans/](plans/) | `PHASE1_PLAN.md` to `PHASE4_PLAN.md`: the objective, waves, task inventory, and hard constraints of each construction phase. | To understand why a set of tasks exists. |
-| [reports/](reports/) | `PHASE1_REPORT.md` to `PHASE4_REPORT.md`: the integration report for each phase, written by that phase's integration task and committed by the Director. Commands run, findings dispositioned, remaining risks. | To see how a phase ended and what it left blocked. |
+| [plans/](plans/) | `PHASE1_PLAN.md` to `PHASE5_PLAN.md`: the objective, waves, task inventory, and hard constraints of each construction phase. | To understand why a set of tasks exists. |
+| [reports/](reports/) | `PHASE1_REPORT.md` to `PHASE5_REPORT.md`: the integration report for each phase, written by that phase's integration task and committed by the Director. Commands run, findings dispositioned, remaining risks. | To see how a phase ended and what it left blocked. |
 
 For any task id, open the pair `specs/<ID>.md` and `handoffs/<ID>.md`. Example:
 [specs/K007.md](specs/K007.md) says K007 owns `guides/ai-native-practitioner/04-automation-agents.md`;
