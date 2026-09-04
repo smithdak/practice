@@ -1,4 +1,4 @@
-<!-- practice-seed:ask-practice-v1 -->
+<!-- practice-seed:ask-practice-v2 -->
 # What are you stuck on?
 
 Bring the exact point where useful work has stalled:

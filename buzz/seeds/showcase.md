@@ -1,4 +1,4 @@
-<!-- practice-seed:showcase-v1 -->
+<!-- practice-seed:showcase-v2 -->
 # Share what happened
 
 Tell the smallest complete implementation story:

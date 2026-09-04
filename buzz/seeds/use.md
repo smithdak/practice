@@ -1,4 +1,4 @@
-<!-- practice-seed:use-v1 -->
+<!-- practice-seed:use-v2 -->
 # Improve one task you already know
 
 Run one bounded comparison:

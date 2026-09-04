@@ -1,4 +1,4 @@
-<!-- practice-seed:automate-v1 -->
+<!-- practice-seed:automate-v2 -->
 # Map it before you automate it
 
 Describe one repeated workflow:

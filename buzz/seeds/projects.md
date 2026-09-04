@@ -1,4 +1,4 @@
-<!-- practice-seed:projects-v1 -->
+<!-- practice-seed:projects-v2 -->
 # Shape a Project people can maintain
 
 Start with the smallest credible Project brief:

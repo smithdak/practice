@@ -1,4 +1,4 @@
-<!-- practice-seed:build-v1 -->
+<!-- practice-seed:build-v2 -->
 # Make the behavior reproducible
 
 Open with a compact system card:

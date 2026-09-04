@@ -1,4 +1,4 @@
-<!-- practice-seed:learn-v1 -->
+<!-- practice-seed:learn-v2 -->
 # Learn one thing by checking it
 
 Tie one concept to a task you care about:

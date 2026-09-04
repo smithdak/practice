@@ -1,4 +1,4 @@
-<!-- practice-seed:announcements-v1 -->
+<!-- practice-seed:announcements-v2 -->
 # How this stream works
 
 This is the low-volume record of approved releases, Sessions, and operating
