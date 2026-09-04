@@ -1,14 +1,13 @@
 # Buzz Platform Snapshot
 
-**As of:** 2026-09-01
+**As of:** 2026-09-04
 **Purpose:** Prevent construction agents from inventing or depending on unstable Buzz capabilities.
 
-## Changes since 2026-08-31
+## Changes since 2026-09-01
 
-- All four primary sources were re-fetched successfully on 2026-09-01; every capability claim below was re-verified against them and none required removal.
-- Issue [#6116](https://github.com/block/buzz/issues/6116) (desktop Workflows screen showing "No workflows yet" despite existing workflows) is now closed via linked PR [#6168](https://github.com/block/buzz/pull/6168). It no longer supports the workflow exclusions; the scheduled-workflows exclusion rests on [#5611](https://github.com/block/buzz/issues/5611), which remains open.
-- Issues [#5611](https://github.com/block/buzz/issues/5611), [#4864](https://github.com/block/buzz/issues/4864), [#5043](https://github.com/block/buzz/issues/5043), [#5075](https://github.com/block/buzz/issues/5075), and [#5268](https://github.com/block/buzz/issues/5268) remain open as of 2026-09-01.
-- No new release since Buzz Desktop v0.5.20 (released 2026-08-26), so no release-level changes occurred in the window.
+- Buzz Desktop [v0.5.22](https://github.com/block/buzz/releases/tag/desktop-v0.5.22) was released on 2026-09-04.
+- Open issue [#7334](https://github.com/block/buzz/issues/7334) reports that the Windows v0.5.22 package opens a blank `ERR_FILE_NOT_FOUND` view and that downgrading to v0.5.20 restores the interface. Windows operators should hold at v0.5.20 until that regression is resolved or a later release is verified on Windows.
+- The hosted relay rejects workflow step IDs containing hyphens and requires alphanumeric characters or underscores. The manual smoke-test fixture now uses `post_verification_message`, and the release validator enforces that constraint.
 
 ## Verified current capabilities
 

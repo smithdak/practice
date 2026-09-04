@@ -4,7 +4,7 @@ enabled: false
 trigger:
   on: webhook
 steps:
-  - id: post-verification-message
+  - id: post_verification_message
     action: send_message
     text: >-
       Workflow smoke test — manually triggered in foundry. No action is required.

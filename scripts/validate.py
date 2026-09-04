@@ -10,6 +10,7 @@ from pathlib import Path
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
 SEED_RE = re.compile(r"<!--\s*practice-seed:([^\s]+)\s*-->")
+WORKFLOW_STEP_ID_RE = re.compile(r"^[A-Za-z0-9_]+$")
 HANDOFF_STATUS_RE = re.compile(r"^## Status\s*\n+\s*(COMPLETE|BLOCKED)\s*$", re.MULTILINE)
 UNFINISHED_RE = re.compile(r"\b(TODO|TBD|LOREM IPSUM)\b", re.IGNORECASE)
 PUBLICATION_TOKEN_RE = re.compile(r"\[[@#]?[A-Z][A-Z0-9_ -]*\](?!\()")
@@ -113,6 +114,19 @@ def validate_buzz(root: Path, errors: list[str]) -> None:
                 fail(errors, f"Duplicate seed marker: {found[0]}")
             else:
                 markers.add(found[0])
+
+    workflow = root / "buzz" / "workflows" / "manual-smoke-test.yaml"
+    if workflow.exists():
+        text = workflow.read_text(encoding="utf-8")
+        step_ids = re.findall(r"^\s*-\s+id:\s*(\S+)\s*$", text, re.MULTILINE)
+        if not step_ids:
+            fail(errors, f"Buzz workflow {workflow} must declare at least one step id")
+        for step_id in step_ids:
+            if not WORKFLOW_STEP_ID_RE.fullmatch(step_id):
+                fail(
+                    errors,
+                    f"Buzz workflow step id {step_id!r} must contain only alphanumeric characters and underscores",
+                )
 
 
 def validate_links(root: Path, errors: list[str]) -> None:
