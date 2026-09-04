@@ -14,6 +14,13 @@ conversation, current context, questions, and routing.
 
 ## Channel map
 
+Owner-requested hosted extension, 2026-09-04: `practice-reviews` and
+`labs-and-experiments` are supplemental forums with human-created topics.
+Their IDs, canvases, and operating limits are recorded in
+[the deployment record](DEPLOYMENT_2026-09-04.md). This is an explicit exception
+to the stream-only creation rule below, not a change to the twelve-stream
+bootstrap or permission to automate forum root posts.
+
 | Channel | Access | Distinct outcome | Use it when | Do not use it for |
 | --- | --- | --- | --- | --- |
 | `foundry` | Private | Construction work has a visible status, decision, blocker, or review summary. | Coordinating tasks and agents. | Public discussion or durable artifacts. |

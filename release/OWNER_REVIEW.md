@@ -34,6 +34,22 @@ Sources: [locked decisions](../docs/DECISIONS.md), [non-goals](../docs/NON_GOALS
 
 ## Owner gates — all open until Dakota records approval
 
+### Hosted setup evidence, 2026-09-04
+
+Dakota explicitly authorized delegated community setup and forum enablement.
+The [deployment record](../buzz/DEPLOYMENT_2026-09-04.md) records the applied
+hosted structure, successful human escalation receipt, and three tested agents
+in an **owner-only pilot**. The private access inventory records the sponsor
+and 2026-09-11 review date. The readiness checker passed five checks.
+
+This satisfies concrete setup work previously missing from holds 5 and 6, but
+does not assert a non-owner onboarding test or member-facing agent isolation.
+The current runtime uses `bypassPermissions`; broad agent enablement remains
+held pending isolation. The rows below remain the public-launch decision
+record, not a claim that the hosted setup or pilot has not occurred. Do not
+request another blanket setup approval; resolve only the specific outstanding
+evidence or human decisions.
+
 These are the complete owner decisions from [docs/OWNER_GATES.md](../docs/OWNER_GATES.md).
 Each row's evidence column names its Phase 2 evidence packet in
 [GATE_EVIDENCE.md](GATE_EVIDENCE.md); every status below remains **OPEN** until

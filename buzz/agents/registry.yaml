@@ -5,9 +5,11 @@
 # ops/BUZZ_SECURITY.md. Where a profile is silent, this registry records the
 # narrowest reading; it never grants scope a profile does not state.
 #
-# This file declares bounds. It does not enable an agent, grant access, or
-# clear a gate. Owner gate 6 (Initial community-agent providers) in
-# release/OWNER_REVIEW.md is OPEN, so every status below is not_enabled.
+# This file declares release-approved bounds. It does not enable a runtime,
+# grant access, or clear a gate. The owner-authorized owner-only pilot is
+# recorded separately in buzz/DEPLOYMENT_2026-09-04.md. Its running runtimes do
+# not constitute unrestricted member-facing launch approval; statuses below
+# remain not_enabled for that broader launch.
 #
 # Checked by scripts/validate_agents.py.
 #
@@ -19,8 +21,8 @@
 #               recommendation in an assigned open channel; takes no action.
 #
 # status vocabulary:
-#   not_enabled - declared but not running; the only value permitted while
-#                 owner gate 6 is OPEN.
+#   not_enabled - not approved for member-facing launch; the only value
+#                 permitted while owner gate 6 is OPEN. Not a runtime probe.
 #   enabled     - a human has cleared gate 6 and every listed prerequisite.
 #
 # Role values are the controlled operating roles from community/GOVERNANCE.md
