@@ -34,7 +34,7 @@ Sources: [locked decisions](../docs/DECISIONS.md), [non-goals](../docs/NON_GOALS
 
 ## Owner gates — all open until Dakota records approval
 
-### Hosted setup evidence, 2026-09-04
+Hosted setup evidence, 2026-09-04:
 
 Dakota explicitly authorized delegated community setup and forum enablement.
 The [deployment record](../buzz/DEPLOYMENT_2026-09-04.md) records the applied

@@ -46,6 +46,7 @@ guard = load_module("practice_autonomy_guard", REPOSITORY_ROOT / "scripts" / "au
 AS_OF = "2026-09-02"
 
 CATALOGUED_OPERATIONS = (
+    "context-pack-trial",
     "cadence-snapshot",
     "metrics-snapshot",
     "contract-drift-check",
@@ -228,7 +229,7 @@ class SafetyInvariantTest(GuardTestCase):
         self.assertIn("ops/autonomy/renewals.yaml", text)
         self.assertIn("not a renewal", text)
 
-    def test_shipped_catalog_holds_the_four_operations_at_attended_levels(self):
+    def test_shipped_catalog_holds_operations_at_attended_levels(self):
         record = yaml.safe_load((REPOSITORY_ROOT / guard.CATALOG_PATH).read_text(encoding="utf-8"))
         ids = [entry["id"] for entry in record["operations"]]
         self.assertEqual(sorted(ids), sorted(CATALOGUED_OPERATIONS))

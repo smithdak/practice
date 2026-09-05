@@ -80,6 +80,14 @@ becomes a licence:
 
 ## Usage
 
+``--private-root PATH`` is an explicit rehearsal/output-routing mode: export
+the recorded Git commit instead of the working tree, omit inherited credentials,
+and apply outputs and ledger entries under PATH instead of the canonical root.
+PATH must be outside that root. It has no Git history and is not a sandbox or
+proof that the destination is access-controlled. Never route a live provider's
+durable reservation journal through disposable staging. The experimental
+context-pack command has no configured live transport.
+
     python3 scripts/run_unattended.py --operation cadence-snapshot --root .
     python3 scripts/run_unattended.py --operation cadence-snapshot --root . --dry-run
 
@@ -94,11 +102,13 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import os
 import re
 import shutil
 import subprocess
 import sys
+import tarfile
 import tempfile
 from datetime import date
 from fnmatch import fnmatchcase
@@ -449,25 +459,63 @@ class ExecutionResult:
         return sorted(set(self.out_of_scope) | set(self.deleted) | set(self.symlinked))
 
 
-def execute_in_staging(root: Path, command: list[str], write_scope: list[str]) -> ExecutionResult:
+def safe_private_target(root: Path, relative: str) -> Path:
+    """Reject links/junctions instead of letting an output redirect writes."""
+    target = root / relative
+    for path in (target, *target.parents):
+        if path.is_symlink() or (hasattr(path, "is_junction") and path.is_junction()):
+            raise ValueError("private output path contains a link or junction")
+        if path == root:
+            break
+    if not target.resolve().is_relative_to(root.resolve()):
+        raise ValueError("private output escaped its root")
+    return target
+
+
+def export_committed_tree(root: Path, destination: Path, commit: str = "HEAD") -> None:
+    """Export HEAD only: no ignored files, desktop credentials, or .git config."""
+    result = subprocess.run(["git", "archive", "--format=tar", commit], cwd=root,
+                            capture_output=True, check=True, timeout=60)
+    destination.mkdir()
+    with tarfile.open(fileobj=io.BytesIO(result.stdout)) as archive:
+        for member in archive:
+            if member.isdir():
+                continue
+            if not member.isfile() or Path(member.name).is_absolute() or ".." in Path(member.name).parts:
+                raise ValueError("committed input contains a non-regular or escaping entry")
+            target = safe_private_target(destination, member.name)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with archive.extractfile(member) as source, target.open("xb") as output:
+                shutil.copyfileobj(source, output)
+
+
+def execute_in_staging(root: Path, command: list[str], write_scope: list[str],
+                       *, output_root: Path | None = None, source_commit: str = "HEAD") -> ExecutionResult:
     """Run ``command`` against a private copy of ``root`` and apply only in-scope results."""
     result = ExecutionResult()
     staging_parent = tempfile.mkdtemp(prefix="run-unattended-")
     try:
         staging = Path(staging_parent) / "repository"
         try:
-            shutil.copytree(root, staging, symlinks=True)
-        except (OSError, shutil.Error) as error:
+            if output_root is None:
+                shutil.copytree(root, staging, symlinks=True)
+            else:
+                export_committed_tree(root, staging, source_commit)
+        except (OSError, shutil.Error, ValueError, subprocess.SubprocessError, tarfile.TarError) as error:
             result.failure = f"the staging copy of the repository could not be made: {error}"
             return result
 
         before = snapshot_tree(staging)
 
-        environment = dict(os.environ)
+        environment = dict(os.environ) if output_root is None else {
+            key: os.environ[key] for key in ("PATH", "SYSTEMROOT", "WINDIR", "TEMP", "TMP")
+            if key in os.environ
+        }
         environment["PYTHONDONTWRITEBYTECODE"] = "1"
+        environment["PYTHONUTF8"] = "1"
         try:
             completed = subprocess.run(
-                command,
+                [sys.executable, *command[1:]] if command[0] == "python3" else command,
                 cwd=str(staging),
                 env=environment,
                 capture_output=True,
@@ -511,9 +559,17 @@ def execute_in_staging(root: Path, command: list[str], write_scope: list[str]) -
         if result.failure is not None:
             return result
 
+        # Preflight ALL targets before applying any output. The private mode is
+        # output routing, not a sandbox; isolated hosting remains a prerequisite.
+        try:
+            targets = {relative: safe_private_target(output_root, relative) if output_root
+                       else root / relative for relative in touched}
+        except ValueError as error:
+            result.failure = str(error)
+            return result
         for relative in touched:
             source = staging / relative
-            target = root / relative
+            target = targets[relative]
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source, target)
             result.applied.append(relative)
@@ -664,6 +720,7 @@ def run(
     actor: str,
     as_of: date,
     ledger_dir: Path,
+    private_root: Path | None = None,
     out=None,
     err=None,
 ) -> int:
@@ -738,6 +795,21 @@ def run(
         write_scope = [item.strip() for item in entry_record["write_scope"]]
         catalog_reversal = entry_record["reversal"]
 
+    if private_root and permitted:
+        # Bind the decision and input export to the same committed policy. A
+        # private run cannot claim HEAD provenance for uncommitted governance.
+        try:
+            consistent = source_commit is not None and subprocess.run(
+                ["git", "diff", "--quiet", source_commit, "--", *GUARD_INPUTS],
+                cwd=root, capture_output=True, timeout=30, check=False,
+            ).returncode == 0
+        except (OSError, subprocess.SubprocessError):
+            consistent = False
+        preconditions.append({"check": "private-inputs-committed", "result": "pass" if consistent else "fail",
+                              "detail": "Private input export requires committed governance matching the recorded source commit."})
+        if not consistent:
+            permitted = False
+
     # --- The dry run stops here, having written nothing at all.
     if dry_run:
         preconditions.append(
@@ -794,9 +866,10 @@ def run(
         # that reaches here has a command and a scope to enforce.
         out.write(f"\nRunning: {' '.join(command)}\n")
         out.write(f"  write_scope: {joined(write_scope) if write_scope else '(writes nothing)'}\n")
-        execution = execute_in_staging(root, command, write_scope)
+        execution = (execute_in_staging(root, command, write_scope, output_root=private_root, source_commit=source_commit)
+                     if private_root else execute_in_staging(root, command, write_scope))
         paths_read = paths_read + [command[1]]
-        for line in excerpt(execution.stdout, "stdout") + excerpt(execution.stderr, "stderr"):
+        for line in ([] if private_root else excerpt(execution.stdout, "stdout") + excerpt(execution.stderr, "stderr")):
             out.write(line + "\n")
         if execution.failure is None:
             outcome = "completed"
@@ -844,6 +917,14 @@ def run(
             paths_written,
             [path for path in paths_written if path in (execution.modified if execution else [])],
         )
+        if private_root:
+            reversal = (
+                "Canonical checkout was not modified. Review only these generated paths under "
+                f"the private output root: {joined(paths_written) if paths_written else '(none)'}. "
+                "Discard the generated draft or restore a previous private copy; never execute "
+                "this reversal against the canonical checkout. "
+                f"Catalog reversal: {one_line(catalog_reversal)}"
+            )
 
     entry = build_entry(
         run_id=unique_run_id(next_run_id(operation, ledger_dir=ledger_dir), existing_run_ids(ledger_dir)),
@@ -863,7 +944,7 @@ def run(
         outcome=outcome,
     )
     try:
-        written = append_entry(entry, ledger_dir=ledger_dir, root=root)
+        written = append_entry(entry, ledger_dir=ledger_dir, root=private_root or root)
     except LedgerError as error:
         err.write(
             "run_unattended.py: the run happened but its ledger entry could not be written, so this "
@@ -924,6 +1005,7 @@ def build_parser() -> argparse.ArgumentParser:
         "written; this only changes where, so a run directed elsewhere is absent from the "
         "repository's audit trail. Use it for tests and rehearsals.",
     )
+    parser.add_argument("--private-root", type=Path, help="Apply committed-input rehearsal outputs and ledger outside the canonical checkout; does not establish privacy or isolation")
     return parser
 
 
@@ -974,6 +1056,25 @@ def main(argv: list[str] | None = None) -> int:
 
     ledger_dir = Path(args.ledger_dir) if args.ledger_dir else root.joinpath(*DEFAULT_LEDGER_DIR)
 
+    private_root = args.private_root
+    if private_root:
+        try:
+            private_root = private_root.absolute()
+            # Refuse broad, overlapping, or redirected targets before mkdir.
+            if private_root.parent == private_root or private_root.resolve().is_relative_to(root) or root.is_relative_to(private_root.resolve()):
+                raise ValueError("private root must be outside and not contain the canonical checkout")
+            for path in (private_root, *private_root.parents):
+                if path.is_symlink() or (hasattr(path, "is_junction") and path.is_junction()):
+                    raise ValueError("private root contains a link or junction")
+            if args.ledger_dir:
+                raise ValueError("--private-root owns its ledger directory; do not override it")
+            if not args.dry_run:
+                private_root.mkdir(parents=True, exist_ok=True)
+            ledger_dir = safe_private_target(private_root, "ops/ledger")
+        except (ValueError, OSError) as error:
+            print(f"run_unattended.py: {error}", file=sys.stderr)
+            return 2
+
     return run(
         root=root,
         operation=operation,
@@ -982,6 +1083,7 @@ def main(argv: list[str] | None = None) -> int:
         actor=actor,
         as_of=as_of,
         ledger_dir=ledger_dir,
+        private_root=private_root,
     )
 
 

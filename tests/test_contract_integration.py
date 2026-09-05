@@ -132,6 +132,12 @@ class ValidatorWiringTests(unittest.TestCase):
 
     # Each entry is a script that is deliberately not a CI gate, and why.
     EXEMPT = {
+        "scripts/context_pack_trial.py": (
+            "generates unpublished experiment evidence, not a read-only check; live CLI "
+            "refuses while no transport is configured. Offline invariants and the private "
+            "runner integration are exercised by test_context_pack_trial.py and "
+            "test_run_unattended.py under the existing CI unittest step"
+        ),
         "scripts/validate_packet.py": (
             "takes explicit packet paths; no packet corpus exists yet, and its rules "
             "are exercised by tests/test_validate_packet.py and this module"

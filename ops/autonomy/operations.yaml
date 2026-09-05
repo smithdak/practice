@@ -38,6 +38,21 @@ sources:
   - swarm/plans/PHASE4_PLAN.md
 
 operations:
+  - id: context-pack-trial
+    summary: Execute one paired context-pack experiment and retain an unpublished evidence package.
+    command: ["python3", "scripts/context_pack_trial.py", "--root", "."]
+    write_scope: ["ops/experiments/results/*.json"]
+    reversal: Discard the private draft evidence package; no public content is changed.
+    blast_radius: Private experiment evidence only. No member contact or public repository writes.
+    level: A1
+    level_basis: Draft experimental evidence requires human review; no artifact maturity or publication decision.
+    note: >-
+      Dormant integration point, not a promotion. The command refuses live work
+      until a transport, approved budget, private durable journal, and isolated
+      hosting are implemented and validated. The explicit --replay CLI is
+      synthetic machinery verification and must never be promoted as a model
+      experiment. Do not route live reservations through disposable staging.
+
   - id: cadence-snapshot
     summary: Run the cadence report and write a dated status file.
     command: ["python3", "scripts/cadence.py", "--root", "."]

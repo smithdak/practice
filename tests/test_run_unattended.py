@@ -28,6 +28,7 @@ import copy
 import importlib.util
 import io
 import os
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -59,6 +60,7 @@ ledger = load_module("practice_ledger_for_runner", REPOSITORY_ROOT / "scripts" /
 AS_OF = "2026-09-02"
 
 CATALOGUED_OPERATIONS = (
+    "context-pack-trial",
     "cadence-snapshot",
     "metrics-snapshot",
     "contract-drift-check",
@@ -810,6 +812,115 @@ class UsageTest(RunnerTestCase):
             with self.assertRaises(SystemExit) as raised:
                 runner.main(["--root", "."])
         self.assertEqual(raised.exception.code, 2)
+
+
+class PrivateOutputTest(RunnerTestCase):
+    """Committed-input export and private ledger never touch the canonical outputs."""
+
+    def committed_fixture(self, source=IN_SCOPE_WRITER):
+        root = self.build(command_source=source)
+        for argv in (["git", "init", "--quiet"], ["git", "add", "."],
+                     ["git", "-c", "user.name=fixture", "-c", "user.email=fixture@example.invalid",
+                      "commit", "--quiet", "-m", "synthetic fixture"]):
+            subprocess.run(argv, cwd=root, check=True, capture_output=True)
+        return root
+
+    def test_outputs_and_ledger_only_in_private_root(self):
+        root = self.committed_fixture()
+        private = self.temporary_directory()
+        code, out, err = self.run_runner(root, "--private-root", str(private))
+        self.assertEqual(code, 0, out + err)
+        self.assertFalse((root / "ops/status").exists())
+        self.assertTrue((private / "ops/status/2026-09-02-report.md").is_file())
+        path, entry = self.single_entry(private / "ops/ledger")
+        self.assertEqual(entry["outcome"], "completed")
+        self.assertEntryValidates(path, private)
+        self.assertFalse((root / "ops/ledger").exists())
+        self.assertIn("never execute this reversal against the canonical checkout", entry["reversal"])
+
+    def test_export_excludes_untracked_and_environment_values(self):
+        source = IN_SCOPE_WRITER + """
+import os
+assert not (root / '.env').exists()
+assert 'PRACTICE_TEST_PRIVATE_VALUE' not in os.environ
+print('PRIVATE OUTPUT MUST NOT APPEAR IN RUNNER STDOUT')
+"""
+        root = self.committed_fixture(source)
+        (root / ".env").write_text("fixture-only-not-a-secret", encoding="utf-8")
+        private = self.temporary_directory()
+        with mock.patch.dict(os.environ, {"PRACTICE_TEST_PRIVATE_VALUE": "fixture"}):
+            code, out, err = self.run_runner(root, "--private-root", str(private))
+        self.assertEqual(code, 0, out + err)
+        self.assertNotIn("PRIVATE OUTPUT MUST", out)
+        self.assertFalse((private / ".env").exists())
+
+    def test_export_uses_commit_not_dirty_working_source(self):
+        root = self.committed_fixture()
+        (root / "scripts/operation.py").write_text("raise RuntimeError('dirty source')", encoding="utf-8")
+        private = self.temporary_directory()
+        code, out, err = self.run_runner(root, "--private-root", str(private))
+        self.assertEqual(code, 0, out + err)
+
+    def test_overlapping_and_custom_ledger_targets_are_rejected(self):
+        root = self.committed_fixture()
+        for target in (root, root / "private", root.parent):
+            code, _, _ = self.run_runner(root, "--private-root", str(target))
+            self.assertEqual(code, 2)
+        code, _, _ = self.run_runner(root, "--private-root", str(self.temporary_directory()), ledger_dir=self.temporary_directory())
+        self.assertEqual(code, 2)
+
+    def test_private_dry_run_creates_nothing(self):
+        root = self.committed_fixture()
+        target = self.temporary_directory() / "not-created"
+        code, out, err = self.run_runner(root, "--private-root", str(target), "--dry-run")
+        self.assertEqual(code, 0, out + err)
+        self.assertFalse(target.exists())
+
+    def test_guard_refusal_has_only_private_ledger(self):
+        root = self.build(promotions_record=promotions(kill_switch="engaged"))
+        private = self.temporary_directory()
+        code, out, err = self.run_runner(root, "--private-root", str(private))
+        self.assertEqual(code, 1, out + err)
+        _, entry = self.single_entry(private / "ops/ledger")
+        self.assertEqual(entry["outcome"], "refused")
+        self.assertFalse((root / "ops/ledger").exists())
+
+    def test_dirty_governance_cannot_claim_committed_provenance(self):
+        root = self.committed_fixture()
+        path = root / "ops/autonomy/operations.yaml"
+        path.write_text(path.read_text(encoding="utf-8") + "\n# uncommitted policy\n", encoding="utf-8")
+        private = self.temporary_directory()
+        code, out, err = self.run_runner(root, "--private-root", str(private))
+        self.assertEqual(code, 1, out + err)
+        _, entry = self.single_entry(private / "ops/ledger")
+        self.assertEqual(entry["outcome"], "refused")
+        self.assertPrecondition(entry, "private-inputs-committed", "fail")
+
+    def test_real_replay_command_through_private_runner(self):
+        source = (REPOSITORY_ROOT / "scripts/context_pack_trial.py").read_text(encoding="utf-8")
+        root = self.build(command_source=source)
+        case_path = root / "ops/experiments/context-pack/cases.json"
+        case_path.parent.mkdir(parents=True)
+        case_path.write_bytes((REPOSITORY_ROOT / "ops/experiments/context-pack/cases.json").read_bytes())
+        record = catalog()
+        record["operations"][0]["command"].append("--replay")
+        record["operations"][0]["write_scope"] = ["ops/experiments/results/*.json"]
+        promoted = promotions()
+        promoted["promotions"][0]["write_scope"] = ["ops/experiments/results/*.json"]
+        self.write_yaml(root / "ops/autonomy/operations.yaml", record)
+        self.write_yaml(root / "ops/autonomy/promotions.yaml", promoted)
+        for argv in (["git", "init", "--quiet"], ["git", "add", "."],
+                     ["git", "-c", "user.name=fixture", "-c", "user.email=fixture@example.invalid",
+                      "commit", "--quiet", "-m", "synthetic fixture only"]):
+            subprocess.run(argv, cwd=root, check=True, capture_output=True)
+        private = self.temporary_directory()
+        code, out, err = self.run_runner(root, "--private-root", str(private))
+        self.assertEqual(code, 0, out + err)
+        import json
+        result = json.loads((private / "ops/experiments/results/context-pack-replay.json").read_text(encoding="utf-8"))
+        self.assertEqual(result["live_model_calls"], 0)
+        self.assertEqual(len(result["reports"]), 7)
+        self.assertFalse((root / "ops/experiments/results").exists())
 
 
 class ScopeMatchingTest(unittest.TestCase):
