@@ -22,7 +22,7 @@ class TrialTests(unittest.TestCase):
         self.data = trial.load_cases(ROOT)
         self.config = {"session_id": "test-session", "start_date": "2026-09-04",
                        "total_budget_microusd": 300, "request_ceiling_microusd": 100,
-                       "mode": "live", "model": "synthetic-test-double"}
+                       "mode": "live", "model": "gpt-5.6-terra", "reasoning_effort": "medium"}
         self.clock = lambda: datetime(2026, 9, 4, 12, tzinfo=timezone.utc)
         self.calls = []
 
@@ -80,6 +80,35 @@ class TrialTests(unittest.TestCase):
         self.assertEqual(len(self.calls), 1)
         # Actual lower cost is deliberately NOT a refund.
         self.assertEqual(session.db.execute("SELECT SUM(ceiling) FROM calls").fetchone()[0], 100)
+
+    def test_selected_model_and_reasoning_reach_both_arms_and_repair(self):
+        def bad(request):
+            self.calls.append(request)
+            return {"text": "bad JSON", "usage": None, "cost_microusd": 70}
+        report = self.session().run_day(bad, lambda: True, self.clock)
+        self.assertEqual(len(self.calls), 3)
+        for request in self.calls:
+            self.assertEqual(request["model"], "gpt-5.6-terra")
+            self.assertEqual(request["reasoning_effort"], "medium")
+        self.assertEqual(report["model"], "gpt-5.6-terra")
+        self.assertEqual(report["reasoning_effort"], "medium")
+
+    def test_missing_or_unselected_model_settings_refused_before_transport(self):
+        missing = dict(self.config)
+        del missing["reasoning_effort"]
+        for config in (missing, dict(self.config, reasoning_effort="high"),
+                       dict(self.config, reasoning_effort=None),
+                       dict(self.config, model="gpt-5.6-luna")):
+            with self.subTest(config=config), self.assertRaises(trial.Refused):
+                self.session(config)
+        self.assertEqual(self.calls, [])
+
+    def test_reasoning_cannot_change_in_running_session(self):
+        session = self.session()
+        session.config["reasoning_effort"] = "high"
+        with self.assertRaises(trial.Refused):
+            session.run_day(self.good, lambda: True, self.clock)
+        self.assertEqual(self.calls, [])
 
     def test_repair_cannot_rewrite_primary_pair(self):
         session = self.session()
@@ -167,6 +196,7 @@ class TrialTests(unittest.TestCase):
     def test_seven_days_replay_counterbalanced_and_labelled(self):
         report = trial.replay(ROOT)
         self.assertEqual(report["live_model_calls"], 0)
+        self.assertTrue(all(r["reasoning_effort"] == "none" for r in report["reports"]))
         self.assertEqual(len(report["reports"]), 7)
         self.assertEqual(report["reports"][0]["calls"][0]["arm"], "baseline")
         self.assertEqual(report["reports"][1]["calls"][0]["arm"], "pack")

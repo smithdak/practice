@@ -1,7 +1,7 @@
 # Context-pack pilot implementation
 
 Status: offline kernel and private-runner integration verified; live adapter
-and deployment blocked on provider, budget, and private-retention choices.
+and deployment remain blocked on usage controls, runtime integration, and activation.
 No live model run, signed promotion, scheduled activation, or publication
 approval is implied. This is a Lab-tooling
 contribution extending the limitations recorded in `labs/002-context-pack-trial.md`.
@@ -44,7 +44,7 @@ maturity, public workflows, provider credentials, or Buzz configuration.
    and the regression suite. Commit the reviewed local implementation only.
 
 Live acceptance is separate: seven actual daily cycles, isolated hosting,
-provider/model selection, approved total spending, private retention, a specific
+the selected provider/model, approved usage limits, private retention, a specific
 signed promotion, and an independently released kill switch. These are not
 replaced by passing replay tests.
 
@@ -75,12 +75,40 @@ call reconciliation command yet. Budget accounting conservatively retains
 the full reservation even when observed charges are lower.
 
 The model transport is a Python callable receiving only system text, prompt,
-request ID, model, and maximum charge; it returns text, usage, and charge.
+request ID, model, reasoning effort, and maximum charge; it returns text, usage,
+and charge. Model and reasoning effort are immutable session settings and are
+retained in each report. Live configurations must use the selected pair below.
 **No live provider adapter is implemented.** The CLI refuses without `--replay`;
 replay uses a fixture oracle and costs no model requests. The journal tests use
 synthetic transports, not actual providers. A provider integration must enforce
 token/request/time limits upstream and supply dated price bounds; a local
 reservation is not itself a cap on a provider invoice.
+
+## Selected pilot model (2026-09-05)
+
+Owner selection: OpenAI through ChatGPT-backed Codex, `gpt-5.6-terra` with
+`medium` reasoning for baseline, structured-pack, and the single permitted
+repair. No fallback or mid-session upgrade: changing the model or effort would
+confound the paired comparison. This selection applies to this pilot, not all
+Buzz agents. Synthetic replay still uses a fixture oracle with no reasoning.
+
+The local Codex model catalogue lists this combination. The
+[official Terra model reference](https://developers.openai.com/api/docs/models/gpt-5.6-terra),
+checked 2026-09-05, also lists medium reasoning. Neither check is a live pilot
+execution or proof that a future unattended host is authenticated.
+
+The owner-authorized `smithdak/practice-pilot-results` repository exists and
+was verified private through GitHub on 2026-09-05. Retention wiring remains
+unimplemented. The kernel's micro-USD reservations are an API-oriented control,
+not ChatGPT subscription accounting. Do not substitute invented dollar costs
+or zero-cost reservations for ChatGPT usage. The selected adapter still needs
+explicit request/token/time bounds and a shared-quota stop policy.
+
+This direct model-selection contribution owns only this runbook,
+`scripts/context_pack_trial.py`, `tests/test_context_pack_trial.py`, and
+`swarm/handoffs/context-pack-model.md`. Acceptance: pin the exact pair, propagate
+it to both arms and repairs, retain it in reports, reject configuration drift,
+and pass focused kernel/runner tests and release validation. No activation.
 
 ## Private runner integration
 
@@ -129,10 +157,10 @@ is a writing command intended for disposable test input trees only.
 
 ## Remaining live-enablement work
 
-1. Owner chooses provider/model, approves a seven-day total spend ceiling, and
-   identifies or authorizes private result retention. No credentials in Git,
-   Buzz, or chat.
-2. Implement the selected transport, upstream cost and time limits, and durable
+1. Establish approved seven-day usage limits and the authenticated isolated
+   runtime for the selected ChatGPT-backed Codex route. Model and private
+   repository choices are resolved. No credentials in Git, Buzz, or chat.
+2. Implement the selected transport, upstream usage and time limits, and durable
    private-journal integration. Prove privacy and runtime isolation on the
    selected host; do not mount the desktop profile or grant public write tokens.
 3. Add private daily execution and persistence with one active session, durable
@@ -143,6 +171,6 @@ is a writing command intended for disposable test input trees only.
 5. Run seven actual daily cycles. Review failed trials as evidence. Decide
    publication and artifact maturity separately; neither is automated here.
 
-Do not restart general setup approvals. The missing decisions are the provider,
-spend ceiling, and private storage destination, followed by the explicit
+Do not restart general setup approvals. Remaining decisions concern usage
+limits and runtime deployment, followed by the explicit
 operation-specific activation decisions after its evidence exists.
