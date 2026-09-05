@@ -132,6 +132,9 @@ class ValidatorWiringTests(unittest.TestCase):
 
     # Each entry is a script that is deliberately not a CI gate, and why.
     EXEMPT = {
+        "scripts/context_pack_codex.py": "provider adapter library; bounded synthetic subprocess tests run in test_context_pack_codex.py, never a CI provider call",
+        "scripts/context_pack_store.py": "private persistence library; test_context_pack_store.py exercises path safety and atomic publication in CI",
+        "scripts/run_context_pack.py": "owner-operated live entrypoint; test_run_context_pack.py exercises it with synthetic transports, not live CI authentication",
         "scripts/context_pack_trial.py": (
             "generates unpublished experiment evidence, not a read-only check; live CLI "
             "refuses while no transport is configured. Offline invariants and the private "

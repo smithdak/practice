@@ -31,6 +31,11 @@ class TrialTests(unittest.TestCase):
         self.addCleanup(session.close)
         return session
 
+    def request_config(self, lane="supervised", cap=21):
+        return {"session_id": "request-session", "start_date": "2026-09-04",
+                "mode": "live", "model": "gpt-5.6-terra", "reasoning_effort": "medium",
+                "accounting": "requests", "lane": lane, "session_invocation_cap": cap}
+
     def good(self, request):
         self.calls.append(request)
         return {"text": trial.encoded(trial.expected(self.data["cases"][0])),
@@ -171,6 +176,11 @@ class TrialTests(unittest.TestCase):
         with self.assertRaisesRegex(trial.Refused, "changed"):
             trial.Session(self.path, self.config, data)
 
+    def test_request_accounting_refuses_legacy_journal_before_schema_migration(self):
+        self.session()
+        with self.assertRaisesRegex(trial.Refused, "changed"):
+            self.session(self.request_config())
+
     def test_overcharge_or_invalid_response_blocks_future_calls(self):
         session = self.session()
         def invalid(request):
@@ -223,6 +233,102 @@ class TrialTests(unittest.TestCase):
             return self.good(request)
         session.run_day(transport, lambda: True, self.clock)
         self.assertEqual(len(self.calls), 2)
+
+    def test_supervised_allows_distinct_same_day_cases_without_daily_cycle_claim(self):
+        session = self.session(self.request_config())
+        def good_for_requested_case(request):
+            self.calls.append(request)
+            case = next(c for c in self.data["cases"] if trial.encoded(c["checks"][0]) in request["prompt"])
+            return {"text": trial.encoded(trial.expected(case)), "usage": None, "cost_microusd": None}
+        first = session.run_trial("owner-1", "all-pass", good_for_requested_case, lambda: True, self.clock)
+        second = session.run_trial("owner-2", "whitespace-failure", good_for_requested_case, lambda: True, self.clock)
+        self.assertEqual(len(self.calls), 4)
+        self.assertEqual(first["trial_id"], "owner-1")
+        self.assertEqual(second["trial_id"], "owner-2")
+        self.assertEqual(len(first["calls"]), 2)
+        self.assertEqual(len(second["calls"]), 2)
+        self.assertEqual(first["lane"], "supervised")
+        self.assertNotIn("daily", first["interpretation"].lower())
+        self.assertEqual(first["calls"][0]["response"]["cost_microusd"], None)
+        self.assertNotIn("max_charge_microusd", self.calls[0])
+        self.assertEqual(first, session.run_trial("owner-1", "all-pass", good_for_requested_case, lambda: True, self.clock))
+
+    def test_supervised_trial_id_is_idempotent_and_case_cannot_be_reused(self):
+        session = self.session(self.request_config())
+        report = session.run_trial("owner-1", "all-pass", self._request_good, lambda: True, self.clock)
+        self.assertEqual(report, session.run_trial("owner-1", "all-pass", self._request_good, lambda: True, self.clock))
+        self.assertEqual(len(self.calls), 2)
+        with self.assertRaisesRegex(trial.Refused, "already has a trial ID"):
+            session.run_trial("owner-2", "all-pass", self._request_good, lambda: True, self.clock)
+        with self.assertRaisesRegex(trial.Refused, "changed"):
+            session.run_trial("owner-1", "whitespace-failure", self._request_good, lambda: True, self.clock)
+
+    def _request_good(self, request):
+        self.calls.append(request)
+        case = next(c for c in self.data["cases"] if trial.encoded(c["checks"][0]) in request["prompt"])
+        return {"text": trial.encoded(trial.expected(case)), "usage": None, "cost_microusd": None}
+
+    def test_background_is_one_paired_trial_per_day(self):
+        session = self.session(self.request_config(lane="background"))
+        session.run_trial("background-a", "all-pass", self._request_good, lambda: True, self.clock)
+        with self.assertRaisesRegex(trial.Refused, "one paired trial"):
+            session.run_trial("background-b", "whitespace-failure", self._request_good, lambda: True, self.clock)
+        self.assertEqual(len(self.calls), 2)
+
+    def test_request_session_cap_counts_attempts_before_transport(self):
+        session = self.session(self.request_config(cap=2))
+        session.run_trial("owner-1", "all-pass", self._request_good, lambda: True, self.clock)
+        with self.assertRaisesRegex(trial.Refused, "invocation cap"):
+            session.run_trial("owner-2", "whitespace-failure", self._request_good, lambda: True, self.clock)
+        self.assertEqual(len(self.calls), 2)
+
+    def test_request_pending_crash_expiry_and_configuration_mixing_refuse(self):
+        session = self.session(self.request_config())
+        def crash(request):
+            self.calls.append(request)
+            raise TimeoutError("outcome unknown")
+        with self.assertRaises(TimeoutError):
+            session.run_trial("owner-1", "all-pass", crash, lambda: True, self.clock)
+        with self.assertRaisesRegex(trial.Refused, "Uncertain"):
+            session.run_trial("owner-1", "all-pass", self._request_good, lambda: True, self.clock)
+        fresh = self.session(self.request_config())
+        with self.assertRaisesRegex(trial.Refused, "seven-day"):
+            fresh.run_trial("owner-x", "all-pass", self._request_good, lambda: True,
+                            lambda: datetime(2026, 9, 11, tzinfo=timezone.utc))
+        mixed = dict(self.request_config(), total_budget_microusd=1)
+        with self.assertRaises(trial.Refused):
+            trial.validate_config(mixed)
+        with self.assertRaises(trial.Refused):
+            trial.validate_config(self.request_config(cap=False))
+
+    def test_request_active_trial_blocks_parallel_owner_work_and_resumes(self):
+        session = self.session(self.request_config())
+        other = self.session(self.request_config())
+        with self.assertRaisesRegex(trial.Refused, "Kill switch"):
+            session.run_trial("owner-1", "all-pass", self._request_good,
+                              lambda: len(self.calls) == 0, self.clock)
+        with self.assertRaisesRegex(trial.Refused, "active trial"):
+            other.run_trial("owner-2", "whitespace-failure", self._request_good, lambda: True, self.clock)
+        report = session.run_trial("owner-1", "all-pass", self._request_good, lambda: True, self.clock)
+        self.assertEqual(len(report["calls"]), 2)
+        self.assertEqual(len(self.calls), 2)
+
+    def test_background_active_previous_day_cannot_advance_without_a_pending_call(self):
+        session = self.session(self.request_config(lane="background"))
+        with session.db:
+            session.db.execute("INSERT INTO request_trials (trial_id,day,case_id,lane,status) VALUES (?,?,?,?,?)",
+                               ("background-old", "2026-09-04", "all-pass", "background", "active"))
+        with self.assertRaisesRegex(trial.Refused, "active trial"):
+            session.run_day(self._request_good, lambda: True,
+                            lambda: datetime(2026, 9, 5, 12, tzinfo=timezone.utc))
+        self.assertEqual(self.calls, [])
+
+    def test_request_lane_cap_and_model_drift_are_immutable(self):
+        self.session(self.request_config())
+        for changed in (self.request_config(lane="background"), self.request_config(cap=22),
+                        dict(self.request_config(), model="gpt-5.6-luna")):
+            with self.subTest(changed=changed), self.assertRaisesRegex(trial.Refused, "changed|Pilot requires"):
+                self.session(changed)
 
 
 if __name__ == "__main__":
